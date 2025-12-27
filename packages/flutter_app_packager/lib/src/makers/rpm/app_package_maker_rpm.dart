@@ -106,7 +106,9 @@ class AppPackageMakerRPM extends AppPackageMaker {
           file.path,
         ],
       );
-      if (processResult.stdout.toString().contains('/home')) {
+      final rpath = processResult.stdout.toString().trim();
+      // Fix RPATH if it is an absolute path (starts with /) and not yet fixed ($ORIGIN)
+      if (rpath.startsWith('/') && !rpath.contains('\$ORIGIN')) {
         await $(
           'patchelf',
           [

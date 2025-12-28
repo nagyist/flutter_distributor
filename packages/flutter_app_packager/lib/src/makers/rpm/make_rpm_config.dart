@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_app_packager/src/api/app_package_maker.dart';
 
-class MakeRPMConfig extends MakeConfig {
+class MakeRPMConfig extends MakeLinuxPackageConfig {
   MakeRPMConfig({
     // Desktop file
     required this.displayName,
@@ -132,10 +132,10 @@ class MakeRPMConfig extends MakeConfig {
             'mkdir -p %{buildroot}%{_datadir}/metainfo',
             'mkdir -p %{buildroot}%{_datadir}/pixmaps',
             'cp -r %{name}/* %{buildroot}%{_datadir}/%{name}',
-            'ln -s %{_datadir}/%{name}/%{name} %{buildroot}%{_bindir}/%{name}',
-            'cp -r %{name}.desktop %{buildroot}%{_datadir}/applications',
-            'cp -r %{name}.png %{buildroot}%{_datadir}/pixmaps',
-            'cp -r %{name}*.xml %{buildroot}%{_datadir}/metainfo || :',
+            'ln -s %{_datadir}/%{name}/$appBinaryName %{buildroot}%{_bindir}/%{name}',
+            'cp -r $appBinaryName.desktop %{buildroot}%{_datadir}/applications/%{name}.desktop',
+            'cp -r $appBinaryName.png %{buildroot}%{_datadir}/pixmaps/%{name}.png',
+            'cp -r $appBinaryName*.xml %{buildroot}%{_datadir}/metainfo/%{name}.appdata.xml || :',
             'update-mime-database %{_datadir}/mime &> /dev/null || :',
           ].join('\n'),
           '%postun': ['update-mime-database %{_datadir}/mime &> /dev/null || :']

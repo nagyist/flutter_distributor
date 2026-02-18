@@ -27,3 +27,6 @@ pubspec.lock
 
 # Vercel related
 .vercel
+
+# macOS related
+.DS_Store

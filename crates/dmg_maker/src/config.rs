@@ -1,0 +1,326 @@
+use anyhow::{Context, Result, bail};
+use serde::Deserialize;
+use serde_json::Value;
+use std::path::{Path, PathBuf};
+
+#[derive(Debug, Clone)]
+pub struct ParsedSpec {
+    pub spec: AppDmgSpec,
+    pub resolve_base: PathBuf,
+}
+
+#[derive(Debug, Clone)]
+pub struct LoadOptions {
+    pub source: Option<PathBuf>,
+    pub specification: Option<Value>,
+    pub basepath: Option<PathBuf>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AppDmgSpec {
+    pub title: String,
+    pub icon: Option<String>,
+    pub background: Option<String>,
+    #[serde(rename = "background-color")]
+    pub background_color: Option<String>,
+    #[serde(rename = "icon-size")]
+    pub icon_size: Option<u32>,
+    pub window: Option<Window>,
+    pub format: Option<String>,
+    pub filesystem: Option<String>,
+    pub contents: Vec<ContentEntry>,
+    #[serde(rename = "code-sign")]
+    pub code_sign: Option<CodeSign>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Window {
+    pub position: Option<Position>,
+    pub size: Option<WindowSize>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Position {
+    pub x: i32,
+    pub y: i32,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct WindowSize {
+    pub width: i32,
+    pub height: i32,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum ContentType {
+    Link,
+    File,
+    Position,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ContentEntry {
+    pub x: i32,
+    pub y: i32,
+    #[serde(rename = "type")]
+    pub kind: ContentType,
+    pub path: String,
+    pub name: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CodeSign {
+    #[serde(rename = "signing-identity")]
+    pub signing_identity: String,
+    pub identifier: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LegacySpec {
+    title: String,
+    app: String,
+    icon: Option<String>,
+    background: Option<String>,
+    icons: LegacyIcons,
+    extra: Option<Vec<LegacyExtra>>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LegacyIcons {
+    size: u32,
+    app: [i32; 2],
+    alias: [i32; 2],
+}
+
+type LegacyExtra = (String, i32, i32);
+
+impl AppDmgSpec {
+    pub fn validate(&self) -> Result<()> {
+        if self.title.trim().is_empty() {
+            bail!("`title` must not be empty");
+        }
+
+        if self.contents.is_empty() {
+            bail!("`contents` must not be empty");
+        }
+
+        if let Some(format) = &self.format {
+            let allowed = ["UDRW", "UDRO", "UDCO", "UDZO", "ULFO", "ULMO", "UDBZ"];
+            if !allowed.contains(&format.as_str()) {
+                bail!("Invalid `format`: {format}");
+            }
+        }
+
+        if let Some(filesystem) = &self.filesystem {
+            let allowed = ["HFS+", "APFS"];
+            if !allowed.contains(&filesystem.as_str()) {
+                bail!("Invalid `filesystem`: {filesystem}");
+            }
+        }
+
+        Ok(())
+    }
+}
+
+pub fn load_spec(options: &LoadOptions) -> Result<ParsedSpec> {
+    let has_source = options.source.is_some();
+    let has_spec = options.basepath.is_some() && options.specification.is_some();
+
+    if has_source == has_spec {
+        bail!("Supply one of `source` or `(basepath, specification)`");
+    }
+
+    if let Some(source) = &options.source {
+        let raw = std::fs::read_to_string(source)
+            .with_context(|| format!("JSON Specification not found at: {}", source.display()))?;
+        let value: Value =
+            serde_json::from_str(&raw).context("Failed to parse JSON specification")?;
+        let spec = parse_spec_value(value)?;
+
+        return Ok(ParsedSpec {
+            spec,
+            resolve_base: source
+                .parent()
+                .unwrap_or_else(|| Path::new("."))
+                .to_path_buf(),
+        });
+    }
+
+    let spec = parse_spec_value(
+        options
+            .specification
+            .clone()
+            .context("Missing `specification`")?,
+    )?;
+
+    Ok(ParsedSpec {
+        spec,
+        resolve_base: options.basepath.clone().context("Missing `basepath`")?,
+    })
+}
+
+fn parse_spec_value(value: Value) -> Result<AppDmgSpec> {
+    let spec = if value.get("icons").is_some() {
+        let legacy: LegacySpec =
+            serde_json::from_value(value).context("Invalid legacy appdmg configuration")?;
+        convert_legacy(legacy)
+    } else {
+        serde_json::from_value(value).context("Invalid appdmg configuration")?
+    };
+
+    spec.validate()?;
+    Ok(spec)
+}
+
+fn convert_legacy(src: LegacySpec) -> AppDmgSpec {
+    let mut contents = vec![
+        ContentEntry {
+            x: src.icons.alias[0],
+            y: src.icons.alias[1],
+            kind: ContentType::Link,
+            path: "/Applications".to_string(),
+            name: None,
+        },
+        ContentEntry {
+            x: src.icons.app[0],
+            y: src.icons.app[1],
+            kind: ContentType::File,
+            path: src.app,
+            name: None,
+        },
+    ];
+
+    if let Some(extra) = src.extra {
+        for item in extra {
+            contents.push(ContentEntry {
+                x: item.1,
+                y: item.2,
+                kind: ContentType::File,
+                path: item.0,
+                name: None,
+            });
+        }
+    }
+
+    AppDmgSpec {
+        title: src.title,
+        icon: src.icon,
+        background: src.background,
+        background_color: None,
+        icon_size: Some(src.icons.size),
+        window: None,
+        format: None,
+        filesystem: None,
+        contents,
+        code_sign: None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{ContentType, LoadOptions, load_spec};
+    use serde_json::json;
+    use std::path::PathBuf;
+
+    fn examples_dir() -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("examples")
+    }
+
+    #[test]
+    fn parse_modern_spec() {
+        let parsed = load_spec(&LoadOptions {
+            source: None,
+            basepath: Some(PathBuf::from(".")),
+            specification: Some(json!({
+                "title": "Test App",
+                "contents": [
+                    { "x": 1, "y": 2, "type": "link", "path": "/Applications" },
+                    { "x": 3, "y": 4, "type": "file", "path": "Test.app" }
+                ]
+            })),
+        })
+        .expect("parse should succeed");
+
+        assert_eq!(parsed.spec.title, "Test App");
+        assert_eq!(parsed.spec.contents.len(), 2);
+        assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
+    }
+
+    #[test]
+    fn parse_legacy_spec() {
+        let parsed = load_spec(&LoadOptions {
+            source: None,
+            basepath: Some(PathBuf::from(".")),
+            specification: Some(json!({
+                "title": "Legacy App",
+                "app": "Legacy.app",
+                "icons": {
+                    "size": 80,
+                    "app": [192, 344],
+                    "alias": [448, 344]
+                },
+                "extra": [["Readme.txt", 100, 100]]
+            })),
+        })
+        .expect("parse should succeed");
+
+        assert_eq!(parsed.spec.title, "Legacy App");
+        assert_eq!(parsed.spec.icon_size, Some(80));
+        assert_eq!(parsed.spec.contents.len(), 3);
+        assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
+        assert_eq!(parsed.spec.contents[1].kind, ContentType::File);
+    }
+
+    #[test]
+    fn parse_modern_spec_from_file_example() {
+        let parsed = load_spec(&LoadOptions {
+            source: Some(examples_dir().join("appdmg-modern.json")),
+            basepath: None,
+            specification: None,
+        })
+        .expect("parse should succeed");
+
+        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.contents.len(), 4);
+        assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
+        assert_eq!(parsed.spec.contents[1].kind, ContentType::File);
+        assert_eq!(parsed.spec.contents[3].kind, ContentType::Position);
+    }
+
+    #[test]
+    fn parse_legacy_spec_from_file_example() {
+        let parsed = load_spec(&LoadOptions {
+            source: Some(examples_dir().join("appdmg-legacy.json")),
+            basepath: None,
+            specification: None,
+        })
+        .expect("parse should succeed");
+
+        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.icon_size, Some(80));
+        assert_eq!(parsed.spec.contents.len(), 3);
+        assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
+    }
+
+    #[test]
+    fn parse_bg_color_spec_from_file_example() {
+        let parsed = load_spec(&LoadOptions {
+            source: Some(examples_dir().join("appdmg-bg-color.json")),
+            basepath: None,
+            specification: None,
+        })
+        .expect("parse should succeed");
+
+        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.background_color.as_deref(), Some("mintcream"));
+    }
+}

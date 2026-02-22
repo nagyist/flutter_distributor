@@ -1,5 +1,5 @@
 use anyhow::{Result, anyhow};
-use app_analyzer::{AnalyzeConfig, AndroidApkAnalyzer, AppAnalyzer};
+use app_analyzer::{AnalyzeConfig, AndroidAabAnalyzer, AndroidApkAnalyzer, AppAnalyzer};
 use clap::Args;
 use serde_json::json;
 use std::path::Path;
@@ -25,10 +25,8 @@ pub async fn execute(args: &AnalyzeArgs) -> Result<()> {
         .map(|value| value.to_lowercase());
 
     let output_json = match ext.as_deref() {
+        Some("aab") => run_analyzer(AndroidAabAnalyzer::new(), path)?,
         Some("apk") => run_analyzer(AndroidApkAnalyzer::new(), path)?,
-        Some("aab") => {
-            return Err(anyhow!("AAB analysis is not implemented yet"));
-        }
         Some("ipa") => {
             return Err(anyhow!("IPA analysis is not implemented yet"));
         }

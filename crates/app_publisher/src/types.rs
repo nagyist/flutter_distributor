@@ -1,6 +1,13 @@
+use std::collections::HashMap;
+use std::sync::Arc;
+
+pub type PublishProgressCallback = Arc<dyn Fn(u64, u64) + Send + Sync + 'static>;
+
 #[derive(Debug, Clone)]
 pub struct PublishConfig {
     pub app_version: Option<String>,
+    pub artifact_path: Option<String>,
+    pub publish_arguments: Option<HashMap<String, String>>,
 }
 
 #[derive(Debug)]

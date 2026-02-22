@@ -97,7 +97,7 @@ releases:
     jobs:
       - name: android-aab
         variables:
-          FLUTTER_ROOT: ~/fvm/versions/3.10.3
+          # FLUTTER_ROOT: ~/fvm/versions/3.10.3
         package:
           platform: android
           target: aab
@@ -115,14 +115,14 @@ releases:
           target: ipa
           build_args:
             export-method: ad-hoc
-      - name: ohos-hap
-        package:
-          platform: ohos
-          target: hap
-      - name: ohos-app
-        package:
-          platform: ohos
-          target: app
+      # - name: ohos-hap
+      #   package:
+      #     platform: ohos
+      #     target: hap
+      # - name: ohos-app
+      #   package:
+      #     platform: ohos
+      #     target: app
       - name: linux-appimage
         package:
           platform: linux

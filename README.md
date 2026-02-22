@@ -33,26 +33,26 @@ Complete documentation is available at [fastforge.dev](https://fastforge.dev/).
 
 ### Supported Package Formats
 
-- **Android**: [AAB](https://fastforge.dev/en/makers/aab), [APK](https://fastforge.dev/en/makers/apk)
-- **iOS**: [IPA](https://fastforge.dev/en/makers/ipa)
-- **OpenHarmony**: [HAP](https://fastforge.dev/en/makers/hap), [APP](https://fastforge.dev/en/makers/app)
-- **Linux**: [AppImage](https://fastforge.dev/en/makers/appimage), [DEB](https://fastforge.dev/en/makers/deb), [RPM](https://fastforge.dev/en/makers/rpm), Pacman
-- **macOS**: [DMG](https://fastforge.dev/en/makers/dmg), [PKG](https://fastforge.dev/en/makers/pkg)
-- **Windows**: [EXE](https://fastforge.dev/en/makers/exe), [MSIX](https://fastforge.dev/en/makers/msix)
-- **Universal**: [ZIP](https://fastforge.dev/en/makers/zip)
+- **Android**: [AAB](https://fastforge.dev/makers/aab), [APK](https://fastforge.dev/makers/apk)
+- **iOS**: [IPA](https://fastforge.dev/makers/ipa)
+- **OpenHarmony**: [HAP](https://fastforge.dev/makers/hap), [APP](https://fastforge.dev/makers/app)
+- **Linux**: [AppImage](https://fastforge.dev/makers/appimage), [DEB](https://fastforge.dev/makers/deb), [RPM](https://fastforge.dev/makers/rpm), Pacman
+- **macOS**: [DMG](https://fastforge.dev/makers/dmg), [PKG](https://fastforge.dev/makers/pkg)
+- **Windows**: [EXE](https://fastforge.dev/makers/exe), [MSIX](https://fastforge.dev/makers/msix)
+- **Universal**: [ZIP](https://fastforge.dev/makers/zip)
 - More formats coming soon...
 
 ### Supported Distribution Platforms
 
-- [App Store](https://fastforge.dev/en/publishers/appstore)
-- [Firebase](https://fastforge.dev/en/publishers/firebase)
-- [Firebase Hosting](https://fastforge.dev/en/publishers/firebase-hosting)
-- [FIR](https://fastforge.dev/en/publishers/fir)
-- [GitHub Releases](https://fastforge.dev/en/publishers/github)
-- [PGYER](https://fastforge.dev/en/publishers/pgyer)
-- [Play Store](https://fastforge.dev/en/publishers/playstore)
-- [Qiniu](https://fastforge.dev/en/publishers/qiniu)
-- [Vercel](https://fastforge.dev/en/publishers/vercel)
+- [App Store](https://fastforge.dev/publishers/appstore)
+- [Firebase](https://fastforge.dev/publishers/firebase)
+- [Firebase Hosting](https://fastforge.dev/publishers/firebase-hosting)
+- [FIR](https://fastforge.dev/publishers/fir)
+- [GitHub Releases](https://fastforge.dev/publishers/github)
+- [PGYER](https://fastforge.dev/publishers/pgyer)
+- [Play Store](https://fastforge.dev/publishers/playstore)
+- [Qiniu](https://fastforge.dev/publishers/qiniu)
+- [Vercel](https://fastforge.dev/publishers/vercel)
 - More platforms coming soon...
 
 ## Installation
@@ -225,7 +225,7 @@ Please make sure to update tests as appropriate and follow the existing code sty
     <tr>
       <td align="center" size="13px" colspan="7">
         <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
-          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
+          <a href="https://all-contributors.js.org/docs/bot/usage">Add your contributions</a>
         </img>
       </td>
     </tr>

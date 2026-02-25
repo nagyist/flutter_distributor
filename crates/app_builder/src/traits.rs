@@ -1,12 +1,25 @@
 use crate::types::{BuildConfig, BuildError, BuildResult};
+use std::collections::HashMap;
 
 pub trait AppBuilder {
-    /// Get the name/identifier of this builder.
     fn name(&self) -> &str;
-
-    /// Check if this builder is supported on the current platform.
+    fn matches(&self, platform: &str, target: Option<&str>) -> bool;
     fn is_supported_on_current_platform(&self) -> bool;
-
-    /// Build the application using the provided configuration.
-    fn build(&self, config: BuildConfig) -> Result<BuildResult, BuildError>;
+    fn build_subcommand(&self) -> &str;
+    fn validate_arguments(&self, _config: &BuildConfig) -> Result<(), BuildError> {
+        Ok(())
+    }
+    fn resolve_output_files(
+        &self,
+        config: &BuildConfig,
+        flutter_version: Option<&crate::types::FlutterVersion>,
+        environment: Option<&HashMap<String, String>>,
+    ) -> Result<(std::path::PathBuf, Vec<std::path::PathBuf>), BuildError>;
+    fn build_result(
+        &self,
+        config: BuildConfig,
+        output_directory: std::path::PathBuf,
+        output_files: Vec<std::path::PathBuf>,
+        duration_ms: u128,
+    ) -> BuildResult;
 }

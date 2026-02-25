@@ -31,7 +31,14 @@ cargo run -p fastforge -- analyze /path/to/app.apk
 cargo run -p fastforge -- analyze /path/to/app.apk -o analysis.json
 ```
 
-### 4. 安装为本地命令
+### 4. 执行构建命令
+
+```bash
+# 直接构建 Android APK（不打包/不发布）
+cargo run -p fastforge -- build --platform android --target apk --build-flavor dev --build-dart-define APP_ENV=dev
+```
+
+### 5. 安装为本地命令
 
 ```bash
 cargo install --path crates/fastforge
@@ -41,7 +48,7 @@ fastforge --help
 ## 可用子命令
 
 - `analyze`: 分析应用包元信息
-- `build`: 构建（命令入口已就绪）
+- `build`: 直接构建 Flutter 应用产物
 - `package`: 打包（命令入口已就绪）
 - `publish`: 发布（命令入口已就绪）
 - `upgrade`: 升级（命令入口已就绪）

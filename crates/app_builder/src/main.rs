@@ -1,6 +1,3 @@
-mod traits;
-mod types;
-
 fn main() {
-    println!("app_builder is under development. Stay tuned.");
+    println!("app_builder library is ready. Use it via the fastforge CLI integration.");
 }

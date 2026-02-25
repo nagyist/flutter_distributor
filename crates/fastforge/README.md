@@ -31,7 +31,14 @@ cargo run -p fastforge -- analyze /path/to/app.apk
 cargo run -p fastforge -- analyze /path/to/app.apk -o analysis.json
 ```
 
-### 4. Install as a local command
+### 4. Try the build command
+
+```bash
+# Build Android APK directly (without package/publish)
+cargo run -p fastforge -- build --platform android --target apk --build-flavor dev --build-dart-define APP_ENV=dev
+```
+
+### 5. Install as a local command
 
 ```bash
 cargo install --path crates/fastforge
@@ -41,7 +48,7 @@ fastforge --help
 ## Available subcommands
 
 - `analyze`: Analyze application package metadata
-- `build`: Build (command entry is in place)
+- `build`: Build Flutter app outputs directly
 - `package`: Package (command entry is in place)
 - `publish`: Publish (command entry is in place)
 - `upgrade`: Upgrade (command entry is in place)

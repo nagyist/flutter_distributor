@@ -1,16 +1,21 @@
+mod appgallery;
 mod appstore;
 mod firebase;
+mod firebase_hosting;
 mod fir;
+mod github;
 mod pgyer;
 mod playstore;
 mod s3;
+mod vercel;
 
+pub use appgallery::AppGalleryPublisher;
 pub use appstore::AppStorePublisher;
 pub use firebase::FirebasePublisher;
+pub use firebase_hosting::FirebaseHostingPublisher;
 pub use fir::FirPublisher;
+pub use github::GitHubPublisher;
 pub use pgyer::PgyerPublisher;
 pub use playstore::PlayStorePublisher;
-pub use s3::CosPublisher;
-pub use s3::OssPublisher;
-pub use s3::QiniuPublisher;
-pub use s3::S3Publisher;
+pub use s3::{CosPublisher, OssPublisher, QiniuPublisher, S3Publisher};
+pub use vercel::VercelPublisher;

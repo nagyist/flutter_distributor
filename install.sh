@@ -60,14 +60,14 @@ resolve_version() {
   info "Fetching latest release version..."
 
   if command -v curl >/dev/null 2>&1; then
-    RELEASE_JSON="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest")"
+    RELEASE_JSON="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases")"
   elif command -v wget >/dev/null 2>&1; then
-    RELEASE_JSON="$(wget -qO- "https://api.github.com/repos/${REPO}/releases/latest")"
+    RELEASE_JSON="$(wget -qO- "https://api.github.com/repos/${REPO}/releases")"
   else
     error "Neither curl nor wget is available. Please install one and retry."
   fi
 
-  VERSION="$(printf '%s' "$RELEASE_JSON" | grep '"tag_name"' | sed 's/.*"tag_name": *"v\?\([^"]*\)".*/\1/')"
+  VERSION="$(printf '%s' "$RELEASE_JSON" | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"v\?\([^"]*\)".*/\1/')"
 
   if [ -z "$VERSION" ]; then
     error "Failed to resolve the latest version. Set FASTFORGE_VERSION to specify one manually."

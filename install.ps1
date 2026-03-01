@@ -46,10 +46,11 @@ function Resolve-Version {
 
   try {
     $headers = @{ "User-Agent" = "fastforge-installer" }
-    $response = Invoke-RestMethod `
-      -Uri "https://api.github.com/repos/$Repo/releases/latest" `
+    $releases = Invoke-RestMethod `
+      -Uri "https://api.github.com/repos/$Repo/releases" `
       -Headers $headers
-    $tag = $response.tag_name -replace '^v', ''
+    $latest = $releases | Select-Object -First 1
+    $tag = $latest.tag_name -replace '^v', ''
     if (-not $tag) { Write-Fail "Failed to parse version from GitHub API response." }
     Write-Info "Latest version: $tag"
     return $tag

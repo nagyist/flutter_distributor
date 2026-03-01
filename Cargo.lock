@@ -489,7 +489,10 @@ dependencies = [
  "app_publisher",
  "clap",
  "log",
+ "serde",
  "serde_json",
+ "serde_yaml",
+ "tempfile",
  "tokio",
 ]
 

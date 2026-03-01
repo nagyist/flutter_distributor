@@ -2,7 +2,7 @@ use crate::traits::AppPublisher;
 use crate::types::{PublishConfig, PublishError, PublishProgressCallback, PublishResult};
 use chrono::Utc;
 use hmac::{Hmac, Mac};
-use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
+use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
 use reqwest::StatusCode;
 use reqwest::blocking::Client;
 use sha2::{Digest, Sha256};
@@ -31,6 +31,11 @@ const ENV_AWS_SESSION_TOKEN: &str = "AWS_SESSION_TOKEN";
 const DEFAULT_REGION: &str = "us-east-1";
 
 type HmacSha256 = Hmac<Sha256>;
+const AWS_URI_ENCODE_SET: &AsciiSet = &NON_ALPHANUMERIC
+    .remove(b'-')
+    .remove(b'_')
+    .remove(b'.')
+    .remove(b'~');
 
 impl AppPublisher for S3Publisher {
     fn new() -> Self {
@@ -325,7 +330,7 @@ fn compose_object_key(prefix: Option<&str>, file_name: &str) -> String {
 
 fn encode_object_key(key: &str) -> String {
     key.split('/')
-        .map(|segment| utf8_percent_encode(segment, NON_ALPHANUMERIC).to_string())
+        .map(|segment| utf8_percent_encode(segment, AWS_URI_ENCODE_SET).to_string())
         .collect::<Vec<_>>()
         .join("/")
 }
@@ -420,5 +425,78 @@ impl Read for UploadProgressReader {
             }
         }
         Ok(bytes_read)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn compose_object_key_without_prefix_uses_file_name() {
+        let key = compose_object_key(None, "app.apk");
+        assert_eq!(key, "app.apk");
+    }
+
+    #[test]
+    fn compose_object_key_with_prefix_trims_slashes() {
+        let key = compose_object_key(Some("/release/android/"), "app.apk");
+        assert_eq!(key, "release/android/app.apk");
+    }
+
+    #[test]
+    fn normalize_endpoint_adds_https_scheme() {
+        let endpoint = normalize_endpoint("s3.us-east-1.amazonaws.com");
+        assert_eq!(endpoint, "https://s3.us-east-1.amazonaws.com");
+    }
+
+    #[test]
+    fn normalize_endpoint_keeps_existing_scheme() {
+        let endpoint = normalize_endpoint("http://127.0.0.1:9000");
+        assert_eq!(endpoint, "http://127.0.0.1:9000");
+    }
+
+    #[test]
+    fn build_upload_url_supports_path_style() {
+        let url = build_upload_url(
+            "https://s3.us-east-1.amazonaws.com",
+            true,
+            "my-bucket",
+            "release/app.apk",
+        )
+        .expect("path-style url should be built");
+        assert_eq!(
+            url,
+            "https://s3.us-east-1.amazonaws.com/my-bucket/release/app.apk"
+        );
+    }
+
+    #[test]
+    fn build_upload_url_supports_virtual_host_style() {
+        let url = build_upload_url(
+            "https://s3.us-east-1.amazonaws.com",
+            false,
+            "my-bucket",
+            "release/app.apk",
+        )
+        .expect("virtual-host-style url should be built");
+        assert_eq!(
+            url,
+            "https://my-bucket.s3.us-east-1.amazonaws.com/release/app.apk"
+        );
+    }
+
+    #[test]
+    fn parse_bool_supports_common_values() {
+        assert_eq!(parse_bool("true").expect("true should parse"), true);
+        assert_eq!(parse_bool("1").expect("1 should parse"), true);
+        assert_eq!(parse_bool("false").expect("false should parse"), false);
+        assert_eq!(parse_bool("0").expect("0 should parse"), false);
+    }
+
+    #[test]
+    fn parse_bool_rejects_invalid_value() {
+        let error = parse_bool("maybe").expect_err("invalid bool should fail");
+        assert_eq!(error.to_string(), "Invalid boolean value: `maybe`");
     }
 }

@@ -23,7 +23,9 @@ pub enum PublishError {
 
 impl std::fmt::Display for PublishError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        todo!()
+        match self {
+            PublishError::General(message) => write!(f, "{message}"),
+        }
     }
 }
 

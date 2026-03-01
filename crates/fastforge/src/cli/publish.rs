@@ -1,5 +1,5 @@
 use anyhow::{Result, anyhow};
-use app_publisher::{AppPublisher, PublishConfig, S3Publisher};
+use app_publisher::{AppPublisher, FirebasePublisher, FirPublisher, PublishConfig, S3Publisher};
 use clap::Args;
 use std::collections::HashMap;
 
@@ -40,9 +40,11 @@ pub async fn execute(args: &PublishArgs) -> Result<()> {
 
     let result = match target.as_str() {
         "s3" | "minio" => S3Publisher::new().publish(publish_config, None),
+        "fir" => FirPublisher::new().publish(publish_config, None),
+        "firebase" => FirebasePublisher::new().publish(publish_config, None),
         _ => {
             return Err(anyhow!(
-                "Unsupported publish target: `{}`. Currently supported: s3",
+                "Unsupported publish target: `{}`. Currently supported: s3, fir, firebase",
                 target
             ));
         }

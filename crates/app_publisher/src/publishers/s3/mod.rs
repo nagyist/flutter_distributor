@@ -11,6 +11,14 @@ use std::fs::File;
 use std::io::{Read, Result as IoResult};
 use std::path::Path;
 
+mod cos;
+mod oss;
+mod qiniu;
+
+pub use cos::CosPublisher;
+pub use oss::OssPublisher;
+pub use qiniu::QiniuPublisher;
+
 pub struct S3Publisher;
 
 const PUBLISHER_NAME: &str = "s3";
@@ -58,81 +66,89 @@ impl AppPublisher for S3Publisher {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
             PublishError::General("Missing `artifact_path` in publish config.".to_string())
         })?;
-        let artifact_name = file_name(artifact_path).ok_or_else(|| {
-            PublishError::General(format!(
-                "Cannot infer file name from artifact path: {artifact_path}"
-            ))
-        })?;
         let options = S3PublishOptions::from_config(config)?;
-        let key = compose_object_key(options.key_prefix.as_deref(), &artifact_name);
-        let payload_hash = sha256_file_hex(artifact_path)?;
-        let datetime = Utc::now();
-        let amz_date = datetime.format("%Y%m%dT%H%M%SZ").to_string();
-        let date_stamp = datetime.format("%Y%m%d").to_string();
-        let object_path = build_object_path(options.force_path_style, &options.bucket, &key);
-        let endpoint = normalize_endpoint(&options.endpoint);
-        let url = build_upload_url(&endpoint, options.force_path_style, &options.bucket, &key)?;
-        let host = build_host(&endpoint, options.force_path_style, &options.bucket)?;
-        let credential_scope = format!(
-            "{}/{}/{}/{}",
-            date_stamp, options.region, S3_SERVICE, S3_REQUEST
-        );
-        let canonical_headers = if options.session_token.is_some() {
-            format!(
-                "host:{host}\nx-amz-content-sha256:{payload_hash}\nx-amz-date:{amz_date}\nx-amz-security-token:{}\n",
-                options.session_token.as_deref().unwrap_or_default()
-            )
-        } else {
-            format!("host:{host}\nx-amz-content-sha256:{payload_hash}\nx-amz-date:{amz_date}\n")
-        };
-        let signed_headers = if options.session_token.is_some() {
-            "host;x-amz-content-sha256;x-amz-date;x-amz-security-token"
-        } else {
-            "host;x-amz-content-sha256;x-amz-date"
-        };
-        let canonical_request =
-            format!("PUT\n{object_path}\n\n{canonical_headers}\n{signed_headers}\n{payload_hash}");
-        let canonical_request_hash = sha256_hex(canonical_request.as_bytes());
-        let string_to_sign =
-            format!("AWS4-HMAC-SHA256\n{amz_date}\n{credential_scope}\n{canonical_request_hash}");
-        let signing_key = derive_signing_key(&options.secret_key, &date_stamp, &options.region)?;
-        let signature = hmac_hex(&signing_key, &string_to_sign)?;
-        let authorization = format!(
-            "AWS4-HMAC-SHA256 Credential={}/{}, SignedHeaders={}, Signature={}",
-            options.access_key, credential_scope, signed_headers, signature
-        );
-
-        let file = File::open(artifact_path).map_err(to_publish_error)?;
-        let total_size = file.metadata().map_err(to_publish_error)?.len();
-        let body_reader = UploadProgressReader::new(file, total_size, on_progress.cloned());
-
-        let client = Client::new();
-        let mut request = client
-            .put(&url)
-            .header("host", host)
-            .header("x-amz-content-sha256", payload_hash)
-            .header("x-amz-date", amz_date)
-            .header("authorization", authorization)
-            .body(reqwest::blocking::Body::sized(body_reader, total_size));
-
-        if let Some(session_token) = &options.session_token {
-            request = request.header("x-amz-security-token", session_token);
-        }
-
-        let response = request.send().map_err(to_publish_error)?;
-        if response.status() != StatusCode::OK && response.status() != StatusCode::NO_CONTENT {
-            return Err(PublishError::General(format!(
-                "S3 upload failed with status {}",
-                response.status()
-            )));
-        }
-
-        let url = build_public_url(&options, &endpoint, &key)?;
-        Ok(PublishResult {
-            success: true,
-            message: url,
-        })
+        upload_artifact(&options, artifact_path, on_progress)
     }
+}
+
+fn upload_artifact(
+    options: &S3PublishOptions,
+    artifact_path: &str,
+    on_progress: Option<&PublishProgressCallback>,
+) -> Result<PublishResult, PublishError> {
+    let artifact_name = file_name(artifact_path).ok_or_else(|| {
+        PublishError::General(format!(
+            "Cannot infer file name from artifact path: {artifact_path}"
+        ))
+    })?;
+    let key = compose_object_key(options.key_prefix.as_deref(), &artifact_name);
+    let payload_hash = sha256_file_hex(artifact_path)?;
+    let datetime = Utc::now();
+    let amz_date = datetime.format("%Y%m%dT%H%M%SZ").to_string();
+    let date_stamp = datetime.format("%Y%m%d").to_string();
+    let object_path = build_object_path(options.force_path_style, &options.bucket, &key);
+    let endpoint = normalize_endpoint(&options.endpoint);
+    let url = build_upload_url(&endpoint, options.force_path_style, &options.bucket, &key)?;
+    let host = build_host(&endpoint, options.force_path_style, &options.bucket)?;
+    let credential_scope = format!(
+        "{}/{}/{}/{}",
+        date_stamp, options.region, S3_SERVICE, S3_REQUEST
+    );
+    let canonical_headers = if options.session_token.is_some() {
+        format!(
+            "host:{host}\nx-amz-content-sha256:{payload_hash}\nx-amz-date:{amz_date}\nx-amz-security-token:{}\n",
+            options.session_token.as_deref().unwrap_or_default()
+        )
+    } else {
+        format!("host:{host}\nx-amz-content-sha256:{payload_hash}\nx-amz-date:{amz_date}\n")
+    };
+    let signed_headers = if options.session_token.is_some() {
+        "host;x-amz-content-sha256;x-amz-date;x-amz-security-token"
+    } else {
+        "host;x-amz-content-sha256;x-amz-date"
+    };
+    let canonical_request =
+        format!("PUT\n{object_path}\n\n{canonical_headers}\n{signed_headers}\n{payload_hash}");
+    let canonical_request_hash = sha256_hex(canonical_request.as_bytes());
+    let string_to_sign =
+        format!("AWS4-HMAC-SHA256\n{amz_date}\n{credential_scope}\n{canonical_request_hash}");
+    let signing_key = derive_signing_key(&options.secret_key, &date_stamp, &options.region)?;
+    let signature = hmac_hex(&signing_key, &string_to_sign)?;
+    let authorization = format!(
+        "AWS4-HMAC-SHA256 Credential={}/{}, SignedHeaders={}, Signature={}",
+        options.access_key, credential_scope, signed_headers, signature
+    );
+
+    let file = File::open(artifact_path).map_err(to_publish_error)?;
+    let total_size = file.metadata().map_err(to_publish_error)?.len();
+    let body_reader = UploadProgressReader::new(file, total_size, on_progress.cloned());
+
+    let client = Client::new();
+    let mut request = client
+        .put(&url)
+        .header("host", host)
+        .header("x-amz-content-sha256", payload_hash)
+        .header("x-amz-date", amz_date)
+        .header("authorization", authorization)
+        .body(reqwest::blocking::Body::sized(body_reader, total_size));
+
+    if let Some(session_token) = &options.session_token {
+        request = request.header("x-amz-security-token", session_token);
+    }
+
+    let response = request.send().map_err(to_publish_error)?;
+    if response.status() != StatusCode::OK && response.status() != StatusCode::NO_CONTENT {
+        return Err(PublishError::General(format!(
+            "S3 upload failed with status {}",
+            response.status()
+        )));
+    }
+
+    let url = build_public_url(options, &endpoint, &key)?;
+    Ok(PublishResult {
+        success: true,
+        message: url,
+    })
 }
 
 struct S3PublishOptions {

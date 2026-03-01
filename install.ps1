@@ -2,6 +2,7 @@
 # Usage:
 #   iwr https://fastforge.dev/install.ps1 | iex
 #   $env:FASTFORGE_VERSION="0.7.0"; iwr https://fastforge.dev/install.ps1 | iex
+#   $env:GITHUB_TOKEN="ghp_xxx"; iwr https://fastforge.dev/install.ps1 | iex
 
 $ErrorActionPreference = 'Stop'
 
@@ -35,31 +36,61 @@ function Get-Target {
   }
 }
 
-# ── Resolve version ───────────────────────────────────────────────────────────
-function Resolve-Version {
+# ── Build common API request headers ─────────────────────────────────────────
+function Get-ApiHeaders {
+  $headers = @{ "User-Agent" = "fastforge-installer" }
+  if ($env:GITHUB_TOKEN) {
+    $headers["Authorization"] = "Bearer $($env:GITHUB_TOKEN)"
+  }
+  return $headers
+}
+
+# ── Resolve version + download URL ───────────────────────────────────────────
+function Resolve-Release {
+  param($target)
+
+  # ── Manual version: construct URL directly ────────────────────────────────
   if ($env:FASTFORGE_VERSION) {
-    Write-Info "Using specified version: $($env:FASTFORGE_VERSION)"
-    return $env:FASTFORGE_VERSION
+    $version     = $env:FASTFORGE_VERSION
+    $archiveName = "$BinaryName-$version-$target.zip"
+    $downloadUrl = "https://github.com/$Repo/releases/download/v$version/$archiveName"
+    Write-Info "Using specified version: $version"
+    return @{ Version = $version; ArchiveName = $archiveName; DownloadUrl = $downloadUrl }
   }
 
+  # ── Auto-detect: fetch releases list ──────────────────────────────────────
   Write-Info "Fetching latest release version..."
 
   try {
-    $headers = @{ "User-Agent" = "fastforge-installer" }
+    $headers  = Get-ApiHeaders
     $releases = Invoke-RestMethod `
       -Uri "https://api.github.com/repos/$Repo/releases" `
       -Headers $headers
-    $latest = $releases | Select-Object -First 1
-    $tag = $latest.tag_name -replace '^v', ''
-    if (-not $tag) { Write-Fail "Failed to parse version from GitHub API response." }
-    Write-Info "Latest version: $tag"
-    return $tag
   } catch {
-    Write-Fail "Failed to fetch latest version from GitHub: $_`nSet `$env:FASTFORGE_VERSION to specify a version manually."
+    Write-Fail "Failed to fetch releases from GitHub: $_`nSet `$env:FASTFORGE_VERSION to specify a version manually."
   }
+
+  $latest = $releases | Select-Object -First 1
+  if (-not $latest) { Write-Fail "No releases found in the repository." }
+
+  $version = $latest.tag_name -replace '^v', ''
+  if (-not $version) { Write-Fail "Failed to parse version from GitHub API response." }
+
+  Write-Info "Latest version: $version"
+
+  # ── Resolve download URL from assets ──────────────────────────────────────
+  $archiveName = "$BinaryName-$version-$target.zip"
+  $asset       = $latest.assets | Where-Object { $_.name -eq $archiveName } | Select-Object -First 1
+
+  if (-not $asset) {
+    Write-Fail "No download asset found for target '$target' in the latest release.`nThe release may not have finished uploading assets yet."
+  }
+
+  $downloadUrl = $asset.browser_download_url
+  return @{ Version = $version; ArchiveName = $archiveName; DownloadUrl = $downloadUrl }
 }
 
-# ── Check if release already on PATH ─────────────────────────────────────────
+# ── Check if binary is already on PATH ───────────────────────────────────────
 function Get-InstalledVersion {
   try {
     $v = & fastforge --version 2>$null
@@ -71,10 +102,8 @@ function Get-InstalledVersion {
 
 # ── Download ──────────────────────────────────────────────────────────────────
 function Download-Archive {
-  param($version, $target)
+  param($archiveName, $downloadUrl)
 
-  $archiveName = "$BinaryName-$version-$target.zip"
-  $downloadUrl = "https://github.com/$Repo/releases/download/v$version/$archiveName"
   $tmpDir      = Join-Path $env:TEMP "fastforge-install-$([System.IO.Path]::GetRandomFileName())"
   $archivePath = Join-Path $tmpDir $archiveName
 
@@ -84,17 +113,17 @@ function Download-Archive {
   Write-Info "  from $downloadUrl"
 
   try {
-    $progressPreference = $global:ProgressPreference
+    $prev = $global:ProgressPreference
     $global:ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Uri $downloadUrl -OutFile $archivePath -UseBasicParsing
-    $global:ProgressPreference = $progressPreference
+    $global:ProgressPreference = $prev
   } catch {
     Remove-Item -Recurse -Force $tmpDir -ErrorAction SilentlyContinue
-    Write-Fail "Download failed. Check your network or verify that version v$version exists.`n$_"
+    Write-Fail "Download failed. Check your network or verify that the release assets exist.`n$_"
   }
 
   Write-Success "Downloaded $archiveName"
-  return @{ TmpDir = $tmpDir; ArchivePath = $archivePath; ArchiveName = $archiveName }
+  return @{ TmpDir = $tmpDir; ArchivePath = $archivePath }
 }
 
 # ── Install ───────────────────────────────────────────────────────────────────
@@ -159,20 +188,20 @@ function Main {
 
   $arch    = Get-Arch
   $target  = Get-Target -arch $arch
-  $version = Resolve-Version
+  $release = Resolve-Release -target $target
 
   Write-Info "Platform : windows-$arch"
   Write-Info "Target   : $target"
-  Write-Info "Version  : $version"
+  Write-Info "Version  : $($release.Version)"
   Write-Host ""
 
-  $dl = Download-Archive -version $version -target $target
-  Install-Binary -tmpDir $dl.TmpDir -archivePath $dl.ArchivePath -version $version -target $target
+  $dl = Download-Archive -archiveName $release.ArchiveName -downloadUrl $release.DownloadUrl
+  Install-Binary -tmpDir $dl.TmpDir -archivePath $dl.ArchivePath -version $release.Version -target $target
   Update-UserPath
   Verify-Install
 
   Write-Host ""
-  Write-Host "fastforge $version installed successfully!" -ForegroundColor Green
+  Write-Host "fastforge $($release.Version) installed successfully!" -ForegroundColor Green
   Write-Host ""
   Write-Host "Run " -NoNewline
   Write-Host "fastforge --help" -ForegroundColor Cyan -NoNewline

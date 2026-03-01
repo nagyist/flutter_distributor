@@ -49,50 +49,110 @@ resolve_target() {
   esac
 }
 
-# ── Resolve latest version from GitHub ────────────────────────────────────────
-resolve_version() {
+# ── Fetch release JSON from GitHub API ────────────────────────────────────────
+fetch_releases() {
+  API_URL="https://api.github.com/repos/${REPO}/releases"
+
+  if [ -n "$GITHUB_TOKEN" ]; then
+    if command -v curl >/dev/null 2>&1; then
+      RELEASE_JSON="$(curl -fsSL -H "Authorization: Bearer ${GITHUB_TOKEN}" "$API_URL")"
+    elif command -v wget >/dev/null 2>&1; then
+      RELEASE_JSON="$(wget -qO- --header="Authorization: Bearer ${GITHUB_TOKEN}" "$API_URL")"
+    else
+      error "Neither curl nor wget is available. Please install one and retry."
+    fi
+  else
+    if command -v curl >/dev/null 2>&1; then
+      RELEASE_JSON="$(curl -fsSL "$API_URL")"
+    elif command -v wget >/dev/null 2>&1; then
+      RELEASE_JSON="$(wget -qO- "$API_URL")"
+    else
+      error "Neither curl nor wget is available. Please install one and retry."
+    fi
+  fi
+
+  if [ -z "$RELEASE_JSON" ]; then
+    error "Failed to fetch release information from GitHub API."
+  fi
+}
+
+# ── Resolve version + download URL ────────────────────────────────────────────
+resolve_release() {
   if [ -n "$FASTFORGE_VERSION" ]; then
     VERSION="$FASTFORGE_VERSION"
     info "Using specified version: $VERSION"
+
+    # When version is manually specified, fall back to constructing the URL
+    ARCHIVE_NAME="${BINARY_NAME}-${VERSION}-${TARGET}.tar.gz"
+    DOWNLOAD_URL="https://github.com/${REPO}/releases/download/v${VERSION}/${ARCHIVE_NAME}"
     return
   fi
 
   info "Fetching latest release version..."
+  fetch_releases
 
-  if command -v curl >/dev/null 2>&1; then
-    RELEASE_JSON="$(curl -fsSL "https://api.github.com/repos/${REPO}/releases")"
-  elif command -v wget >/dev/null 2>&1; then
-    RELEASE_JSON="$(wget -qO- "https://api.github.com/repos/${REPO}/releases")"
-  else
-    error "Neither curl nor wget is available. Please install one and retry."
-  fi
-
-  VERSION="$(printf '%s' "$RELEASE_JSON" | grep '"tag_name"' | head -1 | sed 's/.*"tag_name": *"v\?\([^"]*\)".*/\1/')"
+  # Extract the first release's tag_name
+  VERSION="$(printf '%s' "$RELEASE_JSON" | grep '"tag_name"' | head -1 | sed 's/[^"]*"tag_name"[^"]*"v\{0,1\}\([^"]*\)".*/\1/')"
 
   if [ -z "$VERSION" ]; then
     error "Failed to resolve the latest version. Set FASTFORGE_VERSION to specify one manually."
   fi
 
   info "Latest version: $VERSION"
+
+  # Extract download URL for the matching target from the first release's assets
+  ARCHIVE_NAME="${BINARY_NAME}-${VERSION}-${TARGET}.tar.gz"
+
+  # asset "url" field = API download endpoint (works for draft assets with token)
+  # Strategy: find the line with "url": ".../releases/assets/..." that appears just
+  # before the line containing the archive name (POSIX awk + sed, no gawk needed).
+  ASSET_API_URL="$(printf '%s' "$RELEASE_JSON" \
+    | awk -v name="$ARCHIVE_NAME" '
+        /"url":.*releases\/assets\// { last = $0 }
+        index($0, name) && last { print last; last = ""; exit }
+      ' \
+    | sed 's/[^"]*"url"[^"]*"\([^"]*\)".*/\1/')"
+
+  # browser_download_url = public CDN link (only works for published releases)
+  DOWNLOAD_URL="$(printf '%s' "$RELEASE_JSON" | grep '"browser_download_url"' | grep "${ARCHIVE_NAME}" | head -1 | sed 's/[^"]*"browser_download_url"[^"]*"\([^"]*\)".*/\1/')"
+
+  if [ -z "$DOWNLOAD_URL" ] && [ -z "$ASSET_API_URL" ]; then
+    error "No download asset found for target ${TARGET} in the latest release. The release may not have finished uploading assets yet."
+  fi
 }
 
 # ── Download ──────────────────────────────────────────────────────────────────
 download() {
-  ARCHIVE_NAME="${BINARY_NAME}-${VERSION}-${TARGET}.tar.gz"
-  DOWNLOAD_URL="https://github.com/${REPO}/releases/download/v${VERSION}/${ARCHIVE_NAME}"
-
   TMP_DIR="$(mktemp -d)"
   ARCHIVE_PATH="${TMP_DIR}/${ARCHIVE_NAME}"
 
-  info "Downloading ${ARCHIVE_NAME}..."
-  info "  from ${DOWNLOAD_URL}"
-
-  if command -v curl >/dev/null 2>&1; then
-    curl -fsSL --progress-bar "$DOWNLOAD_URL" -o "$ARCHIVE_PATH" || \
-      error "Download failed. Check your network or verify that version v${VERSION} exists."
-  elif command -v wget >/dev/null 2>&1; then
-    wget -q --show-progress "$DOWNLOAD_URL" -O "$ARCHIVE_PATH" 2>&1 || \
-      error "Download failed. Check your network or verify that version v${VERSION} exists."
+  # Use API asset URL with token for draft releases, otherwise use browser_download_url
+  if [ -n "$GITHUB_TOKEN" ] && [ -n "$ASSET_API_URL" ]; then
+    info "Downloading ${ARCHIVE_NAME} (via API)..."
+    info "  from ${ASSET_API_URL}"
+    if command -v curl >/dev/null 2>&1; then
+      curl -fsSL --progress-bar \
+        -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+        -H "Accept: application/octet-stream" \
+        "$ASSET_API_URL" -o "$ARCHIVE_PATH" || \
+        error "Download failed. Check your network or verify that version v${VERSION} exists."
+    elif command -v wget >/dev/null 2>&1; then
+      wget -q --show-progress \
+        --header="Authorization: Bearer ${GITHUB_TOKEN}" \
+        --header="Accept: application/octet-stream" \
+        "$ASSET_API_URL" -O "$ARCHIVE_PATH" 2>&1 || \
+        error "Download failed. Check your network or verify that version v${VERSION} exists."
+    fi
+  else
+    info "Downloading ${ARCHIVE_NAME}..."
+    info "  from ${DOWNLOAD_URL}"
+    if command -v curl >/dev/null 2>&1; then
+      curl -fsSL --progress-bar "$DOWNLOAD_URL" -o "$ARCHIVE_PATH" || \
+        error "Download failed. Check your network or verify that version v${VERSION} exists."
+    elif command -v wget >/dev/null 2>&1; then
+      wget -q --show-progress "$DOWNLOAD_URL" -O "$ARCHIVE_PATH" 2>&1 || \
+        error "Download failed. Check your network or verify that version v${VERSION} exists."
+    fi
   fi
 
   success "Downloaded ${ARCHIVE_NAME}"
@@ -146,7 +206,7 @@ main() {
 
   detect_platform
   resolve_target
-  resolve_version
+  resolve_release
   download
   install_binary
   verify

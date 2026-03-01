@@ -129,6 +129,9 @@ dependencies = [
 [[package]]
 name = "app_packager"
 version = "0.0.1"
+dependencies = [
+ "tempfile",
+]
 
 [[package]]
 name = "app_publisher"

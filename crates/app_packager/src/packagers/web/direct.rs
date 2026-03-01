@@ -1,0 +1,42 @@
+use crate::{
+    traits::AppPackager,
+    types::{PackageConfig, PackageError, PackageResult},
+};
+
+/// Copies a flutter web build output directory to the output path, mirroring
+/// Dart's `AppPackageMakerDirect("web")`.
+pub struct WebDirectPackager;
+
+fn copy_dir(src: &std::path::Path, dst: &std::path::Path) -> Result<(), PackageError> {
+    let out = std::process::Command::new("cp")
+        .args(["-r", &src.display().to_string(), &dst.display().to_string()])
+        .output()
+        .map_err(|e| PackageError::MissingTool(format!("cp: {}", e)))?;
+    if !out.status.success() {
+        return Err(PackageError::CommandFailed {
+            command: "cp".into(),
+            stderr: String::from_utf8_lossy(&out.stderr).into(),
+        });
+    }
+    Ok(())
+}
+
+impl AppPackager for WebDirectPackager {
+    fn name(&self) -> &str {
+        "direct"
+    }
+
+    fn platform(&self) -> &str {
+        "web"
+    }
+
+    fn package_format(&self) -> &str {
+        ""
+    }
+
+    fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
+        let dst = config.version_output_dir().join(&config.app_name);
+        copy_dir(&config.build_output_dir, &dst)?;
+        Ok(PackageResult { artifacts: vec![dst] })
+    }
+}

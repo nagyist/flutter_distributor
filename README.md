@@ -1,4 +1,4 @@
-# fastforge
+# fastforge <sub>formerly Flutter Distributor</sub>
 
 [![pub version][pub-image]][pub-url] [![pub downloads][pub-dm-image]][pub-dm-url] [![][discord-image]][discord-url] [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos) [![All Contributors][all-contributors-image]](#contributors)
 
@@ -12,7 +12,14 @@
 
 The ultimate all-in-one [Flutter](https://flutter.dev) application packaging and distribution tool, providing a seamless solution for all your distribution needs.
 
-> **Name Change Notice:** ~~Flutter Distributor~~ has been renamed to Fastforge. If you were previously using ~~Flutter Distributor~~, please note that all functionality remains the same, but the package name, commands, and documentation have been updated to reflect this change.
+> [!WARNING]
+> **Rust Migration In Progress:** The core of Fastforge is being rewritten in [Rust](https://www.rust-lang.org/) to deliver better performance, a smaller install footprint, and zero runtime dependencies on the Dart SDK. The new implementation lives in the [`crates/`](./crates) directory and is being developed in parallel with the existing Dart packages.
+>
+> **What this means for you:**
+> - The current Dart-based CLI (`dart pub global activate fastforge`) continues to work and receives bug fixes.
+> - The Rust CLI will be released as a native binary — no Dart or Flutter SDK required to run it.
+> - APIs and configuration formats are designed to remain compatible; any breaking changes will be clearly announced.
+> - Contributions, feedback, and bug reports on the Rust implementation are very welcome — see the [Contributing](#contributing) section.
 
 ---
 

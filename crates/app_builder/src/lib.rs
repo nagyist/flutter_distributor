@@ -13,6 +13,7 @@ use serde_json::{Map, Value};
 use std::path::Path;
 use std::time::Instant;
 
+pub use builders::custom::{CustomAppBuilder, CustomBuilder};
 pub use builders::gradle::{
     GradleAndroidAabBuilder, GradleAndroidApkBuilder, GradleAppBuilder, GradleKmpAndroidAabBuilder,
     GradleKmpAndroidApkBuilder, GradleKmpDesktopBuilder, GradleKmpIosFrameworkBuilder,

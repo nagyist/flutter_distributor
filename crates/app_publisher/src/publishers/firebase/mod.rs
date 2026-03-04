@@ -68,11 +68,11 @@ impl AppPublisher for FirebasePublisher {
             "groups-file",
         ];
         for arg_name in &optional_args {
-            if let Some(value) = args.and_then(|a| a.get(*arg_name)) {
-                if !value.is_empty() {
-                    cmd_args.push(format!("--{arg_name}"));
-                    cmd_args.push(value.clone());
-                }
+            if let Some(value) = args.and_then(|a| a.get(*arg_name))
+                && !value.is_empty()
+            {
+                cmd_args.push(format!("--{arg_name}"));
+                cmd_args.push(value.clone());
             }
         }
 

@@ -15,11 +15,11 @@ impl AppAnalyzer for AndroidApkAnalyzer {
     }
 
     fn name(&self) -> &str {
-        return "android-apk";
+        "android-apk"
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
-        return true;
+        true
     }
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {
@@ -74,7 +74,7 @@ impl AppAnalyzer for AndroidApkAnalyzer {
 
         // Execute aapt command to extract APK information
         let output = Command::new(&aapt2_path)
-            .args(&["dump", "badging", &config.path])
+            .args(["dump", "badging", &config.path])
             .output()
             .map_err(|e| AnalyzeError::new(&format!("Failed to execute aapt: {}", e)))?;
 

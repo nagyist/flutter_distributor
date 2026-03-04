@@ -15,18 +15,18 @@ impl AppAnalyzer for AndroidAabAnalyzer {
     }
 
     fn name(&self) -> &str {
-        return "android-aab";
+        "android-aab"
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
-        return true;
+        true
     }
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {
-        if let Some(aapt2_path) = find_aapt2_path() {
-            if let Ok(result) = analyze_with_aapt2(&aapt2_path, config) {
-                return Ok(result);
-            }
+        if let Some(aapt2_path) = find_aapt2_path()
+            && let Ok(result) = analyze_with_aapt2(&aapt2_path, config)
+        {
+            return Ok(result);
         }
 
         analyze_with_bundletool(config)
@@ -70,7 +70,7 @@ fn analyze_with_aapt2(
     config: &AnalyzeConfig,
 ) -> Result<AnalyzeResult, AnalyzeError> {
     let output = Command::new(aapt2_path)
-        .args(&["dump", "badging", &config.path])
+        .args(["dump", "badging", &config.path])
         .output()
         .map_err(|e| AnalyzeError::new(&format!("Failed to execute aapt: {}", e)))?;
 
@@ -137,7 +137,7 @@ fn analyze_with_bundletool(config: &AnalyzeConfig) -> Result<AnalyzeResult, Anal
     let mut command = if let Some(bundletool_path) = bundletool_env {
         if bundletool_path.ends_with(".jar") {
             let mut cmd = Command::new("java");
-            cmd.args(&["-jar", &bundletool_path]);
+            cmd.args(["-jar", &bundletool_path]);
             cmd
         } else {
             Command::new(bundletool_path)
@@ -147,7 +147,7 @@ fn analyze_with_bundletool(config: &AnalyzeConfig) -> Result<AnalyzeResult, Anal
     };
 
     let output = command
-        .args(&[
+        .args([
             "dump",
             "manifest",
             "--bundle",

@@ -49,7 +49,7 @@ impl AppPackager for MacOSZipPackager {
         // Find the .app bundle
         let app_bundle = std::fs::read_dir(&config.build_output_dir)?
             .filter_map(|e| e.ok())
-            .find(|e| e.path().extension().map_or(false, |x| x == "app"))
+            .find(|e| e.path().extension().is_some_and(|x| x == "app"))
             .ok_or_else(|| PackageError::NotFound(".app bundle in build output".into()))?;
 
         // Copy .app into packaging directory

@@ -9,6 +9,7 @@ use crate::{
 /// mirroring Dart's `AppPackageMakerMsix`.
 ///
 /// Requires the Windows 10 SDK tools (`makeappx`, `signtool`) on Windows.
+#[derive(Default)]
 pub struct WindowsMsixPackager {
     /// Optional path to a PFX certificate for signing.
     pub certificate_path: Option<String>,
@@ -18,16 +19,6 @@ pub struct WindowsMsixPackager {
     /// `"CN=My Company, O=My Company, L=City, S=State, C=US"`.
     /// Defaults to `"CN=Publisher"` when not set.
     pub publisher: Option<String>,
-}
-
-impl Default for WindowsMsixPackager {
-    fn default() -> Self {
-        Self {
-            certificate_path: None,
-            certificate_password: None,
-            publisher: None,
-        }
-    }
 }
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {

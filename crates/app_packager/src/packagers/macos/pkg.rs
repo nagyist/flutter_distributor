@@ -9,20 +9,12 @@ use crate::{
 /// `productsign`), mirroring Dart's `AppPackageMakerPkg`.
 ///
 /// Requires Xcode command-line tools.
+#[derive(Default)]
 pub struct MacOSPkgPackager {
     /// Optional code-signing identity (e.g. `"Developer ID Installer: ..."`)
     pub sign_identity: Option<String>,
     /// Installation path prefix (defaults to `/Applications/`)
     pub install_path: Option<String>,
-}
-
-impl Default for MacOSPkgPackager {
-    fn default() -> Self {
-        Self {
-            sign_identity: None,
-            install_path: None,
-        }
-    }
 }
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {

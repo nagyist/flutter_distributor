@@ -15,11 +15,11 @@ impl AppAnalyzer for MacOSDmgAnalyzer {
     }
 
     fn name(&self) -> &str {
-        return "macos-dmg";
+        "macos-dmg"
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
-        return cfg!(target_os = "macos");
+        cfg!(target_os = "macos")
     }
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {

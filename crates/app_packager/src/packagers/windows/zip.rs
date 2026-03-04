@@ -45,12 +45,12 @@ impl AppPackager for WindowsZipPackager {
             .current_dir(&config.build_output_dir)
             .output();
 
-        if let Ok(out) = zip_result {
-            if out.status.success() {
-                return Ok(PackageResult {
-                    artifacts: vec![output_file],
-                });
-            }
+        if let Ok(out) = zip_result
+            && out.status.success()
+        {
+            return Ok(PackageResult {
+                artifacts: vec![output_file],
+            });
         }
 
         // PowerShell fallback: Compress-Archive (paths passed as separate arguments)

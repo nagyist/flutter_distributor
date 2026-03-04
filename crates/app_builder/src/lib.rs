@@ -151,7 +151,7 @@ fn read_pubspec(path: &Path) -> Result<crate::types::PubspecInfo, crate::types::
 
     let mut split = version.split('+');
     let build_name = split.next().unwrap_or("0.1.0").to_string();
-    let build_number = split.last().unwrap_or(&version).to_string();
+    let build_number = split.next_back().unwrap_or(&version).to_string();
 
     Ok(crate::types::PubspecInfo {
         build_name,

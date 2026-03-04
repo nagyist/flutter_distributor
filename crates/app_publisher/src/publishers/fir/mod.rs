@@ -174,6 +174,7 @@ impl FirPublisher {
         response.json::<FirAppData>().map_err(to_publish_error)
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn upload_binary(
         &self,
         client: &Client,

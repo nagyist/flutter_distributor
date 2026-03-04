@@ -7,7 +7,7 @@ pub struct PackageArgs {
     pub target: Option<String>,
 }
 
-pub async fn execute(args: &PackageArgs) -> Result<()> {
+pub async fn execute(_args: &PackageArgs) -> Result<()> {
     log::info!("Executing package command");
     Ok(())
 }

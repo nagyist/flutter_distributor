@@ -27,11 +27,7 @@ impl Default for MacOSPkgPackager {
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -70,10 +66,7 @@ impl AppPackager for MacOSPkgPackager {
             .ok_or_else(|| PackageError::General("no build output files".into()))?;
 
         let output_file = config.output_file();
-        let install_path = self
-            .install_path
-            .as_deref()
-            .unwrap_or("/Applications/");
+        let install_path = self.install_path.as_deref().unwrap_or("/Applications/");
 
         let unsigned_path = {
             let mut p = output_file.clone();

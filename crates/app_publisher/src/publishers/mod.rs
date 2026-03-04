@@ -1,8 +1,8 @@
 mod appgallery;
 mod appstore;
+mod fir;
 mod firebase;
 mod firebase_hosting;
-mod fir;
 mod github;
 mod pgyer;
 mod playstore;
@@ -11,9 +11,9 @@ mod vercel;
 
 pub use appgallery::AppGalleryPublisher;
 pub use appstore::AppStorePublisher;
+pub use fir::FirPublisher;
 pub use firebase::FirebasePublisher;
 pub use firebase_hosting::FirebaseHostingPublisher;
-pub use fir::FirPublisher;
 pub use github::GitHubPublisher;
 pub use pgyer::PgyerPublisher;
 pub use playstore::PlayStorePublisher;

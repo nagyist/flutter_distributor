@@ -11,11 +11,7 @@ pub struct WebZipPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -41,11 +37,9 @@ impl AppPackager for WebZipPackager {
 
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
         let output_file = config.output_file();
-        run(
-            Command::new("zip")
-                .args(["-r", &output_file.display().to_string(), "."])
-                .current_dir(&config.build_output_dir),
-        )?;
+        run(Command::new("zip")
+            .args(["-r", &output_file.display().to_string(), "."])
+            .current_dir(&config.build_output_dir))?;
         Ok(PackageResult {
             artifacts: vec![output_file],
         })

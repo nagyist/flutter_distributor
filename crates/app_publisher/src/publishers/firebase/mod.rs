@@ -7,8 +7,7 @@ pub struct FirebasePublisher;
 
 const PUBLISHER_NAME: &str = "firebase";
 const ENV_FIREBASE_TOKEN: &str = "FIREBASE_TOKEN";
-const FIREBASE_CONSOLE_URL: &str =
-    "https://console.firebase.google.com/project/_/appdistribution";
+const FIREBASE_CONSOLE_URL: &str = "https://console.firebase.google.com/project/_/appdistribution";
 
 impl AppPublisher for FirebasePublisher {
     fn new() -> Self {

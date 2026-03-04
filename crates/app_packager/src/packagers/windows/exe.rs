@@ -13,11 +13,7 @@ pub struct WindowsExePackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -51,7 +47,9 @@ impl AppPackager for WindowsExePackager {
 
         // Copy the flutter build output into the packaging directory
         run(Command::new("xcopy").args([
-            "/E", "/I", "/Q",
+            "/E",
+            "/I",
+            "/Q",
             &config.build_output_dir.display().to_string(),
             &pkg_dir.display().to_string(),
         ]))?;

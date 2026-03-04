@@ -14,11 +14,7 @@ pub struct LinuxDebPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -30,7 +26,11 @@ fn run(cmd: &mut Command) -> Result<(), PackageError> {
 }
 
 fn copy_dir_contents(src: &Path, dst: &Path) -> Result<(), PackageError> {
-    run(Command::new("cp").args(["-fr", &format!("{}/.", src.display()), &dst.display().to_string()]))?;
+    run(Command::new("cp").args([
+        "-fr",
+        &format!("{}/.", src.display()),
+        &dst.display().to_string(),
+    ]))?;
     Ok(())
 }
 
@@ -99,7 +99,10 @@ impl AppPackager for LinuxDebPackager {
             name = config.app_name,
             bin = binary_name,
         );
-        std::fs::write(applications_dir.join(format!("{}.desktop", binary_name)), &desktop)?;
+        std::fs::write(
+            applications_dir.join(format!("{}.desktop", binary_name)),
+            &desktop,
+        )?;
 
         let output_file = config.output_file();
         run(Command::new("dpkg-deb").args([

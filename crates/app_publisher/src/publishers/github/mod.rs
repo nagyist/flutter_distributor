@@ -54,9 +54,7 @@ impl AppPublisher for GitHubPublisher {
             .file_name()
             .and_then(|n| n.to_str())
             .ok_or_else(|| {
-                PublishError::General(
-                    "Cannot infer file name from artifact path.".to_string(),
-                )
+                PublishError::General("Cannot infer file name from artifact path.".to_string())
             })?
             .to_string();
 
@@ -78,10 +76,7 @@ impl AppPublisher for GitHubPublisher {
             })?;
 
         let release_tag = args
-            .and_then(|a| {
-                a.get("release-tag")
-                    .or_else(|| a.get("github-release-tag"))
-            })
+            .and_then(|a| a.get("release-tag").or_else(|| a.get("github-release-tag")))
             .cloned()
             .or_else(|| config.app_version.clone());
         let release_title = args
@@ -115,8 +110,14 @@ impl AppPublisher for GitHubPublisher {
             draft,
             prerelease,
         )?;
-        let download_url =
-            upload_asset(&client, &token, &release.upload_url, artifact_path, &file_name, on_progress)?;
+        let download_url = upload_asset(
+            &client,
+            &token,
+            &release.upload_url,
+            artifact_path,
+            &file_name,
+            on_progress,
+        )?;
 
         Ok(PublishResult {
             success: true,
@@ -186,11 +187,7 @@ fn create_release(
     response.json::<Release>().map_err(to_publish_error)
 }
 
-fn get_latest_release(
-    client: &Client,
-    token: &str,
-    repo: &str,
-) -> Result<Release, PublishError> {
+fn get_latest_release(client: &Client, token: &str, repo: &str) -> Result<Release, PublishError> {
     let url = format!("{GITHUB_API_BASE}/repos/{repo}/releases/latest");
     let response = client
         .get(&url)
@@ -284,7 +281,12 @@ impl UploadProgressReader {
         if let Some(cb) = &on_progress {
             cb(0, total);
         }
-        Self { file, sent: 0, total, on_progress }
+        Self {
+            file,
+            sent: 0,
+            total,
+            on_progress,
+        }
     }
 }
 

@@ -13,11 +13,7 @@ pub struct LinuxAppImagePackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -84,11 +80,13 @@ impl AppPackager for LinuxAppImagePackager {
 
         // Build the AppImage (output format is `.AppImage`)
         let output_file = config.output_file();
-        run(
-            Command::new("appimagetool")
-                .args(["--no-appstream", &app_dir.display().to_string(), &output_file.display().to_string()])
-                .env("ARCH", "x86_64"),
-        )?;
+        run(Command::new("appimagetool")
+            .args([
+                "--no-appstream",
+                &app_dir.display().to_string(),
+                &output_file.display().to_string(),
+            ])
+            .env("ARCH", "x86_64"))?;
 
         std::fs::remove_dir_all(&pkg_dir).ok();
         Ok(PackageResult {

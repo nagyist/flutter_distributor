@@ -12,11 +12,7 @@ pub struct WindowsZipPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -51,25 +47,24 @@ impl AppPackager for WindowsZipPackager {
 
         if let Ok(out) = zip_result {
             if out.status.success() {
-                return Ok(PackageResult { artifacts: vec![output_file] });
+                return Ok(PackageResult {
+                    artifacts: vec![output_file],
+                });
             }
         }
 
         // PowerShell fallback: Compress-Archive (paths passed as separate arguments)
         let src_glob = format!("{}\\*", config.build_output_dir.display());
         let dst_path = output_file.display().to_string();
-        run(
-            Command::new("powershell")
-                .args([
-                    "-NoProfile",
-                    "-Command",
-                    "Compress-Archive",
-                    "-Path",
-                    &src_glob,
-                    "-DestinationPath",
-                    &dst_path,
-                ]),
-        )?;
+        run(Command::new("powershell").args([
+            "-NoProfile",
+            "-Command",
+            "Compress-Archive",
+            "-Path",
+            &src_glob,
+            "-DestinationPath",
+            &dst_path,
+        ]))?;
 
         Ok(PackageResult {
             artifacts: vec![output_file],

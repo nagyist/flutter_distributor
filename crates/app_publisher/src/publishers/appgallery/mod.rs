@@ -78,9 +78,7 @@ impl AppPublisher for AppGalleryPublisher {
             .file_name()
             .and_then(|n| n.to_str())
             .ok_or_else(|| {
-                PublishError::General(
-                    "Cannot infer file name from artifact path.".to_string(),
-                )
+                PublishError::General("Cannot infer file name from artifact path.".to_string())
             })?
             .to_string();
 
@@ -100,15 +98,25 @@ impl AppPublisher for AppGalleryPublisher {
 
         let client = Client::new();
         let token = get_access_token(&client, &client_id, &client_secret)?;
-        let file_size = std::fs::metadata(artifact_path).map_err(to_publish_error)?.len();
-        let url_info =
-            get_upload_url(&client, &client_id, &token, &app_id, &file_name, file_size)?;
+        let file_size = std::fs::metadata(artifact_path)
+            .map_err(to_publish_error)?
+            .len();
+        let url_info = get_upload_url(&client, &client_id, &token, &app_id, &file_name, file_size)?;
         upload_file(&client, artifact_path, &url_info, file_size, on_progress)?;
-        apply_upload(&client, &client_id, &token, &app_id, &file_name, &url_info.object_id)?;
+        apply_upload(
+            &client,
+            &client_id,
+            &token,
+            &app_id,
+            &file_name,
+            &url_info.object_id,
+        )?;
 
         Ok(PublishResult {
             success: true,
-            message: "https://developer.huawei.com/consumer/en/service/josp/agc/index.html#/appGallery".to_string(),
+            message:
+                "https://developer.huawei.com/consumer/en/service/josp/agc/index.html#/appGallery"
+                    .to_string(),
         })
     }
 }
@@ -175,9 +183,7 @@ fn get_upload_url(
         )));
     }
     resp.url_info.ok_or_else(|| {
-        PublishError::General(
-            "AppGallery upload-url response missing urlInfo.".to_string(),
-        )
+        PublishError::General("AppGallery upload-url response missing urlInfo.".to_string())
     })
 }
 
@@ -224,7 +230,11 @@ fn apply_upload(
         .header("client_id", client_id)
         .header(AUTHORIZATION, format!("Bearer {token}"))
         .header(CONTENT_TYPE, "application/json")
-        .query(&[("appId", app_id), ("releaseType", "1"), ("releasePhase", "0")])
+        .query(&[
+            ("appId", app_id),
+            ("releaseType", "1"),
+            ("releasePhase", "0"),
+        ])
         .json(&body)
         .send()
         .map_err(to_publish_error)?;
@@ -264,7 +274,12 @@ impl UploadProgressReader {
         if let Some(cb) = &on_progress {
             cb(0, total);
         }
-        Self { file, sent: 0, total, on_progress }
+        Self {
+            file,
+            sent: 0,
+            total,
+            on_progress,
+        }
     }
 }
 

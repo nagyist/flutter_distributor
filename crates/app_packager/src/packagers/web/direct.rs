@@ -37,6 +37,8 @@ impl AppPackager for WebDirectPackager {
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
         let dst = config.version_output_dir().join(&config.app_name);
         copy_dir(&config.build_output_dir, &dst)?;
-        Ok(PackageResult { artifacts: vec![dst] })
+        Ok(PackageResult {
+            artifacts: vec![dst],
+        })
     }
 }

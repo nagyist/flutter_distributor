@@ -107,10 +107,7 @@ pub async fn execute(args: &ReleaseArgs) -> Result<()> {
             if args.dry_run {
                 println!(
                     "[dry-run] Would package {}:{} ({}/{})",
-                    release.name,
-                    job.name,
-                    job.package.platform,
-                    job.package.target,
+                    release.name, job.name, job.package.platform, job.package.target,
                 );
                 if let Some(target) = job.publish_target() {
                     println!(
@@ -126,11 +123,7 @@ pub async fn execute(args: &ReleaseArgs) -> Result<()> {
             // For now we print the resolved job plan so the output is testable.
             println!(
                 "Release job '{}:{}': package {}/{} (clean={})",
-                release.name,
-                job.name,
-                job.package.platform,
-                job.package.target,
-                !args.skip_clean,
+                release.name, job.name, job.package.platform, job.package.target, !args.skip_clean,
             );
             if let Some(target) = job.publish_target() {
                 println!(

@@ -36,7 +36,7 @@ impl Release {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::release_job::{ReleaseJobPackage, ReleaseJob};
+    use crate::config::release_job::{ReleaseJob, ReleaseJobPackage};
 
     fn make_job(name: &str) -> ReleaseJob {
         ReleaseJob {

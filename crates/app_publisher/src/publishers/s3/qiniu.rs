@@ -62,9 +62,8 @@ fn build_options(config: &PublishConfig) -> Result<S3PublishOptions, PublishErro
     )?;
     let region = optional_value(config, &["region", "qiniu-region"], &[ENV_QINIU_REGION])
         .unwrap_or_else(|| DEFAULT_REGION.to_string());
-    let endpoint =
-        optional_value(config, &["endpoint", "qiniu-endpoint"], &[])
-            .unwrap_or_else(|| format!("s3-{region}.qiniucs.com"));
+    let endpoint = optional_value(config, &["endpoint", "qiniu-endpoint"], &[])
+        .unwrap_or_else(|| format!("s3-{region}.qiniucs.com"));
     let key_prefix = optional_value(
         config,
         &["savekey-prefix", "key-prefix", "qiniu-key-prefix"],
@@ -75,13 +74,14 @@ fn build_options(config: &PublishConfig) -> Result<S3PublishOptions, PublishErro
         &["public-base-url", "bucket-domain", "qiniu-public-base-url"],
         &[ENV_QINIU_PUBLIC_BASE_URL],
     );
-    let force_path_style =
-        optional_value(config, &["force-path-style", "qiniu-force-path-style"], &[
-            ENV_QINIU_FORCE_PATH_STYLE,
-        ])
-        .map(|v| parse_bool(&v))
-        .transpose()?
-        .unwrap_or(false);
+    let force_path_style = optional_value(
+        config,
+        &["force-path-style", "qiniu-force-path-style"],
+        &[ENV_QINIU_FORCE_PATH_STYLE],
+    )
+    .map(|v| parse_bool(&v))
+    .transpose()?
+    .unwrap_or(false);
 
     Ok(S3PublishOptions {
         endpoint,

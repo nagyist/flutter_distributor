@@ -13,11 +13,7 @@ pub struct LinuxPacmanPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -91,28 +87,29 @@ impl AppPackager for LinuxPacmanPackager {
         )?;
 
         // Create .MTREE metadata
-        run(
-            Command::new("bsdtar")
-                .current_dir(&pkg_dir)
-                .args([
-                    "-czf", ".MTREE",
-                    "--format=mtree",
-                    "--options=!all,use-set,type,uid,gid,mode,time,size,md5,sha256,link",
-                    ".PKGINFO", ".INSTALL", "usr",
-                ])
-                .env("LANG", "C"),
-        )?;
+        run(Command::new("bsdtar")
+            .current_dir(&pkg_dir)
+            .args([
+                "-czf",
+                ".MTREE",
+                "--format=mtree",
+                "--options=!all,use-set,type,uid,gid,mode,time,size,md5,sha256,link",
+                ".PKGINFO",
+                ".INSTALL",
+                "usr",
+            ])
+            .env("LANG", "C"))?;
 
         // Archive with bsdtar
-        run(
-            Command::new("bsdtar")
-                .current_dir(&pkg_dir)
-                .args(["-cf", "temptar", ".MTREE", ".INSTALL", ".PKGINFO", "usr"])
-                .env("LANG", "C"),
-        )?;
+        run(Command::new("bsdtar")
+            .current_dir(&pkg_dir)
+            .args(["-cf", "temptar", ".MTREE", ".INSTALL", ".PKGINFO", "usr"])
+            .env("LANG", "C"))?;
 
         // Compress with xz
-        run(Command::new("xz").current_dir(&pkg_dir).args(["-z", "temptar"]))?;
+        run(Command::new("xz")
+            .current_dir(&pkg_dir)
+            .args(["-z", "temptar"]))?;
 
         // Move to output
         let output_file = config.output_file();

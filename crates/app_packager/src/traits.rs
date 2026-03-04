@@ -21,7 +21,7 @@ pub trait AppPackager {
     /// Returns `true` if this packager matches the given `platform` and
     /// optional `target` name, mirroring Dart's `AppPackageMaker.match`.
     fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        self.platform() == platform && target.map_or(true, |t| self.name() == t)
+        self.platform() == platform && target.is_none_or(|t| self.name() == t)
     }
 
     /// Package the application using the provided configuration.

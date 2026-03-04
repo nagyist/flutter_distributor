@@ -60,9 +60,7 @@ impl AppPublisher for VercelPublisher {
             format!("{vercel_dir}/project.json"),
             serde_json::to_string_pretty(&project_json).unwrap(),
         )
-        .map_err(|e| {
-            PublishError::General(format!("Failed to write .vercel/project.json: {e}"))
-        })?;
+        .map_err(|e| PublishError::General(format!("Failed to write .vercel/project.json: {e}")))?;
 
         let output = Command::new("vercel")
             .arg("--prod")
@@ -97,6 +95,9 @@ impl AppPublisher for VercelPublisher {
             })
             .unwrap_or_else(|| "https://vercel.com".to_string());
 
-        Ok(PublishResult { success: true, message: url })
+        Ok(PublishResult {
+            success: true,
+            message: url,
+        })
     }
 }

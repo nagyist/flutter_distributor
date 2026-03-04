@@ -14,11 +14,11 @@ impl AppAnalyzer for IOSIpaAnalyzer {
     }
 
     fn name(&self) -> &str {
-        return "ios-ipa";
+        "ios-ipa"
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
-        return true;
+        true
     }
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {

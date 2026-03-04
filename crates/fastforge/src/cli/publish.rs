@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use app_publisher::{
-    AppGalleryPublisher, AppPublisher, CosPublisher, FirebaseHostingPublisher, FirebasePublisher,
-    FirPublisher, GitHubPublisher, OssPublisher, PublishConfig, QiniuPublisher, S3Publisher,
+    AppGalleryPublisher, AppPublisher, CosPublisher, FirPublisher, FirebaseHostingPublisher,
+    FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig, QiniuPublisher, S3Publisher,
     VercelPublisher,
 };
 use clap::Args;

@@ -14,11 +14,7 @@ pub struct MacOSZipPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -53,7 +49,7 @@ impl AppPackager for MacOSZipPackager {
         // Find the .app bundle
         let app_bundle = std::fs::read_dir(&config.build_output_dir)?
             .filter_map(|e| e.ok())
-            .find(|e| e.path().extension().map_or(false, |x| x == "app"))
+            .find(|e| e.path().extension().is_some_and(|x| x == "app"))
             .ok_or_else(|| PackageError::NotFound(".app bundle in build output".into()))?;
 
         // Copy .app into packaging directory
@@ -65,13 +61,11 @@ impl AppPackager for MacOSZipPackager {
 
         let output_file = config.output_file();
         // 7z a <output.zip> *.app  (run from inside pkg_dir)
-        run(Command::new("7z")
-            .current_dir(&pkg_dir)
-            .args([
-                "a",
-                &output_file.display().to_string(),
-                "*.app",
-            ]))?;
+        run(Command::new("7z").current_dir(&pkg_dir).args([
+            "a",
+            &output_file.display().to_string(),
+            "*.app",
+        ]))?;
 
         std::fs::remove_dir_all(&pkg_dir).ok();
         Ok(PackageResult {

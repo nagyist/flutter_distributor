@@ -3,7 +3,9 @@ use clap::{Parser, Subcommand};
 mod cli;
 mod config;
 
-use cli::{AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, UpgradeArgs, VersionCheckArgs};
+use cli::{
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, UpgradeArgs, VersionCheckArgs,
+};
 
 #[derive(Parser)]
 #[command(name = "fastforge")]
@@ -28,7 +30,10 @@ enum Commands {
     Release(ReleaseArgs),
     #[command(about = "Update Fastforge to the latest version")]
     Upgrade(UpgradeArgs),
-    #[command(name = "version-check", about = "Check for a newer version of fastforge")]
+    #[command(
+        name = "version-check",
+        about = "Check for a newer version of fastforge"
+    )]
     VersionCheck(VersionCheckArgs),
 }
 

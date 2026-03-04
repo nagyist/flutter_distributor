@@ -45,9 +45,7 @@ pub fn create(options: CreateOptions) -> Result<()> {
 
     cleanup_state(&mut state);
 
-    if let Err(err) = result {
-        return Err(err);
-    }
+    result?;
 
     Ok(())
 }
@@ -236,10 +234,10 @@ fn build_dmg(
         ds.set_window_size(640, 480);
     }
 
-    if let Some(window) = &spec.window {
-        if let Some(position) = &window.position {
-            ds.set_window_pos(position.x, position.y);
-        }
+    if let Some(window) = &spec.window
+        && let Some(position) = &window.position
+    {
+        ds.set_window_pos(position.x, position.y);
     }
 
     for entry in &spec.contents {
@@ -500,13 +498,16 @@ fn make_alias_record(path: &Path) -> Result<Vec<u8>> {
     let rel_to_volume = format!("/{rel_to_volume}");
     let volume_path_str = volume_path.to_string_lossy();
 
-    let mut extra: Vec<(i16, Vec<u8>)> = Vec::new();
-    extra.push((0, parent_name.as_bytes().to_vec()));
-    extra.push((1, (parent_meta.ino() as u32).to_be_bytes().to_vec()));
-    extra.push((14, utf16be_pascal(target_name)?));
-    extra.push((15, utf16be_pascal(volume_name)?));
-    extra.push((18, rel_to_volume.as_bytes().to_vec()));
-    extra.push((19, volume_path_str.as_bytes().to_vec()));
+    let target_pascal = utf16be_pascal(target_name)?;
+    let volume_pascal = utf16be_pascal(volume_name)?;
+    let extra: Vec<(i16, Vec<u8>)> = vec![
+        (0, parent_name.as_bytes().to_vec()),
+        (1, (parent_meta.ino() as u32).to_be_bytes().to_vec()),
+        (14, target_pascal),
+        (15, volume_pascal),
+        (18, rel_to_volume.as_bytes().to_vec()),
+        (19, volume_path_str.as_bytes().to_vec()),
+    ];
 
     let base_len = 150_usize;
     let extra_len: usize = extra

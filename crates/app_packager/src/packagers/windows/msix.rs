@@ -9,6 +9,7 @@ use crate::{
 /// mirroring Dart's `AppPackageMakerMsix`.
 ///
 /// Requires the Windows 10 SDK tools (`makeappx`, `signtool`) on Windows.
+#[derive(Default)]
 pub struct WindowsMsixPackager {
     /// Optional path to a PFX certificate for signing.
     pub certificate_path: Option<String>,
@@ -20,23 +21,9 @@ pub struct WindowsMsixPackager {
     pub publisher: Option<String>,
 }
 
-impl Default for WindowsMsixPackager {
-    fn default() -> Self {
-        Self {
-            certificate_path: None,
-            certificate_password: None,
-            publisher: None,
-        }
-    }
-}
-
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -70,7 +57,9 @@ impl AppPackager for WindowsMsixPackager {
 
         // Copy the flutter build output
         run(Command::new("xcopy").args([
-            "/E", "/I", "/Q",
+            "/E",
+            "/I",
+            "/Q",
             &config.build_output_dir.display().to_string(),
             &pkg_dir.display().to_string(),
         ]))?;

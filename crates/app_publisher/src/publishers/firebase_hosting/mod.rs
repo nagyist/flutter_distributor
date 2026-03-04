@@ -93,6 +93,9 @@ impl AppPublisher for FirebaseHostingPublisher {
             })
             .unwrap_or_else(|| "https://firebase.google.com".to_string());
 
-        Ok(PublishResult { success: true, message: url })
+        Ok(PublishResult {
+            success: true,
+            message: url,
+        })
     }
 }

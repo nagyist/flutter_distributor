@@ -9,11 +9,7 @@ fn render_artifact_name(config: &PackageConfig) -> String {
         .next()
         .unwrap_or(&config.app_version)
         .to_string();
-    let build_number = config
-        .app_version
-        .split('+')
-        .nth(1)
-        .map(|s| s.to_string());
+    let build_number = config.app_version.split('+').nth(1).map(|s| s.to_string());
 
     let mut name = config.app_name.clone();
     if let Some(flavor) = &config.flavor {

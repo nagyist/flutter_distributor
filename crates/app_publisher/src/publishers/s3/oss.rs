@@ -77,13 +77,14 @@ fn build_options(config: &PublishConfig) -> Result<S3PublishOptions, PublishErro
         &["public-base-url", "bucket-domain", "oss-public-base-url"],
         &[ENV_OSS_PUBLIC_BASE_URL],
     );
-    let force_path_style =
-        optional_value(config, &["force-path-style", "oss-force-path-style"], &[
-            ENV_OSS_FORCE_PATH_STYLE,
-        ])
-        .map(|v| parse_bool(&v))
-        .transpose()?
-        .unwrap_or(false);
+    let force_path_style = optional_value(
+        config,
+        &["force-path-style", "oss-force-path-style"],
+        &[ENV_OSS_FORCE_PATH_STYLE],
+    )
+    .map(|v| parse_bool(&v))
+    .transpose()?
+    .unwrap_or(false);
 
     Ok(S3PublishOptions {
         endpoint,

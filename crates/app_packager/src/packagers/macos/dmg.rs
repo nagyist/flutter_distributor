@@ -13,11 +13,7 @@ pub struct MacOSDmgPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -52,7 +48,7 @@ impl AppPackager for MacOSDmgPackager {
         // Find the .app bundle in the build output directory
         let app_bundle = std::fs::read_dir(&config.build_output_dir)?
             .filter_map(|e| e.ok())
-            .find(|e| e.path().extension().map_or(false, |x| x == "app"))
+            .find(|e| e.path().extension().is_some_and(|x| x == "app"))
             .ok_or_else(|| PackageError::NotFound(".app bundle in build output".into()))?;
 
         // Copy the .app into the packaging directory

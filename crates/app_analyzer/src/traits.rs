@@ -1,5 +1,4 @@
 use crate::types::{AnalyzeConfig, AnalyzeError, AnalyzeResult};
-use std::path::Path;
 
 pub trait AppAnalyzer {
     /// Create a new instance of this analyzer.
@@ -18,6 +17,6 @@ pub trait AppAnalyzer {
     /// Analyzes the application using the provided configuration.
     /// This is the main entry point for running analysis and internally calls `perform_analyze`.
     fn analyze(&self, config: AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {
-        return self.perform_analyze(&config);
+        self.perform_analyze(&config)
     }
 }

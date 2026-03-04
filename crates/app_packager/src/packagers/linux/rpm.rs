@@ -12,11 +12,7 @@ pub struct LinuxRpmPackager;
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
     let out = cmd.output().map_err(|e| {
-        PackageError::MissingTool(format!(
-            "{}: {}",
-            cmd.get_program().to_string_lossy(),
-            e
-        ))
+        PackageError::MissingTool(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
     })?;
     if !out.status.success() {
         return Err(PackageError::CommandFailed {
@@ -72,7 +68,9 @@ impl AppPackager for LinuxRpmPackager {
             bin = binary_name,
         );
         std::fs::write(
-            rpmbuild_dir.join("BUILD").join(format!("{}.desktop", app_name)),
+            rpmbuild_dir
+                .join("BUILD")
+                .join(format!("{}.desktop", app_name)),
             &desktop,
         )?;
 
@@ -100,14 +98,19 @@ impl AppPackager for LinuxRpmPackager {
             arch = arch,
             bin = binary_name,
         );
-        let spec_path = rpmbuild_dir.join("SPECS").join(format!("{}.spec", app_name));
+        let spec_path = rpmbuild_dir
+            .join("SPECS")
+            .join(format!("{}.spec", app_name));
         std::fs::write(&spec_path, &spec)?;
 
-        run(
-            Command::new("rpmbuild")
-                .args(["--define", &format!("_topdir {}", rpmbuild_dir.display()), "-bb", &spec_path.display().to_string()])
-                .env("QA_RPATHS", "17"),
-        )?;
+        run(Command::new("rpmbuild")
+            .args([
+                "--define",
+                &format!("_topdir {}", rpmbuild_dir.display()),
+                "-bb",
+                &spec_path.display().to_string(),
+            ])
+            .env("QA_RPATHS", "17"))?;
 
         // Find the produced RPM and copy it to the output file
         let rpm_dir = rpmbuild_dir.join("RPMS").join(arch);

@@ -7,8 +7,7 @@ pub struct FirebasePublisher;
 
 const PUBLISHER_NAME: &str = "firebase";
 const ENV_FIREBASE_TOKEN: &str = "FIREBASE_TOKEN";
-const FIREBASE_CONSOLE_URL: &str =
-    "https://console.firebase.google.com/project/_/appdistribution";
+const FIREBASE_CONSOLE_URL: &str = "https://console.firebase.google.com/project/_/appdistribution";
 
 impl AppPublisher for FirebasePublisher {
     fn new() -> Self {
@@ -69,11 +68,11 @@ impl AppPublisher for FirebasePublisher {
             "groups-file",
         ];
         for arg_name in &optional_args {
-            if let Some(value) = args.and_then(|a| a.get(*arg_name)) {
-                if !value.is_empty() {
-                    cmd_args.push(format!("--{arg_name}"));
-                    cmd_args.push(value.clone());
-                }
+            if let Some(value) = args.and_then(|a| a.get(*arg_name))
+                && !value.is_empty()
+            {
+                cmd_args.push(format!("--{arg_name}"));
+                cmd_args.push(value.clone());
             }
         }
 

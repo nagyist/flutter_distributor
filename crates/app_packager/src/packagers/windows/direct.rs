@@ -10,7 +10,13 @@ pub struct WindowsDirectPackager;
 
 fn copy_dir(src: &std::path::Path, dst: &std::path::Path) -> Result<(), PackageError> {
     let out = std::process::Command::new("xcopy")
-        .args(["/E", "/I", "/Q", &src.display().to_string(), &dst.display().to_string()])
+        .args([
+            "/E",
+            "/I",
+            "/Q",
+            &src.display().to_string(),
+            &dst.display().to_string(),
+        ])
         .output()
         .map_err(|e| PackageError::MissingTool(format!("xcopy: {}", e)))?;
     if !out.status.success() {
@@ -38,6 +44,8 @@ impl AppPackager for WindowsDirectPackager {
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
         let dst = config.version_output_dir().join(&config.app_name);
         copy_dir(&config.build_output_dir, &dst)?;
-        Ok(PackageResult { artifacts: vec![dst] })
+        Ok(PackageResult {
+            artifacts: vec![dst],
+        })
     }
 }

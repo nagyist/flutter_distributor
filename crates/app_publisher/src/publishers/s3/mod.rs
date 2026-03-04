@@ -504,10 +504,10 @@ mod tests {
 
     #[test]
     fn parse_bool_supports_common_values() {
-        assert_eq!(parse_bool("true").expect("true should parse"), true);
-        assert_eq!(parse_bool("1").expect("1 should parse"), true);
-        assert_eq!(parse_bool("false").expect("false should parse"), false);
-        assert_eq!(parse_bool("0").expect("0 should parse"), false);
+        assert!(parse_bool("true").expect("true should parse"));
+        assert!(parse_bool("1").expect("1 should parse"));
+        assert!(!parse_bool("false").expect("false should parse"));
+        assert!(!parse_bool("0").expect("0 should parse"));
     }
 
     #[test]

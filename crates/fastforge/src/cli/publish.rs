@@ -1,8 +1,8 @@
 use anyhow::{Result, anyhow};
 use app_publisher::{
-    AppGalleryPublisher, AppPublisher, CosPublisher, FirPublisher, FirebaseHostingPublisher,
-    FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig, QiniuPublisher, S3Publisher,
-    VercelPublisher,
+    AppGalleryPublisher, AppPublisher, CosPublisher, CustomPublisher, FirPublisher,
+    FirebaseHostingPublisher, FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig,
+    QiniuPublisher, S3Publisher, VercelPublisher,
 };
 use clap::Args;
 use std::collections::HashMap;
@@ -53,9 +53,10 @@ pub async fn execute(args: &PublishArgs) -> Result<()> {
         "github" => GitHubPublisher::new().publish(publish_config, None),
         "appgallery" => AppGalleryPublisher::new().publish(publish_config, None),
         "vercel" => VercelPublisher::new().publish(publish_config, None),
+        "custom" => CustomPublisher::new().publish(publish_config, None),
         _ => {
             return Err(anyhow!(
-                "Unsupported publish target: `{}`. Currently supported: s3, qiniu, oss, cos, fir, firebase, firebase-hosting, github, appgallery, vercel",
+                "Unsupported publish target: `{}`. Currently supported: s3, qiniu, oss, cos, fir, firebase, firebase-hosting, github, appgallery, vercel, custom",
                 target
             ));
         }

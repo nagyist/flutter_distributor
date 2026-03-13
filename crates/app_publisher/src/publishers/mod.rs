@@ -1,5 +1,6 @@
 mod appgallery;
 mod appstore;
+mod custom;
 mod fir;
 mod firebase;
 mod firebase_hosting;
@@ -11,6 +12,7 @@ mod vercel;
 
 pub use appgallery::AppGalleryPublisher;
 pub use appstore::AppStorePublisher;
+pub use custom::CustomPublisher;
 pub use fir::FirPublisher;
 pub use firebase::FirebasePublisher;
 pub use firebase_hosting::FirebaseHostingPublisher;

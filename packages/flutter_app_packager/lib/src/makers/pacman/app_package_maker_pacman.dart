@@ -41,7 +41,7 @@ class AppPackageMakerPacman extends AppPackageMaker {
     Directory packagingDirectory = makeConfig.packagingDirectory;
 
     /// Need to create following directories
-    /// /usr/share/$appBinaryName
+    /// /opt/$appBinaryName
     /// /usr/share/applications
     /// /usr/share/icons/hicolor/128x128/apps
     /// /usr/share/icons/hicolor/256x256/apps
@@ -60,7 +60,7 @@ class AppPackageMakerPacman extends AppPackageMaker {
         path.join(packagingDirectory.path, 'usr/share/metainfo');
     final mkdirProcessResult = await $('mkdir', [
       '-p',
-      path.join(packagingDirectory.path, 'usr/share', makeConfig.appBinaryName),
+      path.join(packagingDirectory.path, 'opt', makeConfig.appBinaryName),
       applicationsDir,
       if (makeConfig.metainfo != null) metainfoDir,
       if (makeConfig.icon != null) ...[icon128Dir, icon256Dir],
@@ -116,11 +116,11 @@ class AppPackageMakerPacman extends AppPackageMaker {
     await pkgInfoFile.writeAsString(files['PKGINFO']!);
     await desktopEntryFile.writeAsString(files['DESKTOP']!);
 
-    // copy the application binary to /usr/share/$appBinaryName
+    // copy the application binary to /opt/$appBinaryName
     await $('cp', [
       '-fr',
       '${appDirectory.path}/.',
-      '${packagingDirectory.path}/usr/share/${makeConfig.appBinaryName}/',
+      '${packagingDirectory.path}/opt/${makeConfig.appBinaryName}/',
     ]);
 
     // MTREE Metadata using bsdtar and fakeroot

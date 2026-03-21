@@ -1,0 +1,31 @@
+name: mobile
+
+env:
+  APP_ENV: demo
+
+jobs:
+  android-apk:
+    steps:
+      - name: Build Android APK
+        run: build
+        with:
+          platform: android
+          target: apk
+      - name: Package Android APK
+        run: package
+        with:
+          platform: android
+          target: apk
+
+  ios-ipa:
+    steps:
+      - name: Build iOS IPA
+        run: build
+        with:
+          platform: ios
+          target: ipa
+      - name: Package iOS IPA
+        run: package
+        with:
+          platform: ios
+          target: ipa

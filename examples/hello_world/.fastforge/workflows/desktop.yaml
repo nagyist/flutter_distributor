@@ -1,0 +1,41 @@
+name: desktop
+
+env:
+  APP_ENV: demo
+
+jobs:
+  linux-deb:
+    steps:
+      - name: Build Linux
+        run: build
+        with:
+          platform: linux
+      - name: Package DEB
+        run: package
+        with:
+          platform: linux
+          target: deb
+
+  macos-dmg:
+    steps:
+      - name: Build macOS
+        run: build
+        with:
+          platform: macos
+      - name: Package DMG
+        run: package
+        with:
+          platform: macos
+          target: dmg
+
+  windows-exe:
+    steps:
+      - name: Build Windows
+        run: build
+        with:
+          platform: windows
+      - name: Package EXE
+        run: package
+        with:
+          platform: windows
+          target: exe

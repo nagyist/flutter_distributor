@@ -2,15 +2,15 @@
 
 [English](README.md) | [中文](README-ZH.md)
 
-A Rust implementation of an `appdmg`-style DMG packager, aiming to be compatible with `node-appdmg` configuration files.
+A Rust DMG packager with basic compatibility for `node-appdmg`-style configuration files.
 
 ## Status
 
 Work in progress (WIP).
 
 Implemented so far:
-- Modern `node-appdmg` config parsing
-- Legacy `node-appdmg` config conversion (`icons/app/extra`)
+- Standard config parsing
+- Legacy config conversion (`icons/app/extra`)
 - Core DMG pipeline (`hdiutil create/attach/convert/detach`)
 - `.DS_Store` generation (based on `node-ds-store`)
 - Retina background composition (`@2x` + `tiffutil`)
@@ -52,8 +52,8 @@ Example:
 
 ```bash
 cargo run -p dmg_maker -- \
-  /Users/lijy91/Projects/fastforgedev/node-appdmg/test/assets/appdmg.json \
-  /Users/lijy91/Projects/fastforgedev/fastforge/crates/dmg_maker/examples/Test.dmg
+  crates/dmg_maker/examples/standard.json \
+  crates/dmg_maker/examples/sample.dmg
 ```
 
 Help:
@@ -62,23 +62,27 @@ Help:
 cargo run -p dmg_maker -- --help
 ```
 
+Build all example DMGs:
+
+```bash
+./crates/dmg_maker/examples/build_examples.sh
+```
+
 ## Test Example Files
 
 Located at:
-- `crates/dmg_maker/examples/appdmg-modern.json`
-- `crates/dmg_maker/examples/appdmg-legacy.json`
-- `crates/dmg_maker/examples/appdmg-bg-color.json`
+- `crates/dmg_maker/examples/standard.json`
+- `crates/dmg_maker/examples/background_color.json`
+- `crates/dmg_maker/examples/window.json`
+- `crates/dmg_maker/examples/format_filesystem.json`
+- `crates/dmg_maker/examples/compat_legacy.json`
+- `crates/dmg_maker/examples/build_examples.sh`
 
 Run tests:
 
 ```bash
 cargo test -p dmg_maker
 ```
-
-## Differences from node-appdmg
-
-- No Node-style event API (`progress`/`finish`/`error`) yet; currently provided as Rust functions and a CLI.
-- Error messages are not guaranteed to be text-identical to Node, but the semantics are kept close.
 
 ## Known Issues
 

@@ -235,6 +235,15 @@ mod tests {
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("examples")
     }
 
+    fn load_example(name: &str) -> super::ParsedSpec {
+        load_spec(&LoadOptions {
+            source: Some(examples_dir().join(name)),
+            basepath: None,
+            specification: None,
+        })
+        .expect("parse should succeed")
+    }
+
     #[test]
     fn parse_modern_spec() {
         let parsed = load_spec(&LoadOptions {
@@ -281,15 +290,20 @@ mod tests {
     }
 
     #[test]
-    fn parse_modern_spec_from_file_example() {
-        let parsed = load_spec(&LoadOptions {
-            source: Some(examples_dir().join("appdmg-modern.json")),
-            basepath: None,
-            specification: None,
-        })
-        .expect("parse should succeed");
+    fn parse_standard_spec_from_file_example() {
+        let parsed = load_example("standard.json");
 
-        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.title, "Sample App");
+        assert_eq!(
+            parsed.resolve_base,
+            examples_dir(),
+            "relative paths should resolve from examples dir"
+        );
+        assert_eq!(parsed.spec.icon.as_deref(), Some("assets/SampleIcon.icns"));
+        assert_eq!(
+            parsed.spec.background.as_deref(),
+            Some("assets/SampleBackground.png")
+        );
         assert_eq!(parsed.spec.contents.len(), 4);
         assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
         assert_eq!(parsed.spec.contents[1].kind, ContentType::File);
@@ -297,30 +311,49 @@ mod tests {
     }
 
     #[test]
-    fn parse_legacy_spec_from_file_example() {
-        let parsed = load_spec(&LoadOptions {
-            source: Some(examples_dir().join("appdmg-legacy.json")),
-            basepath: None,
-            specification: None,
-        })
-        .expect("parse should succeed");
+    fn parse_compat_legacy_spec_from_file_example() {
+        let parsed = load_example("compat_legacy.json");
 
-        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.title, "Sample App");
+        assert_eq!(
+            parsed.spec.background.as_deref(),
+            Some("assets/SampleBackground.png")
+        );
         assert_eq!(parsed.spec.icon_size, Some(80));
         assert_eq!(parsed.spec.contents.len(), 3);
         assert_eq!(parsed.spec.contents[0].kind, ContentType::Link);
+        assert_eq!(parsed.spec.contents[1].path, "assets/SampleApp.app");
+        assert_eq!(parsed.spec.contents[2].path, "assets/Readme.txt");
     }
 
     #[test]
-    fn parse_bg_color_spec_from_file_example() {
-        let parsed = load_spec(&LoadOptions {
-            source: Some(examples_dir().join("appdmg-bg-color.json")),
-            basepath: None,
-            specification: None,
-        })
-        .expect("parse should succeed");
+    fn parse_background_color_spec_from_file_example() {
+        let parsed = load_example("background_color.json");
 
-        assert_eq!(parsed.spec.title, "Test Title");
+        assert_eq!(parsed.spec.title, "Sample App");
         assert_eq!(parsed.spec.background_color.as_deref(), Some("mintcream"));
     }
+
+    #[test]
+    fn parse_window_spec_from_file_example() {
+        let parsed = load_example("window.json");
+
+        assert_eq!(parsed.spec.title, "Sample App");
+        assert_eq!(parsed.spec.icon_size, Some(96));
+        let window = parsed.spec.window.expect("window should exist");
+        let position = window.position.expect("position should exist");
+        let size = window.size.expect("size should exist");
+        assert_eq!((position.x, position.y), (120, 180));
+        assert_eq!((size.width, size.height), (640, 420));
+    }
+
+    #[test]
+    fn parse_format_filesystem_spec_from_file_example() {
+        let parsed = load_example("format_filesystem.json");
+
+        assert_eq!(parsed.spec.title, "Sample App");
+        assert_eq!(parsed.spec.format.as_deref(), Some("ULFO"));
+        assert_eq!(parsed.spec.filesystem.as_deref(), Some("APFS"));
+    }
+
 }

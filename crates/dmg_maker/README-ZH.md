@@ -2,15 +2,15 @@
 
 [English](README.md) | [中文](README-ZH.md)
 
-Rust 实现的 `appdmg` 风格 DMG 打包器，目标是兼容 `node-appdmg` 配置文件。
+Rust 实现的 DMG 打包器，兼容基础 `node-appdmg` 风格配置。
 
 ## 状态
 
 开发中（WIP）。
 
 已完成：
-- `node-appdmg` modern 配置解析
-- `node-appdmg` legacy 配置转换（`icons/app/extra`）
+- 标准配置解析
+- legacy 配置转换（`icons/app/extra`）
 - DMG 生成主流程（`hdiutil create/attach/convert/detach`）
 - `.DS_Store` 生成（参考 `node-ds-store`）
 - retina 背景图拼接（`@2x` + `tiffutil`）
@@ -52,8 +52,8 @@ cargo run -p dmg_maker -- <json-path> <dmg-path>
 
 ```bash
 cargo run -p dmg_maker -- \
-  /Users/lijy91/Projects/fastforgedev/node-appdmg/test/assets/appdmg.json \
-  /Users/lijy91/Projects/fastforgedev/fastforge/crates/dmg_maker/examples/Test.dmg
+  crates/dmg_maker/examples/standard.json \
+  crates/dmg_maker/examples/sample.dmg
 ```
 
 查看帮助：
@@ -62,23 +62,27 @@ cargo run -p dmg_maker -- \
 cargo run -p dmg_maker -- --help
 ```
 
+一次构建所有示例 DMG：
+
+```bash
+./crates/dmg_maker/examples/build_examples.sh
+```
+
 ## 测试示例文件
 
 位于：
-- `crates/dmg_maker/examples/appdmg-modern.json`
-- `crates/dmg_maker/examples/appdmg-legacy.json`
-- `crates/dmg_maker/examples/appdmg-bg-color.json`
+- `crates/dmg_maker/examples/standard.json`
+- `crates/dmg_maker/examples/background_color.json`
+- `crates/dmg_maker/examples/window.json`
+- `crates/dmg_maker/examples/format_filesystem.json`
+- `crates/dmg_maker/examples/compat_legacy.json`
+- `crates/dmg_maker/examples/build_examples.sh`
 
 运行测试：
 
 ```bash
 cargo test -p dmg_maker
 ```
-
-## 与 node-appdmg 的差异
-
-- 当前实现没有提供 Node API 事件流（`progress`/`finish`/`error`），目前是 Rust 函数与 CLI。
-- 错误文案与 Node 实现不保证逐字一致，但会尽量保持语义一致。
 
 ## 已知问题
 

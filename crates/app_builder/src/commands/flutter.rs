@@ -1,9 +1,8 @@
 use crate::types::{BuildError, FlutterVersion};
 use serde_json::Value;
 use std::collections::HashMap;
-use std::io::Write;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 pub struct FlutterCommand<'a> {
     environment: Option<&'a HashMap<String, String>>,
@@ -32,25 +31,11 @@ impl<'a> FlutterCommand<'a> {
     pub fn build(&self, subcommand: &str, arguments: &[String]) -> Result<i32, BuildError> {
         let mut cmd = self.base_command()?;
         cmd.arg("build").arg(subcommand).args(arguments);
-        let output = cmd
-            .output()
+        cmd.stdout(Stdio::inherit()).stderr(Stdio::inherit());
+        let status = cmd
+            .status()
             .map_err(|e| BuildError::Io(format!("Failed to execute flutter build: {}", e)))?;
-
-        // Always forward build logs to current terminal, even in non-TTY environments.
-        std::io::stdout()
-            .write_all(&output.stdout)
-            .map_err(|e| BuildError::Io(format!("Failed to write flutter stdout: {}", e)))?;
-        std::io::stderr()
-            .write_all(&output.stderr)
-            .map_err(|e| BuildError::Io(format!("Failed to write flutter stderr: {}", e)))?;
-        std::io::stdout()
-            .flush()
-            .map_err(|e| BuildError::Io(format!("Failed to flush stdout: {}", e)))?;
-        std::io::stderr()
-            .flush()
-            .map_err(|e| BuildError::Io(format!("Failed to flush stderr: {}", e)))?;
-
-        Ok(output.status.code().unwrap_or(-1))
+        Ok(status.code().unwrap_or(-1))
     }
 
     pub fn build_with_echo(

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RssDotxmlRouteImport } from './routes/rss[.]xml'
+import { Route as DmgDesignerRouteImport } from './routes/dmg-designer'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -18,6 +19,11 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 const RssDotxmlRoute = RssDotxmlRouteImport.update({
   id: '/rss.xml',
   path: '/rss.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DmgDesignerRoute = DmgDesignerRouteImport.update({
+  id: '/dmg-designer',
+  path: '/dmg-designer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -44,6 +50,7 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dmg-designer': typeof DmgDesignerRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dmg-designer': typeof DmgDesignerRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dmg-designer': typeof DmgDesignerRoute
   '/rss.xml': typeof RssDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/rss.xml' | '/blog/$slug' | '/blog/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/dmg-designer'
+    | '/rss.xml'
+    | '/blog/$slug'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/rss.xml' | '/blog/$slug' | '/blog'
-  id: '__root__' | '/' | '/about' | '/rss.xml' | '/blog/$slug' | '/blog/'
+  to: '/' | '/about' | '/dmg-designer' | '/rss.xml' | '/blog/$slug' | '/blog'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/dmg-designer'
+    | '/rss.xml'
+    | '/blog/$slug'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DmgDesignerRoute: typeof DmgDesignerRoute
   RssDotxmlRoute: typeof RssDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -86,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/rss.xml'
       fullPath: '/rss.xml'
       preLoaderRoute: typeof RssDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dmg-designer': {
+      id: '/dmg-designer'
+      path: '/dmg-designer'
+      fullPath: '/dmg-designer'
+      preLoaderRoute: typeof DmgDesignerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DmgDesignerRoute: DmgDesignerRoute,
   RssDotxmlRoute: RssDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

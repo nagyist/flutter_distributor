@@ -4,6 +4,7 @@ import { allBlogs } from 'content-collections'
 import { SITE_URL } from '#/lib/site'
 import { MdxCallout } from '#/components/MdxCallout'
 import { MdxMetrics } from '#/components/MdxMetrics'
+import { Card } from '@/components/ui/card'
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: ({ params }) => {
@@ -43,8 +44,8 @@ function BlogPost() {
   const post = Route.useLoaderData()
 
   return (
-    <main className="page-wrap px-4 pb-12 pt-16">
-      <article className="island-shell rounded-2xl p-6 sm:p-8">
+    <main className="mx-auto w-full max-w-6xl px-4 pb-12 pt-16">
+      <Card className="p-6 sm:p-8">
         {post.heroImage ? (
           <img
             src={post.heroImage}
@@ -52,14 +53,12 @@ function BlogPost() {
             className="mb-6 h-64 w-full rounded-2xl object-cover"
           />
         ) : null}
-        <p className="island-kicker mb-2">Post</p>
-        <h1 className="display-title mb-3 text-4xl font-bold text-[var(--sea-ink)] sm:text-5xl">
-          {post.title}
-        </h1>
-        <p className="mb-6 text-sm text-[var(--sea-ink-soft)]">
+        <p className="mb-2 text-sm font-medium text-muted-foreground">Post</p>
+        <h1 className="mb-3 text-4xl font-semibold tracking-tight sm:text-5xl">{post.title}</h1>
+        <p className="mb-6 text-sm text-muted-foreground">
           {new Date(post.pubDate).toLocaleDateString()}
         </p>
-        <div className="prose prose-slate prose-headings:text-[var(--sea-ink)] prose-p:text-[var(--sea-ink-soft)] prose-li:text-[var(--sea-ink-soft)] prose-ul:text-[var(--sea-ink-soft)] prose-ol:text-[var(--sea-ink-soft)] prose-strong:text-[var(--sea-ink)] prose-a:text-[var(--lagoon-deep)] max-w-none">
+        <div className="prose prose-neutral max-w-none dark:prose-invert">
           {post.mdx ? (
             <MDXContent
               code={post.mdx}
@@ -69,7 +68,7 @@ function BlogPost() {
             <div dangerouslySetInnerHTML={{ __html: post.html ?? '' }} />
           )}
         </div>
-      </article>
+      </Card>
     </main>
   )
 }

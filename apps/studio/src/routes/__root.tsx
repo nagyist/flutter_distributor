@@ -1,6 +1,12 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Scripts,
+  createRootRoute,
+  useRouterState,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
+import { type ReactNode } from 'react'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 
@@ -19,7 +25,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Fastforge Studio',
       },
     ],
     links: [
@@ -32,17 +38,22 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  })
+  const isDesignerRoute = pathname.startsWith('/dmg-designer')
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <Header />
+      <body className="antialiased [overflow-wrap:anywhere] selection:bg-primary/20">
+        {isDesignerRoute ? null : <Header />}
         {children}
-        <Footer />
+        {isDesignerRoute ? null : <Footer />}
         <TanStackDevtools
           config={{
             position: 'bottom-right',

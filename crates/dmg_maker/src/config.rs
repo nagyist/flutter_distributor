@@ -355,5 +355,4 @@ mod tests {
         assert_eq!(parsed.spec.format.as_deref(), Some("ULFO"));
         assert_eq!(parsed.spec.filesystem.as_deref(), Some("APFS"));
     }
-
 }

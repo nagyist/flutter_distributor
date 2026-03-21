@@ -1,86 +1,85 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
   return (
-    <main className="page-wrap px-4 pb-8 pt-14">
-      <section className="island-shell rise-in relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-10 sm:py-14">
-        <div className="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(79,184,178,0.32),transparent_66%)]" />
-        <div className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(47,106,74,0.18),transparent_66%)]" />
-        <p className="island-kicker mb-3">TanStack Start Base Template</p>
-        <h1 className="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
-          Island hours, but for product teams.
+    <main className="mx-auto w-full max-w-6xl px-4 pb-8 pt-14">
+      <section className="rounded-xl border bg-card px-6 py-10 sm:px-10 sm:py-14">
+        <p className="mb-3 text-sm font-medium text-muted-foreground">Fastforge Studio</p>
+        <h1 className="mb-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
+          Design DMG layouts visually for Fastforge.
         </h1>
-        <p className="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
-          A tropical, breathable app starter with full-document SSR, server
-          functions, streaming, and type-safe routing. Calm on the eyes. Fast in
-          production.
+        <p className="mb-8 max-w-2xl text-base text-muted-foreground sm:text-lg">
+          Build and refine `make_config.yaml` with a dedicated canvas, full
+          field coverage, and instant YAML export for your macOS DMG packages.
         </p>
         <div className="flex flex-wrap gap-3">
-          <a
-            href="/blog"
-            className="rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-5 py-2.5 text-sm font-semibold text-[var(--lagoon-deep)] no-underline transition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]"
-          >
-            Explore Posts
-          </a>
-          <a
-            href="https://tanstack.com/router"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-[rgba(23,58,64,0.2)] bg-white/50 px-5 py-2.5 text-sm font-semibold text-[var(--sea-ink)] no-underline transition hover:-translate-y-0.5 hover:border-[rgba(23,58,64,0.35)]"
-          >
-            Router Guide
-          </a>
+          <Button asChild className="px-5">
+            <a href="/dmg-designer" className="no-underline">
+              Open DMG Designer
+            </a>
+          </Button>
+          <Button asChild variant="secondary" className="px-5">
+            <a href="/blog" className="no-underline">
+              Read Product Notes
+            </a>
+          </Button>
         </div>
       </section>
 
       <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           [
-            'Type-Safe Routing',
-            'Routes and links stay in sync across every page.',
+            'Direct Manipulation',
+            'Drag app and link targets on a Finder-like canvas with snap and guide support.',
           ],
           [
-            'Server Functions',
-            'Call server code from your UI without creating API boilerplate.',
+            'Full Field Coverage',
+            'Edit title, background, icon sizing, window geometry, signing, format, and filesystem.',
           ],
           [
-            'Streaming by Default',
-            'Ship progressively rendered responses for faster experiences.',
+            'YAML Round-Trip',
+            'Switch between visual editing and valid `make_config.yaml` without hand-syncing fields.',
           ],
           [
-            'Tailwind Native',
-            'Design quickly with utility-first styling and custom tokens.',
+            'Studio Workflow',
+            'Use Studio as a focused packaging workbench instead of a generic starter homepage.',
           ],
         ].map(([title, desc], index) => (
-          <article
+          <Card
             key={title}
-            className="island-shell feature-card rise-in rounded-2xl p-5"
+            className="p-0"
             style={{ animationDelay: `${index * 90 + 80}ms` }}
           >
-            <h2 className="mb-2 text-base font-semibold text-[var(--sea-ink)]">
-              {title}
-            </h2>
-            <p className="m-0 text-sm text-[var(--sea-ink-soft)]">{desc}</p>
-          </article>
+            <CardHeader className="p-5 pb-2">
+              <CardTitle className="text-base">{title}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-5 pt-0">
+              <p className="m-0 text-sm text-muted-foreground">{desc}</p>
+            </CardContent>
+          </Card>
         ))}
       </section>
 
-      <section className="island-shell mt-8 rounded-2xl p-6">
-        <p className="island-kicker mb-2">Quick Start</p>
-        <ul className="m-0 list-disc space-y-2 pl-5 text-sm text-[var(--sea-ink-soft)]">
+      <section className="mt-8 rounded-xl border bg-card p-6">
+        <p className="mb-2 text-sm font-medium text-muted-foreground">How It Works</p>
+        <Separator className="mb-4" />
+        <ul className="m-0 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
           <li>
-            Edit <code>src/routes/index.tsx</code> to customize the hero and
-            product narrative.
+            Open <code>/dmg-designer</code> to edit a complete DMG spec with visual
+            controls and YAML output.
           </li>
           <li>
-            Update <code>src/components/Header.tsx</code> and{' '}
-            <code>src/components/Footer.tsx</code> for brand links.
+            Drag contents on the canvas, then fine-tune positions and advanced
+            options from the side panels.
           </li>
           <li>
-            Add routes in <code>src/routes</code> and tweak visual tokens in{' '}
-            <code>src/styles.css</code>.
+            Paste or copy YAML whenever you need to move between Studio and your
+            Fastforge project.
           </li>
         </ul>
       </section>

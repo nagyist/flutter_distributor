@@ -1,5 +1,5 @@
 [package]
-name = "app_analyzer"
+name = "fastforge_app_analyzer"
 version = "0.0.1"
 edition = "2024"
 authors = ["LiJianying <lijy91@foxmail.com>"]
@@ -7,6 +7,7 @@ description = "A unified app builder"
 license = "MIT"
 
 [dependencies]
+fastforge_core = { path = "../core" }
 log = "0.4.28"
 plist = "1.7"
 regex = "1.0"

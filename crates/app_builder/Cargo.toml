@@ -1,5 +1,5 @@
 [package]
-name = "app_builder"
+name = "fastforge_app_builder"
 version = "0.0.1"
 edition = "2024"
 authors = ["LiJianying <lijy91@foxmail.com>"]
@@ -7,11 +7,11 @@ description = "A unified app builder"
 license = "MIT"
 
 [dependencies]
+fastforge_core = { path = "../core" }
 glob = "0.3.3"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = { version = "1.0.145", features = ["preserve_order"] }
 serde_yaml = "0.9.34"
-thiserror = "2.0.16"
 
 [dev-dependencies]
 tempfile = "3.23.0"

@@ -1,5 +1,5 @@
 use anyhow::{Result, anyhow};
-use app_publisher::{
+use fastforge_app_publisher::{
     AppGalleryPublisher, AppPublisher, CosPublisher, CustomPublisher, FirPublisher,
     FirebaseHostingPublisher, FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig,
     QiniuPublisher, S3Publisher, VercelPublisher,

@@ -1,13 +1,13 @@
 use anyhow::{Context, Result, anyhow};
-use app_builder::{BuildResult, FlutterAppBuilder};
-use app_packager::{
+use fastforge_app_builder::{BuildResult, FlutterAppBuilder};
+use fastforge_app_packager::{
     AndroidAabPackager, AndroidApkPackager, AppPackager, IOSIpaPackager, LinuxAppImagePackager,
     LinuxDebPackager, LinuxDirectPackager, LinuxPacmanPackager, LinuxRpmPackager, LinuxZipPackager,
     MacOSDmgPackager, MacOSPkgPackager, MacOSZipPackager, OHOSAppPackager, OHOSHapPackager,
     PackageConfig, WebDirectPackager, WebZipPackager, WindowsDirectPackager, WindowsExePackager,
     WindowsMsixPackager, WindowsZipPackager,
 };
-use app_publisher::AppPublisher;
+use fastforge_app_publisher::AppPublisher;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
@@ -316,31 +316,35 @@ fn execute_publish_step(
             .ok_or_else(|| anyhow!("Publish step requires `path` or a prior package step"))?
     };
     let publish_args = get_string_map(with, "publish_args");
-    let publish_config = app_publisher::PublishConfig {
+    let publish_config = fastforge_app_publisher::PublishConfig {
         app_version: None,
         artifact_path: Some(artifact_path.clone()),
         publish_arguments: publish_args,
     };
 
     let result = match target.to_ascii_lowercase().as_str() {
-        "s3" | "minio" => app_publisher::S3Publisher::new().publish(publish_config, None),
-        "qiniu" => app_publisher::QiniuPublisher::new().publish(publish_config, None),
-        "oss" => app_publisher::OssPublisher::new().publish(publish_config, None),
-        "cos" => app_publisher::CosPublisher::new().publish(publish_config, None),
-        "fir" => app_publisher::FirPublisher::new().publish(publish_config, None),
-        "firebase" => app_publisher::FirebasePublisher::new().publish(publish_config, None),
-        "firebase-hosting" => {
-            app_publisher::FirebaseHostingPublisher::new().publish(publish_config, None)
+        "s3" | "minio" => fastforge_app_publisher::S3Publisher::new().publish(publish_config, None),
+        "qiniu" => fastforge_app_publisher::QiniuPublisher::new().publish(publish_config, None),
+        "oss" => fastforge_app_publisher::OssPublisher::new().publish(publish_config, None),
+        "cos" => fastforge_app_publisher::CosPublisher::new().publish(publish_config, None),
+        "fir" => fastforge_app_publisher::FirPublisher::new().publish(publish_config, None),
+        "firebase" => {
+            fastforge_app_publisher::FirebasePublisher::new().publish(publish_config, None)
         }
-        "github" => app_publisher::GitHubPublisher::new().publish(publish_config, None),
-        "appgallery" => app_publisher::AppGalleryPublisher::new().publish(publish_config, None),
-        "vercel" => app_publisher::VercelPublisher::new().publish(publish_config, None),
-        "custom" => app_publisher::CustomPublisher::new().publish(publish_config, None),
+        "firebase-hosting" => {
+            fastforge_app_publisher::FirebaseHostingPublisher::new().publish(publish_config, None)
+        }
+        "github" => fastforge_app_publisher::GitHubPublisher::new().publish(publish_config, None),
+        "appgallery" => {
+            fastforge_app_publisher::AppGalleryPublisher::new().publish(publish_config, None)
+        }
+        "vercel" => fastforge_app_publisher::VercelPublisher::new().publish(publish_config, None),
+        "custom" => fastforge_app_publisher::CustomPublisher::new().publish(publish_config, None),
         other => {
             return Err(anyhow!("Unsupported publish target: `{}`", other));
         }
     }
-    .map_err(|err: app_publisher::PublishError| anyhow!(err.to_string()))?;
+    .map_err(|err: fastforge_app_publisher::PublishError| anyhow!(err.to_string()))?;
 
     Ok(serde_json::json!({
         "target": target,

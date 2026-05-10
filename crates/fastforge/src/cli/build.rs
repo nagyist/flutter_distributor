@@ -1,6 +1,6 @@
 use anyhow::{Result, anyhow};
-use app_builder::FlutterAppBuilder;
 use clap::Args;
+use fastforge_app_builder::FlutterAppBuilder;
 use serde_json::{Map, Value};
 use std::collections::HashMap;
 

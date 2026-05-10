@@ -1,0 +1,56 @@
+use std::collections::HashMap;
+use std::sync::Arc;
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+pub type PublishProgressCallback = Arc<dyn Fn(u64, u64) + Send + Sync + 'static>;
+
+#[derive(Debug, Clone)]
+pub struct PublishConfig {
+    pub app_version: Option<String>,
+    pub artifact_path: Option<String>,
+    pub publish_arguments: Option<HashMap<String, String>>,
+}
+
+#[derive(Debug)]
+pub struct PublishResult {
+    pub success: bool,
+    pub message: String,
+}
+
+#[derive(Debug)]
+pub enum PublishError {
+    General(String),
+}
+
+impl std::fmt::Display for PublishError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            PublishError::General(message) => write!(f, "{message}"),
+        }
+    }
+}
+
+impl std::error::Error for PublishError {}
+
+// ── Trait ─────────────────────────────────────────────────────────────────────
+
+pub trait AppPublisher {
+    fn new() -> Self;
+    fn name(&self) -> &str;
+    fn is_supported_on_current_platform(&self) -> bool;
+
+    fn perform_publish(
+        &self,
+        config: &PublishConfig,
+        on_progress: Option<&PublishProgressCallback>,
+    ) -> Result<PublishResult, PublishError>;
+
+    fn publish(
+        &self,
+        config: PublishConfig,
+        on_progress: Option<PublishProgressCallback>,
+    ) -> Result<PublishResult, PublishError> {
+        self.perform_publish(&config, on_progress.as_ref())
+    }
+}

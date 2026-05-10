@@ -1,9 +1,9 @@
 use anyhow::{Result, anyhow};
-use app_analyzer::{
+use clap::Args;
+use fastforge_app_analyzer::{
     AnalyzeConfig, AndroidAabAnalyzer, AndroidApkAnalyzer, AppAnalyzer, IOSIpaAnalyzer,
     MacOSDmgAnalyzer,
 };
-use clap::Args;
 use serde_json::json;
 use std::path::Path;
 

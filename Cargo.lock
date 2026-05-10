@@ -103,52 +103,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
-name = "app_analyzer"
-version = "0.0.1"
-dependencies = [
- "log",
- "plist",
- "regex",
- "serde",
- "serde_json",
- "zip",
-]
-
-[[package]]
-name = "app_builder"
-version = "0.0.1"
-dependencies = [
- "glob",
- "serde",
- "serde_json",
- "serde_yaml",
- "tempfile",
- "thiserror",
-]
-
-[[package]]
-name = "app_packager"
-version = "0.0.1"
-dependencies = [
- "tempfile",
-]
-
-[[package]]
-name = "app_publisher"
-version = "0.0.1"
-dependencies = [
- "chrono",
- "hex",
- "hmac",
- "jsonwebtoken",
- "percent-encoding",
- "reqwest",
- "serde",
- "serde_json",
- "sha2",
-]
-
-[[package]]
 name = "arbitrary"
 version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -483,17 +437,76 @@ name = "fastforge"
 version = "0.7.0"
 dependencies = [
  "anyhow",
- "app_analyzer",
- "app_builder",
- "app_packager",
- "app_publisher",
  "clap",
+ "fastforge_app_analyzer",
+ "fastforge_app_builder",
+ "fastforge_app_packager",
+ "fastforge_app_publisher",
+ "fastforge_core",
  "log",
  "serde",
  "serde_json",
  "serde_yaml",
  "tempfile",
  "tokio",
+]
+
+[[package]]
+name = "fastforge_app_analyzer"
+version = "0.0.1"
+dependencies = [
+ "fastforge_core",
+ "log",
+ "plist",
+ "regex",
+ "serde",
+ "serde_json",
+ "zip",
+]
+
+[[package]]
+name = "fastforge_app_builder"
+version = "0.0.1"
+dependencies = [
+ "fastforge_core",
+ "glob",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tempfile",
+]
+
+[[package]]
+name = "fastforge_app_packager"
+version = "0.0.1"
+dependencies = [
+ "fastforge_core",
+ "tempfile",
+]
+
+[[package]]
+name = "fastforge_app_publisher"
+version = "0.0.1"
+dependencies = [
+ "chrono",
+ "fastforge_core",
+ "hex",
+ "hmac",
+ "jsonwebtoken",
+ "percent-encoding",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "fastforge_core"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror",
 ]
 
 [[package]]

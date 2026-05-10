@@ -1,5 +1,5 @@
 [package]
-name = "app_packager"
+name = "fastforge_app_packager"
 version = "0.0.1"
 edition = "2024"
 authors = ["LiJianying <lijy91@foxmail.com>"]
@@ -7,6 +7,7 @@ description = "A unified app packager"
 license = "MIT"
 
 [dependencies]
+fastforge_core = { path = "../core" }
 
 [dev-dependencies]
 tempfile = "3"

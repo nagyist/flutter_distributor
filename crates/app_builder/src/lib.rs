@@ -1,24 +1,25 @@
-mod builders;
-mod commands;
-mod traits;
-mod types;
+mod custom;
+mod flutter;
+mod gradle;
 
-use crate::builders::flutter::{
+use crate::flutter::command::FlutterCommand;
+use crate::flutter::{
     AndroidAabBuilder, AndroidApkBuilder, IOSBuilder, LinuxBuilder, MacOSBuilder, OhosAppBuilder,
     OhosHapBuilder, WebBuilder, WindowsBuilder,
 };
-use crate::commands::flutter::FlutterCommand;
-use crate::traits::AppBuilder;
+pub use fastforge_core::AppBuilder;
+pub use fastforge_core::{
+    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, FlutterVersion, PubspecInfo,
+};
 use serde_json::{Map, Value};
 use std::path::Path;
 use std::time::Instant;
 
-pub use builders::custom::{CustomAppBuilder, CustomBuilder};
-pub use builders::gradle::{
+pub use crate::custom::{CustomAppBuilder, CustomBuilder};
+pub use crate::gradle::{
     GradleAndroidAabBuilder, GradleAndroidApkBuilder, GradleAppBuilder, GradleKmpAndroidAabBuilder,
     GradleKmpAndroidApkBuilder, GradleKmpDesktopBuilder, GradleKmpIosFrameworkBuilder,
 };
-pub use types::*;
 
 pub struct FlutterAppBuilder {
     builders: Vec<Box<dyn AppBuilder + Send + Sync>>,
@@ -46,7 +47,7 @@ impl FlutterAppBuilder {
     pub fn clean(
         &self,
         environment: Option<&std::collections::HashMap<String, String>>,
-    ) -> Result<(), crate::types::BuildError> {
+    ) -> Result<(), BuildError> {
         FlutterCommand::new(environment).clean()
     }
 
@@ -56,13 +57,13 @@ impl FlutterAppBuilder {
         target: Option<&str>,
         arguments: Map<String, Value>,
         environment: Option<std::collections::HashMap<String, String>>,
-    ) -> Result<crate::types::BuildResult, crate::types::BuildError> {
+    ) -> Result<BuildResult, BuildError> {
         let builder = self
             .builders
             .iter()
             .find(|b| b.matches(platform, target))
             .ok_or_else(|| {
-                crate::types::BuildError::UnsupportedBuilder(format!(
+                BuildError::UnsupportedBuilder(format!(
                     "No builder found for platform={} target={}",
                     platform,
                     target.unwrap_or("")
@@ -70,13 +71,13 @@ impl FlutterAppBuilder {
             })?;
 
         if !builder.is_supported_on_current_platform() {
-            return Err(crate::types::BuildError::UnsupportedPlatform(format!(
+            return Err(BuildError::UnsupportedPlatform(format!(
                 "{} is not supported on the current platform",
                 builder.name()
             )));
         }
 
-        let config = crate::types::BuildConfig::new(arguments);
+        let config = BuildConfig::new(arguments);
         builder.validate_arguments(&config)?;
 
         let pubspec = read_pubspec(Path::new("pubspec.yaml"))?;
@@ -90,13 +91,13 @@ impl FlutterAppBuilder {
         let flutter = FlutterCommand::new(environment.as_ref());
         let exit = flutter.build_with_echo(builder.build_subcommand(), &build_arguments)?;
         if exit != 0 {
-            return Err(crate::types::BuildError::CommandFailed(format!(
+            return Err(BuildError::CommandFailed(format!(
                 "flutter build failed with exit code {}",
                 exit
             )));
         }
 
-        let flutter_version: Option<crate::types::FlutterVersion> = if builder.name() == "windows" {
+        let flutter_version: Option<FlutterVersion> = if builder.name() == "windows" {
             flutter.version().ok()
         } else {
             None
@@ -109,7 +110,7 @@ impl FlutterAppBuilder {
         )?;
 
         if output_files.is_empty() {
-            return Err(crate::types::BuildError::ArtifactNotFound(format!(
+            return Err(BuildError::ArtifactNotFound(format!(
                 "No build artifacts found in {}",
                 output_directory.display()
             )));
@@ -124,9 +125,7 @@ impl FlutterAppBuilder {
     }
 }
 
-pub fn build(
-    request: crate::types::BuildRequest,
-) -> Result<crate::types::BuildResult, crate::types::BuildError> {
+pub fn build(request: BuildRequest) -> Result<BuildResult, BuildError> {
     FlutterAppBuilder::default().build(
         &request.platform,
         request.target.as_deref(),
@@ -135,13 +134,11 @@ pub fn build(
     )
 }
 
-fn read_pubspec(path: &Path) -> Result<crate::types::PubspecInfo, crate::types::BuildError> {
-    let content = std::fs::read_to_string(path).map_err(|e| {
-        crate::types::BuildError::Io(format!("Failed to read {}: {}", path.display(), e))
-    })?;
-    let yaml: serde_yaml::Value = serde_yaml::from_str(&content).map_err(|e| {
-        crate::types::BuildError::Parse(format!("Failed to parse pubspec.yaml: {}", e))
-    })?;
+fn read_pubspec(path: &Path) -> Result<PubspecInfo, BuildError> {
+    let content = std::fs::read_to_string(path)
+        .map_err(|e| BuildError::Io(format!("Failed to read {}: {}", path.display(), e)))?;
+    let yaml: serde_yaml::Value = serde_yaml::from_str(&content)
+        .map_err(|e| BuildError::Parse(format!("Failed to parse pubspec.yaml: {}", e)))?;
 
     let version = yaml
         .get("version")
@@ -153,7 +150,7 @@ fn read_pubspec(path: &Path) -> Result<crate::types::PubspecInfo, crate::types::
     let build_name = split.next().unwrap_or("0.1.0").to_string();
     let build_number = split.next_back().unwrap_or(&version).to_string();
 
-    Ok(crate::types::PubspecInfo {
+    Ok(PubspecInfo {
         build_name,
         build_number,
     })

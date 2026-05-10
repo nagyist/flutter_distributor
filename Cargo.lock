@@ -433,25 +433,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fastforge"
-version = "0.7.0"
-dependencies = [
- "anyhow",
- "clap",
- "fastforge_app_analyzer",
- "fastforge_app_builder",
- "fastforge_app_packager",
- "fastforge_app_publisher",
- "fastforge_core",
- "log",
- "serde",
- "serde_json",
- "serde_yaml",
- "tempfile",
- "tokio",
-]
-
-[[package]]
 name = "fastforge_app_analyzer"
 version = "0.0.1"
 dependencies = [
@@ -498,6 +479,25 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+]
+
+[[package]]
+name = "fastforge_cli"
+version = "0.7.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "fastforge_app_analyzer",
+ "fastforge_app_builder",
+ "fastforge_app_packager",
+ "fastforge_app_publisher",
+ "fastforge_core",
+ "log",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tempfile",
+ "tokio",
 ]
 
 [[package]]

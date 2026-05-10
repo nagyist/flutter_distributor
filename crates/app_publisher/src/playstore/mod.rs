@@ -1,5 +1,7 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
 use chrono::Utc;
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};

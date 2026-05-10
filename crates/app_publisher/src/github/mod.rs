@@ -1,4 +1,6 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
 use reqwest::blocking::Client;
 use reqwest::header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};

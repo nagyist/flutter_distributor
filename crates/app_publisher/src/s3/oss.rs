@@ -1,4 +1,6 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 
 use super::{S3PublishOptions, optional_value, parse_bool, required_value, upload_artifact};
 

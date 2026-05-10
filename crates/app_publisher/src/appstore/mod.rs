@@ -1,4 +1,6 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 use std::env;
 use std::path::Path;
 use std::process::Command;

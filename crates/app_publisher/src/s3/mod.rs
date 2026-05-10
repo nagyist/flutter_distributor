@@ -1,5 +1,7 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
 use chrono::Utc;
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 use hmac::{Hmac, Mac};
 use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
 use reqwest::StatusCode;

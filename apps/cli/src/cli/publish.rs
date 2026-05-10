@@ -1,10 +1,10 @@
 use anyhow::{Result, anyhow};
+use clap::Args;
 use fastforge_app_publisher::{
     AppGalleryPublisher, AppPublisher, CosPublisher, CustomPublisher, FirPublisher,
     FirebaseHostingPublisher, FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig,
     QiniuPublisher, S3Publisher, VercelPublisher,
 };
-use clap::Args;
 use std::collections::HashMap;
 
 #[derive(Args)]

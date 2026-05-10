@@ -1,4 +1,4 @@
-use fastforge_core::{AppAnalyzer, AnalyzeConfig, AnalyzeError, AnalyzeResult};
+use fastforge_core::{AnalyzeConfig, AnalyzeError, AnalyzeResult, AppAnalyzer};
 use plist::Value;
 use serde_json::json;
 use std::fs;

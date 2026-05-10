@@ -1,4 +1,6 @@
-use fastforge_core::{AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult};
+use fastforge_core::{
+    AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
+};
 use reqwest::blocking::Client;
 use reqwest::blocking::multipart::{Form, Part};
 use serde::Deserialize;

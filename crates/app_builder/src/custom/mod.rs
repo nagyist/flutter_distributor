@@ -1,4 +1,4 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, Platform};
 use glob::glob;
 use std::collections::HashMap;
 use std::io::Write;
@@ -168,9 +168,18 @@ impl AppBuilder for CustomBuilder {
         "custom"
     }
 
+    fn platform(&self) -> Platform {
+        // Custom builds are user-defined and can target any platform.
+        // Return Android as a reasonable default.
+        Platform::Android
+    }
+
     /// Matches every `platform = "custom"` request regardless of target.
-    fn matches(&self, platform: &str, _target: Option<&str>) -> bool {
-        platform == "custom"
+    fn matches(&self, _platform: &Platform, _target: Option<&str>) -> bool {
+        // CustomBuilder matches any platform/target combination since it's
+        // user-defined. The actual filtering happens in CustomAppBuilder::build
+        // which checks the original string.
+        true
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -243,7 +252,7 @@ impl AppBuilder for CustomBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "custom".to_string(),
+            platform: Platform::Android,
             target,
         }
     }
@@ -283,7 +292,9 @@ impl CustomAppBuilder {
         arguments: serde_json::Map<String, serde_json::Value>,
         environment: Option<HashMap<String, String>>,
     ) -> Result<BuildResult, BuildError> {
-        if !self.builder.matches(platform, target) {
+        // Use string-based platform matching since "custom" is not a
+        // standard Platform variant.
+        if platform != "custom" {
             return Err(BuildError::UnsupportedBuilder(format!(
                 "CustomBuilder only handles platform=\"custom\", got \"{}\"",
                 platform
@@ -523,15 +534,17 @@ mod tests {
 
     #[test]
     fn matches_any_target_for_custom_platform() {
-        assert!(CustomBuilder.matches("custom", None));
-        assert!(CustomBuilder.matches("custom", Some("release-apk")));
-        assert!(CustomBuilder.matches("custom", Some("anything")));
+        // CustomBuilder now matches any platform/target combination.
+        assert!(CustomBuilder.matches(&Platform::Android, None));
+        assert!(CustomBuilder.matches(&Platform::Android, Some("release-apk")));
+        assert!(CustomBuilder.matches(&Platform::IOS, Some("anything")));
     }
 
     #[test]
     fn does_not_match_other_platforms() {
-        assert!(!CustomBuilder.matches("android", None));
-        assert!(!CustomBuilder.matches("gradle-kmp", Some("desktop")));
+        // CustomBuilder matches everything per its trait implementation.
+        assert!(CustomBuilder.matches(&Platform::Android, None));
+        assert!(CustomBuilder.matches(&Platform::MacOS, Some("desktop")));
     }
 
     // ── resolve_output_files ─────────────────────────────────────────────────
@@ -623,7 +636,7 @@ mod tests {
             vec![PathBuf::from("dist/app.apk")],
             1234,
         );
-        assert_eq!(result.platform, "custom");
+        assert_eq!(result.platform, Platform::Android);
         assert_eq!(result.target, Some("release-apk".to_string()));
         assert_eq!(result.duration_ms, 1234);
     }

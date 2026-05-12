@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Zips a macOS `.app` bundle using `7z`, mirroring the macOS branch of
 /// Dart's `AppPackageMakerZip`.
@@ -27,8 +27,8 @@ impl AppPackager for MacOSZipPackager {
         "zip"
     }
 
-    fn platform(&self) -> &str {
-        "macos"
+    fn platform(&self) -> Platform {
+        Platform::MacOS
     }
 
     fn package_format(&self) -> &str {

@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a Linux AppImage using `appimagetool`, mirroring Dart's
 /// `AppPackageMakerAppImage`.
@@ -26,8 +26,8 @@ impl AppPackager for LinuxAppImagePackager {
         "appimage"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

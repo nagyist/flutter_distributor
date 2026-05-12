@@ -1,8 +1,9 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use fastforge_app_builder::FlutterAppBuilder;
+use fastforge_app_builder::{FlutterAppBuilder, Platform};
 use serde_json::{Map, Value};
 use std::collections::HashMap;
+use std::str::FromStr;
 
 #[derive(Args)]
 pub struct BuildArgs {
@@ -38,10 +39,12 @@ pub struct BuildArgs {
 
 pub async fn execute(args: &BuildArgs) -> Result<()> {
     log::info!("Executing build command");
-    let platform = args
+    let platform_str = args
         .platform
         .as_deref()
         .ok_or_else(|| anyhow!("The 'platform' option is mandatory!"))?;
+    let platform: Platform = Platform::from_str(platform_str)
+        .map_err(|e| anyhow!("Invalid platform '{}': {}", platform_str, e))?;
 
     let mut build_arguments = generate_build_args(args);
     merge_flutter_build_args(&mut build_arguments, args.flutter_build_args.as_deref())?;
@@ -53,7 +56,7 @@ pub async fn execute(args: &BuildArgs) -> Result<()> {
     }
 
     let result = builder
-        .build(platform, args.target.as_deref(), build_arguments, Some(env))
+        .build(&platform, args.target.as_deref(), build_arguments, Some(env))
         .map_err(|e| anyhow!("{}", e))?;
 
     println!(

@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a pacman `.pkg.tar.xz` using `bsdtar` and `xz`, mirroring
 /// Dart's `AppPackageMakerPacman`.
@@ -26,8 +26,8 @@ impl AppPackager for LinuxPacmanPackager {
         "pacman"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

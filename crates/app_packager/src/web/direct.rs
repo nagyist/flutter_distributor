@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies a flutter web build output directory to the output path, mirroring
 /// Dart's `AppPackageMakerDirect("web")`.
@@ -23,8 +23,8 @@ impl AppPackager for WebDirectPackager {
         "direct"
     }
 
-    fn platform(&self) -> &str {
-        "web"
+    fn platform(&self) -> Platform {
+        Platform::Web
     }
 
     fn package_format(&self) -> &str {

@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a Debian `.deb` package using `dpkg-deb`, mirroring
 /// Dart's `AppPackageMakerDeb`.
@@ -36,8 +36,8 @@ impl AppPackager for LinuxDebPackager {
         "deb"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

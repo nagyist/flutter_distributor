@@ -9,7 +9,7 @@ use crate::flutter::{
 };
 pub use fastforge_core::AppBuilder;
 pub use fastforge_core::{
-    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult,
+    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, Platform,
 };
 pub use crate::flutter::{FlutterVersion, PubspecInfo};
 use serde_json::{Map, Value};
@@ -54,7 +54,7 @@ impl FlutterAppBuilder {
 
     pub fn build(
         &self,
-        platform: &str,
+        platform: &Platform,
         target: Option<&str>,
         arguments: Map<String, Value>,
         environment: Option<std::collections::HashMap<String, String>>,
@@ -66,7 +66,7 @@ impl FlutterAppBuilder {
             .ok_or_else(|| {
                 BuildError::UnsupportedBuilder(format!(
                     "No builder found for platform={} target={}",
-                    platform,
+                    platform.as_str(),
                     target.unwrap_or("")
                 ))
             })?;

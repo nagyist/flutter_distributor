@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a Windows `.msix` package using the `makeappx` / `signtool` SDK tools,
 /// mirroring Dart's `AppPackageMakerMsix`.
@@ -36,8 +36,8 @@ impl AppPackager for WindowsMsixPackager {
         "msix"
     }
 
-    fn platform(&self) -> &str {
-        "windows"
+    fn platform(&self) -> Platform {
+        Platform::Windows
     }
 
     fn package_format(&self) -> &str {

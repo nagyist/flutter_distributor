@@ -1,4 +1,4 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, Platform};
 use glob::glob;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -35,16 +35,8 @@ fn resolve_glob(pattern: &str) -> Result<Vec<PathBuf>, BuildError> {
     Ok(output)
 }
 
-fn current_platform() -> &'static str {
-    if cfg!(target_os = "macos") {
-        "macos"
-    } else if cfg!(target_os = "windows") {
-        "windows"
-    } else if cfg!(target_os = "linux") {
-        "linux"
-    } else {
-        "unknown"
-    }
+fn current_platform() -> Option<Platform> {
+    Platform::current()
 }
 
 /// Returns `"Debug"` / `"Release"` / `"Profile"` with the first letter
@@ -97,8 +89,12 @@ impl AppBuilder for GradleAndroidApkBuilder {
         "gradle-android"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-android" && target == Some("apk")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("apk")
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -145,7 +141,7 @@ impl AppBuilder for GradleAndroidApkBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-android".to_string(),
+            platform: Platform::Android,
             target: Some("apk".to_string()),
         }
     }
@@ -158,8 +154,12 @@ impl AppBuilder for GradleAndroidAabBuilder {
         "gradle-android"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-android" && target == Some("aab")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("aab")
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -203,7 +203,7 @@ impl AppBuilder for GradleAndroidAabBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-android".to_string(),
+            platform: Platform::Android,
             target: Some("aab".to_string()),
         }
     }
@@ -216,8 +216,12 @@ impl AppBuilder for GradleKmpAndroidApkBuilder {
         "gradle-kmp"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-kmp" && target == Some("android-apk")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("android-apk")
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -285,7 +289,7 @@ impl AppBuilder for GradleKmpAndroidApkBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-kmp".to_string(),
+            platform: Platform::Android,
             target: Some("android-apk".to_string()),
         }
     }
@@ -298,8 +302,12 @@ impl AppBuilder for GradleKmpAndroidAabBuilder {
         "gradle-kmp"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-kmp" && target == Some("android-aab")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("android-aab")
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -361,7 +369,7 @@ impl AppBuilder for GradleKmpAndroidAabBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-kmp".to_string(),
+            platform: Platform::Android,
             target: Some("android-aab".to_string()),
         }
     }
@@ -374,8 +382,13 @@ impl AppBuilder for GradleKmpDesktopBuilder {
         "gradle-kmp"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-kmp" && target == Some("desktop")
+    fn platform(&self) -> Platform {
+        // Desktop platform depends on the current host OS.
+        Platform::current().unwrap_or(Platform::Linux)
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        target == Some("desktop") && matches!(platform, Platform::MacOS | Platform::Windows | Platform::Linux)
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -414,13 +427,12 @@ impl AppBuilder for GradleKmpDesktopBuilder {
         let output_directory = PathBuf::from(format!("{}/build/compose/binaries/main", module));
 
         let (platform_ext, platform_dir) = match current_platform() {
-            "macos" => ("dmg", "dmg"),
-            "windows" => ("msi", "msi"),
-            "linux" => ("deb", "deb"),
-            other => {
+            Some(Platform::MacOS) => ("dmg", "dmg"),
+            Some(Platform::Windows) => ("msi", "msi"),
+            Some(Platform::Linux) => ("deb", "deb"),
+            _ => {
                 return Err(BuildError::UnsupportedPlatform(format!(
-                    "Desktop KMP packaging is not supported on platform '{}'",
-                    other
+                    "Desktop KMP packaging is not supported on this platform"
                 )));
             }
         };
@@ -446,7 +458,7 @@ impl AppBuilder for GradleKmpDesktopBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-kmp".to_string(),
+            platform: current_platform().unwrap_or(Platform::Linux),
             target: Some("desktop".to_string()),
         }
     }
@@ -459,13 +471,17 @@ impl AppBuilder for GradleKmpIosFrameworkBuilder {
         "gradle-kmp"
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "gradle-kmp" && target == Some("ios-framework")
+    fn platform(&self) -> Platform {
+        Platform::IOS
+    }
+
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::IOS && target == Some("ios-framework")
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
         // XCFramework assembly requires a macOS host.
-        current_platform() == "macos"
+        current_platform() == Some(Platform::MacOS)
     }
 
     fn build_subcommand(&self) -> &str {
@@ -518,7 +534,7 @@ impl AppBuilder for GradleKmpIosFrameworkBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "gradle-kmp".to_string(),
+            platform: Platform::IOS,
             target: Some("ios-framework".to_string()),
         }
     }
@@ -600,6 +616,37 @@ impl GradleAppBuilder {
         Ok("gradle".to_string())
     }
 
+    /// Match a Gradle builder using string-based platform names
+    /// (e.g. "gradle-android", "gradle-kmp") since these are not standard
+    /// Platform variants. Each builder's `name()` returns the platform prefix.
+    fn find_builder(&self, platform: &str, target: Option<&str>) -> Option<&Box<dyn AppBuilder + Send + Sync>> {
+        self.builders.iter().find(|b| {
+            // The builder's `name()` matches the platform prefix, e.g.
+            //   GradleAndroidApkBuilder.name() == "gradle-android"
+            //   GradleKmpAndroidApkBuilder.name() == "gradle-kmp"
+            b.name() == platform
+                && match target {
+                    Some(t) => {
+                        // Match by target—each builder stores its accepted target
+                        // in the `build_result`s target field.
+                        let expected = match b.name() {
+                            "gradle-android" => match t {
+                                "apk" | "aab" => true,
+                                _ => false,
+                            },
+                            "gradle-kmp" => match t {
+                                "android-apk" | "android-aab" | "desktop" | "ios-framework" => true,
+                                _ => false,
+                            },
+                            _ => false,
+                        };
+                        expected
+                    }
+                    None => false,
+                }
+        })
+    }
+
     pub fn build(
         &self,
         platform: &str,
@@ -608,9 +655,7 @@ impl GradleAppBuilder {
         environment: Option<HashMap<String, String>>,
     ) -> Result<BuildResult, BuildError> {
         let builder = self
-            .builders
-            .iter()
-            .find(|b| b.matches(platform, target))
+            .find_builder(platform, target)
             .ok_or_else(|| {
                 BuildError::UnsupportedBuilder(format!(
                     "No Gradle builder found for platform={} target={}",
@@ -878,14 +923,14 @@ mod tests {
 
     #[test]
     fn matchers_are_exclusive() {
-        assert!(GradleAndroidApkBuilder.matches("gradle-android", Some("apk")));
-        assert!(!GradleAndroidApkBuilder.matches("gradle-android", Some("aab")));
-        assert!(GradleAndroidAabBuilder.matches("gradle-android", Some("aab")));
-        assert!(!GradleAndroidAabBuilder.matches("gradle-android", Some("apk")));
-        assert!(GradleKmpAndroidApkBuilder.matches("gradle-kmp", Some("android-apk")));
-        assert!(GradleKmpAndroidAabBuilder.matches("gradle-kmp", Some("android-aab")));
-        assert!(GradleKmpDesktopBuilder.matches("gradle-kmp", Some("desktop")));
-        assert!(GradleKmpIosFrameworkBuilder.matches("gradle-kmp", Some("ios-framework")));
+        assert!(GradleAndroidApkBuilder.matches(&Platform::Android, Some("apk")));
+        assert!(!GradleAndroidApkBuilder.matches(&Platform::Android, Some("aab")));
+        assert!(GradleAndroidAabBuilder.matches(&Platform::Android, Some("aab")));
+        assert!(!GradleAndroidAabBuilder.matches(&Platform::Android, Some("apk")));
+        assert!(GradleKmpAndroidApkBuilder.matches(&Platform::Android, Some("android-apk")));
+        assert!(GradleKmpAndroidAabBuilder.matches(&Platform::Android, Some("android-aab")));
+        assert!(GradleKmpDesktopBuilder.matches(&Platform::MacOS, Some("desktop")));
+        assert!(GradleKmpIosFrameworkBuilder.matches(&Platform::IOS, Some("ios-framework")));
     }
 
     // ── platform support ─────────────────────────────────────────────────────

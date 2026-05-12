@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies the first build output file (the `.ipa` exported by Xcode)
 /// to the versioned output path, mirroring Dart's `AppPackageMakerIpa`.
@@ -9,8 +9,8 @@ impl AppPackager for IOSIpaPackager {
         "ipa"
     }
 
-    fn platform(&self) -> &str {
-        "ios"
+    fn platform(&self) -> Platform {
+        Platform::IOS
     }
 
     fn package_format(&self) -> &str {
@@ -50,7 +50,7 @@ mod tests {
             app_binary_name: "myapp".into(),
             app_version: "1.0.0".into(),
             build_mode: "release".into(),
-            platform: "ios".into(),
+            platform: Platform::IOS,
             flavor: None,
             channel: None,
             artifact_name: None,

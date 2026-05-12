@@ -1,3 +1,4 @@
+use crate::model::Platform;
 use std::path::{Path, PathBuf};
 use thiserror::Error;
 
@@ -28,7 +29,7 @@ fn render_artifact_name(config: &PackageConfig) -> String {
         name.push_str(&config.build_mode);
     }
     name.push('-');
-    name.push_str(&config.platform);
+    name.push_str(config.platform.as_str());
     if config.is_installer {
         name.push_str("-setup");
     }
@@ -45,7 +46,7 @@ pub struct PackageConfig {
     pub app_binary_name: String,
     pub app_version: String,
     pub build_mode: String,
-    pub platform: String,
+    pub platform: Platform,
     pub flavor: Option<String>,
     pub channel: Option<String>,
     pub artifact_name: Option<String>,
@@ -121,15 +122,15 @@ pub enum PackageError {
 
 pub trait AppPackager {
     fn name(&self) -> &str;
-    fn platform(&self) -> &str;
+    fn platform(&self) -> Platform;
     fn package_format(&self) -> &str;
 
     fn is_supported_on_current_platform(&self) -> bool {
         true
     }
 
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        self.platform() == platform && target.is_none_or(|t| self.name() == t)
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        self.platform() == *platform && target.is_none_or(|t| self.name() == t)
     }
 
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError>;

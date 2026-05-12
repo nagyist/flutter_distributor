@@ -1,3 +1,4 @@
+use crate::model::Platform;
 use serde::Serialize;
 use serde_json::{Map, Value, json};
 use std::collections::HashMap;
@@ -63,7 +64,7 @@ impl BuildConfig {
 
 #[derive(Debug, Clone)]
 pub struct BuildRequest {
-    pub platform: String,
+    pub platform: Platform,
     pub target: Option<String>,
     pub arguments: Map<String, Value>,
     pub environment: Option<HashMap<String, String>>,
@@ -81,7 +82,7 @@ pub struct BuildResult {
     pub output_directory: PathBuf,
     pub output_files: Vec<PathBuf>,
     pub duration_ms: u128,
-    pub platform: String,
+    pub platform: Platform,
     pub target: Option<String>,
 }
 
@@ -89,6 +90,7 @@ impl BuildResult {
     pub fn to_json_compatible(&self) -> Value {
         json!({
             "config": self.config.to_json_compatible(),
+            "platform": self.platform.as_str(),
             "outputDirectory": self.output_directory.to_string_lossy().to_string(),
             "duration": self.duration_ms,
             "outputFiles": self.output_files.iter().map(|p| p.to_string_lossy().to_string()).collect::<Vec<_>>(),
@@ -118,7 +120,8 @@ pub enum BuildError {
 
 pub trait AppBuilder {
     fn name(&self) -> &str;
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool;
+    fn platform(&self) -> Platform;
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool;
     fn is_supported_on_current_platform(&self) -> bool;
     fn build_subcommand(&self) -> &str;
     fn validate_arguments(&self, _config: &BuildConfig) -> Result<(), BuildError> {

@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies the first build output file (the `.hap` produced by the HarmonyOS SDK)
 /// to the versioned output path, mirroring Dart's `AppPackageMakerHap`.
@@ -9,8 +9,8 @@ impl AppPackager for OHOSHapPackager {
         "hap"
     }
 
-    fn platform(&self) -> &str {
-        "ohos"
+    fn platform(&self) -> Platform {
+        Platform::Ohos
     }
 
     fn package_format(&self) -> &str {
@@ -45,7 +45,7 @@ mod tests {
             app_binary_name: "myapp".into(),
             app_version: "1.0.0".into(),
             build_mode: "release".into(),
-            platform: "ohos".into(),
+            platform: Platform::Ohos,
             flavor: None,
             channel: None,
             artifact_name: None,

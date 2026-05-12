@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Zips a flutter web build output directory, mirroring the web branch of
 /// Dart's `AppPackageMakerZip`.
@@ -24,8 +24,8 @@ impl AppPackager for WebZipPackager {
         "zip"
     }
 
-    fn platform(&self) -> &str {
-        "web"
+    fn platform(&self) -> Platform {
+        Platform::Web
     }
 
     fn package_format(&self) -> &str {

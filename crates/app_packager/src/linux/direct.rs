@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies the flutter Linux build output directory directly to the output
 /// path without any additional packaging, mirroring Dart's
@@ -24,8 +24,8 @@ impl AppPackager for LinuxDirectPackager {
         "direct"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies the flutter Windows build output directory directly to the output
 /// path without any additional packaging, mirroring Dart's
@@ -30,8 +30,8 @@ impl AppPackager for WindowsDirectPackager {
         "direct"
     }
 
-    fn platform(&self) -> &str {
-        "windows"
+    fn platform(&self) -> Platform {
+        Platform::Windows
     }
 
     fn package_format(&self) -> &str {

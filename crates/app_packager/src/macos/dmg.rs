@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use dmg_maker::{CreateOptions, DmgMakerError, create};
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 use serde_json::json;
 
 /// Builds a macOS `.dmg` using the Rust-native `dmg_maker` crate.
@@ -15,8 +15,8 @@ impl AppPackager for MacOSDmgPackager {
         "dmg"
     }
 
-    fn platform(&self) -> &str {
-        "macos"
+    fn platform(&self) -> Platform {
+        Platform::MacOS
     }
 
     fn package_format(&self) -> &str {

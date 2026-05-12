@@ -1,4 +1,4 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, Platform};
 use glob::glob;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -37,24 +37,19 @@ fn resolve_glob(pattern: &str) -> Result<Vec<PathBuf>, BuildError> {
     Ok(output)
 }
 
-fn current_platform() -> &'static str {
-    if cfg!(target_os = "macos") {
-        "macos"
-    } else if cfg!(target_os = "windows") {
-        "windows"
-    } else if cfg!(target_os = "linux") {
-        "linux"
-    } else {
-        "unknown"
-    }
+fn current_platform() -> Option<Platform> {
+    Platform::current()
 }
 
 impl AppBuilder for AndroidApkBuilder {
     fn name(&self) -> &str {
         "android"
     }
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "android" && target == Some("apk")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("apk")
     }
     fn is_supported_on_current_platform(&self) -> bool {
         true
@@ -96,7 +91,7 @@ impl AppBuilder for AndroidApkBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "android".to_string(),
+            platform: Platform::Android,
             target: Some("apk".to_string()),
         }
     }
@@ -106,8 +101,11 @@ impl AppBuilder for AndroidAabBuilder {
     fn name(&self) -> &str {
         "android"
     }
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "android" && target == Some("aab")
+    fn platform(&self) -> Platform {
+        Platform::Android
+    }
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Android && target == Some("aab")
     }
     fn is_supported_on_current_platform(&self) -> bool {
         true
@@ -155,7 +153,7 @@ impl AppBuilder for AndroidAabBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "android".to_string(),
+            platform: Platform::Android,
             target: Some("aab".to_string()),
         }
     }
@@ -165,11 +163,14 @@ impl AppBuilder for IOSBuilder {
     fn name(&self) -> &str {
         "ios"
     }
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "ios" && target.is_none_or(|t| t == "ipa")
+    fn platform(&self) -> Platform {
+        Platform::IOS
+    }
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::IOS && target.is_none_or(|t| t == "ipa")
     }
     fn is_supported_on_current_platform(&self) -> bool {
-        current_platform() == "macos"
+        current_platform() == Some(Platform::MacOS)
     }
     fn build_subcommand(&self) -> &str {
         "ipa"
@@ -214,7 +215,7 @@ impl AppBuilder for IOSBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "ios".to_string(),
+            platform: Platform::IOS,
             target: Some("ipa".to_string()),
         }
     }
@@ -224,11 +225,14 @@ impl AppBuilder for MacOSBuilder {
     fn name(&self) -> &str {
         "macos"
     }
-    fn matches(&self, platform: &str, _target: Option<&str>) -> bool {
-        platform == "macos"
+    fn platform(&self) -> Platform {
+        Platform::MacOS
+    }
+    fn matches(&self, platform: &Platform, _target: Option<&str>) -> bool {
+        platform == &Platform::MacOS
     }
     fn is_supported_on_current_platform(&self) -> bool {
-        current_platform() == "macos"
+        current_platform() == Some(Platform::MacOS)
     }
     fn build_subcommand(&self) -> &str {
         "macos"
@@ -262,7 +266,7 @@ impl AppBuilder for MacOSBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "macos".to_string(),
+            platform: Platform::MacOS,
             target: None,
         }
     }
@@ -272,11 +276,14 @@ impl AppBuilder for WindowsBuilder {
     fn name(&self) -> &str {
         "windows"
     }
-    fn matches(&self, platform: &str, _target: Option<&str>) -> bool {
-        platform == "windows"
+    fn platform(&self) -> Platform {
+        Platform::Windows
+    }
+    fn matches(&self, platform: &Platform, _target: Option<&str>) -> bool {
+        platform == &Platform::Windows
     }
     fn is_supported_on_current_platform(&self) -> bool {
-        current_platform() == "windows"
+        current_platform() == Some(Platform::Windows)
     }
     fn build_subcommand(&self) -> &str {
         "windows"
@@ -313,7 +320,7 @@ impl AppBuilder for WindowsBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "windows".to_string(),
+            platform: Platform::Windows,
             target: None,
         }
     }
@@ -323,11 +330,14 @@ impl AppBuilder for LinuxBuilder {
     fn name(&self) -> &str {
         "linux"
     }
-    fn matches(&self, platform: &str, _target: Option<&str>) -> bool {
-        platform == "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
+    }
+    fn matches(&self, platform: &Platform, _target: Option<&str>) -> bool {
+        platform == &Platform::Linux
     }
     fn is_supported_on_current_platform(&self) -> bool {
-        current_platform() == "linux"
+        current_platform() == Some(Platform::Linux)
     }
     fn build_subcommand(&self) -> &str {
         "linux"
@@ -362,7 +372,7 @@ impl AppBuilder for LinuxBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "linux".to_string(),
+            platform: Platform::Linux,
             target: None,
         }
     }
@@ -372,8 +382,11 @@ impl AppBuilder for WebBuilder {
     fn name(&self) -> &str {
         "web"
     }
-    fn matches(&self, platform: &str, _target: Option<&str>) -> bool {
-        platform == "web"
+    fn platform(&self) -> Platform {
+        Platform::Web
+    }
+    fn matches(&self, platform: &Platform, _target: Option<&str>) -> bool {
+        platform == &Platform::Web
     }
     fn is_supported_on_current_platform(&self) -> bool {
         true
@@ -402,7 +415,7 @@ impl AppBuilder for WebBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "web".to_string(),
+            platform: Platform::Web,
             target: None,
         }
     }
@@ -412,8 +425,11 @@ impl AppBuilder for OhosHapBuilder {
     fn name(&self) -> &str {
         "ohos"
     }
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "ohos" && target == Some("hap")
+    fn platform(&self) -> Platform {
+        Platform::Ohos
+    }
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Ohos && target == Some("hap")
     }
     fn is_supported_on_current_platform(&self) -> bool {
         true
@@ -443,7 +459,7 @@ impl AppBuilder for OhosHapBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "ohos".to_string(),
+            platform: Platform::Ohos,
             target: Some("hap".to_string()),
         }
     }
@@ -453,8 +469,11 @@ impl AppBuilder for OhosAppBuilder {
     fn name(&self) -> &str {
         "ohos"
     }
-    fn matches(&self, platform: &str, target: Option<&str>) -> bool {
-        platform == "ohos" && target == Some("app")
+    fn platform(&self) -> Platform {
+        Platform::Ohos
+    }
+    fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
+        platform == &Platform::Ohos && target == Some("app")
     }
     fn is_supported_on_current_platform(&self) -> bool {
         true
@@ -484,7 +503,7 @@ impl AppBuilder for OhosAppBuilder {
             output_directory,
             output_files,
             duration_ms,
-            platform: "ohos".to_string(),
+            platform: Platform::Ohos,
             target: Some("app".to_string()),
         }
     }

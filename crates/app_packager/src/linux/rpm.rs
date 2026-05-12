@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds an RPM package using `rpmbuild`, mirroring Dart's `AppPackageMakerRPM`.
 ///
@@ -25,8 +25,8 @@ impl AppPackager for LinuxRpmPackager {
         "rpm"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Zips a Linux flutter build output directory, mirroring the Linux branch of
 /// Dart's `AppPackageMakerZip` (uses `zip` command-line tool on Linux).
@@ -24,8 +24,8 @@ impl AppPackager for LinuxZipPackager {
         "zip"
     }
 
-    fn platform(&self) -> &str {
-        "linux"
+    fn platform(&self) -> Platform {
+        Platform::Linux
     }
 
     fn package_format(&self) -> &str {

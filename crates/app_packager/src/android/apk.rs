@@ -1,4 +1,4 @@
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Copies the first build output file (the `.apk` produced by `flutter build apk`)
 /// to the versioned output path, mirroring Dart's `AppPackageMakerApk`.
@@ -9,8 +9,8 @@ impl AppPackager for AndroidApkPackager {
         "apk"
     }
 
-    fn platform(&self) -> &str {
-        "android"
+    fn platform(&self) -> Platform {
+        Platform::Android
     }
 
     fn package_format(&self) -> &str {
@@ -45,7 +45,7 @@ mod tests {
             app_binary_name: "myapp".into(),
             app_version: "1.0.0".into(),
             build_mode: "release".into(),
-            platform: "android".into(),
+            platform: Platform::Android,
             flavor: None,
             channel: None,
             artifact_name: None,

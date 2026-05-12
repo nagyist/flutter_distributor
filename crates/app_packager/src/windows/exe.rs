@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a Windows `.exe` installer using Inno Setup (`iscc`), mirroring
 /// Dart's `AppPackageMakerExe`.
@@ -26,8 +26,8 @@ impl AppPackager for WindowsExePackager {
         "exe"
     }
 
-    fn platform(&self) -> &str {
-        "windows"
+    fn platform(&self) -> Platform {
+        Platform::Windows
     }
 
     fn package_format(&self) -> &str {

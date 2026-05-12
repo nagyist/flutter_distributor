@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult};
+use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
 
 /// Builds a macOS `.pkg` installer using `xcrun productbuild` (and optionally
 /// `productsign`), mirroring Dart's `AppPackageMakerPkg`.
@@ -32,8 +32,8 @@ impl AppPackager for MacOSPkgPackager {
         "pkg"
     }
 
-    fn platform(&self) -> &str {
-        "macos"
+    fn platform(&self) -> Platform {
+        Platform::MacOS
     }
 
     fn package_format(&self) -> &str {

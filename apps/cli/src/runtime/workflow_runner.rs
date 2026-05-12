@@ -1,5 +1,5 @@
 use anyhow::{Context, Result, anyhow};
-use fastforge_app_builder::{BuildResult, FlutterAppBuilder};
+use fastforge_app_builder::{BuildResult, FlutterAppBuilder, Platform};
 use fastforge_app_packager::{
     AndroidAabPackager, AndroidApkPackager, AppPackager, IOSIpaPackager, LinuxAppImagePackager,
     LinuxDebPackager, LinuxDirectPackager, LinuxPacmanPackager, LinuxRpmPackager, LinuxZipPackager,
@@ -12,6 +12,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
+use std::str::FromStr;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::config::{
@@ -228,7 +229,10 @@ fn execute_build_step(
         .with
         .as_ref()
         .ok_or_else(|| anyhow!("Build step is missing `with` configuration"))?;
-    let platform = get_required_string(with, "platform")?;
+    let platform_str = get_required_string(with, "platform")?;
+    let platform: Platform = platform_str.parse().map_err(|e| {
+        anyhow!("Invalid platform '{}': {}", platform_str, e)
+    })?;
     let target = get_optional_string(with, "target");
     let build_args = get_json_object(with, "build_args")?;
     let builder = FlutterAppBuilder::default();
@@ -273,7 +277,7 @@ fn execute_package_step(
         app_binary_name: pubspec.name,
         app_version: pubspec.version,
         build_mode: build_result.config.mode().as_str().to_string(),
-        platform: platform.clone(),
+        platform: Platform::from_str(&platform).map_err(|e| anyhow!("{e}"))?,
         flavor: build_result.config.flavor().map(|value| value.to_string()),
         channel: get_optional_string(with, "channel"),
         artifact_name,

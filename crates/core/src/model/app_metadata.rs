@@ -1,3 +1,4 @@
+use crate::model::Platform;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -19,8 +20,8 @@ pub struct AppMetadata {
     pub build_number: String,
     /// Package name / bundle identifier (e.g. "com.example.myapp")
     pub package_name: Option<String>,
-    /// Platform (e.g. "android", "ios", "macos", "windows", "linux", "web")
-    pub platform: Option<String>,
+    /// Target platform.
+    pub platform: Option<Platform>,
     /// Flutter version info, if applicable
     pub flutter_version: Option<String>,
     /// Dart version, if applicable

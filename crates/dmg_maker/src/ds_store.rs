@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, bail};
+use crate::error::DmgMakerError;
 use std::cmp::Ordering;
 use std::fs;
 use std::path::Path;
@@ -78,7 +78,7 @@ impl DsStoreBuilder {
         }
     }
 
-    pub fn write(self, output_path: &Path) -> Result<()> {
+    pub fn write(self, output_path: &Path) -> Result<(), DmgMakerError> {
         let mut entries = self.entries;
         entries.push(Entry::bwsp(&self.window)?);
         entries.push(Entry::icvp(
@@ -96,7 +96,7 @@ impl DsStoreBuilder {
         let mut cursor = 8_usize;
         for entry in entries {
             if cursor + entry.buffer.len() > modified.len() {
-                bail!("Too many .DS_Store entries for template block");
+                return Err(DmgMakerError::General("Too many .DS_Store entries for template block".to_string()));
             }
             modified[cursor..cursor + entry.buffer.len()].copy_from_slice(&entry.buffer);
             cursor += entry.buffer.len();
@@ -108,12 +108,11 @@ impl DsStoreBuilder {
         let ds_offset = 4100_usize;
         let end = ds_offset + modified.len();
         if out.len() < end {
-            bail!("Invalid DSStore-clean template");
+            return Err(DmgMakerError::General("Invalid DSStore-clean template".to_string()));
         }
         out[ds_offset..end].copy_from_slice(&modified);
 
-        fs::write(output_path, out)
-            .with_context(|| format!("Failed to write {}", output_path.display()))?;
+        fs::write(output_path, out)?;
         Ok(())
     }
 }
@@ -161,7 +160,7 @@ impl Entry {
         Entry::with_blob(".", *b"vSrn", *b"long", value.to_be_bytes().to_vec())
     }
 
-    fn bwsp(window: &Window) -> Result<Self> {
+    fn bwsp(window: &Window) -> Result<Self, DmgMakerError> {
         let window_bounds = format!(
             "{{{{{}, {}}}, {{{}, {}}}}}",
             window.x, window.y, window.width, window.height
@@ -194,7 +193,7 @@ impl Entry {
         icon_size: u32,
         background_alias: Option<Vec<u8>>,
         background_color: Option<[f64; 3]>,
-    ) -> Result<Self> {
+    ) -> Result<Self, DmgMakerError> {
         let [red, green, blue] = background_color.unwrap_or([1.0, 1.0, 1.0]);
         let mut extra = String::new();
 
@@ -258,31 +257,29 @@ fn utf16be(s: &str) -> Vec<u8> {
     out
 }
 
-fn plist_to_binary(xml: &[u8]) -> Result<Vec<u8>> {
+fn plist_to_binary(xml: &[u8]) -> Result<Vec<u8>, DmgMakerError> {
     let mut child = Command::new("plutil")
         .args(["-convert", "binary1", "-o", "-", "-"])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
-        .spawn()
-        .context("Failed to run plutil")?;
+        .spawn()?;
 
     {
         let stdin = child
             .stdin
             .as_mut()
-            .context("Failed to access plutil stdin")?;
-        std::io::Write::write_all(stdin, xml).context("Failed to write XML plist to plutil")?;
+            .ok_or_else(|| DmgMakerError::General("Failed to access plutil stdin".to_string()))?;
+        std::io::Write::write_all(stdin, xml)?;
     }
 
     let output = child
-        .wait_with_output()
-        .context("Failed to wait for plutil")?;
+        .wait_with_output()?;
     if !output.status.success() {
-        bail!(
-            "plutil failed: {}",
-            String::from_utf8_lossy(&output.stderr).trim()
-        );
+        return Err(DmgMakerError::CommandFailed {
+            command: "plutil".to_string(),
+            stderr: String::from_utf8_lossy(&output.stderr).trim().to_string(),
+        });
     }
 
     Ok(output.stdout)

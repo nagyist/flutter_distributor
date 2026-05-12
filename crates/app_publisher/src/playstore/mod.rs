@@ -38,7 +38,7 @@ impl AppPublisher for PlayStorePublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         ensure_bundle_extension(artifact_path)?;
         let publish_config = PlayStoreConfig::from_config(config)?;
@@ -186,7 +186,7 @@ fn fetch_access_token(credentials: &ServiceAccountCredentials) -> Result<String,
         .map_err(to_publish_error)?;
 
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to get PlayStore access token: status={}",
             response.status()
         )));
@@ -211,7 +211,7 @@ fn insert_edit(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to create PlayStore edit: status={}",
             response.status()
         )));
@@ -243,7 +243,7 @@ fn upload_bundle(
         .map_err(to_publish_error)?;
 
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to upload bundle to PlayStore: status={}",
             response.status()
         )));
@@ -280,7 +280,7 @@ fn update_track(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to update PlayStore track `{track}`: status={}",
             response.status()
         )));
@@ -303,7 +303,7 @@ fn commit_edit(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to commit PlayStore edit: status={}",
             response.status()
         )));
@@ -345,7 +345,7 @@ fn required_value(
 ) -> Result<String, PublishError> {
     optional_value(config, argument_keys, env_keys)
         .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| PublishError::General(format!("{field_name} is required.")))
+        .ok_or_else(|| PublishError::MissingArgument(field_name.to_string()))
 }
 
 fn optional_value(

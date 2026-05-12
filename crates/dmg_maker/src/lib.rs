@@ -1,7 +1,9 @@
+pub mod error;
+
 mod config;
 mod ds_store;
 
-use anyhow::{Context, Result, bail};
+pub use crate::error::DmgMakerError;
 use config::{AppDmgSpec, ContentType, LoadOptions};
 use csscolorparser::Color;
 use ds_store::DsStoreBuilder;
@@ -20,13 +22,13 @@ pub struct CreateOptions {
     pub specification: Option<Value>,
 }
 
-pub fn create(options: CreateOptions) -> Result<()> {
+pub fn create(options: CreateOptions) -> Result<(), DmgMakerError> {
     if cfg!(target_os = "macos") == false {
-        bail!("Platform not supported: {}", std::env::consts::OS);
+        return Err(DmgMakerError::UnsupportedPlatform(std::env::consts::OS.to_string()));
     }
 
     if options.target.exists() {
-        bail!("Target already exists");
+        return Err(DmgMakerError::TargetExists(options.target));
     }
 
     let _target_guard = create_empty_target(&options.target)?;
@@ -61,7 +63,7 @@ fn build_dmg(
     resolve_base: &Path,
     target: &Path,
     state: &mut BuildState,
-) -> Result<()> {
+) -> Result<(), DmgMakerError> {
     let files: Vec<_> = spec
         .contents
         .iter()
@@ -71,7 +73,7 @@ fn build_dmg(
     for file in &files {
         let abs = resolve(resolve_base, &file.path);
         if !abs.exists() {
-            bail!("\"{}\" not found at: {}", file.path, abs.display());
+            return Err(DmgMakerError::FileNotFound(format!("\"{}\" not found at: {}", file.path, abs.display())));
         }
     }
 
@@ -114,7 +116,7 @@ fn build_dmg(
     state.temporary_mount_path = Some(mount_path.clone());
 
     let bkg_dir = mount_path.join(".background");
-    fs::create_dir_all(&bkg_dir).context("Failed to create .background directory")?;
+    fs::create_dir_all(&bkg_dir)?;
 
     let mut bkg_name: Option<PathBuf> = None;
     let mut bkg_size: Option<(i32, i32)> = None;
@@ -129,7 +131,7 @@ fn build_dmg(
                 absolute
                     .file_stem()
                     .and_then(|s| s.to_str())
-                    .context("Invalid background file name")?
+                    .ok_or_else(|| DmgMakerError::InvalidConfig("Invalid background file name".to_string()))?
             );
             let final_path = bkg_dir.join(&output_name);
             run_cmd(
@@ -147,11 +149,9 @@ fn build_dmg(
             let filename = absolute
                 .file_name()
                 .and_then(|s| s.to_str())
-                .context("Invalid background file name")?;
+                .ok_or_else(|| DmgMakerError::InvalidConfig("Invalid background file name".to_string()))?;
             let final_path = bkg_dir.join(filename);
-            fs::copy(&absolute, &final_path).with_context(|| {
-                format!("Failed to copy background {}", absolute.to_string_lossy())
-            })?;
+            fs::copy(&absolute, &final_path)?;
             bkg_name = Some(PathBuf::from(".background").join(filename));
         }
 
@@ -160,8 +160,7 @@ fn build_dmg(
 
     if let Some(icon) = &spec.icon {
         let final_path = mount_path.join(".VolumeIcon.icns");
-        fs::copy(resolve(resolve_base, icon), &final_path)
-            .with_context(|| format!("Failed to copy icon to {}", final_path.display()))?;
+        fs::copy(resolve(resolve_base, icon), &final_path)?;
 
         run_cmd(
             "xattr",
@@ -182,8 +181,7 @@ fn build_dmg(
                     .clone()
                     .unwrap_or_else(|| basename(&entry.path).to_string());
                 let final_path = mount_path.join(name);
-                std::os::unix::fs::symlink(&entry.path, final_path)
-                    .with_context(|| format!("Failed to create symlink for {}", entry.path))?;
+                std::os::unix::fs::symlink(&entry.path, final_path)?;
             }
             ContentType::File => {
                 let src = resolve(resolve_base, &entry.path);
@@ -211,7 +209,8 @@ fn build_dmg(
 
     if let Some(color) = &spec.background_color {
         let parsed = Color::from_html(color)
-            .with_context(|| format!("Invalid css color: {color}"))?
+            .map_err(|e| DmgMakerError::General(format!("Invalid css color: {color}: {e}")))?
+            
             .to_rgba8();
         ds.set_background_color(
             parsed[0] as f64 / 255.0,
@@ -297,12 +296,12 @@ fn build_dmg(
     Ok(())
 }
 
-fn create_empty_target(path: &Path) -> Result<File> {
+fn create_empty_target(path: &Path) -> Result<File, DmgMakerError> {
     OpenOptions::new()
         .create_new(true)
         .write(true)
         .open(path)
-        .with_context(|| format!("Failed to create target {}", path.display()))
+        .map_err(|e| DmgMakerError::General(format!("Failed to create target {}: {}", path.display(), e)))
 }
 
 fn cleanup_state(state: &mut BuildState) {
@@ -325,22 +324,22 @@ fn basename(path: &str) -> &str {
         .unwrap_or(path)
 }
 
-fn du_sm(path: &Path) -> Result<u64> {
+fn du_sm(path: &Path) -> Result<u64, DmgMakerError> {
     let out = run_cmd_capture("du", &["-sm", path.to_string_lossy().as_ref()])?;
     let re = Regex::new(r"^([0-9]+)\t").expect("valid regex");
     let caps = re
         .captures(&out)
-        .context("du -sm: Unknown error parsing output")?;
+        .ok_or_else(|| DmgMakerError::General("du -sm: Unknown error parsing output".to_string()))?;
     let value = caps
         .get(1)
-        .context("du -sm: missing size")?
+        .ok_or_else(|| DmgMakerError::General("du -sm: missing size".to_string()))?
         .as_str()
         .parse::<u64>()
-        .context("du -sm: invalid size")?;
+        .map_err(|e| DmgMakerError::General(format!("du -sm: invalid size: {e}")))?;
     Ok(value)
 }
 
-fn read_image_size(path: &Path) -> Result<(i32, i32)> {
+fn read_image_size(path: &Path) -> Result<(i32, i32), DmgMakerError> {
     let out = run_cmd_capture(
         "sips",
         &[
@@ -358,28 +357,28 @@ fn read_image_size(path: &Path) -> Result<(i32, i32)> {
     let width = width_re
         .captures(&out)
         .and_then(|c| c.get(1))
-        .context("Failed to parse image width")?
+        .ok_or_else(|| DmgMakerError::General("Failed to parse image width".to_string()))?
         .as_str()
         .parse::<i32>()
-        .context("Invalid image width")?;
+        .map_err(|e| DmgMakerError::General(format!("Invalid image width: {e}")))?;
 
     let height = height_re
         .captures(&out)
         .and_then(|c| c.get(1))
-        .context("Failed to parse image height")?
+        .ok_or_else(|| DmgMakerError::General("Failed to parse image height".to_string()))?
         .as_str()
         .parse::<i32>()
-        .context("Invalid image height")?;
+        .map_err(|e| DmgMakerError::General(format!("Invalid image height: {e}")))?;
 
     Ok((width, height))
 }
 
-fn parse_mount_path(output: &str) -> Result<PathBuf> {
+fn parse_mount_path(output: &str) -> Result<PathBuf, DmgMakerError> {
     let re = Regex::new(r"(?m)\s+(\/Volumes\/.+)$").expect("valid regex");
     let mount = re
         .captures(output)
         .and_then(|c| c.get(1))
-        .context("Failed to mount image")?
+        .ok_or_else(|| DmgMakerError::General("Failed to mount image".to_string()))?
         .as_str()
         .trim();
     Ok(PathBuf::from(mount))
@@ -394,49 +393,50 @@ fn retina_path(path: &Path) -> PathBuf {
     path.with_file_name(format!("{stem}@2x.{ext}"))
 }
 
-fn run_cmd(program: &str, args: &[&str]) -> Result<()> {
+fn run_cmd(program: &str, args: &[&str]) -> Result<(), DmgMakerError> {
     let status = Command::new(program)
         .args(args)
-        .status()
-        .with_context(|| format!("Failed to run command: {program}"))?;
+        .status()?;
     if !status.success() {
-        bail!("Command failed: {program} {}", args.join(" "));
+        return Err(DmgMakerError::CommandFailed {
+            command: format!("{} {}", program, args.join(" ")),
+            stderr: String::new(),
+        });
     }
     Ok(())
 }
 
-fn run_cmd_owned(program: &str, args: &[String]) -> Result<()> {
+fn run_cmd_owned(program: &str, args: &[String]) -> Result<(), DmgMakerError> {
     let status = Command::new(program)
         .args(args)
-        .status()
-        .with_context(|| format!("Failed to run command: {program}"))?;
+        .status()?;
     if !status.success() {
-        bail!("Command failed: {program} {}", args.join(" "));
+        return Err(DmgMakerError::CommandFailed {
+            command: format!("{} {}", program, args.join(" ")),
+            stderr: String::new(),
+        });
     }
     Ok(())
 }
 
-fn run_cmd_capture(program: &str, args: &[&str]) -> Result<String> {
+fn run_cmd_capture(program: &str, args: &[&str]) -> Result<String, DmgMakerError> {
     let output = Command::new(program)
         .args(args)
-        .output()
-        .with_context(|| format!("Failed to run command: {program}"))?;
+        .output()?;
     if !output.status.success() {
-        bail!(
-            "Command failed: {program} {}; stderr: {}",
-            args.join(" "),
-            String::from_utf8_lossy(&output.stderr).trim()
-        );
+        return Err(DmgMakerError::CommandFailed {
+            command: format!("{} {}", program, args.join(" ")),
+            stderr: String::from_utf8_lossy(&output.stderr).trim().to_string(),
+        });
     }
     Ok(String::from_utf8_lossy(&output.stdout).to_string())
 }
 
-fn detach_with_retry(path: &Path, max_attempts: usize) -> Result<()> {
+fn detach_with_retry(path: &Path, max_attempts: usize) -> Result<(), DmgMakerError> {
     for attempt in 0..max_attempts {
         let output = Command::new("hdiutil")
             .args(["detach", path.to_string_lossy().as_ref()])
-            .output()
-            .context("Failed to run hdiutil detach")?;
+            .output()?;
 
         if output.status.success() {
             return Ok(());
@@ -445,14 +445,17 @@ fn detach_with_retry(path: &Path, max_attempts: usize) -> Result<()> {
         let stderr = String::from_utf8_lossy(&output.stderr).to_string();
         let is_busy = stderr.contains("Resource busy") || stderr.contains("code = 16");
         if !is_busy || attempt + 1 >= max_attempts {
-            bail!("Failed to detach {}: {}", path.display(), stderr.trim());
+            return Err(DmgMakerError::CommandFailed {
+                command: format!("hdiutil detach {}", path.display()),
+                stderr: stderr.trim().to_string(),
+            });
         }
 
         let seconds = 1_u64 << attempt;
         std::thread::sleep(std::time::Duration::from_secs(seconds));
     }
 
-    bail!("Failed to detach {}", path.display())
+    Err(DmgMakerError::General(format!("Failed to detach {}", path.display())))
 }
 
 fn make_temp_image_path() -> PathBuf {
@@ -463,25 +466,21 @@ fn make_temp_image_path() -> PathBuf {
     std::env::temp_dir().join(format!("dmg_maker-{now}.dmg"))
 }
 
-fn make_alias_record(path: &Path) -> Result<Vec<u8>> {
+fn make_alias_record(path: &Path) -> Result<Vec<u8>, DmgMakerError> {
     let target_path = path
-        .canonicalize()
-        .with_context(|| format!("Failed to resolve background path {}", path.display()))?;
-    let target_meta = fs::metadata(&target_path)
-        .with_context(|| format!("Failed to stat background {}", target_path.display()))?;
+        .canonicalize()?;
+    let target_meta = fs::metadata(&target_path)?;
     let parent_path = target_path
         .parent()
-        .context("Background path has no parent directory")?;
-    let parent_meta = fs::metadata(parent_path)
-        .with_context(|| format!("Failed to stat parent {}", parent_path.display()))?;
+        .ok_or_else(|| DmgMakerError::General("Background path has no parent directory".to_string()))?;
+    let parent_meta = fs::metadata(parent_path)?;
     let volume_path = find_volume_root(&target_path, &target_meta)?;
-    let volume_meta = fs::metadata(&volume_path)
-        .with_context(|| format!("Failed to stat volume {}", volume_path.display()))?;
+    let volume_meta = fs::metadata(&volume_path)?;
 
     let target_name = target_path
         .file_name()
         .and_then(|s| s.to_str())
-        .context("Invalid background file name")?;
+        .ok_or_else(|| DmgMakerError::InvalidConfig("Invalid background file name".to_string()))?;
     let parent_name = parent_path
         .file_name()
         .and_then(|s| s.to_str())
@@ -493,7 +492,7 @@ fn make_alias_record(path: &Path) -> Result<Vec<u8>> {
 
     let rel_to_volume = target_path
         .strip_prefix(&volume_path)
-        .context("Background not inside its volume root")?
+        .map_err(|_| DmgMakerError::General("Background not inside its volume root".to_string()))?
         .to_string_lossy();
     let rel_to_volume = format!("/{rel_to_volume}");
     let volume_path_str = volume_path.to_string_lossy();
@@ -559,14 +558,14 @@ fn make_alias_record(path: &Path) -> Result<Vec<u8>> {
     Ok(buf)
 }
 
-fn find_volume_root(start_path: &Path, start_meta: &fs::Metadata) -> Result<PathBuf> {
+fn find_volume_root(start_path: &Path, start_meta: &fs::Metadata) -> Result<PathBuf, DmgMakerError> {
     let mut current = start_path.to_path_buf();
     let mut last_dev = start_meta.dev();
     let mut last_ino = start_meta.ino();
     loop {
         let parent = current.parent().unwrap_or(Path::new("/"));
         let parent_meta =
-            fs::metadata(parent).with_context(|| format!("Failed to stat {}", parent.display()))?;
+            fs::metadata(parent)?;
         if parent_meta.dev() != last_dev || parent_meta.ino() == last_ino {
             return Ok(current);
         }
@@ -576,10 +575,10 @@ fn find_volume_root(start_path: &Path, start_meta: &fs::Metadata) -> Result<Path
     }
 }
 
-fn utf16be_pascal(value: &str) -> Result<Vec<u8>> {
+fn utf16be_pascal(value: &str) -> Result<Vec<u8>, DmgMakerError> {
     let units: Vec<u16> = value.encode_utf16().collect();
     if units.len() > u16::MAX as usize {
-        bail!("String too long for alias field");
+        return Err(DmgMakerError::InvalidConfig("String too long for alias field".to_string()));
     }
     let mut out = Vec::with_capacity(2 + units.len() * 2);
     out.extend_from_slice(&(units.len() as u16).to_be_bytes());
@@ -589,10 +588,10 @@ fn utf16be_pascal(value: &str) -> Result<Vec<u8>> {
     Ok(out)
 }
 
-fn write_pascal_ascii(buf: &mut [u8], offset: usize, max_len: usize, value: &str) -> Result<()> {
+fn write_pascal_ascii(buf: &mut [u8], offset: usize, max_len: usize, value: &str) -> Result<(), DmgMakerError> {
     let bytes = value.as_bytes();
     if bytes.len() > max_len {
-        bail!("Alias field too long: {}", value);
+        return Err(DmgMakerError::General(format!("Alias field too long: {}", value)));
     }
     buf[offset] = bytes.len() as u8;
     for i in 0..max_len {
@@ -602,12 +601,12 @@ fn write_pascal_ascii(buf: &mut [u8], offset: usize, max_len: usize, value: &str
     Ok(())
 }
 
-fn apple_time_seconds(unix_seconds: i64) -> Result<u32> {
+fn apple_time_seconds(unix_seconds: i64) -> Result<u32, DmgMakerError> {
     let value = unix_seconds
         .checked_add(2_082_844_800)
-        .context("Timestamp overflow while building alias")?;
+        .ok_or_else(|| DmgMakerError::General("Timestamp overflow while building alias".to_string()))?;
     if value < 0 || value > u32::MAX as i64 {
-        bail!("Timestamp out of range while building alias");
+        return Err(DmgMakerError::General("Timestamp out of range while building alias".to_string()));
     }
     Ok(value as u32)
 }

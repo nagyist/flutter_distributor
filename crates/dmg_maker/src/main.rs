@@ -1,8 +1,8 @@
-use anyhow::{Result, bail};
+use dmg_maker::DmgMakerError;
 use dmg_maker::{CreateOptions, create};
 use std::path::PathBuf;
 
-fn main() -> Result<()> {
+fn main() -> Result<(), DmgMakerError> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
 
     if args.len() == 1 && (args[0] == "--help" || args[0] == "-h") {
@@ -16,7 +16,7 @@ fn main() -> Result<()> {
     }
 
     if args.len() != 2 {
-        bail!("Usage: dmg_maker <json-path> <dmg-path>");
+        return Err(DmgMakerError::General("Usage: dmg_maker <json-path> <dmg-path>".to_string()));
     }
 
     let source = PathBuf::from(&args[0]);

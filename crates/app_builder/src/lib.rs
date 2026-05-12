@@ -9,8 +9,9 @@ use crate::flutter::{
 };
 pub use fastforge_core::AppBuilder;
 pub use fastforge_core::{
-    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, FlutterVersion, PubspecInfo,
+    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult,
 };
+pub use crate::flutter::{FlutterVersion, PubspecInfo};
 use serde_json::{Map, Value};
 use std::path::Path;
 use std::time::Instant;
@@ -97,15 +98,8 @@ impl FlutterAppBuilder {
             )));
         }
 
-        let flutter_version: Option<FlutterVersion> = if builder.name() == "windows" {
-            flutter.version().ok()
-        } else {
-            None
-        };
-
         let (output_directory, output_files) = builder.resolve_output_files(
             &config,
-            flutter_version.as_ref(),
             environment.as_ref(),
         )?;
 

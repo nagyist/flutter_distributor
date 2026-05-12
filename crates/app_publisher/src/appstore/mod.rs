@@ -39,7 +39,7 @@ impl AppPublisher for AppStorePublisher {
         }
 
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let artifact_type = appstore_artifact_type(artifact_path)?;
         let auth = AppStoreAuth::from_config(config)?;
@@ -60,7 +60,7 @@ impl AppPublisher for AppStorePublisher {
             .map_err(to_publish_error)?;
 
         if !output.status.success() {
-            return Err(PublishError::General(format!(
+            return Err(PublishError::CommandFailed(format!(
                 "Upload of appstore failed: exit_code={:?}, stderr={}",
                 output.status.code(),
                 String::from_utf8_lossy(&output.stderr)
@@ -92,18 +92,18 @@ impl AppStoreAuth {
         let has_api = is_non_empty(&api_key) || is_non_empty(&api_issuer);
 
         if !has_userpass && !has_api {
-            return Err(PublishError::General(format!(
-                "Missing `{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}` or `{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`."
+            return Err(PublishError::MissingEnv(format!(
+                "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}` or `{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`"
             )));
         }
         if is_non_empty(&username) ^ is_non_empty(&password) {
-            return Err(PublishError::General(format!(
-                "Missing `{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}`."
+            return Err(PublishError::MissingEnv(format!(
+                "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}`"
             )));
         }
         if is_non_empty(&api_key) ^ is_non_empty(&api_issuer) {
-            return Err(PublishError::General(format!(
-                "Missing `{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`."
+            return Err(PublishError::MissingEnv(format!(
+                "`{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`"
             )));
         }
 

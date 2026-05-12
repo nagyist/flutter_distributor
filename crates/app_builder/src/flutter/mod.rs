@@ -1,9 +1,14 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, FlutterVersion};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
 use glob::glob;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
 pub mod command;
+pub mod flutter_version;
+pub mod pubspec_info;
+
+pub use flutter_version::FlutterVersion;
+pub use pubspec_info::PubspecInfo;
 
 pub struct AndroidApkBuilder;
 pub struct AndroidAabBuilder;
@@ -60,7 +65,6 @@ impl AppBuilder for AndroidApkBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = PathBuf::from("build/app/outputs/flutter-apk");
@@ -114,7 +118,6 @@ impl AppBuilder for AndroidAabBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let mut build_mode = config.mode().as_str().to_string();
@@ -184,7 +187,6 @@ impl AppBuilder for IOSBuilder {
     fn resolve_output_files(
         &self,
         _config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = PathBuf::from("build/ios/ipa");
@@ -234,7 +236,6 @@ impl AppBuilder for MacOSBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let build_mode = sentence_case(config.mode().as_str());
@@ -283,7 +284,6 @@ impl AppBuilder for WindowsBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        flutter_version: Option<&FlutterVersion>,
         environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let build_mode = sentence_case(config.mode().as_str());
@@ -297,12 +297,7 @@ impl AppBuilder for WindowsBuilder {
             "x64"
         };
 
-        let use_new_path = flutter_version.is_none_or(|v| v.is_greater_or_equal("3.15.0"));
-        let output_directory = if use_new_path {
-            PathBuf::from(format!("build/windows/{}/runner/{}", arch, build_mode))
-        } else {
-            PathBuf::from(format!("build/windows/runner/{}", build_mode))
-        };
+        let output_directory = PathBuf::from(format!("build/windows/{}/runner/{}", arch, build_mode));
         let files = resolve_glob(&format!("{}/**/*", output_directory.display()))?;
         Ok((output_directory, files))
     }
@@ -340,7 +335,6 @@ impl AppBuilder for LinuxBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let arch = if std::env::consts::ARCH == "aarch64" {
@@ -390,7 +384,6 @@ impl AppBuilder for WebBuilder {
     fn resolve_output_files(
         &self,
         _config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = PathBuf::from("build/web");
@@ -431,7 +424,6 @@ impl AppBuilder for OhosHapBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let flavor = config.flavor().unwrap_or("default");
@@ -473,7 +465,6 @@ impl AppBuilder for OhosAppBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let flavor = config.flavor().unwrap_or("default");
@@ -510,7 +501,7 @@ mod tests {
         args.insert("flavor".to_string(), Value::String("dev".to_string()));
         let config = BuildConfig::new(args);
         let (dir, _) = AndroidApkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve should work");
         assert_eq!(dir.to_string_lossy(), "build/app/outputs/flutter-apk");
     }
@@ -528,33 +519,10 @@ mod tests {
     }
 
     #[test]
-    fn flutter_version_compare() {
-        let version = FlutterVersion {
-            flutter_version: Some("3.16.0-0.0.pre".to_string()),
-        };
-        assert!(version.is_greater_or_equal("3.15.0"));
-    }
-
-    #[test]
-    fn windows_path_for_old_flutter_version() {
-        let config = BuildConfig::new(Map::new());
-        let version = FlutterVersion {
-            flutter_version: Some("3.13.0".to_string()),
-        };
-        let (path, _) = WindowsBuilder
-            .resolve_output_files(&config, Some(&version), None)
-            .expect("resolve path");
-        assert_eq!(path.to_string_lossy(), "build/windows/runner/Release");
-    }
-
-    #[test]
     fn windows_path_for_new_flutter_version() {
         let config = BuildConfig::new(Map::new());
-        let version = FlutterVersion {
-            flutter_version: Some("3.22.0".to_string()),
-        };
         let (path, _) = WindowsBuilder
-            .resolve_output_files(&config, Some(&version), None)
+            .resolve_output_files(&config, None)
             .expect("resolve path");
         assert_eq!(path.to_string_lossy(), "build/windows/x64/runner/Release");
     }
@@ -563,7 +531,7 @@ mod tests {
     fn ohos_default_flavor() {
         let config = BuildConfig::new(Map::new());
         let (path, _) = OhosHapBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve path");
         assert_eq!(
             path.to_string_lossy(),
@@ -577,7 +545,7 @@ mod tests {
         args.insert("profile".to_string(), Value::Bool(true));
         let config = BuildConfig::new(args);
         let (path, _) = MacOSBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve path");
         assert_eq!(path.to_string_lossy(), "build/macos/Build/Products/Profile");
     }
@@ -588,7 +556,7 @@ mod tests {
         args.insert("flavor".to_string(), Value::String("dev".to_string()));
         let config = BuildConfig::new(args);
         let (path, _) = AndroidAabBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve path");
         assert_eq!(
             path.to_string_lossy(),

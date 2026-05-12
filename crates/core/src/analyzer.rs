@@ -1,4 +1,5 @@
 use serde_json::Value;
+use thiserror::Error;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -25,26 +26,21 @@ impl AnalyzeResult {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum AnalyzeError {
+    #[error("Missing environment variable: {0}")]
+    MissingEnv(String),
+    #[error("Not found: {0}")]
+    NotFound(String),
+    #[error("Parse error: {0}")]
+    Parse(String),
+    #[error("Command '{command}' failed: {stderr}")]
+    CommandFailed { command: String, stderr: String },
+    #[error("IO error: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("{0}")]
     General(String),
 }
-
-impl AnalyzeError {
-    pub fn new(message: &str) -> Self {
-        Self::General(message.to_string())
-    }
-}
-
-impl std::fmt::Display for AnalyzeError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            AnalyzeError::General(msg) => write!(f, "Analyze error: {}", msg),
-        }
-    }
-}
-
-impl std::error::Error for AnalyzeError {}
 
 // ── Trait ─────────────────────────────────────────────────────────────────────
 

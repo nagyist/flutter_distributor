@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, bail};
+use crate::error::DmgMakerError;
 use serde::Deserialize;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
@@ -104,26 +104,26 @@ struct LegacyIcons {
 type LegacyExtra = (String, i32, i32);
 
 impl AppDmgSpec {
-    pub fn validate(&self) -> Result<()> {
+    pub fn validate(&self) -> Result<(), DmgMakerError> {
         if self.title.trim().is_empty() {
-            bail!("`title` must not be empty");
+            return Err(DmgMakerError::InvalidConfig("`title` must not be empty".to_string()));
         }
 
         if self.contents.is_empty() {
-            bail!("`contents` must not be empty");
+            return Err(DmgMakerError::InvalidConfig("`contents` must not be empty".to_string()));
         }
 
         if let Some(format) = &self.format {
             let allowed = ["UDRW", "UDRO", "UDCO", "UDZO", "ULFO", "ULMO", "UDBZ"];
             if !allowed.contains(&format.as_str()) {
-                bail!("Invalid `format`: {format}");
+                return Err(DmgMakerError::InvalidConfig(format!("Invalid `format`: {format}")));
             }
         }
 
         if let Some(filesystem) = &self.filesystem {
             let allowed = ["HFS+", "APFS"];
             if !allowed.contains(&filesystem.as_str()) {
-                bail!("Invalid `filesystem`: {filesystem}");
+                return Err(DmgMakerError::InvalidConfig(format!("Invalid `filesystem`: {filesystem}")));
             }
         }
 
@@ -131,19 +131,19 @@ impl AppDmgSpec {
     }
 }
 
-pub fn load_spec(options: &LoadOptions) -> Result<ParsedSpec> {
+pub fn load_spec(options: &LoadOptions) -> Result<ParsedSpec, DmgMakerError> {
     let has_source = options.source.is_some();
     let has_spec = options.basepath.is_some() && options.specification.is_some();
 
     if has_source == has_spec {
-        bail!("Supply one of `source` or `(basepath, specification)`");
+        return Err(DmgMakerError::InvalidConfig("Supply one of `source` or `(basepath, specification)`".to_string()));
     }
 
     if let Some(source) = &options.source {
         let raw = std::fs::read_to_string(source)
-            .with_context(|| format!("JSON Specification not found at: {}", source.display()))?;
+            .map_err(|e| DmgMakerError::General(format!("JSON Specification not found at: {}: {}", source.display(), e)))?;
         let value: Value =
-            serde_json::from_str(&raw).context("Failed to parse JSON specification")?;
+            serde_json::from_str(&raw).map_err(DmgMakerError::Json)?;
         let spec = parse_spec_value(value)?;
 
         return Ok(ParsedSpec {
@@ -159,22 +159,22 @@ pub fn load_spec(options: &LoadOptions) -> Result<ParsedSpec> {
         options
             .specification
             .clone()
-            .context("Missing `specification`")?,
+            .ok_or_else(|| DmgMakerError::InvalidConfig("Missing `specification`".to_string()))?,
     )?;
 
     Ok(ParsedSpec {
         spec,
-        resolve_base: options.basepath.clone().context("Missing `basepath`")?,
+        resolve_base: options.basepath.clone().ok_or_else(|| DmgMakerError::InvalidConfig("Missing `basepath`".to_string()))?,
     })
 }
 
-fn parse_spec_value(value: Value) -> Result<AppDmgSpec> {
+fn parse_spec_value(value: Value) -> Result<AppDmgSpec, DmgMakerError> {
     let spec = if value.get("icons").is_some() {
         let legacy: LegacySpec =
-            serde_json::from_value(value).context("Invalid legacy appdmg configuration")?;
+            serde_json::from_value(value).map_err(DmgMakerError::Json)?;
         convert_legacy(legacy)
     } else {
-        serde_json::from_value(value).context("Invalid appdmg configuration")?
+        serde_json::from_value(value).map_err(DmgMakerError::Json)?
     };
 
     spec.validate()?;

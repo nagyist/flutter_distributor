@@ -34,7 +34,7 @@ impl AppPublisher for OssPublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let options = build_options(config)?;
         upload_artifact(&options, artifact_path, on_progress)

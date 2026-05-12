@@ -1,10 +1,10 @@
 [package]
 name = "fastforge_core"
-version = "0.1.0"
-edition = "2024"
-authors = ["LiJianying <lijy91@foxmail.com>"]
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
 description = "Core traits and types for fastforge"
-license = "MIT"
+license.workspace = true
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

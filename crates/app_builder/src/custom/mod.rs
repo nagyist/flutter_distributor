@@ -1,4 +1,4 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, FlutterVersion};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
 use glob::glob;
 use std::collections::HashMap;
 use std::io::Write;
@@ -195,7 +195,6 @@ impl AppBuilder for CustomBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = extract_output_directory(config)?;
@@ -313,7 +312,7 @@ impl CustomAppBuilder {
 
         let (output_directory, output_files) =
             self.builder
-                .resolve_output_files(&config, None, environment.as_ref())?;
+                .resolve_output_files(&config, environment.as_ref())?;
 
         if output_files.is_empty() {
             return Err(BuildError::ArtifactNotFound(format!(
@@ -550,7 +549,7 @@ mod tests {
             ("artifact-patterns", json!(["**/*.apk"])),
         ]);
         let (dir, files) = CustomBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("should not error on glob expansion");
         assert_eq!(dir, PathBuf::from("nonexistent_dir_xyz"));
         assert!(files.is_empty());
@@ -574,7 +573,7 @@ mod tests {
         ]);
 
         let (_dir, files) = CustomBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
 
         // Must appear exactly once despite being matched by two patterns.
@@ -599,7 +598,7 @@ mod tests {
         ]);
 
         let (_dir, mut files) = CustomBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
 
         files.sort();

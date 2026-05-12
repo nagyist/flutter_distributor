@@ -407,13 +407,13 @@ dependencies = [
 
 [[package]]
 name = "dmg_maker"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
- "anyhow",
  "csscolorparser",
  "regex",
  "serde",
  "serde_json",
+ "thiserror",
 ]
 
 [[package]]
@@ -434,7 +434,7 @@ dependencies = [
 
 [[package]]
 name = "fastforge_app_analyzer"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "fastforge_core",
  "log",
@@ -447,7 +447,7 @@ dependencies = [
 
 [[package]]
 name = "fastforge_app_builder"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "fastforge_core",
  "glob",
@@ -459,15 +459,17 @@ dependencies = [
 
 [[package]]
 name = "fastforge_app_packager"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
+ "dmg_maker",
  "fastforge_core",
+ "serde_json",
  "tempfile",
 ]
 
 [[package]]
 name = "fastforge_app_publisher"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "chrono",
  "fastforge_core",

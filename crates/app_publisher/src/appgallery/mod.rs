@@ -73,7 +73,7 @@ impl AppPublisher for AppGalleryPublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let file_name = Path::new(artifact_path)
             .file_name()
@@ -86,15 +86,15 @@ impl AppPublisher for AppGalleryPublisher {
         let client_id = optional_arg(config, "client-id")
             .or_else(|| env::var(ENV_CLIENT_ID).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| PublishError::General(format!("{ENV_CLIENT_ID} is required.")))?;
+            .ok_or_else(|| PublishError::MissingArgument(ENV_CLIENT_ID.to_string()))?;
         let client_secret = optional_arg(config, "client-secret")
             .or_else(|| env::var(ENV_CLIENT_SECRET).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| PublishError::General(format!("{ENV_CLIENT_SECRET} is required.")))?;
+            .ok_or_else(|| PublishError::MissingArgument(ENV_CLIENT_SECRET.to_string()))?;
         let app_id = optional_arg(config, "app-id")
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General("`app-id` publish argument is required.".to_string())
+                PublishError::MissingArgument("app-id".to_string())
             })?;
 
         let client = Client::new();
@@ -140,7 +140,7 @@ fn get_access_token(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "AppGallery token request failed with status {}",
             response.status()
         )));
@@ -171,17 +171,17 @@ fn get_upload_url(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "AppGallery upload-url request failed with status {}",
             response.status()
         )));
     }
     let resp: UploadUrlResponse = response.json().map_err(to_publish_error)?;
     if resp.ret.code != 0 {
-        return Err(PublishError::General(format!(
-            "AppGallery upload-url error: {} ({})",
-            resp.ret.msg, resp.ret.code
-        )));
+        return Err(PublishError::ApiError {
+            status: resp.ret.code.to_string(),
+            message: resp.ret.msg,
+        });
     }
     resp.url_info.ok_or_else(|| {
         PublishError::General("AppGallery upload-url response missing urlInfo.".to_string())
@@ -205,7 +205,7 @@ fn upload_file(
     }
     let response = request.send().map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "AppGallery file upload failed with status {}",
             response.status()
         )));
@@ -240,17 +240,17 @@ fn apply_upload(
         .send()
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "AppGallery apply-upload request failed with status {}",
             response.status()
         )));
     }
     let resp: ApplyResponse = response.json().map_err(to_publish_error)?;
     if resp.ret.code != 0 {
-        return Err(PublishError::General(format!(
-            "AppGallery apply-upload error: {} ({})",
-            resp.ret.msg, resp.ret.code
-        )));
+        return Err(PublishError::ApiError {
+            status: resp.ret.code.to_string(),
+            message: resp.ret.msg,
+        });
     }
     Ok(())
 }

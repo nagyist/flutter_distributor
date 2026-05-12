@@ -1,10 +1,10 @@
 [package]
 name = "fastforge_app_builder"
-version = "0.0.1"
-edition = "2024"
-authors = ["LiJianying <lijy91@foxmail.com>"]
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
 description = "A unified app builder"
-license = "MIT"
+license.workspace = true
 
 [dependencies]
 fastforge_core = { path = "../core" }

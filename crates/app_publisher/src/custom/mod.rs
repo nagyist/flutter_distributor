@@ -26,7 +26,7 @@ impl AppPublisher for CustomPublisher {
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
 
         let args = config.publish_arguments.as_ref();
@@ -34,10 +34,8 @@ impl AppPublisher for CustomPublisher {
             .and_then(|a| a.get("command"))
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General(
-                    "Missing `command` publish argument. \
-                     Provide the script or command to run via `--publish-arg command=<your-command>`."
-                        .to_string(),
+                PublishError::MissingArgument(
+                    "command".to_string(),
                 )
             })?;
 
@@ -70,7 +68,7 @@ impl AppPublisher for CustomPublisher {
 
         let output = cmd
             .output()
-            .map_err(|e| PublishError::General(format!("Failed to run custom command: {e}")))?;
+            .map_err(|e| PublishError::CommandFailed(format!("Failed to run custom command: {e}")))?;
 
         if output.status.success() {
             let stdout = String::from_utf8_lossy(&output.stdout);
@@ -86,7 +84,7 @@ impl AppPublisher for CustomPublisher {
         } else {
             let stderr = String::from_utf8_lossy(&output.stderr);
             let stdout = String::from_utf8_lossy(&output.stdout);
-            Err(PublishError::General(format!(
+            Err(PublishError::CommandFailed(format!(
                 "Custom command failed (exit code {})\n{}\n{}",
                 output
                     .status

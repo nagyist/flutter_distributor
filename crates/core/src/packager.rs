@@ -1,4 +1,5 @@
 use std::path::{Path, PathBuf};
+use thiserror::Error;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -102,44 +103,18 @@ pub struct PackageResult {
     pub artifacts: Vec<PathBuf>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum PackageError {
+    #[error("{0}")]
     General(String),
+    #[error("Missing tool: {0}")]
     MissingTool(String),
+    #[error("Command '{command}' failed: {stderr}")]
     CommandFailed { command: String, stderr: String },
+    #[error("Not found: {0}")]
     NotFound(String),
-    Io(std::io::Error),
-}
-
-impl std::fmt::Display for PackageError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            PackageError::General(msg) => write!(f, "{}", msg),
-            PackageError::MissingTool(tool) => {
-                write!(f, "required tool not found: {}", tool)
-            }
-            PackageError::CommandFailed { command, stderr } => {
-                write!(f, "command '{}' failed: {}", command, stderr)
-            }
-            PackageError::NotFound(path) => write!(f, "not found: {}", path),
-            PackageError::Io(e) => write!(f, "IO error: {}", e),
-        }
-    }
-}
-
-impl std::error::Error for PackageError {
-    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
-        match self {
-            PackageError::Io(e) => Some(e),
-            _ => None,
-        }
-    }
-}
-
-impl From<std::io::Error> for PackageError {
-    fn from(e: std::io::Error) -> Self {
-        PackageError::Io(e)
-    }
+    #[error("IO error: {0}")]
+    Io(#[from] std::io::Error),
 }
 
 // ── Trait ─────────────────────────────────────────────────────────────────────

@@ -69,12 +69,10 @@ impl AppPublisher for PgyerPublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let api_key = env::var(ENV_PGYER_API_KEY).map_err(|_| {
-            PublishError::General(format!(
-                "Missing `{ENV_PGYER_API_KEY}` environment variable."
-            ))
+            PublishError::MissingEnv(ENV_PGYER_API_KEY.to_string())
         })?;
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let build_type = file_extension(artifact_path).ok_or_else(|| {
             PublishError::General(format!(
@@ -113,11 +111,10 @@ impl PgyerPublisher {
         let body: PgyerResponse<CosTokenData> = response.json().map_err(to_publish_error)?;
 
         if body.code != 0 {
-            return Err(PublishError::General(format!(
-                "getCOSToken error: code={}, message={}",
-                body.code,
-                body.message.unwrap_or_default()
-            )));
+            return Err(PublishError::ApiError {
+                status: body.code.to_string(),
+                message: body.message.unwrap_or_default(),
+            });
         }
         body.data.ok_or_else(|| {
             PublishError::General("getCOSToken error: missing response data.".to_string())
@@ -162,7 +159,7 @@ impl PgyerPublisher {
             .map_err(to_publish_error)?;
 
         if response.status() != StatusCode::NO_CONTENT {
-            return Err(PublishError::General(format!(
+            return Err(PublishError::HttpError(format!(
                 "uploadApp error: unexpected status code {}",
                 response.status()
             )));
@@ -192,11 +189,10 @@ impl PgyerPublisher {
                 });
             }
             if body.code != BUILD_INFO_PROCESSING_CODE {
-                return Err(PublishError::General(format!(
-                    "getBuildInfo error: code={}, message={}",
-                    body.code,
-                    body.message.unwrap_or_default()
-                )));
+                return Err(PublishError::ApiError {
+                    status: body.code.to_string(),
+                    message: body.message.unwrap_or_default(),
+                });
             }
         }
 

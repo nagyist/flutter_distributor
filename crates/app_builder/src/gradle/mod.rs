@@ -1,4 +1,4 @@
-use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult, FlutterVersion};
+use fastforge_core::{AppBuilder, BuildConfig, BuildError, BuildResult};
 use glob::glob;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -113,7 +113,6 @@ impl AppBuilder for GradleAndroidApkBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = PathBuf::from("app/build/outputs/apk");
@@ -174,7 +173,6 @@ impl AppBuilder for GradleAndroidAabBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let output_directory = if let Some(flavor) = config.flavor() {
@@ -247,7 +245,6 @@ impl AppBuilder for GradleKmpAndroidApkBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         // KMP Android module typically outputs to composeApp/build/outputs/apk/
@@ -326,7 +323,6 @@ impl AppBuilder for GradleKmpAndroidAabBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let module = config
@@ -405,7 +401,6 @@ impl AppBuilder for GradleKmpDesktopBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let module = config
@@ -492,7 +487,6 @@ impl AppBuilder for GradleKmpIosFrameworkBuilder {
     fn resolve_output_files(
         &self,
         config: &BuildConfig,
-        _flutter_version: Option<&FlutterVersion>,
         _environment: Option<&HashMap<String, String>>,
     ) -> Result<(PathBuf, Vec<PathBuf>), BuildError> {
         let module = config
@@ -684,7 +678,7 @@ impl GradleAppBuilder {
         }
 
         let (output_directory, output_files) =
-            builder.resolve_output_files(&config, None, environment.as_ref())?;
+            builder.resolve_output_files(&config, environment.as_ref())?;
 
         if output_files.is_empty() {
             return Err(BuildError::ArtifactNotFound(format!(
@@ -770,7 +764,7 @@ mod tests {
     fn android_apk_output_dir_no_flavor() {
         let config = make_config(&[]);
         let (dir, _) = GradleAndroidApkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "app/build/outputs/apk");
     }
@@ -779,7 +773,7 @@ mod tests {
     fn android_apk_output_pattern_with_flavor() {
         let config = make_config(&[("flavor", Value::String("staging".into()))]);
         let (dir, _) = GradleAndroidApkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         // Directory itself is still the base; the glob narrows it.
         assert_eq!(dir.to_string_lossy(), "app/build/outputs/apk");
@@ -791,7 +785,7 @@ mod tests {
     fn android_aab_output_dir_no_flavor() {
         let config = make_config(&[]);
         let (dir, _) = GradleAndroidAabBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "app/build/outputs/bundle/release");
     }
@@ -800,7 +794,7 @@ mod tests {
     fn android_aab_output_dir_with_flavor() {
         let config = make_config(&[("flavor", Value::String("dev".into()))]);
         let (dir, _) = GradleAndroidAabBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "app/build/outputs/bundle/devRelease");
     }
@@ -811,7 +805,7 @@ mod tests {
     fn kmp_android_apk_default_module() {
         let config = make_config(&[]);
         let (dir, _) = GradleKmpAndroidApkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "composeApp/build/outputs/apk");
     }
@@ -820,7 +814,7 @@ mod tests {
     fn kmp_android_apk_custom_module() {
         let config = make_config(&[("module", Value::String("androidApp".into()))]);
         let (dir, _) = GradleKmpAndroidApkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "androidApp/build/outputs/apk");
     }
@@ -831,7 +825,7 @@ mod tests {
     fn kmp_android_aab_default_module_no_flavor() {
         let config = make_config(&[]);
         let (dir, _) = GradleKmpAndroidAabBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(
             dir.to_string_lossy(),
@@ -846,7 +840,7 @@ mod tests {
             ("flavor", Value::String("qa".into())),
         ]);
         let (dir, _) = GradleKmpAndroidAabBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(
             dir.to_string_lossy(),
@@ -860,7 +854,7 @@ mod tests {
     fn kmp_ios_framework_default_module() {
         let config = make_config(&[]);
         let (dir, _) = GradleKmpIosFrameworkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(dir.to_string_lossy(), "shared/build/XCFrameworks/Release");
     }
@@ -872,7 +866,7 @@ mod tests {
             ("profile", Value::Bool(true)),
         ]);
         let (dir, _) = GradleKmpIosFrameworkBuilder
-            .resolve_output_files(&config, None, None)
+            .resolve_output_files(&config, None)
             .expect("resolve");
         assert_eq!(
             dir.to_string_lossy(),

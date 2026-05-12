@@ -1,10 +1,10 @@
 [package]
 name = "fastforge_cli"
 version = "0.7.0"
-edition = "2024"
-authors = ["LiJianying <lijy91@foxmail.com>"]
+edition.workspace = true
+authors.workspace = true
 description = "The ultimate all-in-one app packaging and distribution tool"
-license = "MIT"
+license.workspace = true
 
 [[bin]]
 name = "fastforge"

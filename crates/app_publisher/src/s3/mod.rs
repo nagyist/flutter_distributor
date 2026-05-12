@@ -65,7 +65,7 @@ impl AppPublisher for S3Publisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let options = S3PublishOptions::from_config(config)?;
         upload_artifact(&options, artifact_path, on_progress)
@@ -139,7 +139,7 @@ fn upload_artifact(
 
     let response = request.send().map_err(to_publish_error)?;
     if response.status() != StatusCode::OK && response.status() != StatusCode::NO_CONTENT {
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "S3 upload failed with status {}",
             response.status()
         )));
@@ -242,7 +242,7 @@ fn required_value(
 ) -> Result<String, PublishError> {
     optional_value(config, argument_keys, env_keys)
         .filter(|value| !value.trim().is_empty())
-        .ok_or_else(|| PublishError::General(format!("{field_name} is required.")))
+        .ok_or_else(|| PublishError::MissingArgument(field_name.to_string()))
 }
 
 fn optional_value(

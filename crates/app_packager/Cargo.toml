@@ -1,13 +1,15 @@
 [package]
 name = "fastforge_app_packager"
-version = "0.0.1"
-edition = "2024"
-authors = ["LiJianying <lijy91@foxmail.com>"]
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
 description = "A unified app packager"
-license = "MIT"
+license.workspace = true
 
 [dependencies]
 fastforge_core = { path = "../core" }
+dmg_maker = { path = "../dmg_maker" }
+serde_json = "1"
 
 [dev-dependencies]
 tempfile = "3"

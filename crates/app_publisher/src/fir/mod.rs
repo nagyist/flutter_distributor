@@ -71,13 +71,11 @@ impl AppPublisher for FirPublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let api_token = env::var(ENV_FIR_API_TOKEN).map_err(|_| {
-            PublishError::General(format!(
-                "Missing `{ENV_FIR_API_TOKEN}` environment variable."
-            ))
+            PublishError::MissingEnv(ENV_FIR_API_TOKEN.to_string())
         })?;
 
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
 
         let args = config.publish_arguments.as_ref();
@@ -85,7 +83,7 @@ impl AppPublisher for FirPublisher {
             .and_then(|a| a.get("bundle_id"))
             .map(|s| s.as_str())
             .ok_or_else(|| {
-                PublishError::General("Missing `bundle_id` publish argument.".to_string())
+                PublishError::MissingArgument("bundle_id".to_string())
             })?;
 
         let platform = infer_platform(artifact_path).ok_or_else(|| {
@@ -169,7 +167,7 @@ impl FirPublisher {
                     Some(format!("{code} - {msg}"))
                 })
                 .unwrap_or_else(|| "fir /apps request failed".to_string());
-            return Err(PublishError::General(message));
+            return Err(PublishError::HttpError(message));
         }
 
         response.json::<FirAppData>().map_err(to_publish_error)
@@ -218,7 +216,7 @@ impl FirPublisher {
             .map_err(to_publish_error)?;
 
         if !response.status().is_success() {
-            return Err(PublishError::General(format!(
+            return Err(PublishError::HttpError(format!(
                 "fir upload failed with status: {}",
                 response.status()
             )));

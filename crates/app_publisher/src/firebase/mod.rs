@@ -29,14 +29,11 @@ impl AppPublisher for FirebasePublisher {
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let token = env::var(ENV_FIREBASE_TOKEN).map_err(|_| {
-            PublishError::General(format!(
-                "Missing `{ENV_FIREBASE_TOKEN}` environment variable. \
-                 See: https://firebase.google.com/docs/cli?authuser=0#cli-ci-systems"
-            ))
+            PublishError::MissingEnv(ENV_FIREBASE_TOKEN.to_string())
         })?;
 
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
 
         let args = config.publish_arguments.as_ref();
@@ -44,11 +41,7 @@ impl AppPublisher for FirebasePublisher {
             .and_then(|a| a.get("app"))
             .map(|s| s.as_str())
             .ok_or_else(|| {
-                PublishError::General(
-                    "Missing `app` publish argument. \
-                     See: https://console.firebase.google.com/project/_/settings/general/?authuser=0"
-                        .to_string(),
-                )
+                PublishError::MissingArgument("app".to_string())
             })?;
 
         let mut cmd_args = vec![
@@ -80,7 +73,7 @@ impl AppPublisher for FirebasePublisher {
         let output = Command::new("firebase")
             .args(&cmd_args)
             .output()
-            .map_err(|e| PublishError::General(format!("Failed to run firebase CLI: {e}")))?;
+            .map_err(|e| PublishError::CommandFailed(format!("Failed to run firebase CLI: {e}")))?;
 
         if output.status.success() {
             Ok(PublishResult {
@@ -89,7 +82,7 @@ impl AppPublisher for FirebasePublisher {
             })
         } else {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            Err(PublishError::General(format!(
+            Err(PublishError::CommandFailed(format!(
                 "{} - Upload to Firebase failed\n{}",
                 output.status.code().unwrap_or(-1),
                 stderr.trim()

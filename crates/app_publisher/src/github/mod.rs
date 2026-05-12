@@ -49,7 +49,7 @@ impl AppPublisher for GitHubPublisher {
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
         let file_name = Path::new(artifact_path)
             .file_name()
@@ -61,9 +61,7 @@ impl AppPublisher for GitHubPublisher {
 
         let args = config.publish_arguments.as_ref();
         let token = env::var(ENV_GITHUB_TOKEN).map_err(|_| {
-            PublishError::General(format!(
-                "Missing `{ENV_GITHUB_TOKEN}` environment variable."
-            ))
+            PublishError::MissingEnv(ENV_GITHUB_TOKEN.to_string())
         })?;
         let repo = args
             .and_then(|a| a.get("repo").or_else(|| a.get("github-repo")))
@@ -71,9 +69,7 @@ impl AppPublisher for GitHubPublisher {
             .or_else(|| env::var(ENV_GITHUB_REPOSITORY).ok())
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General(
-                    "`repo` publish argument is required (format: owner/repo).".to_string(),
-                )
+                PublishError::MissingArgument("repo".to_string())
             })?;
 
         let release_tag = args
@@ -147,7 +143,7 @@ fn get_release_by_tag(
     }
     if !response.status().is_success() {
         let text = response.text().unwrap_or_default();
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "GitHub get release by tag failed: {text}"
         )));
     }
@@ -181,7 +177,7 @@ fn create_release(
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
         let text = response.text().unwrap_or_default();
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to create GitHub release: {text}"
         )));
     }
@@ -200,7 +196,7 @@ fn get_latest_release(client: &Client, token: &str, repo: &str) -> Result<Releas
         .map_err(to_publish_error)?;
     if !response.status().is_success() {
         let text = response.text().unwrap_or_default();
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "Failed to get latest GitHub release: {text}"
         )));
     }
@@ -257,7 +253,7 @@ fn upload_asset(
 
     if !response.status().is_success() {
         let text = response.text().unwrap_or_default();
-        return Err(PublishError::General(format!(
+        return Err(PublishError::HttpError(format!(
             "GitHub asset upload failed: {text}"
         )));
     }

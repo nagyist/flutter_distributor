@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::sync::Arc;
+use thiserror::Error;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -18,20 +19,23 @@ pub struct PublishResult {
     pub message: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum PublishError {
+    #[error("Missing environment variable: {0}")]
+    MissingEnv(String),
+    #[error("Missing publish argument '{0}'")]
+    MissingArgument(String),
+    #[error("HTTP request failed: {0}")]
+    HttpError(String),
+    #[error("API error: {status} {message}")]
+    ApiError { status: String, message: String },
+    #[error("Command failed: {0}")]
+    CommandFailed(String),
+    #[error("IO error: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("{0}")]
     General(String),
 }
-
-impl std::fmt::Display for PublishError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            PublishError::General(message) => write!(f, "{message}"),
-        }
-    }
-}
-
-impl std::error::Error for PublishError {}
 
 // ── Trait ─────────────────────────────────────────────────────────────────────
 

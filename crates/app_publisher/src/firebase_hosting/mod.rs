@@ -31,7 +31,7 @@ impl AppPublisher for FirebaseHostingPublisher {
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
 
         let args = config.publish_arguments.as_ref();
@@ -41,7 +41,7 @@ impl AppPublisher for FirebaseHostingPublisher {
             .or_else(|| env::var(ENV_FIREBASE_PROJECT_ID).ok())
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General("`project-id` publish argument is required.".to_string())
+                PublishError::MissingArgument("project-id".to_string())
             })?;
 
         let firebaserc = json!({ "projects": { "default": project_id } });
@@ -68,11 +68,11 @@ impl AppPublisher for FirebaseHostingPublisher {
 
         let output = cmd
             .output()
-            .map_err(|e| PublishError::General(format!("Failed to run firebase CLI: {e}")))?;
+            .map_err(|e| PublishError::CommandFailed(format!("Failed to run firebase CLI: {e}")))?;
 
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            return Err(PublishError::General(format!(
+            return Err(PublishError::CommandFailed(format!(
                 "firebase deploy failed ({})\n{}",
                 output.status.code().unwrap_or(-1),
                 stderr.trim()

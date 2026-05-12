@@ -31,7 +31,7 @@ impl AppPublisher for VercelPublisher {
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::General("Missing `artifact_path` in publish config.".to_string())
+            PublishError::MissingArgument("artifact_path".to_string())
         })?;
 
         let args = config.publish_arguments.as_ref();
@@ -41,7 +41,7 @@ impl AppPublisher for VercelPublisher {
             .or_else(|| env::var(ENV_VERCEL_ORG_ID).ok())
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General("`org-id` publish argument is required.".to_string())
+                PublishError::MissingArgument("org-id".to_string())
             })?;
         let project_id = args
             .and_then(|a| a.get("project-id").or_else(|| a.get("vercel-project-id")))
@@ -49,7 +49,7 @@ impl AppPublisher for VercelPublisher {
             .or_else(|| env::var(ENV_VERCEL_PROJECT_ID).ok())
             .filter(|v| !v.trim().is_empty())
             .ok_or_else(|| {
-                PublishError::General("`project-id` publish argument is required.".to_string())
+                PublishError::MissingArgument("project-id".to_string())
             })?;
 
         let vercel_dir = format!("{artifact_path}/.vercel");
@@ -67,12 +67,12 @@ impl AppPublisher for VercelPublisher {
             .arg("--prod")
             .current_dir(artifact_path)
             .output()
-            .map_err(|e| PublishError::General(format!("Failed to run vercel CLI: {e}")))?;
+            .map_err(|e| PublishError::CommandFailed(format!("Failed to run vercel CLI: {e}")))?;
 
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
             let stdout = String::from_utf8_lossy(&output.stdout);
-            return Err(PublishError::General(format!(
+            return Err(PublishError::CommandFailed(format!(
                 "vercel deploy failed ({})\n{}\n{}",
                 output.status.code().unwrap_or(-1),
                 stdout.trim(),

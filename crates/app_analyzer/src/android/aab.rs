@@ -71,14 +71,11 @@ fn analyze_with_aapt2(
     let output = Command::new(aapt2_path)
         .args(["dump", "badging", &config.path])
         .output()
-        .map_err(|e| AnalyzeError::new(&format!("Failed to execute aapt: {}", e)))?;
+        .map_err(AnalyzeError::Io)?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(AnalyzeError::new(&format!(
-            "aapt command failed: {}",
-            stderr
-        )));
+        return Err(AnalyzeError::CommandFailed { command: "aapt2".to_string(), stderr: stderr.to_string() });
     }
 
     let aapt_output = String::from_utf8_lossy(&output.stdout);
@@ -95,7 +92,7 @@ fn parse_aapt_badging_output(aapt_output: &str) -> Result<AnalyzeResult, Analyze
         .captures(aapt_output)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract package name from aapt output"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract package name from aapt output".to_string()))?;
 
     let app_name = label_regex
         .captures(aapt_output)
@@ -107,17 +104,17 @@ fn parse_aapt_badging_output(aapt_output: &str) -> Result<AnalyzeResult, Analyze
         .captures(aapt_output)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract version name from aapt output"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract version name from aapt output".to_string()))?;
 
     let version_code_str = version_code_regex
         .captures(aapt_output)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract version code from aapt output"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract version code from aapt output".to_string()))?;
 
     let version_code = version_code_str
         .parse::<i32>()
-        .map_err(|_| AnalyzeError::new("Failed to parse version code as integer"))?;
+        .map_err(|_| AnalyzeError::Parse("Failed to parse version code as integer".to_string()))?;
 
     let data = json!({
         "platform": "android",
@@ -155,19 +152,11 @@ fn analyze_with_bundletool(config: &AnalyzeConfig) -> Result<AnalyzeResult, Anal
             "base",
         ])
         .output()
-        .map_err(|e| {
-            AnalyzeError::new(&format!(
-                "Failed to execute bundletool (set BUNDLETOOL or install bundletool): {}",
-                e
-            ))
-        })?;
+        .map_err(AnalyzeError::Io)?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(AnalyzeError::new(&format!(
-            "bundletool command failed: {}",
-            stderr
-        )));
+        return Err(AnalyzeError::CommandFailed { command: "bundletool".to_string(), stderr: stderr.to_string() });
     }
 
     let manifest_output = String::from_utf8_lossy(&output.stdout);
@@ -184,23 +173,23 @@ fn parse_manifest_xml(manifest_xml: &str) -> Result<AnalyzeResult, AnalyzeError>
         .captures(manifest_xml)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract package name from manifest"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract package name from manifest".to_string()))?;
 
     let version_name = version_name_regex
         .captures(manifest_xml)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract version name from manifest"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract version name from manifest".to_string()))?;
 
     let version_code_str = version_code_regex
         .captures(manifest_xml)
         .and_then(|cap| cap.get(1))
         .map(|m| m.as_str().to_string())
-        .ok_or_else(|| AnalyzeError::new("Failed to extract version code from manifest"))?;
+        .ok_or_else(|| AnalyzeError::Parse("Failed to extract version code from manifest".to_string()))?;
 
     let version_code = version_code_str
         .parse::<i32>()
-        .map_err(|_| AnalyzeError::new("Failed to parse version code as integer"))?;
+        .map_err(|_| AnalyzeError::Parse("Failed to parse version code as integer".to_string()))?;
 
     let app_name = label_regex
         .captures(manifest_xml)

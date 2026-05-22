@@ -1,0 +1,18 @@
+[package]
+name = "fastforge_store_api"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Concrete app store management API clients"
+license.workspace = true
+
+[dependencies]
+fastforge_store_api_core = { path = "../store_api_core" }
+async-trait = "0.1"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+jsonwebtoken = { version = "9", default-features = false, features = ["use_pem"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+thiserror = "2.0"
+tokio = { version = "1", features = ["rt", "macros"] }

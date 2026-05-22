@@ -5,8 +5,8 @@ mod config;
 mod runtime;
 
 use cli::{
-    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, RunArgs, UpgradeArgs,
-    VersionCheckArgs, WorkflowArgs,
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, RunArgs, StoreArgs,
+    UpgradeArgs, VersionCheckArgs, WorkflowArgs,
 };
 
 #[derive(Parser)]
@@ -30,6 +30,8 @@ enum Commands {
     Publish(PublishArgs),
     #[command(about = "Release the current Flutter application")]
     Release(ReleaseArgs),
+    #[command(about = "Manage apps in app stores (Google Play, App Store)")]
+    Store(StoreArgs),
     #[command(about = "Manage Fastforge workflows")]
     Workflow(WorkflowArgs),
     #[command(about = "Inspect workflow run history")]
@@ -62,6 +64,9 @@ async fn main() -> anyhow::Result<()> {
         }
         Commands::Release(args) => {
             cli::release::execute(args).await?;
+        }
+        Commands::Store(args) => {
+            cli::store::execute(args).await?;
         }
         Commands::Workflow(args) => {
             cli::workflow::execute(args).await?;

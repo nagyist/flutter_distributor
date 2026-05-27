@@ -57,13 +57,12 @@ pub trait StoreManager: Send + Sync {
 
     // ── Review / Submission ─────────────────────────────────────────
 
-    /// List all review submissions for a given release.
+    /// List all review submissions across all releases.
     ///
-    /// A release may be reviewed multiple times (e.g. after rejection).
+    /// Each release may have at most one active review at a time.
     async fn list_reviews(
         &self,
         app_id: &str,
-        release_id: &str,
     ) -> Result<Vec<Review>, StoreError>;
 
     /// Get details of a specific review submission.

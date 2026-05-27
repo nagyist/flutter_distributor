@@ -20,6 +20,44 @@ pub struct FastforgeDefaults {
     pub artifact_name: Option<String>,
 }
 
+// ── Store config ───────────────────────────────────────────────────────────────
+
+/// Per-store configuration.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct StoresConfig {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub appstore: Option<StoreTargetConfig>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub googleplay: Option<StoreTargetConfig>,
+}
+
+/// Credentials and app list for a single store target.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StoreTargetConfig {
+    /// App Store Connect API key ID (appstore) / path to service account JSON (googleplay)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key_id: Option<String>,
+    /// App Store Connect issuer ID
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub issuer_id: Option<String>,
+    /// Path to the .p8 key file (appstore) / service account JSON file (googleplay)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key_path: Option<String>,
+    /// Apps managed in this store
+    #[serde(default)]
+    pub apps: Vec<AppConfig>,
+}
+
+/// A single app registered in the store config.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AppConfig {
+    /// Store-internal app ID (package name for Google Play, ASC ID for App Store)
+    pub id: String,
+    /// Optional alias used in CLI (e.g. `--app production`)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FastforgeConfig {
     #[serde(default = "default_version")]
@@ -32,6 +70,9 @@ pub struct FastforgeConfig {
     pub env: Option<HashMap<String, String>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub defaults: Option<FastforgeDefaults>,
+    /// Store credentials and app registrations
+    #[serde(default)]
+    pub stores: StoresConfig,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -70,6 +111,76 @@ pub struct LoadedWorkflow {
     pub definition: WorkflowDefinition,
 }
 
+/// Resolve the app ID to use for a store operation.
+///
+/// Priority: CLI `--app-id` > CLI `--app` (alias lookup in config) >
+/// single app from config > error.
+pub fn resolve_app_id(
+    store_config: &Option<StoreTargetConfig>,
+    cli_app_id: Option<&str>,
+    cli_app: Option<&str>,
+    store_name: &str,
+) -> anyhow::Result<String> {
+    // 1. Explicit --app-id
+    if let Some(id) = cli_app_id {
+        return Ok(id.to_string());
+    }
+
+    let config = match store_config {
+        Some(c) => c,
+        None => anyhow::bail!(
+            "No `{}` configuration found in `.fastforge/config.yaml`. Either set it up or pass --app-id directly.",
+            store_name
+        ),
+    };
+
+    // 2. --app alias lookup
+    if let Some(alias) = cli_app {
+        if let Some(app) = config.apps.iter().find(|a| a.name.as_deref() == Some(alias)) {
+            return Ok(app.id.clone());
+        }
+        anyhow::bail!(
+            "App `{alias}` not found in `{}` configuration. Available: {}",
+            store_name,
+            config
+                .apps
+                .iter()
+                .filter_map(|a| a.name.as_deref())
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+    }
+
+    // 3. Single app from config
+    if config.apps.len() == 1 {
+        return Ok(config.apps[0].id.clone());
+    }
+
+    if config.apps.is_empty() {
+        anyhow::bail!(
+            "No apps configured for `{}`. Add them to `.fastforge/config.yaml` or pass --app-id.",
+            store_name
+        );
+    }
+
+    anyhow::bail!(
+        "Multiple apps configured for `{}`. Specify which one with --app-id or --app. \
+         Available: {}",
+        store_name,
+        config
+            .apps
+            .iter()
+            .map(|a| {
+                a.name
+                    .as_deref()
+                    .map(|n| format!("{n} ({})", a.id))
+                    .unwrap_or_else(|| a.id.clone())
+            })
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
+}
+
 fn default_version() -> u32 {
     1
 }
@@ -86,6 +197,7 @@ impl Default for FastforgeConfig {
             output: default_output(),
             env: None,
             defaults: None,
+            stores: StoresConfig::default(),
         }
     }
 }

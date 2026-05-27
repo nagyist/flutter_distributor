@@ -1,5 +1,5 @@
 use chrono::Utc;
-use fastforge_store_api_core::{App, Release, Review, StoreError, StoreManager};
+use fastforge_store_api_core::{App, Release, ReleaseStatus, Review, ReviewStatus, StoreError, StoreManager};
 use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -22,7 +22,7 @@ struct JwtClaims {
     aud: String,
 }
 
-// ── API response types ─────────────────────────────────────────────────────────
+// ── App response types ─────────────────────────────────────────────────────────
 
 #[derive(Debug, Deserialize)]
 struct AppsResponse {
@@ -52,18 +52,124 @@ struct Links {
     next: Option<String>,
 }
 
+// ── App Store Version response types ───────────────────────────────────────────
+
+#[derive(Debug, Deserialize)]
+struct VersionsResponse {
+    data: Vec<VersionResource>,
+    links: Option<Links>,
+    #[serde(default)]
+    included: Vec<IncludedResource>,
+}
+
+#[derive(Debug, Deserialize)]
+struct VersionResource {
+    id: String,
+    attributes: VersionAttributes,
+    #[serde(default)]
+    relationships: Option<VersionRelationships>,
+}
+
+#[derive(Debug, Deserialize)]
+struct VersionRelationships {
+    build: Option<Relationship>,
+    #[serde(default, rename = "appStoreVersionLocalizations")]
+    pub app_store_version_localizations: Option<RelationshipList>,
+}
+
+#[derive(Debug, Deserialize)]
+struct RelationshipList {
+    data: Vec<RelationshipData>,
+}
+
+#[derive(Debug, Deserialize)]
+struct Relationship {
+    data: RelationshipData,
+}
+
+#[derive(Debug, Deserialize)]
+struct RelationshipData {
+    id: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct VersionAttributes {
+    #[serde(rename = "versionString")]
+    version_string: String,
+    #[serde(rename = "appStoreState")]
+    app_store_state: String,
+    #[serde(rename = "earliestReleaseDate")]
+    earliest_release_date: Option<String>,
+    #[serde(rename = "createdDate")]
+    created_date: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct IncludedResource {
+    id: String,
+    #[serde(rename = "type")]
+    resource_type: String,
+    attributes: serde_json::Value,
+}
+
 // ── AppStoreManager ────────────────────────────────────────────────────────────
 
-pub struct AppStoreManager;
+pub struct AppStoreManager {
+    key_id: Option<String>,
+    issuer_id: Option<String>,
+    key_path: Option<String>,
+}
 
 impl AppStoreManager {
-    fn jwt() -> Result<String, StoreError> {
-        let key_id = env::var(KEY_ID_ENV)
-            .map_err(|_| StoreError::MissingCredential(KEY_ID_ENV.to_string()))?;
-        let issuer_id = env::var(ISSUER_ID_ENV)
-            .map_err(|_| StoreError::MissingCredential(ISSUER_ID_ENV.to_string()))?;
-        let key_path = env::var(KEY_PATH_ENV)
-            .map_err(|_| StoreError::MissingCredential(KEY_PATH_ENV.to_string()))?;
+    /// Create a new manager that reads credentials from environment variables.
+    pub fn new() -> Self {
+        Self {
+            key_id: None,
+            issuer_id: None,
+            key_path: None,
+        }
+    }
+
+    /// Create a manager with explicit credential values.
+    ///
+    /// Any value not provided will fall back to the corresponding environment variable.
+    pub fn with_config(
+        key_id: Option<String>,
+        issuer_id: Option<String>,
+        key_path: Option<String>,
+    ) -> Self {
+        Self {
+            key_id,
+            issuer_id,
+            key_path,
+        }
+    }
+
+    fn resolve_key_id(&self) -> Result<String, StoreError> {
+        self.key_id
+            .clone()
+            .or_else(|| env::var(KEY_ID_ENV).ok())
+            .ok_or_else(|| StoreError::MissingCredential(KEY_ID_ENV.to_string()))
+    }
+
+    fn resolve_issuer_id(&self) -> Result<String, StoreError> {
+        self.issuer_id
+            .clone()
+            .or_else(|| env::var(ISSUER_ID_ENV).ok())
+            .ok_or_else(|| StoreError::MissingCredential(ISSUER_ID_ENV.to_string()))
+    }
+
+    fn resolve_key_path(&self) -> Result<String, StoreError> {
+        self.key_path
+            .clone()
+            .or_else(|| env::var(KEY_PATH_ENV).ok())
+            .ok_or_else(|| StoreError::MissingCredential(KEY_PATH_ENV.to_string()))
+    }
+
+    fn jwt(&self) -> Result<String, StoreError> {
+        let key_id = self.resolve_key_id()?;
+        let issuer_id = self.resolve_issuer_id()?;
+        let key_path = self.resolve_key_path()?;
         let private_key_pem = std::fs::read_to_string(&key_path).map_err(StoreError::Io)?;
 
         let now = Utc::now().timestamp();
@@ -101,6 +207,21 @@ impl AppStoreManager {
         }
     }
 
+    fn release_status_from_store_state(state: &str) -> ReleaseStatus {
+        match state {
+            "PREPARE_FOR_SUBMISSION" | "DEVELOPMENT" => ReleaseStatus::Draft,
+            "WAITING_FOR_REVIEW" => ReleaseStatus::WaitingForReview,
+            "IN_REVIEW" => ReleaseStatus::InReview,
+            "PENDING_APPLE_RELEASE" => ReleaseStatus::Approved,
+            "READY_FOR_SALE" => ReleaseStatus::Published,
+            "REJECTED" => ReleaseStatus::Rejected {
+                reason: "Rejected by App Store review".to_string(),
+            },
+            "REMOVED_FROM_SALE" => ReleaseStatus::Removed,
+            _ => ReleaseStatus::Draft,
+        }
+    }
+
     async fn request<T: for<'de> Deserialize<'de>>(token: &str, url: &str) -> Result<T, StoreError> {
         let resp = Client::new()
             .get(url)
@@ -115,7 +236,7 @@ impl AppStoreManager {
             let body = resp.text().await.unwrap_or_default();
             return match status {
                 404 => Err(StoreError::NotFound(format!("App not found: {body}"))),
-                401 => Err(StoreError::NotAuthenticated(format!(
+                401 | 403 => Err(StoreError::NotAuthenticated(format!(
                     "Invalid or expired App Store Connect credentials: {body}"
                 ))),
                 _ => Err(StoreError::ApiError {
@@ -131,6 +252,12 @@ impl AppStoreManager {
     }
 }
 
+impl Default for AppStoreManager {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[async_trait::async_trait]
 impl StoreManager for AppStoreManager {
     fn store_display_name(&self) -> &str {
@@ -138,7 +265,7 @@ impl StoreManager for AppStoreManager {
     }
 
     async fn list_apps(&self) -> Result<Vec<App>, StoreError> {
-        let token = Self::jwt()?;
+        let token = self.jwt()?;
         let mut all = Vec::new();
         let mut next_url: Option<String> = Some(format!("{API_BASE}/apps"));
 
@@ -159,37 +286,140 @@ impl StoreManager for AppStoreManager {
             data: AppResource,
         }
 
-        let token = Self::jwt()?;
+        let token = self.jwt()?;
         let url = format!("{API_BASE}/apps/{app_id}");
         let resp: SingleAppResponse = Self::request(&token, &url).await?;
         Ok(Self::resource_to_app(resp.data))
     }
 
-    async fn list_releases(&self, _app_id: &str) -> Result<Vec<Release>, StoreError> {
-        Err(StoreError::General("Not yet implemented".to_string()))
+    async fn list_releases(&self, app_id: &str) -> Result<Vec<Release>, StoreError> {
+        let token = self.jwt()?;
+        let mut all = Vec::new();
+        let mut next_url: Option<String> =
+            Some(format!("{API_BASE}/apps/{app_id}/appStoreVersions?include=build,appStoreVersionLocalizations"));
+
+        while let Some(url) = next_url.take() {
+            let resp: VersionsResponse = Self::request(&token, &url).await?;
+
+            // Build lookups from included resources
+            let build_versions: std::collections::HashMap<&str, &str> = resp
+                .included
+                .iter()
+                .filter(|r| r.resource_type == "builds")
+                .filter_map(|r| {
+                    let version = r.attributes.get("version")?.as_str()?;
+                    Some((r.id.as_str(), version))
+                })
+                .collect();
+
+            // Localization whats_new lookup: localization_id → whats_new
+            let localization_whats_new: std::collections::HashMap<&str, &str> = resp
+                .included
+                .iter()
+                .filter(|r| r.resource_type == "appStoreVersionLocalizations")
+                .filter_map(|r| {
+                    let text = r.attributes.get("whatsNew")?.as_str()?;
+                    Some((r.id.as_str(), text))
+                })
+                .collect();
+
+            for v in resp.data {
+                // Extract build number from the version's build relationship
+                let build_number = v
+                    .relationships
+                    .as_ref()
+                    .and_then(|rel| rel.build.as_ref())
+                    .and_then(|b| build_versions.get(b.data.id.as_str()))
+                    .unwrap_or(&"")
+                    .to_string();
+
+                // Extract whats_new from the first localization (preferred locale)
+                let whats_new = v
+                    .relationships
+                    .as_ref()
+                    .and_then(|rel| rel.app_store_version_localizations.as_ref())
+                    .and_then(|locs| locs.data.first())
+                    .and_then(|loc| localization_whats_new.get(loc.id.as_str()))
+                    .unwrap_or(&"")
+                    .to_string();
+
+                all.push(Release {
+                    id: Some(v.id),
+                    version: v.attributes.version_string,
+                    build_number,
+                    status: Self::release_status_from_store_state(&v.attributes.app_store_state),
+                    whats_new,
+                    created_at: v.attributes.created_date.clone(),
+                    published_at: v.attributes.earliest_release_date.clone(),
+                });
+            }
+            next_url = resp.links.and_then(|l| l.next);
+        }
+
+        Ok(all)
     }
 
     async fn get_release(&self, _app_id: &str, _release_id: &str) -> Result<Release, StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 
-    async fn create_release(&self, _app_id: &str, _release: &Release) -> Result<String, StoreError> {
+    async fn create_release(
+        &self,
+        _app_id: &str,
+        _release: &Release,
+    ) -> Result<String, StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 
-    async fn update_release(&self, _app_id: &str, _release: &Release) -> Result<(), StoreError> {
+    async fn update_release(
+        &self,
+        _app_id: &str,
+        _release: &Release,
+    ) -> Result<(), StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 
-    async fn list_reviews(&self, _app_id: &str, _release_id: &str) -> Result<Vec<Review>, StoreError> {
-        Err(StoreError::General("Not yet implemented".to_string()))
+    async fn list_reviews(
+        &self,
+        app_id: &str,
+    ) -> Result<Vec<Review>, StoreError> {
+        let releases = self.list_releases(app_id).await?;
+
+        let mut reviews = Vec::new();
+        for r in &releases {
+            let status = match &r.status {
+                ReleaseStatus::WaitingForReview => ReviewStatus::Pending,
+                ReleaseStatus::InReview => ReviewStatus::InReview,
+                ReleaseStatus::Approved => ReviewStatus::Approved,
+                ReleaseStatus::Published => ReviewStatus::Approved,
+                ReleaseStatus::Rejected { reason } => ReviewStatus::Reject {
+                    reason: reason.clone(),
+                },
+                _ => continue,
+            };
+
+            reviews.push(Review {
+                id: r.id.clone().unwrap_or_default(),
+                app_id: app_id.to_string(),
+                version_id: r.id.clone().unwrap_or_default(),
+                status,
+                submitted_at: r.created_at.clone().unwrap_or_default(),
+                resolved_at: r.published_at.clone(),
+            });
+        }
+
+        Ok(reviews)
     }
 
     async fn get_review(&self, _app_id: &str, _review_id: &str) -> Result<Review, StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 
-    async fn submit_review(&self, _app_id: &str, _release_id: &str) -> Result<Review, StoreError> {
+    async fn submit_review(
+        &self,
+        _app_id: &str,
+        _release_id: &str,
+    ) -> Result<Review, StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 

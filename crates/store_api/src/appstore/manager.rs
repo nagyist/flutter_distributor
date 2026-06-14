@@ -1,5 +1,8 @@
 use chrono::Utc;
-use fastforge_store_api_core::{App, Release, ReleaseStatus, Review, ReviewStatus, StoreError, StoreManager};
+use fastforge_store_api_core::{
+    App, Listing, Release, ReleaseStatus, Review, ReviewStatus, StoreAppsApi, StoreError,
+    StoreListingsApi, StoreManager, StoreReleasesApi, StoreReviewsApi,
+};
 use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -258,12 +261,18 @@ impl Default for AppStoreManager {
     }
 }
 
-#[async_trait::async_trait]
+// ── StoreManager (combined trait) ────────────────────────────────────────────
+
 impl StoreManager for AppStoreManager {
     fn store_display_name(&self) -> &str {
         "App Store Connect"
     }
+}
 
+// ── StoreAppsApi ─────────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreAppsApi for AppStoreManager {
     async fn list_apps(&self) -> Result<Vec<App>, StoreError> {
         let token = self.jwt()?;
         let mut all = Vec::new();
@@ -291,7 +300,12 @@ impl StoreManager for AppStoreManager {
         let resp: SingleAppResponse = Self::request(&token, &url).await?;
         Ok(Self::resource_to_app(resp.data))
     }
+}
 
+// ── StoreReleasesApi ─────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreReleasesApi for AppStoreManager {
     async fn list_releases(&self, app_id: &str) -> Result<Vec<Release>, StoreError> {
         let token = self.jwt()?;
         let mut all = Vec::new();
@@ -378,7 +392,12 @@ impl StoreManager for AppStoreManager {
     ) -> Result<(), StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
+}
 
+// ── StoreReviewsApi ──────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreReviewsApi for AppStoreManager {
     async fn list_reviews(
         &self,
         app_id: &str,
@@ -424,6 +443,23 @@ impl StoreManager for AppStoreManager {
     }
 
     async fn cancel_review(&self, _app_id: &str, _review_id: &str) -> Result<(), StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+}
+
+// ── StoreListingsApi ─────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreListingsApi for AppStoreManager {
+    async fn list_listings(&self) -> Result<Vec<Listing>, StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+
+    async fn get_listing(&self, _app_id: &str) -> Result<Listing, StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+
+    async fn update_listing(&self, _app_id: &str, _listing: &Listing) -> Result<(), StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 }

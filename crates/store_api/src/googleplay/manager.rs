@@ -1,5 +1,8 @@
 use chrono::Utc;
-use fastforge_store_api_core::{App, Release, ReleaseStatus, Review, ReviewStatus, StoreError, StoreManager};
+use fastforge_store_api_core::{
+    App, Listing, Release, ReleaseStatus, Review, ReviewStatus, StoreAppsApi, StoreError,
+    StoreListingsApi, StoreManager, StoreReleasesApi, StoreReviewsApi,
+};
 use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
@@ -179,12 +182,18 @@ impl Default for GooglePlayManager {
     }
 }
 
-#[async_trait::async_trait]
+// ── StoreManager (combined trait) ────────────────────────────────────────────
+
 impl StoreManager for GooglePlayManager {
     fn store_display_name(&self) -> &str {
         "Google Play Console"
     }
+}
 
+// ── StoreAppsApi ────────────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreAppsApi for GooglePlayManager {
     async fn list_apps(&self) -> Result<Vec<App>, StoreError> {
         Err(StoreError::General(
             "Google Play Developer API does not provide a \"list apps\" endpoint. \
@@ -227,7 +236,12 @@ impl StoreManager for GooglePlayManager {
             updated_at: None,
         })
     }
+}
 
+// ── StoreReleasesApi ─────────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreReleasesApi for GooglePlayManager {
     async fn list_releases(&self, app_id: &str) -> Result<Vec<Release>, StoreError> {
         let creds = self.credentials()?;
         let token = Self::exchange_token(&creds).await?;
@@ -267,7 +281,12 @@ impl StoreManager for GooglePlayManager {
     async fn update_release(&self, _app_id: &str, _release: &Release) -> Result<(), StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
+}
 
+// ── StoreReviewsApi ──────────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreReviewsApi for GooglePlayManager {
     async fn list_reviews(&self, app_id: &str) -> Result<Vec<Review>, StoreError> {
         let releases = self.list_releases(app_id).await?;
 
@@ -306,6 +325,23 @@ impl StoreManager for GooglePlayManager {
     }
 
     async fn cancel_review(&self, _app_id: &str, _review_id: &str) -> Result<(), StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+}
+
+// ── StoreListingsApi ─────────────────────────────────────────────────────────
+
+#[async_trait::async_trait]
+impl StoreListingsApi for GooglePlayManager {
+    async fn list_listings(&self) -> Result<Vec<Listing>, StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+
+    async fn get_listing(&self, _app_id: &str) -> Result<Listing, StoreError> {
+        Err(StoreError::General("Not yet implemented".to_string()))
+    }
+
+    async fn update_listing(&self, _app_id: &str, _listing: &Listing) -> Result<(), StoreError> {
         Err(StoreError::General("Not yet implemented".to_string()))
     }
 }

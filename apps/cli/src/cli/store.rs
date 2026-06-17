@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use clap::{Args, Subcommand};
-use fastforge_store_api::{AppStoreManager, GooglePlayManager, StoreManager};
+use fastforge_store_api::{AppStoreManager, GooglePlayManager};
+use fastforge_store_api_core::{StoreAppsApi, StoreReleasesApi, StoreReviewsApi};
 use std::path::Path;
 
 use crate::config::{resolve_app_id, FastforgeConfig};

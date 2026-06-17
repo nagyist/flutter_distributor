@@ -17,6 +17,7 @@ fastforge_app_builder = { path = "../../crates/app_builder" }
 fastforge_app_packager = { path = "../../crates/app_packager" }
 fastforge_app_publisher = { path = "../../crates/app_publisher" }
 fastforge_store_api = { path = "../../crates/store_api" }
+fastforge_store_api_core = { path = "../../crates/store_api_core" }
 anyhow = "1.0.100"
 clap = { version = "4.5.48", features = ["derive"] }
 serde = { version = "1.0.228", features = ["derive"] }

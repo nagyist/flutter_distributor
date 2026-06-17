@@ -2,11 +2,10 @@ use clap::{Parser, Subcommand};
 
 mod cli;
 mod config;
-mod runtime;
 
 use cli::{
-    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, RunArgs, StoreArgs,
-    UpgradeArgs, VersionCheckArgs, WorkflowArgs,
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs,
+    UpgradeArgs, VersionCheckArgs,
 };
 
 #[derive(Parser)]
@@ -32,10 +31,6 @@ enum Commands {
     Release(ReleaseArgs),
     #[command(about = "Manage apps in app stores (Google Play, App Store)")]
     Store(StoreArgs),
-    #[command(about = "Manage Fastforge workflows")]
-    Workflow(WorkflowArgs),
-    #[command(about = "Inspect workflow run history")]
-    Run(RunArgs),
     #[command(about = "Update Fastforge to the latest version")]
     Upgrade(UpgradeArgs),
     #[command(
@@ -67,12 +62,6 @@ async fn main() -> anyhow::Result<()> {
         }
         Commands::Store(args) => {
             cli::store::execute(args).await?;
-        }
-        Commands::Workflow(args) => {
-            cli::workflow::execute(args).await?;
-        }
-        Commands::Run(args) => {
-            cli::run::execute(args).await?;
         }
         Commands::Upgrade(args) => {
             cli::upgrade::execute(args).await?;

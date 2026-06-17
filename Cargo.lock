@@ -506,6 +506,7 @@ dependencies = [
  "fastforge_app_publisher",
  "fastforge_core",
  "fastforge_store_api",
+ "fastforge_store_api_core",
  "log",
  "serde",
  "serde_json",

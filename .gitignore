@@ -31,3 +31,6 @@ pubspec.lock
 
 # macOS related
 .DS_Store
+
+# Code generation cache
+.cache/

@@ -474,7 +474,9 @@ version = "0.1.0"
 dependencies = [
  "dmg_maker",
  "fastforge_core",
+ "serde",
  "serde_json",
+ "serde_yaml",
  "tempfile",
 ]
 

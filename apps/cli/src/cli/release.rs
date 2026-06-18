@@ -1,7 +1,13 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
+use serde_json::{Map, Value};
+use std::collections::HashMap;
 
 use crate::config::DistributeOptions;
+use crate::config::release_job::ReleaseJob;
+
+use super::package::package_flutter_artifact;
+use super::publish::publish_artifact;
 
 #[derive(Args)]
 pub struct ReleaseArgs {
@@ -118,22 +124,117 @@ pub async fn execute(args: &ReleaseArgs) -> Result<()> {
                 continue;
             }
 
-            // TODO(M5): delegate to app_builder + app_packager + app_publisher
-            // once those crates expose stable async interfaces.
-            // For now we print the resolved job plan so the output is testable.
-            println!(
-                "Release job '{}:{}': package {}/{} (clean={})",
-                release.name, job.name, job.package.platform, job.package.target, !args.skip_clean,
-            );
-            if let Some(target) = job.publish_target() {
+            let artifacts = package_flutter_artifact(
+                &job.package.platform,
+                &job.package.target,
+                yaml_map_to_json_map(job.package.build_args.as_ref())?,
+                _vars.clone(),
+                &opts.output,
+                opts.artifact_name.clone(),
+                !args.skip_clean,
+            )?;
+
+            for artifact in &artifacts {
                 println!(
-                    "Release job '{}:{}': publish to {}",
-                    release.name, job.name, target,
+                    "Release job '{}:{}': packaged {}",
+                    release.name,
+                    job.name,
+                    artifact.display(),
                 );
             }
-            let _ = _vars;
+
+            if let Some(target) = job.publish_target() {
+                let publish_args = publish_args(job, &_vars)?;
+                for artifact in &artifacts {
+                    let message = publish_artifact(
+                        &artifact.to_string_lossy(),
+                        target,
+                        publish_args.clone(),
+                    )?;
+                    println!(
+                        "Release job '{}:{}': published to {} ({})",
+                        release.name, job.name, target, message,
+                    );
+                }
+            }
         }
     }
 
     Ok(())
+}
+
+fn yaml_map_to_json_map(
+    map: Option<&HashMap<String, serde_yaml::Value>>,
+) -> Result<Map<String, Value>> {
+    let mut output = Map::new();
+    for (key, value) in map.into_iter().flat_map(|m| m.iter()) {
+        output.insert(
+            key.clone(),
+            serde_json::to_value(value).map_err(|e| anyhow!("Invalid build arg {key}: {e}"))?,
+        );
+    }
+    Ok(output)
+}
+
+fn publish_args(
+    job: &ReleaseJob,
+    variables: &HashMap<String, String>,
+) -> Result<HashMap<String, String>> {
+    let mut args = HashMap::new();
+
+    if let Some(publish) = &job.publish {
+        if let Some(raw_args) = &publish.args {
+            for (key, value) in raw_args {
+                args.insert(key.clone(), yaml_value_to_string(key, value)?);
+            }
+        }
+    }
+
+    copy_variable_arg(&mut args, variables, "APPSTORE_USERNAME", "username");
+    copy_variable_arg(&mut args, variables, "APPSTORE_PASSWORD", "password");
+    copy_variable_arg(&mut args, variables, "APPSTORE_APIKEY", "api-key");
+    copy_variable_arg(&mut args, variables, "APPSTORE_APIISSUER", "api-issuer");
+    copy_variable_arg(
+        &mut args,
+        variables,
+        "APP_STORE_CONNECT_KEY_ID",
+        "key-id",
+    );
+    copy_variable_arg(
+        &mut args,
+        variables,
+        "APP_STORE_CONNECT_ISSUER_ID",
+        "issuer-id",
+    );
+    copy_variable_arg(
+        &mut args,
+        variables,
+        "APP_STORE_CONNECT_KEY_PATH",
+        "key-path",
+    );
+
+    Ok(args)
+}
+
+fn copy_variable_arg(
+    args: &mut HashMap<String, String>,
+    variables: &HashMap<String, String>,
+    env_key: &str,
+    arg_key: &str,
+) {
+    if !args.contains_key(arg_key) {
+        if let Some(value) = variables.get(env_key).filter(|v| !v.trim().is_empty()) {
+            args.insert(arg_key.to_string(), value.clone());
+        }
+    }
+}
+
+fn yaml_value_to_string(key: &str, value: &serde_yaml::Value) -> Result<String> {
+    match value {
+        serde_yaml::Value::String(value) => Ok(value.clone()),
+        serde_yaml::Value::Number(value) => Ok(value.to_string()),
+        serde_yaml::Value::Bool(value) => Ok(value.to_string()),
+        serde_yaml::Value::Null => Ok(String::new()),
+        _ => Err(anyhow!("Publish arg '{key}' must be a scalar value")),
+    }
 }

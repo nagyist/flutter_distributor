@@ -1,9 +1,9 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
 use fastforge_app_publisher::{
-    AppGalleryPublisher, AppPublisher, CosPublisher, CustomPublisher, FirPublisher,
-    FirebaseHostingPublisher, FirebasePublisher, GitHubPublisher, OssPublisher, PublishConfig,
-    QiniuPublisher, S3Publisher, VercelPublisher,
+    AppGalleryPublisher, AppPublisher, AppStorePublisher, CosPublisher, CustomPublisher,
+    FirPublisher, FirebaseHostingPublisher, FirebasePublisher, GitHubPublisher, OssPublisher,
+    PublishConfig, QiniuPublisher, S3Publisher, VercelPublisher,
 };
 use std::collections::HashMap;
 
@@ -32,9 +32,20 @@ pub async fn execute(args: &PublishArgs) -> Result<()> {
         .to_ascii_lowercase();
 
     let publish_arguments = parse_publish_args(&args.publish_args)?;
+    let message = publish_artifact(&artifact_path, &target, publish_arguments)?;
+    println!("{}", message);
+    Ok(())
+}
+
+pub fn publish_artifact(
+    artifact_path: &str,
+    target: &str,
+    publish_arguments: HashMap<String, String>,
+) -> Result<String> {
+    let target = target.to_ascii_lowercase();
     let publish_config = PublishConfig {
         app_version: None,
-        artifact_path: Some(artifact_path),
+        artifact_path: Some(artifact_path.to_string()),
         publish_arguments: if publish_arguments.is_empty() {
             None
         } else {
@@ -51,20 +62,20 @@ pub async fn execute(args: &PublishArgs) -> Result<()> {
         "firebase" => FirebasePublisher::new().publish(publish_config, None),
         "firebase-hosting" => FirebaseHostingPublisher::new().publish(publish_config, None),
         "github" => GitHubPublisher::new().publish(publish_config, None),
+        "appstore" => AppStorePublisher::new().publish(publish_config, None),
         "appgallery" => AppGalleryPublisher::new().publish(publish_config, None),
         "vercel" => VercelPublisher::new().publish(publish_config, None),
         "custom" => CustomPublisher::new().publish(publish_config, None),
         _ => {
             return Err(anyhow!(
-                "Unsupported publish target: `{}`. Currently supported: s3, qiniu, oss, cos, fir, firebase, firebase-hosting, github, appgallery, vercel, custom",
+                "Unsupported publish target: `{}`. Currently supported: s3, qiniu, oss, cos, fir, firebase, firebase-hosting, github, appstore, appgallery, vercel, custom",
                 target
             ));
         }
     }
     .map_err(|e| anyhow!(e.to_string()))?;
 
-    println!("{}", result.message);
-    Ok(())
+    Ok(result.message)
 }
 
 fn parse_publish_args(items: &[String]) -> Result<HashMap<String, String>> {

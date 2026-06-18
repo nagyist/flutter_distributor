@@ -1,6 +1,8 @@
+use std::path::Path;
 use std::process::Command;
 
 use fastforge_core::{AppPackager, PackageConfig, PackageError, PackageResult, Platform};
+use serde::Deserialize;
 
 /// Builds a macOS `.pkg` installer using `xcrun productbuild` (and optionally
 /// `productsign`), mirroring Dart's `AppPackageMakerPkg`.
@@ -12,6 +14,32 @@ pub struct MacOSPkgPackager {
     pub sign_identity: Option<String>,
     /// Installation path prefix (defaults to `/Applications/`)
     pub install_path: Option<String>,
+}
+
+impl MacOSPkgPackager {
+    /// Load configuration from a YAML file (e.g. `macos/packaging/pkg/make_config.yaml`).
+    /// Returns `Self::default()` if the file does not exist.
+    pub fn from_yaml_file(path: &Path) -> Result<Self, PackageError> {
+        if !path.exists() {
+            return Ok(Self::default());
+        }
+        let content = std::fs::read_to_string(path).map_err(|e| {
+            PackageError::General(format!("Failed to read {}: {}", path.display(), e))
+        })?;
+        #[derive(Deserialize)]
+        #[serde(rename_all = "kebab-case")]
+        struct Config {
+            install_path: Option<String>,
+            sign_identity: Option<String>,
+        }
+        let cfg: Config = serde_yaml::from_str(&content).map_err(|e| {
+            PackageError::General(format!("Failed to parse {}: {}", path.display(), e))
+        })?;
+        Ok(Self {
+            sign_identity: cfg.sign_identity,
+            install_path: cfg.install_path,
+        })
+    }
 }
 
 fn run(cmd: &mut Command) -> Result<(), PackageError> {
@@ -46,10 +74,10 @@ impl AppPackager for MacOSPkgPackager {
     }
 
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
-        // `productbuild --root <dir> <install-path> <output>` – the first argument
-        // must be the directory that will become the installer's payload root.
-        // Flutter's iOS/macOS builds expose the .app bundle as the first entry
-        // in build_output_files (which is itself a directory).
+        // Flutter's macOS build exposes the .app bundle as the first entry in
+        // build_output_files. Use productbuild's component mode so the bundle
+        // is installed as /Applications/<App>.app instead of flattening the
+        // app bundle contents into /Applications.
         let app_path = config
             .first_build_output_file()
             .ok_or_else(|| PackageError::General("no build output files".into()))?;
@@ -70,7 +98,7 @@ impl AppPackager for MacOSPkgPackager {
 
         run(Command::new("xcrun").args([
             "productbuild",
-            "--root",
+            "--component",
             &app_path.display().to_string(),
             install_path,
             &unsigned_path.display().to_string(),

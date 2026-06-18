@@ -2,7 +2,7 @@ use fastforge_core::{
     AppPublisher, PublishConfig, PublishError, PublishProgressCallback, PublishResult,
 };
 use std::env;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 pub struct AppStorePublisher;
@@ -12,6 +12,9 @@ const ENV_APPSTORE_USERNAME: &str = "APPSTORE_USERNAME";
 const ENV_APPSTORE_PASSWORD: &str = "APPSTORE_PASSWORD";
 const ENV_APPSTORE_API_KEY: &str = "APPSTORE_APIKEY";
 const ENV_APPSTORE_API_ISSUER: &str = "APPSTORE_APIISSUER";
+const KEY_ID_ENV: &str = "APP_STORE_CONNECT_KEY_ID";
+const ISSUER_ID_ENV: &str = "APP_STORE_CONNECT_ISSUER_ID";
+const KEY_PATH_ENV: &str = "APP_STORE_CONNECT_KEY_PATH";
 const APPSTORE_CONNECT_APPS_URL: &str = "https://appstoreconnect.apple.com/apps";
 
 impl AppPublisher for AppStorePublisher {
@@ -41,31 +44,44 @@ impl AppPublisher for AppStorePublisher {
         let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
             PublishError::MissingArgument("artifact_path".to_string())
         })?;
-        let artifact_type = appstore_artifact_type(artifact_path)?;
+        let artifact_path = std::fs::canonicalize(artifact_path).map_err(|error| {
+            PublishError::General(format!(
+                "Artifact path does not exist or cannot be resolved: {artifact_path}: {error}"
+            ))
+        })?;
+        let artifact_type = appstore_artifact_type(&artifact_path)?;
         let auth = AppStoreAuth::from_config(config)?;
 
+        let mut command = Command::new("xcrun");
         let mut args = vec![
             "altool".to_string(),
             "--upload-app".to_string(),
             "--file".to_string(),
-            artifact_path.to_string(),
+            artifact_path.display().to_string(),
             "--type".to_string(),
             artifact_type.to_string(),
         ];
         args.extend(auth.to_cli_args());
 
-        let output = Command::new("xcrun")
-            .args(args)
-            .output()
-            .map_err(to_publish_error)?;
+        let staged_key = auth.stage_key_file()?;
+        if let Some(staged_key) = &staged_key {
+            command.current_dir(&staged_key.work_dir);
+        }
+
+        let output = command.args(args).output().map_err(to_publish_error)?;
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
 
         if !output.status.success() {
             return Err(PublishError::CommandFailed(format!(
-                "Upload of appstore failed: exit_code={:?}, stderr={}",
+                "Upload of appstore failed: exit_code={:?}, stdout={}, stderr={}",
                 output.status.code(),
-                String::from_utf8_lossy(&output.stderr)
+                stdout,
+                stderr
             )));
         }
+
+        print_command_output(&stdout, &stderr);
 
         Ok(PublishResult {
             success: true,
@@ -74,26 +90,47 @@ impl AppPublisher for AppStorePublisher {
     }
 }
 
+struct StagedKeyFile {
+    work_dir: PathBuf,
+}
+
+impl Drop for StagedKeyFile {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.work_dir);
+    }
+}
+
 struct AppStoreAuth {
     username: Option<String>,
     password: Option<String>,
-    api_key: Option<String>,
-    api_issuer: Option<String>,
+    key_id: Option<String>,
+    issuer_id: Option<String>,
+    key_path: Option<String>,
 }
 
 impl AppStoreAuth {
     fn from_config(config: &PublishConfig) -> Result<Self, PublishError> {
         let username = optional_value(config, &["username"], &[ENV_APPSTORE_USERNAME]);
         let password = optional_value(config, &["password"], &[ENV_APPSTORE_PASSWORD]);
-        let api_key = optional_value(config, &["api-key"], &[ENV_APPSTORE_API_KEY]);
-        let api_issuer = optional_value(config, &["api-issuer"], &[ENV_APPSTORE_API_ISSUER]);
+        let key_id = optional_value(
+            config,
+            &["key-id", "api-key"],
+            &[KEY_ID_ENV, ENV_APPSTORE_API_KEY],
+        );
+        let issuer_id = optional_value(
+            config,
+            &["issuer-id", "api-issuer"],
+            &[ISSUER_ID_ENV, ENV_APPSTORE_API_ISSUER],
+        );
+        let key_path = optional_value(config, &["key-path"], &[KEY_PATH_ENV]);
 
         let has_userpass = is_non_empty(&username) || is_non_empty(&password);
-        let has_api = is_non_empty(&api_key) || is_non_empty(&api_issuer);
+        let has_api =
+            is_non_empty(&key_id) || is_non_empty(&issuer_id) || is_non_empty(&key_path);
 
         if !has_userpass && !has_api {
             return Err(PublishError::MissingEnv(format!(
-                "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}` or `{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`"
+                "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}` or `{KEY_ID_ENV}` & `{ISSUER_ID_ENV}` & `{KEY_PATH_ENV}`"
             )));
         }
         if is_non_empty(&username) ^ is_non_empty(&password) {
@@ -101,17 +138,19 @@ impl AppStoreAuth {
                 "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}`"
             )));
         }
-        if is_non_empty(&api_key) ^ is_non_empty(&api_issuer) {
+        if has_api && !(is_non_empty(&key_id) && is_non_empty(&issuer_id) && is_non_empty(&key_path))
+        {
             return Err(PublishError::MissingEnv(format!(
-                "`{ENV_APPSTORE_API_KEY}` & `{ENV_APPSTORE_API_ISSUER}`"
+                "`{KEY_ID_ENV}` & `{ISSUER_ID_ENV}` & `{KEY_PATH_ENV}`"
             )));
         }
 
         Ok(Self {
             username,
             password,
-            api_key,
-            api_issuer,
+            key_id,
+            issuer_id,
+            key_path,
         })
     }
 
@@ -119,18 +158,48 @@ impl AppStoreAuth {
         let mut args = Vec::new();
         push_flag(&mut args, "--username", self.username.as_deref());
         push_flag(&mut args, "--password", self.password.as_deref());
-        push_flag(&mut args, "--apiKey", self.api_key.as_deref());
-        push_flag(&mut args, "--apiIssuer", self.api_issuer.as_deref());
+        push_flag(&mut args, "--apiKey", self.key_id.as_deref());
+        push_flag(&mut args, "--apiIssuer", self.issuer_id.as_deref());
         args
+    }
+
+    fn stage_key_file(&self) -> Result<Option<StagedKeyFile>, PublishError> {
+        let (Some(key_id), Some(key_path)) = (&self.key_id, &self.key_path) else {
+            return Ok(None);
+        };
+
+        let source = expand_tilde(key_path);
+        if !source.is_file() {
+            return Err(PublishError::General(format!(
+                "{KEY_PATH_ENV} does not point to a readable file: {}",
+                source.display()
+            )));
+        }
+
+        let work_dir = env::temp_dir().join(format!(
+            "fastforge-appstore-{}-{}",
+            std::process::id(),
+            unix_timestamp_millis()
+        ));
+        let key_dir = work_dir.join("private_keys");
+        std::fs::create_dir_all(&key_dir).map_err(to_publish_error)?;
+
+        let destination = key_dir.join(format!("AuthKey_{key_id}.p8"));
+        std::fs::copy(&source, &destination).map_err(to_publish_error)?;
+
+        Ok(Some(StagedKeyFile { work_dir }))
     }
 }
 
-fn appstore_artifact_type(path: &str) -> Result<&'static str, PublishError> {
-    let extension = Path::new(path)
+fn appstore_artifact_type(path: &Path) -> Result<&'static str, PublishError> {
+    let extension = path
         .extension()
         .and_then(|ext| ext.to_str())
         .ok_or_else(|| {
-            PublishError::General(format!("Cannot infer artifact type from file path: {path}"))
+            PublishError::General(format!(
+                "Cannot infer artifact type from file path: {}",
+                path.display()
+            ))
         })?;
     match extension {
         "ipa" => Ok("ios"),
@@ -164,6 +233,34 @@ fn push_flag(args: &mut Vec<String>, flag: &str, value: Option<&str>) {
     if let Some(value) = value.filter(|v| !v.trim().is_empty()) {
         args.push(flag.to_string());
         args.push(value.to_string());
+    }
+}
+
+fn expand_tilde(path: &str) -> PathBuf {
+    if path == "~" {
+        return env::var_os("HOME").map(PathBuf::from).unwrap_or_else(|| PathBuf::from(path));
+    }
+    if let Some(rest) = path.strip_prefix("~/") {
+        if let Some(home) = env::var_os("HOME") {
+            return PathBuf::from(home).join(rest);
+        }
+    }
+    PathBuf::from(path)
+}
+
+fn unix_timestamp_millis() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|duration| duration.as_millis())
+        .unwrap_or(0)
+}
+
+fn print_command_output(stdout: &str, stderr: &str) {
+    if !stdout.is_empty() {
+        println!("{stdout}");
+    }
+    if !stderr.is_empty() {
+        eprintln!("{stderr}");
     }
 }
 

@@ -304,7 +304,8 @@ impl AppBuilder for WindowsBuilder {
             "x64"
         };
 
-        let output_directory = PathBuf::from(format!("build/windows/{}/runner/{}", arch, build_mode));
+        let output_directory =
+            PathBuf::from(format!("build/windows/{}/runner/{}", arch, build_mode));
         let files = resolve_glob(&format!("{}/**/*", output_directory.display()))?;
         Ok((output_directory, files))
     }

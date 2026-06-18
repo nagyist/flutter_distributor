@@ -13,16 +13,8 @@ pub trait StoreReleasesApi: Send + Sync {
     /// Create a new release / draft.
     ///
     /// Returns the store-internal ID of the newly created release.
-    async fn create_release(
-        &self,
-        app_id: &str,
-        release: &Release,
-    ) -> Result<String, StoreError>;
+    async fn create_release(&self, app_id: &str, release: &Release) -> Result<String, StoreError>;
 
     /// Update an existing release's metadata (e.g. what's new notes).
-    async fn update_release(
-        &self,
-        app_id: &str,
-        release: &Release,
-    ) -> Result<(), StoreError>;
+    async fn update_release(&self, app_id: &str, release: &Release) -> Result<(), StoreError>;
 }

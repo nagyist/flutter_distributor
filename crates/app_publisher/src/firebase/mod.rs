@@ -28,21 +28,19 @@ impl AppPublisher for FirebasePublisher {
         config: &PublishConfig,
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let token = env::var(ENV_FIREBASE_TOKEN).map_err(|_| {
-            PublishError::MissingEnv(ENV_FIREBASE_TOKEN.to_string())
-        })?;
+        let token = env::var(ENV_FIREBASE_TOKEN)
+            .map_err(|_| PublishError::MissingEnv(ENV_FIREBASE_TOKEN.to_string()))?;
 
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
 
         let args = config.publish_arguments.as_ref();
         let app = args
             .and_then(|a| a.get("app"))
             .map(|s| s.as_str())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("app".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("app".to_string()))?;
 
         let mut cmd_args = vec![
             "appdistribution:distribute".to_string(),

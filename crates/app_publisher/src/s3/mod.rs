@@ -64,9 +64,10 @@ impl AppPublisher for S3Publisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         let options = S3PublishOptions::from_config(config)?;
         upload_artifact(&options, artifact_path, on_progress)
     }

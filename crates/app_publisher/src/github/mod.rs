@@ -48,9 +48,10 @@ impl AppPublisher for GitHubPublisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         let file_name = Path::new(artifact_path)
             .file_name()
             .and_then(|n| n.to_str())
@@ -60,17 +61,14 @@ impl AppPublisher for GitHubPublisher {
             .to_string();
 
         let args = config.publish_arguments.as_ref();
-        let token = env::var(ENV_GITHUB_TOKEN).map_err(|_| {
-            PublishError::MissingEnv(ENV_GITHUB_TOKEN.to_string())
-        })?;
+        let token = env::var(ENV_GITHUB_TOKEN)
+            .map_err(|_| PublishError::MissingEnv(ENV_GITHUB_TOKEN.to_string()))?;
         let repo = args
             .and_then(|a| a.get("repo").or_else(|| a.get("github-repo")))
             .cloned()
             .or_else(|| env::var(ENV_GITHUB_REPOSITORY).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("repo".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("repo".to_string()))?;
 
         let release_tag = args
             .and_then(|a| a.get("release-tag").or_else(|| a.get("github-release-tag")))

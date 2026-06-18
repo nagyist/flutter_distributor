@@ -17,7 +17,9 @@ use crate::api::{StoreAppsApi, StoreListingsApi, StoreReleasesApi, StoreReviewsA
 ///
 /// This trait does NOT handle binary upload — use `AppPublisher` from
 /// `fastforge_app_publisher` for that.
-pub trait StoreManager: StoreAppsApi + StoreReleasesApi + StoreReviewsApi + StoreListingsApi {
+pub trait StoreManager:
+    StoreAppsApi + StoreReleasesApi + StoreReviewsApi + StoreListingsApi
+{
     /// A human-readable name for the store (e.g. "Google Play Store").
     fn store_display_name(&self) -> &str;
 }

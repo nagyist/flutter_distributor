@@ -34,3 +34,7 @@ pubspec.lock
 
 # Code generation cache
 .cache/
+
+# Python cache
+__pycache__/
+*.py[cod]

@@ -30,9 +30,10 @@ impl AppPublisher for FirebaseHostingPublisher {
         config: &PublishConfig,
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
 
         let args = config.publish_arguments.as_ref();
         let project_id = args
@@ -40,9 +41,7 @@ impl AppPublisher for FirebaseHostingPublisher {
             .cloned()
             .or_else(|| env::var(ENV_FIREBASE_PROJECT_ID).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("project-id".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("project-id".to_string()))?;
 
         let firebaserc = json!({ "projects": { "default": project_id } });
         fs::write(

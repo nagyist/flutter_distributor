@@ -96,7 +96,9 @@ impl DsStoreBuilder {
         let mut cursor = 8_usize;
         for entry in entries {
             if cursor + entry.buffer.len() > modified.len() {
-                return Err(DmgMakerError::General("Too many .DS_Store entries for template block".to_string()));
+                return Err(DmgMakerError::General(
+                    "Too many .DS_Store entries for template block".to_string(),
+                ));
             }
             modified[cursor..cursor + entry.buffer.len()].copy_from_slice(&entry.buffer);
             cursor += entry.buffer.len();
@@ -108,7 +110,9 @@ impl DsStoreBuilder {
         let ds_offset = 4100_usize;
         let end = ds_offset + modified.len();
         if out.len() < end {
-            return Err(DmgMakerError::General("Invalid DSStore-clean template".to_string()));
+            return Err(DmgMakerError::General(
+                "Invalid DSStore-clean template".to_string(),
+            ));
         }
         out[ds_offset..end].copy_from_slice(&modified);
 
@@ -273,8 +277,7 @@ fn plist_to_binary(xml: &[u8]) -> Result<Vec<u8>, DmgMakerError> {
         std::io::Write::write_all(stdin, xml)?;
     }
 
-    let output = child
-        .wait_with_output()?;
+    let output = child.wait_with_output()?;
     if !output.status.success() {
         return Err(DmgMakerError::CommandFailed {
             command: "plutil".to_string(),

@@ -4,8 +4,8 @@ mod cli;
 mod config;
 
 use cli::{
-    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs,
-    UpgradeArgs, VersionCheckArgs,
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs, UpgradeArgs,
+    VersionCheckArgs,
 };
 
 #[derive(Parser)]

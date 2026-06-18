@@ -7,11 +7,9 @@ use crate::flutter::{
     AndroidAabBuilder, AndroidApkBuilder, IOSBuilder, LinuxBuilder, MacOSBuilder, OhosAppBuilder,
     OhosHapBuilder, WebBuilder, WindowsBuilder,
 };
-pub use fastforge_core::AppBuilder;
-pub use fastforge_core::{
-    BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, Platform,
-};
 pub use crate::flutter::{FlutterVersion, PubspecInfo};
+pub use fastforge_core::AppBuilder;
+pub use fastforge_core::{BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, Platform};
 use serde_json::{Map, Value};
 use std::path::Path;
 use std::time::Instant;
@@ -98,10 +96,8 @@ impl FlutterAppBuilder {
             )));
         }
 
-        let (output_directory, output_files) = builder.resolve_output_files(
-            &config,
-            environment.as_ref(),
-        )?;
+        let (output_directory, output_files) =
+            builder.resolve_output_files(&config, environment.as_ref())?;
 
         if output_files.is_empty() {
             return Err(BuildError::ArtifactNotFound(format!(

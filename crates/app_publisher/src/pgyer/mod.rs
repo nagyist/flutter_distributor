@@ -68,12 +68,12 @@ impl AppPublisher for PgyerPublisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let api_key = env::var(ENV_PGYER_API_KEY).map_err(|_| {
-            PublishError::MissingEnv(ENV_PGYER_API_KEY.to_string())
-        })?;
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let api_key = env::var(ENV_PGYER_API_KEY)
+            .map_err(|_| PublishError::MissingEnv(ENV_PGYER_API_KEY.to_string()))?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         let build_type = file_extension(artifact_path).ok_or_else(|| {
             PublishError::General(format!(
                 "Cannot infer build type from artifact path: {artifact_path}"

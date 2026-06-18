@@ -56,7 +56,12 @@ pub async fn execute(args: &BuildArgs) -> Result<()> {
     }
 
     let result = builder
-        .build(&platform, args.target.as_deref(), build_arguments, Some(env))
+        .build(
+            &platform,
+            args.target.as_deref(),
+            build_arguments,
+            Some(env),
+        )
         .map_err(|e| anyhow!("{}", e))?;
 
     println!(

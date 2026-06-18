@@ -91,15 +91,21 @@ impl AppPackager for MacOSDmgPackager {
 /// Copy a file or directory recursively.
 fn run_cp_r(source: &Path, dest_dir: &Path) -> Result<(), PackageError> {
     let status = std::process::Command::new("cp")
-        .args(["-RH", &source.display().to_string(), &dest_dir.display().to_string()])
+        .args([
+            "-RH",
+            &source.display().to_string(),
+            &dest_dir.display().to_string(),
+        ])
         .status()
-        .map_err(|e| {
-            PackageError::MissingTool(format!("cp: {}", e))
-        })?;
+        .map_err(|e| PackageError::MissingTool(format!("cp: {}", e)))?;
     if !status.success() {
         return Err(PackageError::CommandFailed {
             command: "cp".to_string(),
-            stderr: format!("Failed to copy {} to {}", source.display(), dest_dir.display()),
+            stderr: format!(
+                "Failed to copy {} to {}",
+                source.display(),
+                dest_dir.display()
+            ),
         });
     }
     Ok(())
@@ -114,13 +120,15 @@ fn run_cp_r_dir_contents(source: &Path, dest_dir: &Path) -> Result<(), PackageEr
             &dest_dir.display().to_string(),
         ])
         .status()
-        .map_err(|e| {
-            PackageError::MissingTool(format!("cp: {}", e))
-        })?;
+        .map_err(|e| PackageError::MissingTool(format!("cp: {}", e)))?;
     if !status.success() {
         return Err(PackageError::CommandFailed {
             command: "cp".to_string(),
-            stderr: format!("Failed to copy {} contents to {}", source.display(), dest_dir.display()),
+            stderr: format!(
+                "Failed to copy {} contents to {}",
+                source.display(),
+                dest_dir.display()
+            ),
         });
     }
     Ok(())
@@ -139,10 +147,9 @@ fn map_dmg_error(err: DmgMakerError) -> PackageError {
         DmgMakerError::InvalidConfig(msg) => {
             PackageError::General(format!("Invalid DMG configuration: {msg}"))
         }
-        DmgMakerError::CommandFailed { command, stderr } => PackageError::CommandFailed {
-            command,
-            stderr,
-        },
+        DmgMakerError::CommandFailed { command, stderr } => {
+            PackageError::CommandFailed { command, stderr }
+        }
         DmgMakerError::Io(e) => PackageError::Io(e),
         DmgMakerError::Json(e) => PackageError::General(format!("JSON error: {e}")),
         DmgMakerError::General(msg) => PackageError::General(msg),

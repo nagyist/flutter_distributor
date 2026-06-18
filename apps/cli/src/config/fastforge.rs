@@ -99,7 +99,11 @@ pub fn resolve_app_id(
 
     // 2. --app alias lookup
     if let Some(alias) = cli_app {
-        if let Some(app) = config.apps.iter().find(|a| a.name.as_deref() == Some(alias)) {
+        if let Some(app) = config
+            .apps
+            .iter()
+            .find(|a| a.name.as_deref() == Some(alias))
+        {
             return Ok(app.id.clone());
         }
         anyhow::bail!(
@@ -229,6 +233,4 @@ mod tests {
         assert_eq!(config.version, 1);
         assert_eq!(config.output, "dist/");
     }
-
-
 }

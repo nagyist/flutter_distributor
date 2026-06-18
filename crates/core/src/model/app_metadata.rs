@@ -34,7 +34,11 @@ pub struct AppMetadata {
 
 impl AppMetadata {
     pub fn new(app_name: String, app_version: String) -> Self {
-        let build_name = app_version.split('+').next().unwrap_or(&app_version).to_string();
+        let build_name = app_version
+            .split('+')
+            .next()
+            .unwrap_or(&app_version)
+            .to_string();
         let build_number = app_version.split('+').nth(1).unwrap_or("1").to_string();
         Self {
             app_name,

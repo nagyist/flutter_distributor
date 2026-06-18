@@ -37,9 +37,10 @@ impl AppPublisher for PlayStorePublisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         ensure_bundle_extension(artifact_path)?;
         let publish_config = PlayStoreConfig::from_config(config)?;
         let credentials = ServiceAccountCredentials::from_file(&publish_config.credentials_file)?;

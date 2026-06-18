@@ -30,9 +30,10 @@ impl AppPublisher for VercelPublisher {
         config: &PublishConfig,
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
 
         let args = config.publish_arguments.as_ref();
         let org_id = args
@@ -40,17 +41,13 @@ impl AppPublisher for VercelPublisher {
             .cloned()
             .or_else(|| env::var(ENV_VERCEL_ORG_ID).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("org-id".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("org-id".to_string()))?;
         let project_id = args
             .and_then(|a| a.get("project-id").or_else(|| a.get("vercel-project-id")))
             .cloned()
             .or_else(|| env::var(ENV_VERCEL_PROJECT_ID).ok())
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("project-id".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("project-id".to_string()))?;
 
         let vercel_dir = format!("{artifact_path}/.vercel");
         fs::create_dir_all(&vercel_dir).map_err(|e| {

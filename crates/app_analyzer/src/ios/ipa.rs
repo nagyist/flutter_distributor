@@ -21,8 +21,7 @@ impl AppAnalyzer for IOSIpaAnalyzer {
     }
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {
-        let file = File::open(&config.path)
-            .map_err(AnalyzeError::Io)?;
+        let file = File::open(&config.path).map_err(AnalyzeError::Io)?;
         let mut archive = ZipArchive::new(file)
             .map_err(|e| AnalyzeError::Parse(format!("Invalid ipa zip archive: {}", e)))?;
 
@@ -37,32 +36,33 @@ impl AppAnalyzer for IOSIpaAnalyzer {
             }
 
             let mut buf = Vec::new();
-            entry
-                .read_to_end(&mut buf)
-                .map_err(AnalyzeError::Io)?;
+            entry.read_to_end(&mut buf).map_err(AnalyzeError::Io)?;
             plist_bytes = Some(buf);
             break;
         }
 
-        let plist_bytes = plist_bytes.ok_or_else(|| AnalyzeError::Parse("Can't parse .ipa file.".to_string()))?;
+        let plist_bytes =
+            plist_bytes.ok_or_else(|| AnalyzeError::Parse("Can't parse .ipa file.".to_string()))?;
         let plist_value = Value::from_reader(Cursor::new(plist_bytes))
             .map_err(|e| AnalyzeError::Parse(format!("Failed to parse Info.plist: {}", e)))?;
 
-        let plist_dict = plist_value
-            .as_dictionary()
-            .ok_or_else(|| AnalyzeError::Parse("Info.plist root is not a dictionary".to_string()))?;
+        let plist_dict = plist_value.as_dictionary().ok_or_else(|| {
+            AnalyzeError::Parse("Info.plist root is not a dictionary".to_string())
+        })?;
 
         let identifier = read_required_plist_string(plist_dict, "CFBundleIdentifier")?;
         let name = read_optional_plist_string(plist_dict, "CFBundleDisplayName")
             .or_else(|| read_optional_plist_string(plist_dict, "CFBundleName"))
             .ok_or_else(|| {
-                AnalyzeError::Parse("Missing CFBundleDisplayName/CFBundleName in Info.plist".to_string())
+                AnalyzeError::Parse(
+                    "Missing CFBundleDisplayName/CFBundleName in Info.plist".to_string(),
+                )
             })?;
         let version = read_required_plist_string(plist_dict, "CFBundleShortVersionString")?;
         let build_number_raw = read_required_plist_string(plist_dict, "CFBundleVersion")?;
-        let build_number = build_number_raw
-            .parse::<i32>()
-            .map_err(|_| AnalyzeError::Parse("Failed to parse CFBundleVersion as integer".to_string()))?;
+        let build_number = build_number_raw.parse::<i32>().map_err(|_| {
+            AnalyzeError::Parse("Failed to parse CFBundleVersion as integer".to_string())
+        })?;
 
         let data = json!({
             "platform": "ios",

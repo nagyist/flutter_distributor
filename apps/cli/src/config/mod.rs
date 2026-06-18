@@ -4,6 +4,4 @@ pub mod release;
 pub mod release_job;
 
 pub use distribute_options::DistributeOptions;
-pub use fastforge::{
-    FastforgeConfig, StoreTargetConfig, resolve_app_id,
-};
+pub use fastforge::{FastforgeConfig, StoreTargetConfig, resolve_app_id};

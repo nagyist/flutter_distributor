@@ -4,7 +4,7 @@ use fastforge_store_api::{AppStoreManager, GooglePlayManager};
 use fastforge_store_api_core::{StoreAppsApi, StoreReleasesApi, StoreReviewsApi};
 use std::path::Path;
 
-use crate::config::{resolve_app_id, FastforgeConfig};
+use crate::config::{FastforgeConfig, resolve_app_id};
 
 #[derive(Args)]
 pub struct StoreArgs {
@@ -55,56 +55,61 @@ pub async fn execute(args: &StoreArgs) -> Result<()> {
     match &args.action {
         StoreAction::ListApps { store } => {
             let result = match store.to_ascii_lowercase().as_str() {
+                "googleplay" => build_googleplay(&config, store)?.list_apps().await?,
+                "appstore" => build_appstore(&config, store)?.list_apps().await?,
+                other => {
+                    anyhow::bail!("Unsupported store: `{other}`. Supported: googleplay, appstore")
+                }
+            };
+            println!("{}", serde_json::to_string_pretty(&result)?);
+        }
+        StoreAction::ListReleases { store, app, app_id } => {
+            let store_name = store.to_ascii_lowercase();
+            let store_config = config_for(&config, &store_name)?;
+            let resolved =
+                resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
+
+            let result = match store_name.as_str() {
                 "googleplay" => {
-                    build_googleplay(&config, store)?.list_apps().await?
+                    build_googleplay(&config, &store_name)?
+                        .list_releases(&resolved)
+                        .await?
                 }
                 "appstore" => {
-                    build_appstore(&config, store)?.list_apps().await?
+                    build_appstore(&config, &store_name)?
+                        .list_releases(&resolved)
+                        .await?
                 }
-                other => anyhow::bail!("Unsupported store: `{other}`. Supported: googleplay, appstore"),
-            };
-            println!("{}", serde_json::to_string_pretty(&result)?);
-        }
-        StoreAction::ListReleases {
-            store,
-            app,
-            app_id,
-        } => {
-            let store_name = store.to_ascii_lowercase();
-            let store_config = config_for(&config, &store_name)?;
-            let resolved = resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
-
-            let result = match store_name.as_str() {
-                "googleplay" => build_googleplay(&config, &store_name)?.list_releases(&resolved).await?,
-                "appstore" => build_appstore(&config, &store_name)?.list_releases(&resolved).await?,
                 _ => unreachable!(),
             };
             println!("{}", serde_json::to_string_pretty(&result)?);
         }
-        StoreAction::GetApp {
-            store,
-            app,
-            app_id,
-        } => {
+        StoreAction::GetApp { store, app, app_id } => {
             let store_name = store.to_ascii_lowercase();
             let store_config = config_for(&config, &store_name)?;
-            let resolved = resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
+            let resolved =
+                resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
 
             let result = match store_name.as_str() {
-                "googleplay" => build_googleplay(&config, &store_name)?.get_app(&resolved).await?,
-                "appstore" => build_appstore(&config, &store_name)?.get_app(&resolved).await?,
+                "googleplay" => {
+                    build_googleplay(&config, &store_name)?
+                        .get_app(&resolved)
+                        .await?
+                }
+                "appstore" => {
+                    build_appstore(&config, &store_name)?
+                        .get_app(&resolved)
+                        .await?
+                }
                 _ => unreachable!(),
             };
             println!("{}", serde_json::to_string_pretty(&result)?);
         }
-        StoreAction::ListReviews {
-            store,
-            app,
-            app_id,
-        } => {
+        StoreAction::ListReviews { store, app, app_id } => {
             let store_name = store.to_ascii_lowercase();
             let store_config = config_for(&config, &store_name)?;
-            let resolved = resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
+            let resolved =
+                resolve_app_id(store_config, app_id.as_deref(), app.as_deref(), &store_name)?;
 
             let result = match store_name.as_str() {
                 "googleplay" => {
@@ -138,7 +143,10 @@ fn find_project_root() -> Result<std::path::PathBuf> {
     Ok(cwd)
 }
 
-fn config_for<'a>(config: &'a FastforgeConfig, store: &str) -> Result<&'a Option<crate::config::StoreTargetConfig>> {
+fn config_for<'a>(
+    config: &'a FastforgeConfig,
+    store: &str,
+) -> Result<&'a Option<crate::config::StoreTargetConfig>> {
     match store {
         "googleplay" => Ok(&config.stores.googleplay),
         "appstore" => Ok(&config.stores.appstore),

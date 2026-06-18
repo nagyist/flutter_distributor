@@ -23,7 +23,9 @@ impl AppAnalyzer for MacOSDmgAnalyzer {
 
     fn perform_analyze(&self, config: &AnalyzeConfig) -> Result<AnalyzeResult, AnalyzeError> {
         if !self.is_supported_on_current_platform() {
-            return Err(AnalyzeError::General("DMG analysis is only supported on macOS.".to_string()));
+            return Err(AnalyzeError::General(
+                "DMG analysis is only supported on macOS.".to_string(),
+            ));
         }
 
         let mount_point = create_mount_point()?;
@@ -41,21 +43,23 @@ impl AppAnalyzer for MacOSDmgAnalyzer {
 
         let plist_value = Value::from_file(&info_plist)
             .map_err(|e| AnalyzeError::Parse(format!("Failed to parse Info.plist: {}", e)))?;
-        let plist_dict = plist_value
-            .as_dictionary()
-            .ok_or_else(|| AnalyzeError::Parse("Info.plist root is not a dictionary".to_string()))?;
+        let plist_dict = plist_value.as_dictionary().ok_or_else(|| {
+            AnalyzeError::Parse("Info.plist root is not a dictionary".to_string())
+        })?;
 
         let identifier = read_required_plist_string(plist_dict, "CFBundleIdentifier")?;
         let name = read_optional_plist_string(plist_dict, "CFBundleDisplayName")
             .or_else(|| read_optional_plist_string(plist_dict, "CFBundleName"))
             .ok_or_else(|| {
-                AnalyzeError::Parse("Missing CFBundleDisplayName/CFBundleName in Info.plist".to_string())
+                AnalyzeError::Parse(
+                    "Missing CFBundleDisplayName/CFBundleName in Info.plist".to_string(),
+                )
             })?;
         let version = read_required_plist_string(plist_dict, "CFBundleShortVersionString")?;
         let build_number_raw = read_required_plist_string(plist_dict, "CFBundleVersion")?;
-        let build_number = build_number_raw
-            .parse::<i32>()
-            .map_err(|_| AnalyzeError::Parse("Failed to parse CFBundleVersion as integer".to_string()))?;
+        let build_number = build_number_raw.parse::<i32>().map_err(|_| {
+            AnalyzeError::Parse("Failed to parse CFBundleVersion as integer".to_string())
+        })?;
 
         let data = json!({
             "platform": "macos",
@@ -73,11 +77,12 @@ impl AppAnalyzer for MacOSDmgAnalyzer {
 fn create_mount_point() -> Result<PathBuf, AnalyzeError> {
     let ts = SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .map_err(|e| AnalyzeError::General(format!("Failed to create mount point timestamp: {}", e)))?
+        .map_err(|e| {
+            AnalyzeError::General(format!("Failed to create mount point timestamp: {}", e))
+        })?
         .as_millis();
     let mount_point = std::env::temp_dir().join(format!("fastforge-dmg-mount-{}", ts));
-    fs::create_dir_all(&mount_point)
-        .map_err(AnalyzeError::Io)?;
+    fs::create_dir_all(&mount_point).map_err(AnalyzeError::Io)?;
     Ok(mount_point)
 }
 
@@ -96,7 +101,10 @@ fn mount_dmg(dmg_path: &str, mount_point: &Path) -> Result<MountedDmg, AnalyzeEr
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(AnalyzeError::CommandFailed { command: "hdiutil".to_string(), stderr: stderr.to_string() });
+        return Err(AnalyzeError::CommandFailed {
+            command: "hdiutil".to_string(),
+            stderr: stderr.to_string(),
+        });
     }
 
     Ok(MountedDmg::new(mount_point.to_path_buf()))

@@ -194,12 +194,7 @@ fn publish_args(
     copy_variable_arg(&mut args, variables, "APPSTORE_PASSWORD", "password");
     copy_variable_arg(&mut args, variables, "APPSTORE_APIKEY", "api-key");
     copy_variable_arg(&mut args, variables, "APPSTORE_APIISSUER", "api-issuer");
-    copy_variable_arg(
-        &mut args,
-        variables,
-        "APP_STORE_CONNECT_KEY_ID",
-        "key-id",
-    );
+    copy_variable_arg(&mut args, variables, "APP_STORE_CONNECT_KEY_ID", "key-id");
     copy_variable_arg(
         &mut args,
         variables,

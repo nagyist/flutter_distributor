@@ -70,21 +70,19 @@ impl AppPublisher for FirPublisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let api_token = env::var(ENV_FIR_API_TOKEN).map_err(|_| {
-            PublishError::MissingEnv(ENV_FIR_API_TOKEN.to_string())
-        })?;
+        let api_token = env::var(ENV_FIR_API_TOKEN)
+            .map_err(|_| PublishError::MissingEnv(ENV_FIR_API_TOKEN.to_string()))?;
 
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
 
         let args = config.publish_arguments.as_ref();
         let bundle_id = args
             .and_then(|a| a.get("bundle_id"))
             .map(|s| s.as_str())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("bundle_id".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("bundle_id".to_string()))?;
 
         let platform = infer_platform(artifact_path).ok_or_else(|| {
             PublishError::General(format!(

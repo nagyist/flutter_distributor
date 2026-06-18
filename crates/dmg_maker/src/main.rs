@@ -16,7 +16,9 @@ fn main() -> Result<(), DmgMakerError> {
     }
 
     if args.len() != 2 {
-        return Err(DmgMakerError::General("Usage: dmg_maker <json-path> <dmg-path>".to_string()));
+        return Err(DmgMakerError::General(
+            "Usage: dmg_maker <json-path> <dmg-path>".to_string(),
+        ));
     }
 
     let source = PathBuf::from(&args[0]);

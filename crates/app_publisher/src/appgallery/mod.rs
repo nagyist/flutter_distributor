@@ -72,9 +72,10 @@ impl AppPublisher for AppGalleryPublisher {
         config: &PublishConfig,
         on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         let file_name = Path::new(artifact_path)
             .file_name()
             .and_then(|n| n.to_str())
@@ -93,9 +94,7 @@ impl AppPublisher for AppGalleryPublisher {
             .ok_or_else(|| PublishError::MissingArgument(ENV_CLIENT_SECRET.to_string()))?;
         let app_id = optional_arg(config, "app-id")
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument("app-id".to_string())
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("app-id".to_string()))?;
 
         let client = Client::new();
         let token = get_access_token(&client, &client_id, &client_secret)?;

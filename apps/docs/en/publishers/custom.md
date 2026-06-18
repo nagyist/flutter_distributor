@@ -42,9 +42,9 @@ fastforge release --name dev
 
 The following environment variables are set when your command runs:
 
-| Variable | Description |
-|---|---|
-| `ARTIFACT_PATH` | Path to the artifact file to publish |
+| Variable            | Description                                                                     |
+| ------------------- | ------------------------------------------------------------------------------- |
+| `ARTIFACT_PATH`     | Path to the artifact file to publish                                            |
 | `PUBLISH_ARG_<KEY>` | Any additional publish argument, uppercased with dashes replaced by underscores |
 
 ## Example script

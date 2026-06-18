@@ -41,9 +41,10 @@ impl AppPublisher for AppStorePublisher {
             ));
         }
 
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
         let artifact_path = std::fs::canonicalize(artifact_path).map_err(|error| {
             PublishError::General(format!(
                 "Artifact path does not exist or cannot be resolved: {artifact_path}: {error}"
@@ -125,8 +126,7 @@ impl AppStoreAuth {
         let key_path = optional_value(config, &["key-path"], &[KEY_PATH_ENV]);
 
         let has_userpass = is_non_empty(&username) || is_non_empty(&password);
-        let has_api =
-            is_non_empty(&key_id) || is_non_empty(&issuer_id) || is_non_empty(&key_path);
+        let has_api = is_non_empty(&key_id) || is_non_empty(&issuer_id) || is_non_empty(&key_path);
 
         if !has_userpass && !has_api {
             return Err(PublishError::MissingEnv(format!(
@@ -138,7 +138,8 @@ impl AppStoreAuth {
                 "`{ENV_APPSTORE_USERNAME}` & `{ENV_APPSTORE_PASSWORD}`"
             )));
         }
-        if has_api && !(is_non_empty(&key_id) && is_non_empty(&issuer_id) && is_non_empty(&key_path))
+        if has_api
+            && !(is_non_empty(&key_id) && is_non_empty(&issuer_id) && is_non_empty(&key_path))
         {
             return Err(PublishError::MissingEnv(format!(
                 "`{KEY_ID_ENV}` & `{ISSUER_ID_ENV}` & `{KEY_PATH_ENV}`"
@@ -238,7 +239,9 @@ fn push_flag(args: &mut Vec<String>, flag: &str, value: Option<&str>) {
 
 fn expand_tilde(path: &str) -> PathBuf {
     if path == "~" {
-        return env::var_os("HOME").map(PathBuf::from).unwrap_or_else(|| PathBuf::from(path));
+        return env::var_os("HOME")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from(path));
     }
     if let Some(rest) = path.strip_prefix("~/") {
         if let Some(home) = env::var_os("HOME") {

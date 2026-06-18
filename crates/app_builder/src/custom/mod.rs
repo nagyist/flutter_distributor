@@ -321,9 +321,9 @@ impl CustomAppBuilder {
             )));
         }
 
-        let (output_directory, output_files) =
-            self.builder
-                .resolve_output_files(&config, environment.as_ref())?;
+        let (output_directory, output_files) = self
+            .builder
+            .resolve_output_files(&config, environment.as_ref())?;
 
         if output_files.is_empty() {
             return Err(BuildError::ArtifactNotFound(format!(

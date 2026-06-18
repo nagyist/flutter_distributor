@@ -34,7 +34,9 @@ impl AppAnalyzer for AndroidApkAnalyzer {
         let build_tools_dir = Path::new(&android_home).join("build-tools");
 
         if !build_tools_dir.exists() {
-            return Err(AnalyzeError::NotFound("build-tools directory in ANDROID_HOME".to_string()));
+            return Err(AnalyzeError::NotFound(
+                "build-tools directory in ANDROID_HOME".to_string(),
+            ));
         }
 
         let entries = fs::read_dir(&build_tools_dir).map_err(AnalyzeError::Io)?;
@@ -71,7 +73,10 @@ impl AppAnalyzer for AndroidApkAnalyzer {
 
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            return Err(AnalyzeError::CommandFailed { command: "aapt2".to_string(), stderr: stderr.to_string() });
+            return Err(AnalyzeError::CommandFailed {
+                command: "aapt2".to_string(),
+                stderr: stderr.to_string(),
+            });
         }
 
         let aapt_output = String::from_utf8_lossy(&output.stdout);
@@ -87,7 +92,9 @@ impl AppAnalyzer for AndroidApkAnalyzer {
             .captures(&aapt_output)
             .and_then(|cap| cap.get(1))
             .map(|m| m.as_str().to_string())
-            .ok_or_else(|| AnalyzeError::Parse("Failed to extract package name from aapt output".to_string()))?;
+            .ok_or_else(|| {
+                AnalyzeError::Parse("Failed to extract package name from aapt output".to_string())
+            })?;
 
         // Extract application label
         let app_name = label_regex
@@ -95,7 +102,9 @@ impl AppAnalyzer for AndroidApkAnalyzer {
             .and_then(|cap| cap.get(1))
             .map(|m| m.as_str().to_string())
             .ok_or_else(|| {
-                AnalyzeError::Parse("Failed to extract application label from aapt output".to_string())
+                AnalyzeError::Parse(
+                    "Failed to extract application label from aapt output".to_string(),
+                )
             })?;
 
         // Extract version name
@@ -103,18 +112,22 @@ impl AppAnalyzer for AndroidApkAnalyzer {
             .captures(&aapt_output)
             .and_then(|cap| cap.get(1))
             .map(|m| m.as_str().to_string())
-            .ok_or_else(|| AnalyzeError::Parse("Failed to extract version name from aapt output".to_string()))?;
+            .ok_or_else(|| {
+                AnalyzeError::Parse("Failed to extract version name from aapt output".to_string())
+            })?;
 
         // Extract version code
         let version_code_str = version_code_regex
             .captures(&aapt_output)
             .and_then(|cap| cap.get(1))
             .map(|m| m.as_str().to_string())
-            .ok_or_else(|| AnalyzeError::Parse("Failed to extract version code from aapt output".to_string()))?;
+            .ok_or_else(|| {
+                AnalyzeError::Parse("Failed to extract version code from aapt output".to_string())
+            })?;
 
-        let version_code = version_code_str
-            .parse::<i32>()
-            .map_err(|_| AnalyzeError::Parse("Failed to parse version code as integer".to_string()))?;
+        let version_code = version_code_str.parse::<i32>().map_err(|_| {
+            AnalyzeError::Parse("Failed to parse version code as integer".to_string())
+        })?;
 
         let data = json!({
             "platform": "android",

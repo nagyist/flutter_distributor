@@ -15,11 +15,7 @@ pub trait StoreReviewsApi: Send + Sync {
     /// Submit a release for review.
     ///
     /// Returns the newly created review.
-    async fn submit_review(
-        &self,
-        app_id: &str,
-        release_id: &str,
-    ) -> Result<Review, StoreError>;
+    async fn submit_review(&self, app_id: &str, release_id: &str) -> Result<Review, StoreError>;
 
     /// Cancel a pending review submission.
     async fn cancel_review(&self, app_id: &str, review_id: &str) -> Result<(), StoreError>;

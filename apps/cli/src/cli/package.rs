@@ -113,11 +113,9 @@ pub fn package_flutter_artifact(
 
 fn macos_packager(target: &str) -> Result<Box<dyn AppPackager + Send + Sync>> {
     match target {
-        "pkg" => Ok(Box::new(
-            MacOSPkgPackager::from_yaml_file(std::path::Path::new(
-                "macos/packaging/pkg/make_config.yaml",
-            ))?,
-        )),
+        "pkg" => Ok(Box::new(MacOSPkgPackager::from_yaml_file(
+            std::path::Path::new("macos/packaging/pkg/make_config.yaml"),
+        )?)),
         "dmg" => Ok(Box::new(MacOSDmgPackager)),
         "zip" => Ok(Box::new(MacOSZipPackager)),
         other => Err(anyhow!(

@@ -16,10 +16,7 @@ pub enum DmgMakerError {
     InvalidConfig(String),
 
     #[error("Command failed: {command}\n{stderr}")]
-    CommandFailed {
-        command: String,
-        stderr: String,
-    },
+    CommandFailed { command: String, stderr: String },
 
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),

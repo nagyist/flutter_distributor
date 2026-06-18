@@ -388,7 +388,11 @@ impl AppBuilder for GradleKmpDesktopBuilder {
     }
 
     fn matches(&self, platform: &Platform, target: Option<&str>) -> bool {
-        target == Some("desktop") && matches!(platform, Platform::MacOS | Platform::Windows | Platform::Linux)
+        target == Some("desktop")
+            && matches!(
+                platform,
+                Platform::MacOS | Platform::Windows | Platform::Linux
+            )
     }
 
     fn is_supported_on_current_platform(&self) -> bool {
@@ -619,7 +623,11 @@ impl GradleAppBuilder {
     /// Match a Gradle builder using string-based platform names
     /// (e.g. "gradle-android", "gradle-kmp") since these are not standard
     /// Platform variants. Each builder's `name()` returns the platform prefix.
-    fn find_builder(&self, platform: &str, target: Option<&str>) -> Option<&Box<dyn AppBuilder + Send + Sync>> {
+    fn find_builder(
+        &self,
+        platform: &str,
+        target: Option<&str>,
+    ) -> Option<&Box<dyn AppBuilder + Send + Sync>> {
         self.builders.iter().find(|b| {
             // The builder's `name()` matches the platform prefix, e.g.
             //   GradleAndroidApkBuilder.name() == "gradle-android"
@@ -654,15 +662,13 @@ impl GradleAppBuilder {
         arguments: serde_json::Map<String, serde_json::Value>,
         environment: Option<HashMap<String, String>>,
     ) -> Result<BuildResult, BuildError> {
-        let builder = self
-            .find_builder(platform, target)
-            .ok_or_else(|| {
-                BuildError::UnsupportedBuilder(format!(
-                    "No Gradle builder found for platform={} target={}",
-                    platform,
-                    target.unwrap_or("")
-                ))
-            })?;
+        let builder = self.find_builder(platform, target).ok_or_else(|| {
+            BuildError::UnsupportedBuilder(format!(
+                "No Gradle builder found for platform={} target={}",
+                platform,
+                target.unwrap_or("")
+            ))
+        })?;
 
         if !builder.is_supported_on_current_platform() {
             return Err(BuildError::UnsupportedPlatform(format!(

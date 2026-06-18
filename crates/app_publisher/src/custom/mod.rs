@@ -25,19 +25,16 @@ impl AppPublisher for CustomPublisher {
         config: &PublishConfig,
         _on_progress: Option<&PublishProgressCallback>,
     ) -> Result<PublishResult, PublishError> {
-        let artifact_path = config.artifact_path.as_deref().ok_or_else(|| {
-            PublishError::MissingArgument("artifact_path".to_string())
-        })?;
+        let artifact_path = config
+            .artifact_path
+            .as_deref()
+            .ok_or_else(|| PublishError::MissingArgument("artifact_path".to_string()))?;
 
         let args = config.publish_arguments.as_ref();
         let command = args
             .and_then(|a| a.get("command"))
             .filter(|v| !v.trim().is_empty())
-            .ok_or_else(|| {
-                PublishError::MissingArgument(
-                    "command".to_string(),
-                )
-            })?;
+            .ok_or_else(|| PublishError::MissingArgument("command".to_string()))?;
 
         let mut cmd = if cfg!(target_os = "windows") {
             let mut c = Command::new("cmd");
@@ -66,9 +63,9 @@ impl AppPublisher for CustomPublisher {
             }
         }
 
-        let output = cmd
-            .output()
-            .map_err(|e| PublishError::CommandFailed(format!("Failed to run custom command: {e}")))?;
+        let output = cmd.output().map_err(|e| {
+            PublishError::CommandFailed(format!("Failed to run custom command: {e}"))
+        })?;
 
         if output.status.success() {
             let stdout = String::from_utf8_lossy(&output.stdout);

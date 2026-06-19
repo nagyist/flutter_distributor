@@ -8,7 +8,8 @@
 
 ```yaml
 install-path: /Applications
-sign-identity: <your-sign-identity>
+sign-identity: <可选> <your-sign-identity>
+scripts-path: <可选> <your-scripts-path>
 ```
 
 运行：

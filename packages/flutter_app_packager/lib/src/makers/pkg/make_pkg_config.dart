@@ -6,22 +6,26 @@ class MakePkgConfig extends MakeConfig {
   MakePkgConfig({
     this.installPath,
     this.signIdentity,
+    this.scriptsPath,
   });
 
   factory MakePkgConfig.fromJson(Map<String, dynamic> json) {
     return MakePkgConfig(
       installPath: json['install-path'],
       signIdentity: json['sign-identity'],
+      scriptsPath: json['scripts-path'],
     );
   }
   final String? installPath;
   final String? signIdentity;
+  final String? scriptsPath;
 
   @override
   Map<String, dynamic> toJson() {
     return {
       'install-path': installPath,
       'sign-identity': signIdentity,
+      'scripts-path': scriptsPath,
     }..removeWhere((key, value) => value == null);
   }
 }

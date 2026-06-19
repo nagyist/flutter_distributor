@@ -45,6 +45,53 @@ class AppPackageMakerPkg extends AppPackageMaker {
     }
 
     await $('xcrun', pkgBuild);
+
+    // 修复 pkg 元数据：expand → 编辑 → flatten
+    // productbuild --component 生成的包有两个问题：
+    // 1. Distribution 缺少 <domains>，导致 GUI Installer 安装位置不正确
+    // 2. 组件 PackageInfo 包含 <relocate>，导致安装器重定向到已存在的构建产物
+    final expandDir = Directory('${unsignedPkgFile.path}.expanded');
+    if (expandDir.existsSync()) expandDir.deleteSync(recursive: true);
+    await $('pkgutil', ['--expand', unsignedPkgFile.path, expandDir.path]);
+
+    // 修复 1：Distribution 注入 <domains>
+    final distributionFile = File('${expandDir.path}/Distribution');
+    if (distributionFile.existsSync()) {
+      var content = distributionFile.readAsStringSync();
+      content = content.replaceFirst(
+        '<options ',
+        '<domains enable_local="true" enable_currentUserHome="false" enable_anywhere="false" />\n    <options ',
+      );
+      distributionFile.writeAsStringSync(content);
+    }
+
+    // 修复 2：组件 PackageInfo 移除 <relocate> 等重定向元素
+    // 这些元素会导致 Installer 将应用安装到已存在的构建路径而非 /Applications
+    for (final entry in expandDir.listSync()) {
+      if (entry is! Directory || !entry.path.endsWith('.pkg')) continue;
+      final componentDir = Directory('${entry.path}.expanded');
+      if (componentDir.existsSync()) componentDir.deleteSync(recursive: true);
+      await $('pkgutil', ['--expand', entry.path, componentDir.path]);
+
+      final pkgInfoFile = File('${componentDir.path}/PackageInfo');
+      if (pkgInfoFile.existsSync()) {
+        var content = pkgInfoFile.readAsStringSync();
+        content = content.replaceAll(RegExp(r'<relocate>.*?</relocate>', dotAll: true), '');
+        content = content.replaceAll(RegExp(r'<upgrade-bundle>.*?</upgrade-bundle>', dotAll: true), '');
+        content = content.replaceAll(RegExp(r'<update-bundle\s*/>', dotAll: true), '');
+        content = content.replaceAll(RegExp(r'<atomic-update-bundle\s*/>', dotAll: true), '');
+        content = content.replaceAll(RegExp(r'<strict-identifier>.*?</strict-identifier>', dotAll: true), '');
+        pkgInfoFile.writeAsStringSync(content);
+      }
+
+      entry.deleteSync(recursive: true);
+      await $('pkgutil', ['--flatten', componentDir.path, entry.path]);
+      componentDir.deleteSync(recursive: true);
+    }
+
+    unsignedPkgFile.deleteSync();
+    await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path]);
+    expandDir.deleteSync(recursive: true);
     if (makeConfig.signIdentity != null) {
       await $('xcrun', [
         'productsign',

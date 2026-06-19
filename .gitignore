@@ -7,3 +7,6 @@
 pubspec_overrides.yaml
 pubspec.lock
 .vercel
+
+# Build artifacts
+build/

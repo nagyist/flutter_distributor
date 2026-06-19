@@ -145,6 +145,11 @@ class UnifiedDistributor {
     required Map<String, dynamic> buildArguments,
     Map<String, String>? variables,
   }) async {
+    // Pass environment variables (e.g. INNO_SETUP_PATH) to the packager via static setter
+    if (variables != null && variables.isNotEmpty) {
+      InnoSetupCompiler.setExtraEnv(variables);
+    }
+
     List<MakeResult> makeResultList = [];
 
     try {

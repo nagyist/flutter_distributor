@@ -8,13 +8,39 @@ const String _innoSetupEnvVar = 'INNO_SETUP_PATH';
 const String _defaultInnoSetupPath = r'C:\Program Files (x86)\Inno Setup 6';
 
 class InnoSetupCompiler {
+  /// Extra environment variables passed from the caller (e.g. from distribute_options.yaml).
+  /// These take priority over Platform.environment when resolving the Inno Setup path.
+  static final Map<String, String> _extraEnv = {};
+
+  /// Set extra environment variables to be read by [_resolveIsccPathImpl] with priority.
+  static void setExtraEnv(Map<String, String> env) {
+    _extraEnv
+      ..clear()
+      ..addAll(env);
+  }
+
+  /// Resolves ISCC.exe path (public static method, usable from other classes).
+  ///
+  /// Priority:
+  /// 1. `INNO_SETUP_PATH` environment variable (from _extraEnv or Platform.environment)
+  /// 2. Default path `C:\Program Files (x86)\Inno Setup 6`
+  /// 3. `iscc` found in `PATH`
+  static String resolveIsccPath() {
+    return _resolveIsccPathImpl();
+  }
+
   /// Resolves the path to `ISCC.exe` using the following order:
   /// 1. `INNO_SETUP_PATH` environment variable
   /// 2. Hardcoded default path (`C:\Program Files (x86)\Inno Setup 6`)
   /// 3. `iscc` command found in `PATH`
   String _resolveIsccPath() {
-    // 1. Check environment variable
-    String? envPath = Platform.environment[_innoSetupEnvVar];
+    return _resolveIsccPathImpl();
+  }
+
+  static String _resolveIsccPathImpl() {
+    // 1. Check environment variable (extra env takes priority)
+    String? envPath = _extraEnv[_innoSetupEnvVar];
+    envPath ??= Platform.environment[_innoSetupEnvVar];
     if (envPath != null && envPath.isNotEmpty) {
       Directory dir = Directory(envPath);
       if (dir.existsSync()) {

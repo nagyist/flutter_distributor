@@ -9,7 +9,7 @@
 ```yaml
 install-path: /Applications
 sign-identity: <可选> <your-sign-identity>
-scripts-path: <可选> <your-scripts-path>
+scripts: <可选> <your-scripts-path>
 ```
 
 运行：

@@ -13,7 +13,7 @@ class MakePkgConfig extends MakeConfig {
     return MakePkgConfig(
       installPath: json['install-path'],
       signIdentity: json['sign-identity'],
-      scriptsPath: json['scripts-path'],
+      scriptsPath: json['scripts'],
     );
   }
   final String? installPath;
@@ -25,7 +25,7 @@ class MakePkgConfig extends MakeConfig {
     return {
       'install-path': installPath,
       'sign-identity': signIdentity,
-      'scripts-path': scriptsPath,
+      'scripts': scriptsPath,
     }..removeWhere((key, value) => value == null);
   }
 }

@@ -2,6 +2,7 @@ export 'aab/app_package_maker_aab.dart';
 export 'apk/app_package_maker_apk.dart';
 export 'app/app_package_maker_app.dart';
 export 'appimage/app_package_maker_appimage.dart';
+export 'custom/app_package_maker_custom.dart';
 export 'deb/app_package_maker_deb.dart';
 export 'direct/app_package_maker_direct.dart';
 export 'dmg/app_package_maker_dmg.dart';

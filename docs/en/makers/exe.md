@@ -33,6 +33,22 @@ fastforge package --platform windows --targets exe
 
 ## Advanced usage
 
+### Custom Inno Setup installation path
+
+By default, `fastforge` looks for Inno Setup at the default installation path (`C:\Program Files (x86)\Inno Setup 6`). If you installed Inno Setup in a custom location (e.g., via [Scoop](https://scoop.sh) or a portable version), you can specify the path using the `INNO_SETUP_PATH` environment variable.
+
+```bash
+# PowerShell
+$env:INNO_SETUP_PATH = "D:\Tools\Inno Setup 6"
+fastforge package --platform windows --targets exe
+
+# CMD
+set INNO_SETUP_PATH=D:\Tools\Inno Setup 6
+fastforge package --platform windows --targets exe
+```
+
+If `INNO_SETUP_PATH` is not set, `fastforge` will check the default path first, then fall back to looking for `iscc` in your system `PATH` (which is useful when Inno Setup is installed via Scoop or added to PATH manually).
+
 ### Custom Inno Setup template
 
 By default, `fastforge` will generate an Inno Setup configuration (`.iss`) based on an internal template on build time, and populate it with the values provided in `make_config.yaml`. If you need more control over the Inno Setup configuration, you can provide a custom template using the `script_template` option.

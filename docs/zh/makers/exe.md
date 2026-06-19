@@ -33,6 +33,22 @@ fastforge package --platform windows --targets exe
 
 ## 高级用法
 
+### 自定义 Inno Setup 安装路径
+
+默认情况下，`fastforge` 会在默认安装路径（`C:\Program Files (x86)\Inno Setup 6`）下查找 Inno Setup。如果你将 Inno Setup 安装在自定义位置（例如通过 [Scoop](https://scoop.sh) 安装或使用便携版），可以通过 `INNO_SETUP_PATH` 环境变量来指定路径。
+
+```bash
+# PowerShell
+$env:INNO_SETUP_PATH = "D:\Tools\Inno Setup 6"
+fastforge package --platform windows --targets exe
+
+# CMD
+set INNO_SETUP_PATH=D:\Tools\Inno Setup 6
+fastforge package --platform windows --targets exe
+```
+
+如果没有设置 `INNO_SETUP_PATH`，`fastforge` 会先检查默认路径，然后回退到在系统 `PATH` 中查找 `iscc`（适用于通过 Scoop 安装或手动将 Inno Setup 添加到 PATH 的场景）。
+
 ### 自定义 Inno Setup 模板
 
 默认情况下，`fastforge` 会在构建时基于内部模板生成一个 Inno Setup 配置（`.iss`），并将其填充到 `make_config.yaml` 中提供的值。如果你需要对 Inno Setup 配置进行更多控制，你可以使用 `script_template` 选项提供一个自定义模板。

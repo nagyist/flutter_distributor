@@ -1,9 +1,39 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app_packager/src/makers/exe/inno_setup/inno_setup_compiler.dart';
 import 'package:flutter_app_packager/src/makers/exe/make_exe_config.dart';
 import 'package:liquid_engine/liquid_engine.dart';
 import 'package:path/path.dart' as path;
+
+/// Maps locale codes to Inno Setup language file names.
+const Map<String, String> _localeToLanguageFile = {
+  'en': 'Default.isl',
+  'hy': 'Armenian.isl',
+  'bg': 'Bulgarian.isl',
+  'ca': 'Catalan.isl',
+  'zh': 'ChineseSimplified.isl',
+  'co': 'Corsican.isl',
+  'cs': 'Czech.isl',
+  'da': 'Danish.isl',
+  'nl': 'Dutch.isl',
+  'fi': 'Finnish.isl',
+  'fr': 'French.isl',
+  'de': 'German.isl',
+  'he': 'Hebrew.isl',
+  'is': 'Icelandic.isl',
+  'it': 'Italian.isl',
+  'ja': 'Japanese.isl',
+  'no': 'Norwegian.isl',
+  'pl': 'Polish.isl',
+  'pt': 'Portuguese.isl',
+  'ru': 'Russian.isl',
+  'sk': 'Slovak.isl',
+  'sl': 'Slovenian.isl',
+  'es': 'Spanish.isl',
+  'tr': 'Turkish.isl',
+  'uk': 'Ukrainian.isl',
+};
 
 const String _template = """
 [Setup]
@@ -83,6 +113,54 @@ class InnoSetupScript {
 
   final MakeExeConfig makeConfig;
 
+  /// Filters locales to only include those whose language files actually exist.
+  List<String> _getAvailableLocales() {
+    List<String> locales = makeConfig.locales ?? ['en'];
+    if (locales.isEmpty) return ['en'];
+
+    // Resolve the Inno Setup installation path
+    String isccPath = InnoSetupCompiler.resolveIsccPath();
+    String innoDir;
+    if (isccPath == 'iscc') {
+      // When falling back to PATH, the directory is unknown — keep all locales
+      return locales;
+    } else {
+      innoDir = path.dirname(isccPath);
+    }
+
+    // Filter: only keep locales whose .isl file exists at the Inno Setup path
+    List<String> available = [];
+    for (String locale in locales) {
+      String? languageFile = _localeToLanguageFile[locale];
+      if (languageFile == null) {
+        available.add(locale);
+        continue;
+      }
+
+      // For English (default), Default.isl is in the ISCC root directory
+      if (locale == 'en') {
+        File defaultIsl = File(path.join(innoDir, languageFile));
+        if (defaultIsl.existsSync()) {
+          available.add(locale);
+        }
+        continue;
+      }
+
+      // Other language files are in the Languages subdirectory
+      File langFile = File(path.join(innoDir, 'Languages', languageFile));
+      if (langFile.existsSync()) {
+        available.add(locale);
+      } else {
+        print(
+          '[fastforge] Language file not found, skipping locale "$locale": ${langFile.path}',
+        );
+      }
+    }
+
+    if (available.isEmpty) return ['en'];
+    return available;
+  }
+
   Future<File> createFile() async {
     Map<String, dynamic> variables = {
       'APP_ID': makeConfig.appId,
@@ -99,7 +177,7 @@ class InnoSetupScript {
           makeConfig.installDirName ?? makeConfig.defaultInstallDirName,
       'SOURCE_DIR': makeConfig.sourceDir,
       'OUTPUT_BASE_FILENAME': makeConfig.outputBaseFileName,
-      'LOCALES': makeConfig.locales,
+      'LOCALES': _getAvailableLocales(),
       'SETUP_ICON_FILE': makeConfig.setupIconFile ?? '',
       'PRIVILEGES_REQUIRED': makeConfig.privilegesRequired ?? 'none',
     }..removeWhere((key, value) => value == null);

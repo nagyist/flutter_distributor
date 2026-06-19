@@ -65,8 +65,12 @@ def collect_refs(obj, visited, spec):
             collect_refs(item, visited, spec)
 
 
-# Paths used by the codebase - tracks (app releases)
+# Paths used by the codebase - edits, tracks (app releases), and listings
 KEEP_PATHS = {
+    '/androidpublisher/v3/applications/{packageName}/edits',
+    '/androidpublisher/v3/applications/{packageName}/edits/{editId}:commit',
+    '/androidpublisher/v3/applications/{packageName}/edits/{editId}/listings',
+    '/androidpublisher/v3/applications/{packageName}/edits/{editId}/listings/{language}',
     '/androidpublisher/v3/applications/{packageName}/edits/{editId}/tracks',
     '/androidpublisher/v3/applications/{packageName}/edits/{editId}/tracks/{track}',
 }

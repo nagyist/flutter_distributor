@@ -81,6 +81,7 @@ def collect_refs(obj, visited, spec):
 
 # Types we include via ?include=build,appStoreVersionLocalizations
 KEEP_INCLUDE_TYPES = {
+    'appInfoLocalizations': '#/components/schemas/AppInfoLocalization',
     'builds': '#/components/schemas/Build',
     'appStoreVersionLocalizations': '#/components/schemas/AppStoreVersionLocalization',
 }
@@ -89,7 +90,12 @@ KEEP_INCLUDE_TYPES = {
 KEEP_PATHS = {
     '/v1/apps',          # GET - list apps
     '/v1/apps/{id}',      # GET - get app
+    '/v1/apps/{id}/appInfos',  # GET - list app info metadata
+    '/v1/appInfos/{id}/appInfoLocalizations',  # GET - list app info localizations
+    '/v1/appInfoLocalizations/{id}',  # GET/PATCH - app title/subtitle localization
     '/v1/apps/{id}/appStoreVersions',  # GET - list versions
+    '/v1/appStoreVersions/{id}/appStoreVersionLocalizations',  # GET - list version localizations
+    '/v1/appStoreVersionLocalizations/{id}',  # GET/PATCH - version listing localization
 }
 
 # Resource schemas whose `relationships` field can be stripped
@@ -163,7 +169,7 @@ def prune(spec_path: Path) -> Path:
 
     # Strip unused attribute fields to avoid pulling in unnecessary enum schemas
     # Code only uses: App.{name, bundleId}, AppStoreVersion.{versionString, appStoreState, earliestReleaseDate, createdDate}
-    # Build.{version}, AppStoreVersionLocalization.{whatsNew}
+    # Build.{version}, AppInfoLocalization.{name,subtitle}, AppStoreVersionLocalization.{description,promotionalText,whatsNew}
     _strip_attrs(schemas, 'App', [
         'subscriptionStatusUrl', 'subscriptionStatusUrlVersion',
         'subscriptionStatusUrlForSandbox', 'subscriptionStatusUrlVersionForSandbox',
@@ -203,7 +209,7 @@ def prune(spec_path: Path) -> Path:
             for method, operation in methods.items():
                 if method == 'parameters':
                     new_spec['paths'][path][method] = operation
-                elif method.upper() == 'GET':
+                elif method.upper() in {'GET', 'PATCH'}:
                     new_spec['paths'][path][method] = operation
                     collect_refs(operation, refs, spec)
 

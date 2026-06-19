@@ -35,6 +35,1298 @@ pub mod types {
         }
     }
 
+    ///`AndroidpublisherEditsCommitAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsCommitAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsCommitAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsCommitAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsCommitAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsCommitAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsCommitAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsCommitXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsCommitXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsCommitXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsCommitXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsCommitXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsCommitXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsCommitXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsInsertAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsInsertAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsInsertAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsInsertAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsInsertAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsInsertAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsInsertAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsInsertXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsInsertXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsInsertXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsInsertXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsInsertXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsInsertXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsInsertXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsDeleteAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsDeleteAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsDeleteAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsDeleteAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsDeleteAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsDeleteAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsDeleteAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsDeleteXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsDeleteXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsDeleteXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsDeleteXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsDeleteXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsDeleteXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsDeleteXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsDeleteallAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsDeleteallAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsDeleteallAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsDeleteallAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsDeleteallAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsDeleteallAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsDeleteallAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsDeleteallXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsDeleteallXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsDeleteallXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsDeleteallXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsDeleteallXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AndroidpublisherEditsListingsDeleteallXgafv
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AndroidpublisherEditsListingsDeleteallXgafv
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsGetAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsGetAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsGetAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsGetAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsGetAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsGetAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsGetAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsGetXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsGetXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsGetXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsGetXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsGetXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsGetXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsGetXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsListAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsListAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsListAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsListAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsListAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsListAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsListAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsListXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsListXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsListXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsListXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsListXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsListXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsListXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsPatchAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsPatchAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsPatchAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsPatchAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsPatchAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsPatchAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsPatchAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsPatchXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsPatchXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsPatchXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsPatchXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsPatchXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsPatchXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsPatchXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsUpdateAlt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "json",
+    ///    "media",
+    ///    "proto"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsUpdateAlt {
+        #[serde(rename = "json")]
+        Json,
+        #[serde(rename = "media")]
+        Media,
+        #[serde(rename = "proto")]
+        Proto,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsUpdateAlt {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Json => f.write_str("json"),
+                Self::Media => f.write_str("media"),
+                Self::Proto => f.write_str("proto"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsUpdateAlt {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "json" => Ok(Self::Json),
+                "media" => Ok(Self::Media),
+                "proto" => Ok(Self::Proto),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsUpdateAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsUpdateAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsUpdateAlt {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AndroidpublisherEditsListingsUpdateXgafv`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "1",
+    ///    "2"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AndroidpublisherEditsListingsUpdateXgafv {
+        #[serde(rename = "1")]
+        X1,
+        #[serde(rename = "2")]
+        X2,
+    }
+
+    impl ::std::fmt::Display for AndroidpublisherEditsListingsUpdateXgafv {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::X1 => f.write_str("1"),
+                Self::X2 => f.write_str("2"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AndroidpublisherEditsListingsUpdateXgafv {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "1" => Ok(Self::X1),
+                "2" => Ok(Self::X2),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AndroidpublisherEditsListingsUpdateXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AndroidpublisherEditsListingsUpdateXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AndroidpublisherEditsListingsUpdateXgafv {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
     ///`AndroidpublisherEditsTracksCreateAlt`
     ///
     /// <details><summary>JSON schema</summary>
@@ -840,6 +2132,56 @@ pub mod types {
         }
     }
 
+    ///An app edit. The resource for EditsService.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "An app edit. The resource for EditsService.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "expiryTimeSeconds": {
+    ///      "description": "Output only. The time (as seconds since Epoch) at
+    /// which the edit will expire and will be no longer valid for use.",
+    ///      "readOnly": true,
+    ///      "type": "string"
+    ///    },
+    ///    "id": {
+    ///      "description": "Output only. Identifier of the edit. Can be used in
+    /// subsequent API calls.",
+    ///      "readOnly": true,
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppEdit {
+        ///Output only. The time (as seconds since Epoch) at which the edit
+        /// will expire and will be no longer valid for use.
+        #[serde(
+            rename = "expiryTimeSeconds",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub expiry_time_seconds: ::std::option::Option<::std::string::String>,
+        ///Output only. Identifier of the edit. Can be used in subsequent API
+        /// calls.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppEdit {
+        fn default() -> Self {
+            Self {
+                expiry_time_seconds: Default::default(),
+                id: Default::default(),
+            }
+        }
+    }
+
     ///Country targeting specification.
     ///
     /// <details><summary>JSON schema</summary>
@@ -884,6 +2226,125 @@ pub mod types {
             Self {
                 countries: Default::default(),
                 include_rest_of_world: Default::default(),
+            }
+        }
+    }
+
+    ///A localized store listing. The resource for ListingsService.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "A localized store listing. The resource for
+    /// ListingsService.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "fullDescription": {
+    ///      "description": "Full description of the app.",
+    ///      "type": "string"
+    ///    },
+    ///    "language": {
+    ///      "description": "Language localization code (a BCP-47 language tag;
+    /// for example, \"de-AT\" for Austrian German).",
+    ///      "type": "string"
+    ///    },
+    ///    "shortDescription": {
+    ///      "description": "Short description of the app.",
+    ///      "type": "string"
+    ///    },
+    ///    "title": {
+    ///      "description": "Localized title of the app.",
+    ///      "type": "string"
+    ///    },
+    ///    "video": {
+    ///      "description": "URL of a promotional YouTube video for the app.",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct Listing {
+        ///Full description of the app.
+        #[serde(
+            rename = "fullDescription",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub full_description: ::std::option::Option<::std::string::String>,
+        ///Language localization code (a BCP-47 language tag; for example,
+        /// "de-AT" for Austrian German).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub language: ::std::option::Option<::std::string::String>,
+        ///Short description of the app.
+        #[serde(
+            rename = "shortDescription",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub short_description: ::std::option::Option<::std::string::String>,
+        ///Localized title of the app.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub title: ::std::option::Option<::std::string::String>,
+        ///URL of a promotional YouTube video for the app.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub video: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for Listing {
+        fn default() -> Self {
+            Self {
+                full_description: Default::default(),
+                language: Default::default(),
+                short_description: Default::default(),
+                title: Default::default(),
+                video: Default::default(),
+            }
+        }
+    }
+
+    ///Response listing all localized listings.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Response listing all localized listings.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "kind": {
+    ///      "description": "The kind of this response
+    /// (\"androidpublisher#listingsListResponse\").",
+    ///      "type": "string"
+    ///    },
+    ///    "listings": {
+    ///      "description": "All localized listings.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/Listing"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ListingsListResponse {
+        ///The kind of this response ("androidpublisher#listingsListResponse").
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub kind: ::std::option::Option<::std::string::String>,
+        ///All localized listings.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub listings: ::std::vec::Vec<Listing>,
+    }
+
+    impl ::std::default::Default for ListingsListResponse {
+        fn default() -> Self {
+            Self {
+                kind: Default::default(),
+                listings: Default::default(),
             }
         }
     }
@@ -1549,6 +3010,761 @@ impl ClientInfo<()> for Client {
 impl ClientHooks<()> for &Client {}
 #[allow(clippy::all)]
 impl Client {
+    ///Creates a new edit for an app.
+    ///
+    ///Sends a `POST` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    /// - `body`
+    pub async fn androidpublisher_edits_insert<'a>(
+        &'a self,
+        package_name: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsInsertXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsInsertAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+        body: &'a types::AppEdit,
+    ) -> Result<ResponseValue<types::AppEdit>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_insert",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Lists all localized store listings.
+    ///
+    ///Sends a `GET` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    pub async fn androidpublisher_edits_listings_list<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsListXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsListAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+    ) -> Result<ResponseValue<types::ListingsListResponse>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_list",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Deletes all store listings.
+    ///
+    ///Sends a `DELETE` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    pub async fn androidpublisher_edits_listings_deleteall<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsDeleteallXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsDeleteallAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+    ) -> Result<ResponseValue<()>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_deleteall",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => Ok(ResponseValue::empty(response)),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Gets a localized store listing.
+    ///
+    ///Sends a `GET` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings/{language}`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `language`: Language localization code (a BCP-47 language tag; for
+    ///   example, "de-AT" for Austrian German).
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    pub async fn androidpublisher_edits_listings_get<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsGetXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsGetAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+    ) -> Result<ResponseValue<types::Listing>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_get",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Creates or updates a localized store listing.
+    ///
+    ///Sends a `PUT` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings/{language}`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `language`: Language localization code (a BCP-47 language tag; for
+    ///   example, "de-AT" for Austrian German).
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    /// - `body`
+    pub async fn androidpublisher_edits_listings_update<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsUpdateXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsUpdateAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+        body: &'a types::Listing,
+    ) -> Result<ResponseValue<types::Listing>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .put(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_update",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Deletes a localized store listing.
+    ///
+    ///Sends a `DELETE` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings/{language}`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `language`: Language localization code (a BCP-47 language tag; for
+    ///   example, "de-AT" for Austrian German).
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    pub async fn androidpublisher_edits_listings_delete<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsDeleteXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsDeleteAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+    ) -> Result<ResponseValue<()>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_delete",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => Ok(ResponseValue::empty(response)),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Patches a localized store listing.
+    ///
+    ///Sends a `PATCH` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/
+    /// listings/{language}`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `language`: Language localization code (a BCP-47 language tag; for
+    ///   example, "de-AT" for Austrian German).
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    /// - `body`
+    pub async fn androidpublisher_edits_listings_patch<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsListingsPatchXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsListingsPatchAlt>,
+        callback: Option<&'a str>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+        body: &'a types::Listing,
+    ) -> Result<ResponseValue<types::Listing>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_listings_patch",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
     ///Lists all tracks.
     ///
     ///Sends a `GET` request to
@@ -2084,6 +4300,120 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "androidpublisher_edits_tracks_patch",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Commits an app edit.
+    ///
+    ///Sends a `POST` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}:commit`
+    ///
+    ///Arguments:
+    /// - `package_name`: Package name of the app.
+    /// - `edit_id`: Identifier of the edit.
+    /// - `xgafv`: V1 error format.
+    /// - `access_token`: OAuth access token.
+    /// - `alt`: Data format for response.
+    /// - `callback`: JSONP
+    /// - `changes_not_sent_for_review`: Indicates that the changes in this edit
+    ///   will not be reviewed until they are explicitly sent for review from
+    ///   the Google Play Console UI. These changes will be added to any other
+    ///   changes that are not yet sent for review.
+    /// - `fields`: Selector specifying which fields to include in a partial
+    ///   response.
+    /// - `key`: API key. Your API key identifies your project and provides you
+    ///   with API access, quota, and reports. Required unless you provide an
+    ///   OAuth 2.0 token.
+    /// - `oauth_token`: OAuth 2.0 token for the current user.
+    /// - `pretty_print`: Returns response with indentations and line breaks.
+    /// - `quota_user`: Available to use for quota purposes for server-side
+    ///   applications. Can be any arbitrary string assigned to a user, but
+    ///   should not exceed 40 characters.
+    /// - `upload_type`: Legacy upload protocol for media (e.g. "media",
+    ///   "multipart").
+    /// - `upload_protocol`: Upload protocol for media (e.g. "raw",
+    ///   "multipart").
+    pub async fn androidpublisher_edits_commit<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        xgafv: Option<types::AndroidpublisherEditsCommitXgafv>,
+        access_token: Option<&'a str>,
+        alt: Option<types::AndroidpublisherEditsCommitAlt>,
+        callback: Option<&'a str>,
+        changes_not_sent_for_review: Option<bool>,
+        fields: Option<&'a str>,
+        key: Option<&'a str>,
+        oauth_token: Option<&'a str>,
+        pretty_print: Option<bool>,
+        quota_user: Option<&'a str>,
+        upload_type: Option<&'a str>,
+        upload_protocol: Option<&'a str>,
+    ) -> Result<ResponseValue<types::AppEdit>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}:commit",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new("$.xgafv", &xgafv))
+            .query(&progenitor_client::QueryParam::new(
+                "access_token",
+                &access_token,
+            ))
+            .query(&progenitor_client::QueryParam::new("alt", &alt))
+            .query(&progenitor_client::QueryParam::new("callback", &callback))
+            .query(&progenitor_client::QueryParam::new(
+                "changesNotSentForReview",
+                &changes_not_sent_for_review,
+            ))
+            .query(&progenitor_client::QueryParam::new("fields", &fields))
+            .query(&progenitor_client::QueryParam::new("key", &key))
+            .query(&progenitor_client::QueryParam::new(
+                "oauth_token",
+                &oauth_token,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "prettyPrint",
+                &pretty_print,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "quotaUser",
+                &quota_user,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "uploadType",
+                &upload_type,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "upload_protocol",
+                &upload_protocol,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_commit",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;

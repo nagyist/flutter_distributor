@@ -20,7 +20,7 @@ export GITHUB_TOKEN="your personal access token"
 fastforge publish \
   --path dist/1.0.0+1/hello_world-1.0.0+1-android.apk \
   --targets github \
-  --github-repo-owner 'leanflutter' \
+  --github-repo-owner 'fastforgedev' \
   --github-repo-name 'fastforge'
 ```
 
@@ -28,7 +28,7 @@ fastforge publish \
 
 ```yaml
 variables:
-  GITHUB_TOKEN: your personal access token, See[https://docs.github.com/cn/enterprise-server@3.2/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
+  GITHUB_TOKEN: your personal access token, See[https://docs.github.com/zh/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
 output: dist/
 releases:
   - name: dev
@@ -55,4 +55,4 @@ fastforge release --name dev
 
 ## 相关链接
 
-- [创建个人 Token](https://docs.github.com/cn/enterprise-server@3.2/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+- [创建个人访问令牌](https://docs.github.com/zh/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)

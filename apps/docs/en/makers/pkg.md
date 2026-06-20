@@ -1,5 +1,7 @@
 # pkg
 
+Build your Flutter app as a macOS PKG installer package. The PKG format is Apple's standard installer package format, commonly used for distributing applications, drivers, and system extensions. It supports pre-install and post-install scripts for custom installation logic.
+
 > You can only build the PKG target on macOS machines.
 
 ## Usage
@@ -21,7 +23,7 @@ sign-identity: <your-sign-identity>
 scripts: <your-scripts-path>
 ```
 
-### scripts Directory Structure
+### Scripts Directory Structure
 
 When you configure the `scripts` option, the specified directory should contain executable scripts. `productbuild` will include them in the package and run them at the appropriate time during installation:
 

@@ -1,12 +1,29 @@
 # app
 
-## 用法
+将 Flutter 应用构建为 OpenHarmony APP 包。APP 格式是 OpenHarmony 应用的分发包格式，用于发布到 OpenHarmony 应用商店和在 OpenHarmony 设备上安装。
+
+## 环境要求
+
+- 已安装 Flutter SDK 并配置了 OpenHarmony (OHOS) 工具链
+- 已配置 OpenHarmony SDK 和开发环境
+- 拥有 OpenHarmony 分发的发布证书和 Profile
+
+## 使用方法
 
 运行：
 
 ```shell
 fastforge package --platform ohos --targets app
 ```
+
+### 构建参数
+
+OpenHarmony 构建常用的 `build_args`：
+
+| 参数 | 说明 |
+|------|------|
+| `dart-define` | Dart 环境变量 |
+| `flavor` | 构建变体（例如 `dev`、`prod`） |
 
 ## 相关链接
 

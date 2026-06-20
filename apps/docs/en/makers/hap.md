@@ -1,5 +1,13 @@
 # hap
 
+Build your Flutter app as an OpenHarmony HAP (HarmonyOS Ability Package) package. The HAP format is the basic deployment unit for OpenHarmony applications, containing the application's resources, assets, and compiled code for installation on OpenHarmony devices.
+
+## Requirements
+
+- Flutter SDK with OpenHarmony (OHOS) toolchain configured
+- OpenHarmony SDK and development environment set up
+- Release certificate and profile for signing
+
 ## Usage
 
 Run:
@@ -7,6 +15,15 @@ Run:
 ```shell
 fastforge package --platform ohos --targets hap
 ```
+
+### Build Arguments
+
+Common `build_args` for OpenHarmony HAP builds:
+
+| Argument | Description |
+|----------|-------------|
+| `dart-define` | Dart environment variables |
+| `flavor` | Build flavor (e.g., `dev`, `prod`) |
 
 ## Related Links
 

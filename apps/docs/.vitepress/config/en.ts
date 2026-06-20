@@ -13,7 +13,7 @@ export const en = defineConfig({
 
     editLink: {
       pattern:
-        'https://github.com/fastforgedev/fastforge/edit/main/docs/:path',
+              'https://github.com/fastforgedev/fastforge/edit/main/apps/docs/:path',
       text: 'Edit this page on GitHub',
     },
 

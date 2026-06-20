@@ -1,28 +1,31 @@
 # AppImage
 
-## 必要条件
+将 Flutter 应用构建为 Linux AppImage 便携式应用格式。AppImage 无需安装即可在大多数 Linux 发行版上运行，它将应用及其依赖打包为单个可执行文件，提供"下载即运行"的体验。
 
-- `locate`
+## 环境要求
 
-  On Ubuntu/Debian based linux, run:
+- 支持 FUSE 的 Linux 系统
+- `locate` 工具用于依赖检测
+
+  在基于 Ubuntu/Debian 的 Linux 上，运行：
 
   ```bash
-  $ sudo apt install locate
+  sudo apt install locate
   ```
 
-- [AppImageTool](https://github.com/AppImage/AppImageKit)
+- [appimagetool](https://github.com/AppImage/appimagetool)
 
-要安装 Appimage Builder，请运行：
+  安装 appimagetool，运行：
 
-```bash
-wget -O appimagetool "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
-chmod +x appimagetool
-mv appimagetool /usr/local/bin/
-```
+  ```bash
+  wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+  chmod +x appimagetool
+  mv appimagetool /usr/local/bin/
+  ```
 
-> 最后一条命令可能需要 `sudo` 权限
+  > 最后一条命令可能需要 `sudo` 权限
 
-## 用法
+## 使用方法
 
 将 `make_config.yaml` 添加到您的项目 `linux/packaging/appimage` 目录。
 
@@ -65,9 +68,12 @@ startup_notify: true
 # include:
 #   - libcurl.so.4
 include: []
+# 您也可以指定 [metainfo](https://www.freedesktop.org/software/appstream/metainfocreator/#/) 文件
+# 其中包含应用的元数据。
+# metainfo: linux/packaging/myappid.appdata.xml
 ```
 
-运行:
+运行：
 
 ```bash
 fastforge package --platform linux --targets appimage
@@ -78,3 +84,4 @@ fastforge package --platform linux --targets appimage
 - [构建和发布 Linux 应用程序](https://docs.flutter.dev/deployment/linux)
 - [AppImage 包格式介绍](https://docs.appimage.org/)
 - [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html)
+- [AppStream Metainfo 规范](https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html)

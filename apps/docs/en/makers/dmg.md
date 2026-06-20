@@ -1,16 +1,19 @@
 # dmg
 
+Build your Flutter app as a macOS DMG (Apple Disk Image) package for distribution. DMG files are the standard format for distributing macOS applications, providing a compressed disk image that users mount to install the app by dragging it to the Applications folder.
+
 > You can only build the DMG target on macOS machines.
 
 ## Requirements
 
-- `appdmg`
+- macOS
+- `appdmg` — a Node.js tool for creating macOS disk images
 
-Run the following command
+  Run the following command:
 
-```
-npm install -g appdmg
-```
+  ```
+  npm install -g appdmg
+  ```
 
 ## Usage
 
@@ -37,5 +40,5 @@ fastforge package --platform macos --targets dmg
 
 ## Related Links
 
-- [https://github.com/LinusU/node-appdmg](https://github.com/LinusU/node-appdmg)
+- [node-appdmg](https://github.com/LinusU/node-appdmg)
 - [Build and release a macOS app](https://docs.flutter.dev/deployment/macos)

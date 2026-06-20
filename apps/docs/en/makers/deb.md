@@ -1,5 +1,14 @@
 # deb
 
+Build your Flutter app as a Debian package (`.deb`) for installation on Debian-based Linux distributions such as Ubuntu, Debian, Linux Mint, and Pop!_OS. The DEB format is the standard package management format used by APT-based systems.
+
+## Requirements
+
+- Linux system (Debian/Ubuntu-based distribution recommended)
+- Required tools: `dpkg`, `dpkg-deb` (typically pre-installed on Debian-based systems)
+
+## Usage
+
 Add `make_config.yaml` to your project `linux/packaging/deb` directory.
 
 ```yaml
@@ -46,5 +55,7 @@ Run:
 fastforge package --platform linux --targets deb
 ```
 
-- [Build and release an Linux app](https://docs.flutter.dev/deployment/linux)
+## Related Links
+
+- [Build and release a Linux app](https://docs.flutter.dev/deployment/linux)
 - [Packaging Debian packages, how it works](https://www.debian.org/doc/manuals/packaging-tutorial/packaging-tutorial.en.pdf)

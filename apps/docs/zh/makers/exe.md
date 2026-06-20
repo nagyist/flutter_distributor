@@ -1,10 +1,13 @@
 # exe
 
-## 必要条件
+使用 Inno Setup 将 Flutter 应用构建为 Windows EXE 安装程序。这将创建一个传统的 Windows 安装可执行文件，引导用户完成安装过程，包括创建桌面快捷方式和开始菜单条目。
 
-- [`Inno Setup 6`](https://jrsoftware.org/isinfo.php)``
+## 环境要求
 
-## 用法
+- Windows 系统
+- [`Inno Setup 6`](https://jrsoftware.org/isinfo.php) — 一个免费的 Windows 程序安装程序制作工具
+
+## 使用方法
 
 将 `make_config.yaml` 添加到你的项目 `windows/packaging/exe` 目录。
 
@@ -16,9 +19,9 @@ publisher: LeanFlutter
 publisher_url: https://github.com/fastforgedev/fastforge
 display_name: Hello 世界
 create_desktop_icon: true
-# See: https://jrsoftware.org/ishelp/index.php?topic=setup_defaultdirname
+# 参见：https://jrsoftware.org/ishelp/index.php?topic=setup_defaultdirname
 # install_dir_name: "D:\\HELLO-WORLD"
-# 这里的路径是相对于项目根目录的路径； 图标格式必须是ico格式，不能是png或其它
+# 这里的路径是相对于项目根目录的路径；图标格式必须是 ico 格式，不能是 png 或其他格式
 # setup_icon_file: windows\runner\resources\app_icon.ico
 locales:
   - en
@@ -61,4 +64,5 @@ fastforge package --platform windows --targets exe
 
 ## 相关链接
 
-[https://jrsoftware.org/isinfo.php](https://jrsoftware.org/isinfo.php)
+- [Inno Setup 官网](https://jrsoftware.org/isinfo.php)
+- [Inno Setup 文档](https://jrsoftware.org/ishelp/)

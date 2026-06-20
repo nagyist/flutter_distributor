@@ -13,7 +13,7 @@ export const zh = defineConfig({
 
     editLink: {
       pattern:
-        'https://github.com/fastforgedev/fastforge/edit/main/docs/:path',
+              'https://github.com/fastforgedev/fastforge/edit/main/apps/docs/:path',
       text: '在 GitHub 上编辑此页面',
     },
 

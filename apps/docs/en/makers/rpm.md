@@ -1,9 +1,12 @@
 # rpm
 
-## Requires
+Build your Flutter app as an RPM package for installation on Red Hat-based Linux distributions such as Fedora, RHEL, CentOS, and OpenSUSE. RPM is the standard package management format used by these distributions.
 
-- [patchelf](https://github.com/NixOS/patchelf)
-- [rpmbuild](https://rpm-packaging-guide.github.io/#prerequisites)
+## Requirements
+
+- Linux system (Fedora/RHEL-based distribution recommended)
+- [patchelf](https://github.com/NixOS/patchelf) — for modifying ELF binaries
+- [rpmbuild](https://rpm-packaging-guide.github.io/#prerequisites) — RPM package builder
 
 Install requirements:
 
@@ -53,5 +56,6 @@ fastforge package --platform linux --targets rpm
 
 ## Related Links
 
-- [Build and release an Linux app](https://docs.flutter.dev/deployment/linux)
-- [RPM packaging, how it works](https://rpm-packaging-guide.github.io/)
+- [Build and release a Linux app](https://docs.flutter.dev/deployment/linux)
+- [RPM Packaging Guide](https://rpm-packaging-guide.github.io/)
+- [patchelf](https://github.com/NixOS/patchelf)

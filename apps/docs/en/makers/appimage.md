@@ -1,26 +1,29 @@
 # appimage
 
+Build your Flutter app as a Linux AppImage — a portable application format that runs on most Linux distributions without installation. AppImages bundle the application and its dependencies into a single executable file, providing a "download and run" experience.
+
 ## Requirements
 
-- `locate`
+- Linux system with FUSE support
+- `locate` utility for dependency detection
 
-  On Ubuntu/Debian based linux, run:
+  On Ubuntu/Debian based Linux, run:
 
   ```bash
-  $ sudo apt install locate
+  sudo apt install locate
   ```
 
 - [appimagetool](https://github.com/AppImage/appimagetool)
 
-To install appimagetool, run:
+  To install appimagetool, run:
 
-```bash
-wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
-chmod +x appimagetool
-mv appimagetool /usr/local/bin/
-```
+  ```bash
+  wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+  chmod +x appimagetool
+  mv appimagetool /usr/local/bin/
+  ```
 
-> Last command may require `sudo` privileges
+  > The last command may require `sudo` privileges
 
 ## Usage
 
@@ -79,7 +82,7 @@ fastforge package --platform linux --targets appimage
 
 ## Related Links
 
-- [Build and release an Linux app](https://docs.flutter.dev/deployment/linux)
+- [Build and release a Linux app](https://docs.flutter.dev/deployment/linux)
 - [Introduction to AppImage package format](https://docs.appimage.org/)
 - [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html)
 - [AppStream Metainfo Specification](https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html)

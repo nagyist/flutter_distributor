@@ -1,8 +1,10 @@
 # pkg
 
-> 你只能在 macOS 机器上构建 PKG 目标。
+将 Flutter 应用构建为 macOS PKG 安装程序包。PKG 格式是 Apple 的标准安装程序包格式，常用于分发应用、驱动程序和系统扩展。它支持安装前和安装后脚本以执行自定义安装逻辑。
 
-## 用法
+> 只能在 macOS 机器上构建 PKG 目标。
+
+## 使用方法
 
 将 `make_config.yaml` 添加到你的项目 `macos/packaging/pkg` 目录。
 
@@ -21,9 +23,9 @@ sign-identity: <你的签名证书>
 scripts: <你的脚本目录路径>
 ```
 
-### scripts 目录结构
+### 脚本目录结构
 
-配置 `scripts` 选项后，指定的目录应包含可执行脚本。`productbuild` 会将这些脚本打包并安装时在合适的时机执行：
+配置 `scripts` 选项后，指定的目录应包含可执行脚本。`productbuild` 会将这些脚本打包并在安装时在合适的时机执行：
 
 ```
 macos/packaging/pkg/
@@ -55,5 +57,5 @@ fastforge package --platform macos --targets pkg
 
 ## 相关链接
 
-- [Build and release a macOS app](https://docs.flutter.dev/deployment/macos)
-- [productbuild man page](https://www.manpagez.com/man/1/productbuild/)
+- [构建和发布 macOS 应用程序](https://docs.flutter.dev/deployment/macos)
+- [productbuild 手册](https://www.manpagez.com/man/1/productbuild/)

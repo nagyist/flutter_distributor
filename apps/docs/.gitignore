@@ -140,3 +140,6 @@ dist
 
 # vitepress dist
 **/.vitepress/dist
+
+# wrangler
+.wrangler

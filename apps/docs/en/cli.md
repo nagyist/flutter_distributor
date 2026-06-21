@@ -16,7 +16,7 @@ dart pub global activate fastforge
 
 ---
 
-## Dart CLI Commands
+## Commands
 
 > These commands are sorted in alphabetical order. The most commonly used are package, publish, and release.
 

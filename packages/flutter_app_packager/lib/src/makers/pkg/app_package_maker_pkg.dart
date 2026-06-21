@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_app_packager/src/api/app_package_maker.dart';
+import 'package:flutter_app_packager/src/api/make_error.dart';
 import 'package:flutter_app_packager/src/makers/pkg/make_pkg_config.dart';
 import 'package:shell_executor/shell_executor.dart';
 
@@ -66,14 +67,12 @@ class AppPackageMakerPkg extends AppPackageMaker {
     }
 
     // 修复 2：组件 PackageInfo 移除 <relocate> 等重定向元素
-    // 这些元素会导致 Installer 将应用安装到已存在的构建路径而非 /Applications
+    // productbuild --component 的产物被 pkgutil --expand 展开后，
+    // 内部的组件包（如 com.example.helloWorld.pkg）已是展开的目录，
+    // 直接编辑其中的 PackageInfo，无需再 expand/flatten。
     for (final entry in expandDir.listSync()) {
       if (entry is! Directory || !entry.path.endsWith('.pkg')) continue;
-      final componentDir = Directory('${entry.path}.expanded');
-      if (componentDir.existsSync()) componentDir.deleteSync(recursive: true);
-      await $('pkgutil', ['--expand', entry.path, componentDir.path]);
-
-      final pkgInfoFile = File('${componentDir.path}/PackageInfo');
+      final pkgInfoFile = File('${entry.path}/PackageInfo');
       if (pkgInfoFile.existsSync()) {
         var content = pkgInfoFile.readAsStringSync();
         content = content.replaceAll(RegExp(r'<relocate>.*?</relocate>', dotAll: true), '');
@@ -83,23 +82,25 @@ class AppPackageMakerPkg extends AppPackageMaker {
         content = content.replaceAll(RegExp(r'<strict-identifier>.*?</strict-identifier>', dotAll: true), '');
         pkgInfoFile.writeAsStringSync(content);
       }
-
-      entry.deleteSync(recursive: true);
-      await $('pkgutil', ['--flatten', componentDir.path, entry.path]);
-      componentDir.deleteSync(recursive: true);
     }
 
     unsignedPkgFile.deleteSync();
     await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path]);
     expandDir.deleteSync(recursive: true);
     if (makeConfig.signIdentity != null) {
-      await $('xcrun', [
+      final ProcessResult signResult = await $('xcrun', [
         'productsign',
         '--sign',
         makeConfig.signIdentity!,
         unsignedPkgFile.path,
         outputFile.path,
       ]);
+      if (signResult.exitCode != 0) {
+        throw MakeError(
+          'productsign failed with exit code ${signResult.exitCode}: '
+          '${signResult.stderr ?? signResult.stdout}',
+        );
+      }
       unsignedPkgFile.deleteSync();
     } else {
       unsignedPkgFile.renameSync(outputFile.path);

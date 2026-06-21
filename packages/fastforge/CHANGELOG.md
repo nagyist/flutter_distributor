@@ -1,3 +1,15 @@
+## 0.6.7
+
+* feat: add custom packager support (#326)
+* feat: add prepackage/postpackage hooks support (#342)
+* refactor: install Linux app files under `/opt` instead of `/usr/share` (#327)
+* feat(rpm): add support for RPM spec macros configuration
+* fix(appimage): skip running ldd on directories
+* feat: support custom Inno Setup installation path via `INNO_SETUP_PATH` env var
+* feat(Inno Setup): support extra environment variables and locale filtering
+* fix(macos): use `--component` flag for productbuild and add scripts support
+* bump `unified_distributor` to ^0.2.7
+
 ## 0.6.6
 
 * feat: add comprehensive pgyer upload parameters support #297

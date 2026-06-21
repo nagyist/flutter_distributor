@@ -1,3 +1,7 @@
+## 0.2.7
+
+* bump `flutter_app_packager` to ^0.6.7
+
 ## 0.2.6
 
 * feat: add comprehensive pgyer upload parameters support #297

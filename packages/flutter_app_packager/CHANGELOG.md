@@ -1,3 +1,14 @@
+## 0.6.7
+
+* feat: add custom packager support
+* feat: add prepackage/postpackage hooks support (#342)
+* fix: skip running ldd on directories in AppImage packager
+* feat: support custom Inno Setup installation path via `INNO_SETUP_PATH` env var
+* feat(Inno Setup): support extra environment variables and locale filtering
+* fix(macos): use `--component` flag for productbuild and add scripts support
+* refactor: install Linux app files under `/opt` instead of `/usr/share`
+* feat(rpm): add support for RPM spec macros configuration
+
 ## 0.6.5
 
 * MakeDebConfig Add StartupWMClass support #290

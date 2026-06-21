@@ -1,3 +1,7 @@
+## 0.6.7
+
+* bump `unified_distributor` to ^0.2.7
+
 ## 0.6.6
 
 * feat: add comprehensive pgyer upload parameters support #297

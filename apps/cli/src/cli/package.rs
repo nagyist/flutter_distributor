@@ -1,5 +1,4 @@
 use anyhow::{Context, Result, anyhow};
-use std::process::Command;
 use clap::Args;
 use fastforge_app_builder::{FlutterAppBuilder, Platform};
 use fastforge_app_packager::{
@@ -10,6 +9,7 @@ use serde_json::{Map, Value};
 use serde_yaml;
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::process::Command;
 use std::str::FromStr;
 
 #[derive(Args)]
@@ -146,10 +146,7 @@ pub fn package_flutter_artifact(
         "PACKAGE_FORMAT".to_string(),
         package_config.package_format.clone(),
     );
-    hook_env.insert(
-        "BUILD_MODE".to_string(),
-        package_config.build_mode.clone(),
-    );
+    hook_env.insert("BUILD_MODE".to_string(), package_config.build_mode.clone());
     hook_env.insert(
         "OUTPUT_DIRECTORY".to_string(),
         package_config.output_dir.to_string_lossy().to_string(),
@@ -186,17 +183,17 @@ pub fn package_flutter_artifact(
 
 /// Extract and normalize hook commands for a given key ("pre" or "post").
 /// Supports both a single string and a list of strings.
-fn resolve_hooks(
-    hooks: Option<&HashMap<String, serde_yaml::Value>>,
-    key: &str,
-) -> Vec<String> {
+fn resolve_hooks(hooks: Option<&HashMap<String, serde_yaml::Value>>, key: &str) -> Vec<String> {
     let Some(hooks) = hooks else { return vec![] };
-    let Some(value) = hooks.get(key) else { return vec![] };
+    let Some(value) = hooks.get(key) else {
+        return vec![];
+    };
     match value {
         serde_yaml::Value::String(cmd) => vec![cmd.clone()],
-        serde_yaml::Value::Sequence(seq) => {
-            seq.iter().filter_map(|v| v.as_str().map(String::from)).collect()
-        }
+        serde_yaml::Value::Sequence(seq) => seq
+            .iter()
+            .filter_map(|v| v.as_str().map(String::from))
+            .collect(),
         _ => vec![],
     }
 }

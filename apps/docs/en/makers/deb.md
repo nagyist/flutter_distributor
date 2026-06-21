@@ -55,6 +55,21 @@ Run:
 fastforge package --platform linux --targets deb
 ```
 
+## Installation Structure
+
+After installation, the application files are placed under `/opt/{package_name}/`, following the [Filesystem Hierarchy Standard (FHS)](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html) for third-party add-on software packages:
+
+| Path | Description |
+|---|---|
+| `/opt/{package_name}/` | Application binaries and runtime files |
+| `/usr/bin/{package_name}` | Symlink to the main binary (added to `$PATH`) |
+| `/usr/share/applications/{package_name}.desktop` | Desktop entry for the application menu |
+| `/usr/share/icons/hicolor/128x128/apps/{package_name}.png` | Application icon |
+| `/usr/share/icons/hicolor/256x256/apps/{package_name}.png` | Application icon (high resolution) |
+| `/usr/share/metainfo/{package_name}.metainfo.xml` | AppStream metadata (if configured) |
+
+This follows the same convention used by other major third-party Linux applications such as Google Chrome, VS Code, Discord, and Zoom.
+
 ## Related Links
 
 - [Build and release a Linux app](https://docs.flutter.dev/deployment/linux)

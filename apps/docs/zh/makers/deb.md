@@ -55,6 +55,21 @@ startup_notify: true
 fastforge package --platform linux --targets deb
 ```
 
+## 安装结构
+
+安装后，应用程序文件位于 `/opt/{package_name}/` 下。这遵循了[文件系统层次结构标准 (FHS)](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html) 中关于第三方附加软件包的规定：
+
+| 路径 | 说明 |
+|---|---|
+| `/opt/{package_name}/` | 应用二进制文件和运行时文件 |
+| `/usr/bin/{package_name}` | 主程序的符号链接（已添加到 `$PATH`） |
+| `/usr/share/applications/{package_name}.desktop` | 应用程序菜单的桌面条目 |
+| `/usr/share/icons/hicolor/128x128/apps/{package_name}.png` | 应用图标 |
+| `/usr/share/icons/hicolor/256x256/apps/{package_name}.png` | 应用图标（高清） |
+| `/usr/share/metainfo/{package_name}.metainfo.xml` | AppStream 元数据（如果配置了） |
+
+这与 Google Chrome、VS Code、Discord 和 Zoom 等其他主流第三方 Linux 应用程序使用的约定相同。
+
 ## 相关链接
 
 - [构建和发布 Linux 应用程序](https://docs.flutter.dev/deployment/linux)

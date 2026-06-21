@@ -4,29 +4,15 @@
 
 ## 安装
 
-### Dart CLI（稳定版）
-
 ```shell
 dart pub global activate fastforge
 ```
 
-### Rust CLI（下一代，开发中）
-
-> Rust CLI 正在与 Dart CLI 并行开发中。它具有更好的性能、更小的安装体积，以及对 Dart SDK 零运行时依赖。
-
-从源码构建：
-
-```bash
-cargo install --path apps/cli
-# 或在仓库根目录构建
-cargo build -p fastforge && ./target/debug/fastforge --help
-```
-
-如果正在开发 Rust 代码：
-
-```bash
-cargo run -p fastforge -- --help
-```
+> **Windows 用户请注意：** 激活后，请确保 pub 缓存 bin 目录已添加到 PATH 环境变量中：
+> 1. 打开 **系统属性** → **高级** → **环境变量**
+> 2. 在 **用户变量** 中找到 `Path`，点击 **编辑**
+> 3. 添加 `%APPDATA%\Pub\Cache\bin` 并点击 **确定**
+> 4. 重启终端，然后运行 `fastforge --help` 验证
 
 ---
 

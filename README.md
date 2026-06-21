@@ -68,6 +68,12 @@ Complete documentation is available at [fastforge.dev](https://fastforge.dev/).
 dart pub global activate fastforge
 ```
 
+> **Windows users:** After activation, ensure the pub cache bin directory is in your PATH:
+> 1. Open **System Properties** → **Advanced** → **Environment Variables**
+> 2. Under **User variables**, select `Path` → **Edit**
+> 3. Add `%APPDATA%\Pub\Cache\bin` and click **OK**
+> 4. Restart your terminal, then try `fastforge --help`
+
 ## Quick Start
 
 1. Add `distribute_options.yaml` to your project root:

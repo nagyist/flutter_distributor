@@ -4,30 +4,15 @@ How to use the command line interface (CLI) for Fastforge
 
 ## Installation
 
-### Dart CLI (stable)
-
 ```shell
 dart pub global activate fastforge
 ```
 
-### Rust CLI (next-gen, in development)
-
-> The Rust CLI is being developed in parallel with the Dart CLI. It offers better performance,
-> a smaller install footprint, and zero runtime dependencies on the Dart SDK.
-
-Build from source:
-
-```bash
-cargo install --path apps/cli
-# or build from the repository root
-cargo build -p fastforge && ./target/debug/fastforge --help
-```
-
-Or if you're working on the Rust codebase:
-
-```bash
-cargo run -p fastforge -- --help
-```
+> **Windows users:** After activation, ensure the pub cache bin directory is in your PATH:
+> 1. Open **System Properties** → **Advanced** → **Environment Variables**
+> 2. Under **User variables**, select `Path` → **Edit**
+> 3. Add `%APPDATA%\Pub\Cache\bin` and click **OK**
+> 4. Restart your terminal, then try `fastforge --help`
 
 ---
 

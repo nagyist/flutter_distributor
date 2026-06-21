@@ -68,6 +68,12 @@
 dart pub global activate fastforge
 ```
 
+> **Windows 用户请注意：** 激活后，请确保 pub 缓存 bin 目录已添加到 PATH 环境变量中：
+> 1. 打开 **系统属性** → **高级** → **环境变量**
+> 2. 在 **用户变量** 中找到 `Path`，点击 **编辑**
+> 3. 添加 `%APPDATA%\Pub\Cache\bin` 并点击 **确定**
+> 4. 重启终端，然后运行 `fastforge --help` 验证
+
 ## 快速开始
 
 1. 在项目根目录添加 `distribute_options.yaml` 文件:

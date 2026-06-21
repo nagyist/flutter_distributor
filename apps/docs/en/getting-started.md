@@ -32,6 +32,12 @@ Fastforge is an all-in-one Flutter application packaging and distribution tool, 
 dart pub global activate fastforge
 ```
 
+> **Windows users:** After activation, ensure the pub cache bin directory is in your PATH:
+> 1. Open **System Properties** → **Advanced** → **Environment Variables**
+> 2. Under **User variables**, select `Path` → **Edit**
+> 3. Add `%APPDATA%\Pub\Cache\bin` and click **OK**
+> 4. Restart your terminal, then try `fastforge --help`
+
 ## Usage
 
 Add `distribute_options.yaml` to your project root directory.

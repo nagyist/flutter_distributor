@@ -43,6 +43,17 @@ categories:
   - Awesome
 
 startup_notify: true
+
+# RPM spec macros — inject global RPM directives at the top of the .spec file
+#
+# Useful for solving cross-distro ABI conflicts, excluding automatic requires,
+# or setting build-id options. Each entry is placed verbatim at the top of the
+# generated .spec file, before the preamble.
+#
+# spec_macros:
+#   - "%global __requires_exclude .*libcurl.*CURL_OPENSSL.*"
+#   - "%define _build_id_links none"
+
 # You can also specify [metainfo](https://freedesktop.org/software/appstream/docs/chap-Quickstart.html) file
 # which contains metadata of the app.
 # metainfo: linux/packaging/myappid.appdata.xml

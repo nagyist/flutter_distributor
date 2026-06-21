@@ -71,6 +71,9 @@ include: []
 # 您也可以指定 [metainfo](https://www.freedesktop.org/software/appstream/metainfocreator/#/) 文件
 # 其中包含应用的元数据。
 # metainfo: linux/packaging/myappid.appdata.xml
+
+# 注意：AppDir/lib 目录中的子目录（如 cmake/）会在依赖扫描时自动跳过，
+# 避免 ldd 报错。
 ```
 
 运行：

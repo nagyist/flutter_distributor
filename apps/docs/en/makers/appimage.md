@@ -72,6 +72,9 @@ include: []
 # You can also specify [metainfo](https://www.freedesktop.org/software/appstream/metainfocreator/#/) file
 # which contains metadata of the app.
 # metainfo: linux/packaging/myappid.appdata.xml
+
+# Note: Directories inside the AppDir/lib folder (e.g. cmake/) are automatically
+# skipped during dependency scanning, preventing ldd errors.
 ```
 
 Run:

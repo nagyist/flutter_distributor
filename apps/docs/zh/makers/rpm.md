@@ -43,6 +43,16 @@ categories:
   - Awesome
 
 startup_notify: true
+
+# RPM spec 宏 — 在 .spec 文件顶部注入全局 RPM 指令
+#
+# 用于解决跨发行版 ABI 冲突、排除自动依赖检测或设置构建 ID 选项。
+# 每个条目将按原样放置在生成的 .spec 文件最顶部，位于 preamble 之前。
+#
+# spec_macros:
+#   - "%global __requires_exclude .*libcurl.*CURL_OPENSSL.*"
+#   - "%define _build_id_links none"
+
 # 您也可以指定 [metainfo](https://freedesktop.org/software/appstream/docs/chap-Quickstart.html) 文件
 # 其中包含应用的元数据。
 # metainfo: linux/packaging/myappid.appdata.xml

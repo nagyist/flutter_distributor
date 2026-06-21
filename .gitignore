@@ -41,3 +41,6 @@ build/
 # Python cache
 __pycache__/
 *.py[cod]
+
+# Node.js / pnpm
+node_modules/

@@ -60,7 +60,7 @@ impl AppPackager for LinuxRpmPackager {
 
         // Write {app_name}.desktop into BUILD/
         let desktop = format!(
-            "[Desktop Entry]\nType=Application\nName={name}\nExec=/usr/share/{bin}/{bin} %U\nIcon={bin}\n",
+            "[Desktop Entry]\nType=Application\nName={name}\nExec=/opt/{bin}/{bin} %U\nIcon={bin}\n",
             name = config.app_name,
             bin = binary_name,
         );
@@ -83,12 +83,12 @@ impl AppPackager for LinuxRpmPackager {
              BuildArch: {arch}\n\n\
              %description\n{name}\n\n\
              %install\n\
-             mkdir -p %{{buildroot}}/usr/share/{bin}\n\
-             cp -r %{{_builddir}}/{name}/. %{{buildroot}}/usr/share/{bin}/\n\
+             mkdir -p %{{buildroot}}/opt/{bin}\n\
+             cp -r %{{_builddir}}/{name}/. %{{buildroot}}/opt/{bin}/\n\
              mkdir -p %{{buildroot}}/usr/share/applications\n\
              cp %{{_builddir}}/{name}.desktop %{{buildroot}}/usr/share/applications/\n\n\
              %files\n\
-             /usr/share/{bin}\n\
+             /opt/{bin}\n\
              /usr/share/applications/{name}.desktop\n",
             name = app_name,
             ver = config.app_version.split('+').next().unwrap_or("0.0.1"),

@@ -88,10 +88,10 @@ categories:
   - Music
   - Media
 
-# let OS know if the application can be run on start_up. If it's false 
-# the application will deny to the OS if it was added as a start_up 
+# let OS know if the application can be run on start_up. If it's false
+# the application will deny to the OS if it was added as a start_up
 # application
-startup_notify: true  
+startup_notify: true
 */
 
 class MakePacmanConfig extends MakeLinuxPackageConfig {
@@ -210,7 +210,7 @@ class MakePacmanConfig extends MakeLinuxPackageConfig {
   List<String>? categories;
 
   List<String> get postinstallScripts => [
-        'ln -s /usr/share/$appBinaryName/$appBinaryName /usr/bin/$appBinaryName',
+        'ln -s /opt/$appBinaryName/$appBinaryName /usr/bin/$appBinaryName',
         'chmod +x /usr/bin/$appBinaryName',
         ..._postinstallScripts,
       ];

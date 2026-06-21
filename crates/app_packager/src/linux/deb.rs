@@ -55,13 +55,13 @@ impl AppPackager for LinuxDebPackager {
 
         // Create the required directory tree
         let debian_dir = pkg_dir.join("DEBIAN");
-        let share_app_dir = pkg_dir.join("usr/share").join(binary_name);
+        let share_app_dir = pkg_dir.join("opt").join(binary_name);
         let applications_dir = pkg_dir.join("usr/share/applications");
         std::fs::create_dir_all(&debian_dir)?;
         std::fs::create_dir_all(&share_app_dir)?;
         std::fs::create_dir_all(&applications_dir)?;
 
-        // Copy the flutter build output into /usr/share/{binary_name}/
+        // Copy the flutter build output into /opt/{binary_name}/
         copy_dir_contents(&config.build_output_dir, &share_app_dir)?;
 
         // Write DEBIAN/control (minimal placeholder; real deployments supply a
@@ -74,7 +74,7 @@ impl AppPackager for LinuxDebPackager {
 
         // Write DEBIAN/postinst
         let postinst = format!(
-            "#!/usr/bin/env sh\nln -s /usr/share/{n}/{n} /usr/bin/{n}\nchmod +x /usr/bin/{n}\nexit 0\n",
+            "#!/usr/bin/env sh\nln -s /opt/{n}/{n} /usr/bin/{n}\nchmod +x /usr/bin/{n}\nexit 0\n",
             n = binary_name,
         );
         let postinst_path = debian_dir.join("postinst");

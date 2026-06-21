@@ -44,12 +44,12 @@ impl AppPackager for LinuxPacmanPackager {
         let binary_name = &config.app_binary_name;
 
         // Create directory tree
-        let share_app_dir = pkg_dir.join("usr/share").join(binary_name);
+        let share_app_dir = pkg_dir.join("opt").join(binary_name);
         let applications_dir = pkg_dir.join("usr/share/applications");
         std::fs::create_dir_all(&share_app_dir)?;
         std::fs::create_dir_all(&applications_dir)?;
 
-        // Copy the flutter build output into /usr/share/{binary_name}/
+        // Copy the flutter build output into /opt/{binary_name}/
         run(Command::new("cp").args([
             "-fr",
             &format!("{}/.", config.build_output_dir.display()),
@@ -66,7 +66,7 @@ impl AppPackager for LinuxPacmanPackager {
 
         // Write .INSTALL
         let install = format!(
-            "post_install() {{\n  ln -s /usr/share/{n}/{n} /usr/bin/{n}\n  chmod +x /usr/bin/{n}\n}}\n\
+            "post_install() {{\n  ln -s /opt/{n}/{n} /usr/bin/{n}\n  chmod +x /usr/bin/{n}\n}}\n\
              post_remove() {{\n  rm -f /usr/bin/{n}\n}}\n",
             n = binary_name,
         );
@@ -93,6 +93,7 @@ impl AppPackager for LinuxPacmanPackager {
                 "--options=!all,use-set,type,uid,gid,mode,time,size,md5,sha256,link",
                 ".PKGINFO",
                 ".INSTALL",
+                "opt",
                 "usr",
             ])
             .env("LANG", "C"))?;
@@ -100,7 +101,9 @@ impl AppPackager for LinuxPacmanPackager {
         // Archive with bsdtar
         run(Command::new("bsdtar")
             .current_dir(&pkg_dir)
-            .args(["-cf", "temptar", ".MTREE", ".INSTALL", ".PKGINFO", "usr"])
+            .args([
+                "-cf", "temptar", ".MTREE", ".INSTALL", ".PKGINFO", "opt", "usr",
+            ])
             .env("LANG", "C"))?;
 
         // Compress with xz

@@ -243,10 +243,10 @@ fn expand_tilde(path: &str) -> PathBuf {
             .map(PathBuf::from)
             .unwrap_or_else(|| PathBuf::from(path));
     }
-    if let Some(rest) = path.strip_prefix("~/") {
-        if let Some(home) = env::var_os("HOME") {
-            return PathBuf::from(home).join(rest);
-        }
+    if let Some(rest) = path.strip_prefix("~/")
+        && let Some(home) = env::var_os("HOME")
+    {
+        return PathBuf::from(home).join(rest);
     }
     PathBuf::from(path)
 }

@@ -48,6 +48,7 @@ impl<'a> FlutterCommand<'a> {
         self.build(subcommand, arguments)
     }
 
+    #[allow(dead_code)]
     pub fn version(&self) -> Result<FlutterVersion, BuildError> {
         let mut cmd = self.base_command()?;
         cmd.arg("--version").arg("--machine");

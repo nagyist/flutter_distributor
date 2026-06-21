@@ -183,11 +183,11 @@ fn publish_args(
 ) -> Result<HashMap<String, String>> {
     let mut args = HashMap::new();
 
-    if let Some(publish) = &job.publish {
-        if let Some(raw_args) = &publish.args {
-            for (key, value) in raw_args {
-                args.insert(key.clone(), yaml_value_to_string(key, value)?);
-            }
+    if let Some(publish) = &job.publish
+        && let Some(raw_args) = &publish.args
+    {
+        for (key, value) in raw_args {
+            args.insert(key.clone(), yaml_value_to_string(key, value)?);
         }
     }
 
@@ -218,10 +218,10 @@ fn copy_variable_arg(
     env_key: &str,
     arg_key: &str,
 ) {
-    if !args.contains_key(arg_key) {
-        if let Some(value) = variables.get(env_key).filter(|v| !v.trim().is_empty()) {
-            args.insert(arg_key.to_string(), value.clone());
-        }
+    if !args.contains_key(arg_key)
+        && let Some(value) = variables.get(env_key).filter(|v| !v.trim().is_empty())
+    {
+        args.insert(arg_key.to_string(), value.clone());
     }
 }
 

@@ -288,7 +288,7 @@ impl CustomAppBuilder {
     pub fn build(
         &self,
         platform: &str,
-        target: Option<&str>,
+        _target: Option<&str>,
         arguments: serde_json::Map<String, serde_json::Value>,
         environment: Option<HashMap<String, String>>,
     ) -> Result<BuildResult, BuildError> {

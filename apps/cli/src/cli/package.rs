@@ -77,6 +77,7 @@ pub async fn execute(args: &PackageArgs) -> Result<()> {
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn package_flutter_artifact(
     platform_str: &str,
     target: &str,

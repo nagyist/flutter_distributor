@@ -183,6 +183,7 @@ impl FastforgeConfig {
         Ok(parsed)
     }
 
+    #[allow(dead_code)]
     pub fn resolved_env(&self) -> HashMap<String, String> {
         let mut vars: HashMap<String, String> = std::env::vars().collect();
         if let Some(env) = &self.env {
@@ -193,11 +194,13 @@ impl FastforgeConfig {
         vars
     }
 
+    #[allow(dead_code)]
     pub fn output_dir(&self, root: &Path) -> PathBuf {
         root.join(&self.output)
     }
 }
 
+#[allow(dead_code)]
 fn expand_env_value(value: &str, vars: &HashMap<String, String>) -> String {
     let mut output = String::new();
     let mut rest = value;

@@ -155,10 +155,10 @@ fn config_for<'a>(
 }
 
 fn build_googleplay(config: &FastforgeConfig, store: &str) -> Result<GooglePlayManager> {
-    if let Some(cfg) = config_for(config, store)? {
-        if let Some(path) = &cfg.key_path {
-            return Ok(GooglePlayManager::with_credential_file(path));
-        }
+    if let Some(cfg) = config_for(config, store)?
+        && let Some(path) = &cfg.key_path
+    {
+        return Ok(GooglePlayManager::with_credential_file(path));
     }
     Ok(GooglePlayManager::new())
 }

@@ -435,9 +435,9 @@ impl AppBuilder for GradleKmpDesktopBuilder {
             Some(Platform::Windows) => ("msi", "msi"),
             Some(Platform::Linux) => ("deb", "deb"),
             _ => {
-                return Err(BuildError::UnsupportedPlatform(format!(
-                    "Desktop KMP packaging is not supported on this platform"
-                )));
+                return Err(BuildError::UnsupportedPlatform(
+                    "Desktop KMP packaging is not supported on this platform".to_string(),
+                ));
             }
         };
 
@@ -627,32 +627,31 @@ impl GradleAppBuilder {
         &self,
         platform: &str,
         target: Option<&str>,
-    ) -> Option<&Box<dyn AppBuilder + Send + Sync>> {
-        self.builders.iter().find(|b| {
-            // The builder's `name()` matches the platform prefix, e.g.
-            //   GradleAndroidApkBuilder.name() == "gradle-android"
-            //   GradleKmpAndroidApkBuilder.name() == "gradle-kmp"
-            b.name() == platform
-                && match target {
-                    Some(t) => {
-                        // Match by target—each builder stores its accepted target
-                        // in the `build_result`s target field.
-                        let expected = match b.name() {
-                            "gradle-android" => match t {
-                                "apk" | "aab" => true,
+    ) -> Option<&(dyn AppBuilder + Send + Sync)> {
+        self.builders
+            .iter()
+            .find(|b| {
+                // The builder's `name()` matches the platform prefix, e.g.
+                //   GradleAndroidApkBuilder.name() == "gradle-android"
+                //   GradleKmpAndroidApkBuilder.name() == "gradle-kmp"
+                b.name() == platform
+                    && match target {
+                        Some(t) => {
+                            // Match by target—each builder stores its accepted target
+                            // in the `build_result`s target field.
+                            match b.name() {
+                                "gradle-android" => matches!(t, "apk" | "aab"),
+                                "gradle-kmp" => matches!(
+                                    t,
+                                    "android-apk" | "android-aab" | "desktop" | "ios-framework"
+                                ),
                                 _ => false,
-                            },
-                            "gradle-kmp" => match t {
-                                "android-apk" | "android-aab" | "desktop" | "ios-framework" => true,
-                                _ => false,
-                            },
-                            _ => false,
-                        };
-                        expected
+                            }
+                        }
+                        None => false,
                     }
-                    None => false,
-                }
-        })
+            })
+            .map(|b| &**b)
     }
 
     pub fn build(

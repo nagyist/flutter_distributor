@@ -13,6 +13,8 @@ overrides:
 
 importers:
 
+  .: {}
+
   apps/docs:
     devDependencies:
       '@lunariajs/core':

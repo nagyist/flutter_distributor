@@ -304,9 +304,13 @@ class UnifiedDistributor {
         );
         publishResultList.add(publishResult);
       }
-    } on Error catch (error) {
+    } catch (error, stackTrace) {
       logger.severe(error.toString().brightRed());
-      logger.severe(error.stackTrace.toString().brightRed());
+      if (error is Error) {
+        logger.severe(error.stackTrace.toString().brightRed());
+      } else {
+        logger.severe(stackTrace.toString().brightRed());
+      }
       rethrow;
     }
     return publishResultList;

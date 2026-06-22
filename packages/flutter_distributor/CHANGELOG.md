@@ -1,3 +1,8 @@
+## 0.6.8
+
+* fix: ensure non-zero exit code on packaging/publishing errors (#344)
+* bump `unified_distributor` to ^0.2.8
+
 ## 0.6.7
 
 * bump `unified_distributor` to ^0.2.7

@@ -1,3 +1,7 @@
+## 0.2.8
+
+* fix: improved error handling to catch both Error and Exception types on publishing failures
+
 ## 0.2.7
 
 * bump `flutter_app_packager` to ^0.6.7

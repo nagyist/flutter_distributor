@@ -1,3 +1,12 @@
+## 0.6.8
+
+* fix: ensure non-zero exit code on packaging/publishing errors (#344)
+* fix(macos): edit pkg PackageInfo in-place and handle productsign errors
+* fix(qiniu): clamp sent value within bounds to prevent progress bar overflow
+* fix: improved error handling to catch both Error and Exception types on publishing failures
+* bump `unified_distributor` to ^0.2.8
+* bump `qiniu_sdk_base` to ^0.8.0
+
 ## 0.6.7
 
 * feat: add custom packager support (#326)

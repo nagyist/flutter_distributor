@@ -1,3 +1,9 @@
+## 0.6.8
+
+* fix(macos): edit pkg PackageInfo in-place to simplify component metadata handling
+* fix(macos): handle productsign errors with proper error reporting
+* fix: add error handling for pkgutil (expand/flatten) and productsign commands
+
 ## 0.6.7
 
 * feat: add custom packager support

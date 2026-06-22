@@ -1,3 +1,8 @@
+## 0.6.7
+
+* fix(qiniu): clamp sent value within bounds to prevent progress bar overflow
+* bump `qiniu_sdk_base` to ^0.8.0
+
 ## 0.6.6
 
 * feat: add comprehensive pgyer upload parameters support #297

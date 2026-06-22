@@ -45,7 +45,14 @@ class AppPackageMakerPkg extends AppPackageMaker {
       pkgBuild.add(makeConfig.scriptsPath!);
     }
 
-    await $('xcrun', pkgBuild);
+    await $('xcrun', pkgBuild).then((result) {
+      if (result.exitCode != 0) {
+        throw MakeError(
+          'productbuild failed with exit code ${result.exitCode}: '
+          '${result.stderr ?? result.stdout}',
+        );
+      }
+    });
 
     // 修复 pkg 元数据：expand → 编辑 → flatten
     // productbuild --component 生成的包有两个问题：
@@ -53,7 +60,16 @@ class AppPackageMakerPkg extends AppPackageMaker {
     // 2. 组件 PackageInfo 包含 <relocate>，导致安装器重定向到已存在的构建产物
     final expandDir = Directory('${unsignedPkgFile.path}.expanded');
     if (expandDir.existsSync()) expandDir.deleteSync(recursive: true);
-    await $('pkgutil', ['--expand', unsignedPkgFile.path, expandDir.path]);
+    await $('pkgutil', ['--expand', unsignedPkgFile.path, expandDir.path]).then(
+      (result) {
+        if (result.exitCode != 0) {
+          throw MakeError(
+            'pkgutil --expand failed with exit code ${result.exitCode}: '
+            '${result.stderr ?? result.stdout}',
+          );
+        }
+      },
+    );
 
     // 修复 1：Distribution 注入 <domains>
     final distributionFile = File('${expandDir.path}/Distribution');
@@ -85,7 +101,16 @@ class AppPackageMakerPkg extends AppPackageMaker {
     }
 
     unsignedPkgFile.deleteSync();
-    await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path]);
+    await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path]).then(
+      (result) {
+        if (result.exitCode != 0) {
+          throw MakeError(
+            'pkgutil --flatten failed with exit code ${result.exitCode}: '
+            '${result.stderr ?? result.stdout}',
+          );
+        }
+      },
+    );
     expandDir.deleteSync(recursive: true);
     if (makeConfig.signIdentity != null) {
       final ProcessResult signResult = await $('xcrun', [

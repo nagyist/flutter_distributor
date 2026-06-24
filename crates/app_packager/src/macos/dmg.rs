@@ -31,14 +31,23 @@ impl AppPackager for MacOSDmgPackager {
     fn package(&self, config: &PackageConfig) -> Result<PackageResult, PackageError> {
         let pkg_dir = config.packaging_dir();
 
-        // Find the .app bundle in the build output directory
-        let app_bundle = std::fs::read_dir(&config.build_output_dir)?
-            .filter_map(|e| e.ok())
-            .find(|e| e.path().extension().is_some_and(|x| x == "app"))
+        // Find the .app bundle, preferring build_output_files over scanning build_output_dir
+        let app_bundle = config
+            .build_output_files
+            .iter()
+            .find(|p| p.extension().is_some_and(|x| x == "app"))
+            .map(|p| p.to_path_buf())
+            .or_else(|| {
+                std::fs::read_dir(&config.build_output_dir)
+                    .ok()?
+                    .filter_map(|e| e.ok())
+                    .find(|e| e.path().extension().is_some_and(|x| x == "app"))
+                    .map(|e| e.path())
+            })
             .ok_or_else(|| PackageError::NotFound(".app bundle in build output".into()))?;
 
         // Copy the .app into the packaging directory
-        run_cp_r(&app_bundle.path(), &pkg_dir)?;
+        run_cp_r(&app_bundle, &pkg_dir)?;
 
         // Copy the project's dmg packaging assets (background, icon, etc.)
         // These are expected at macos/packaging/dmg/ relative to the project root.

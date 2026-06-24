@@ -41,6 +41,27 @@ fn current_platform() -> Option<Platform> {
     Platform::current()
 }
 
+/// Parses `PRODUCT_NAME` from a macOS `AppInfo.xcconfig` file.
+fn read_product_name_from_xcconfig(path: &str) -> Option<String> {
+    let content = std::fs::read_to_string(path).ok()?;
+    for line in content.lines() {
+        let line = line.trim();
+        // Skip comments and empty lines
+        if line.starts_with('#') || line.is_empty() {
+            continue;
+        }
+        if let Some(value) = line.strip_prefix("PRODUCT_NAME") {
+            if let Some(equals) = value.strip_prefix('=') {
+                let name = equals.trim();
+                if !name.is_empty() {
+                    return Some(name.to_string());
+                }
+            }
+        }
+    }
+    None
+}
+
 impl AppBuilder for AndroidApkBuilder {
     fn name(&self) -> &str {
         "android"
@@ -251,7 +272,17 @@ impl AppBuilder for MacOSBuilder {
         } else {
             PathBuf::from(format!("build/macos/Build/Products/{}", build_mode))
         };
-        let files = resolve_glob(&format!("{}/{}.app", output_directory.display(), "*"))?;
+
+        // Read PRODUCT_NAME from AppInfo.xcconfig to target the exact .app bundle.
+        // Falls back to a wildcard if the file is missing or unparseable.
+        let product_name = read_product_name_from_xcconfig("macos/Runner/Configs/AppInfo.xcconfig")
+            .unwrap_or_else(|| "*".to_string());
+
+        let files = resolve_glob(&format!(
+            "{}/{}.app",
+            output_directory.display(),
+            product_name
+        ))?;
         Ok((output_directory, files))
     }
     fn build_result(

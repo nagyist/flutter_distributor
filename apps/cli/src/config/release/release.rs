@@ -1,4 +1,4 @@
-use crate::config::release_job::ReleaseJob;
+use super::job::ReleaseJob;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -15,7 +15,7 @@ pub struct Release {
 }
 
 impl Release {
-    /// Return the subset of jobs selected by `job_names`.  
+    /// Return the subset of jobs selected by `job_names`.
     /// If `job_names` is empty the full list is returned.
     pub fn filter_jobs(&self, job_names: &[String], skip_names: &[String]) -> Vec<&ReleaseJob> {
         self.jobs
@@ -36,7 +36,7 @@ impl Release {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::release_job::{ReleaseJob, ReleaseJobPackage};
+    use crate::config::release::job::{ReleaseJob, ReleaseJobPackage};
 
     fn make_job(name: &str) -> ReleaseJob {
         ReleaseJob {

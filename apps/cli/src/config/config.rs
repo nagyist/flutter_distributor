@@ -58,7 +58,7 @@ pub struct AppConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct FastforgeConfig {
+pub struct Config {
     #[serde(default = "default_version")]
     pub version: u32,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -156,7 +156,7 @@ fn default_output() -> String {
     "dist/".to_string()
 }
 
-impl Default for FastforgeConfig {
+impl Default for Config {
     fn default() -> Self {
         Self {
             version: default_version(),
@@ -169,7 +169,7 @@ impl Default for FastforgeConfig {
     }
 }
 
-impl FastforgeConfig {
+impl Config {
     pub fn from_root(root: &Path) -> Result<Self> {
         let path = root.join(".fastforge").join("config.yaml");
         if !path.exists() {
@@ -232,7 +232,7 @@ mod tests {
     #[test]
     fn defaults_when_no_config_exists() {
         let dir = TempDir::new().unwrap();
-        let config = FastforgeConfig::from_root(dir.path()).unwrap();
+        let config = Config::from_root(dir.path()).unwrap();
         assert_eq!(config.version, 1);
         assert_eq!(config.output, "dist/");
     }

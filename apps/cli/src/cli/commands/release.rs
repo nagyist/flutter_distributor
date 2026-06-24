@@ -4,7 +4,7 @@ use serde_json::{Map, Value};
 use std::collections::HashMap;
 
 use crate::config::DistributeOptions;
-use crate::config::release_job::ReleaseJob;
+use crate::config::release::ReleaseJob;
 
 use super::package::package_flutter_artifact;
 use super::publish::publish_artifact;

@@ -4,7 +4,7 @@ use fastforge_store_api::{AppStoreManager, GooglePlayManager};
 use fastforge_store_api_core::{StoreAppsApi, StoreReleasesApi, StoreReviewsApi};
 use std::path::Path;
 
-use crate::config::{FastforgeConfig, resolve_app_id};
+use crate::config::{Config, resolve_app_id};
 
 #[derive(Args)]
 pub struct StoreArgs {
@@ -50,7 +50,7 @@ pub enum StoreAction {
 
 pub async fn execute(args: &StoreArgs) -> Result<()> {
     // Load config from current directory (or parents).
-    let config = FastforgeConfig::from_root(&find_project_root()?)?;
+    let config = Config::from_root(&find_project_root()?)?;
 
     match &args.action {
         StoreAction::ListApps { store } => {
@@ -144,7 +144,7 @@ fn find_project_root() -> Result<std::path::PathBuf> {
 }
 
 fn config_for<'a>(
-    config: &'a FastforgeConfig,
+    config: &'a Config,
     store: &str,
 ) -> Result<&'a Option<crate::config::StoreTargetConfig>> {
     match store {
@@ -154,7 +154,7 @@ fn config_for<'a>(
     }
 }
 
-fn build_googleplay(config: &FastforgeConfig, store: &str) -> Result<GooglePlayManager> {
+fn build_googleplay(config: &Config, store: &str) -> Result<GooglePlayManager> {
     if let Some(cfg) = config_for(config, store)?
         && let Some(path) = &cfg.key_path
     {
@@ -163,7 +163,7 @@ fn build_googleplay(config: &FastforgeConfig, store: &str) -> Result<GooglePlayM
     Ok(GooglePlayManager::new())
 }
 
-fn build_appstore(config: &FastforgeConfig, store: &str) -> Result<AppStoreManager> {
+fn build_appstore(config: &Config, store: &str) -> Result<AppStoreManager> {
     if let Some(cfg) = config_for(config, store)? {
         return Ok(AppStoreManager::with_config(
             cfg.key_id.clone(),

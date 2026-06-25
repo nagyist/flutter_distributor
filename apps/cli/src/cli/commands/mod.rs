@@ -6,6 +6,7 @@ pub mod release;
 pub mod store;
 pub mod upgrade;
 pub mod version_check;
+pub mod workflow;
 
 pub use analyze::AnalyzeArgs;
 pub use build::BuildArgs;
@@ -15,3 +16,4 @@ pub use release::ReleaseArgs;
 pub use store::StoreArgs;
 pub use upgrade::UpgradeArgs;
 pub use version_check::VersionCheckArgs;
+pub use workflow::WorkflowArgs;

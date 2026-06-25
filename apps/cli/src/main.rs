@@ -5,7 +5,7 @@ mod config;
 
 use cli::{
     AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs, UpgradeArgs,
-    VersionCheckArgs,
+    VersionCheckArgs, WorkflowArgs,
 };
 
 #[derive(Parser)]
@@ -38,6 +38,8 @@ enum Commands {
         about = "Check for a newer version of fastforge"
     )]
     VersionCheck(VersionCheckArgs),
+    #[command(about = "Execute workflows locally")]
+    Workflow(WorkflowArgs),
 }
 
 #[tokio::main]
@@ -68,6 +70,9 @@ async fn main() -> anyhow::Result<()> {
         }
         Commands::VersionCheck(args) => {
             cli::version_check::execute(args).await?;
+        }
+        Commands::Workflow(args) => {
+            cli::workflow::execute(args).await?;
         }
     }
 

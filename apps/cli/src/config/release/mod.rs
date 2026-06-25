@@ -1,5 +1,5 @@
 pub mod job;
-pub mod release;
 
+mod release_impl;
 pub use job::ReleaseJob;
-pub use release::Release;
+pub use release_impl::Release;

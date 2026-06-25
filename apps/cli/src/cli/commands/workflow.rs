@@ -242,7 +242,7 @@ fn cmd_list(dir: &Option<PathBuf>, verbose: bool) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn cmd_validate(file: &PathBuf) -> anyhow::Result<()> {
+fn cmd_validate(file: &std::path::Path) -> anyhow::Result<()> {
     if !file.exists() {
         anyhow::bail!("File not found: {}", file.display());
     }
@@ -339,17 +339,8 @@ impl Action for FastforgePackageAction {
             target
         );
 
-        let environment: HashMap<String, String> = ctx
-            .env
-            .iter()
-            .chain(
-                std::env::vars()
-                    .into_iter()
-                    .collect::<HashMap<_, _>>()
-                    .iter(),
-            )
-            .map(|(k, v)| (k.clone(), v.clone()))
-            .collect();
+        let mut environment: HashMap<String, String> = ctx.env.clone();
+        environment.extend(std::env::vars());
 
         let artifacts = super::package::package_flutter_artifact(
             platform,

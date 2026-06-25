@@ -173,19 +173,18 @@ fn detect_architectures(app_path: &Path, executable: &Option<String>) -> Vec<Str
     }
 
     // If `file` didn't detect anything, try `lipo -info`
-    if archs.is_empty() {
-        if let Ok(lipo_output) = std::process::Command::new("lipo")
+    if archs.is_empty()
+        && let Ok(lipo_output) = std::process::Command::new("lipo")
             .args(["-info", &exec_path.to_string_lossy()])
             .output()
-        {
-            let lipo_str = String::from_utf8_lossy(&lipo_output.stdout);
-            // lipo output typically: "Architectures in the fat file: ... are: x86_64 arm64"
-            if let Some(caps) = lipo_str.split(':').nth(1) {
-                for arch in caps.split_whitespace() {
-                    let arch = arch.trim().to_string();
-                    if !arch.is_empty() {
-                        archs.push(arch);
-                    }
+    {
+        let lipo_str = String::from_utf8_lossy(&lipo_output.stdout);
+        // lipo output typically: "Architectures in the fat file: ... are: x86_64 arm64"
+        if let Some(caps) = lipo_str.split(':').nth(1) {
+            for arch in caps.split_whitespace() {
+                let arch = arch.trim().to_string();
+                if !arch.is_empty() {
+                    archs.push(arch);
                 }
             }
         }

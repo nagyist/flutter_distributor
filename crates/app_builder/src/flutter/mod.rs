@@ -50,12 +50,12 @@ fn read_product_name_from_xcconfig(path: &str) -> Option<String> {
         if line.starts_with('#') || line.is_empty() {
             continue;
         }
-        if let Some(value) = line.strip_prefix("PRODUCT_NAME") {
-            if let Some(equals) = value.strip_prefix('=') {
-                let name = equals.trim();
-                if !name.is_empty() {
-                    return Some(name.to_string());
-                }
+        if let Some(value) = line.strip_prefix("PRODUCT_NAME")
+            && let Some(equals) = value.strip_prefix('=')
+        {
+            let name = equals.trim();
+            if !name.is_empty() {
+                return Some(name.to_string());
             }
         }
     }

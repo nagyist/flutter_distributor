@@ -91,17 +91,24 @@ class AppPackageMakerPkg extends AppPackageMaker {
       final pkgInfoFile = File('${entry.path}/PackageInfo');
       if (pkgInfoFile.existsSync()) {
         var content = pkgInfoFile.readAsStringSync();
-        content = content.replaceAll(RegExp(r'<relocate>.*?</relocate>', dotAll: true), '');
-        content = content.replaceAll(RegExp(r'<upgrade-bundle>.*?</upgrade-bundle>', dotAll: true), '');
-        content = content.replaceAll(RegExp(r'<update-bundle\s*/>', dotAll: true), '');
-        content = content.replaceAll(RegExp(r'<atomic-update-bundle\s*/>', dotAll: true), '');
-        content = content.replaceAll(RegExp(r'<strict-identifier>.*?</strict-identifier>', dotAll: true), '');
+        content = content.replaceAll(
+            RegExp(r'<relocate>.*?</relocate>', dotAll: true), '');
+        content = content.replaceAll(
+            RegExp(r'<upgrade-bundle>.*?</upgrade-bundle>', dotAll: true), '');
+        content = content.replaceAll(
+            RegExp(r'<update-bundle\s*/>', dotAll: true), '');
+        content = content.replaceAll(
+            RegExp(r'<atomic-update-bundle\s*/>', dotAll: true), '');
+        content = content.replaceAll(
+            RegExp(r'<strict-identifier>.*?</strict-identifier>', dotAll: true),
+            '');
         pkgInfoFile.writeAsStringSync(content);
       }
     }
 
     unsignedPkgFile.deleteSync();
-    await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path]).then(
+    await $('pkgutil', ['--flatten', expandDir.path, unsignedPkgFile.path])
+        .then(
       (result) {
         if (result.exitCode != 0) {
           throw MakeError(

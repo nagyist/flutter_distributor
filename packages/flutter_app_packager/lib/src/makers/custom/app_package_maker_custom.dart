@@ -44,8 +44,7 @@ class AppPackageMakerCustom extends AppPackageMaker {
       'APP_NAME': config.appName,
       'APP_VERSION': config.appVersion.toString(),
       'BUILD_NAME': config.appBuildName,
-      if (config.appBuildNumber != null)
-        'BUILD_NUMBER': config.appBuildNumber!,
+      if (config.appBuildNumber != null) 'BUILD_NUMBER': config.appBuildNumber!,
       'BUILD_MODE': config.buildMode,
       if (config.flavor != null) 'FLAVOR': config.flavor!,
       if (config.channel != null) 'CHANNEL': config.channel!,

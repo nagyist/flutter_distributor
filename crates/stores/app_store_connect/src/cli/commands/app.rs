@@ -30,7 +30,7 @@ pub struct AppRow {
     #[serde(rename = "bundleId")]
     pub bundle_id: String,
     pub sku: String,
-    pub platforms: String,
+    pub locale: String,
 }
 
 pub async fn execute(args: &AppArgs, global: &GlobalArgs) -> Result<()> {
@@ -109,9 +109,9 @@ fn print_apps(apps: Vec<AppRow>, global: &GlobalArgs) -> Result<()> {
     }
     let rows = apps
         .into_iter()
-        .map(|app| vec![app.id, app.name, app.bundle_id, app.sku, app.platforms])
+        .map(|app| vec![app.id, app.name, app.bundle_id, app.sku, app.locale])
         .collect::<Vec<_>>();
-    print_table(&["ID", "NAME", "BUNDLE_ID", "SKU", "PLATFORM"], &rows);
+    print_table(&["ID", "NAME", "BUNDLE_ID", "SKU", "LOCALE"], &rows);
     Ok(())
 }
 
@@ -133,11 +133,7 @@ fn app_row(value: &Value) -> Result<AppRow> {
         name: attr_string(attrs, "name"),
         bundle_id: attr_string(attrs, "bundleId"),
         sku: attr_string(attrs, "sku"),
-        platforms: attrs
-            .get("availableTerritories")
-            .and_then(Value::as_array)
-            .map(|_| "".to_string())
-            .unwrap_or_else(|| attr_string(attrs, "primaryLocale")),
+        locale: attr_string(attrs, "primaryLocale"),
     })
 }
 

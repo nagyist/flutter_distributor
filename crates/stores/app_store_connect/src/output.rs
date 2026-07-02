@@ -1,6 +1,7 @@
 use anyhow::{Result, anyhow};
 use serde::Serialize;
 use serde_json::{Map, Value};
+use unicode_width::UnicodeWidthStr;
 
 pub fn print_json<T: Serialize>(value: &T, fields: Option<&str>) -> Result<()> {
     let value = serde_json::to_value(value)?;
@@ -48,11 +49,11 @@ fn select_object_fields(value: Value, fields: &[&str]) -> Result<Value> {
 }
 
 pub fn print_table(headers: &[&str], rows: &[Vec<String>]) {
-    let mut widths: Vec<usize> = headers.iter().map(|header| header.len()).collect();
+    let mut widths: Vec<usize> = headers.iter().map(|header| header.width()).collect();
     for row in rows {
         for (index, cell) in row.iter().enumerate() {
             if let Some(width) = widths.get_mut(index) {
-                *width = (*width).max(cell.len());
+                *width = (*width).max(cell.width());
             }
         }
     }
@@ -68,11 +69,13 @@ pub fn print_table(headers: &[&str], rows: &[Vec<String>]) {
 
 fn print_row(row: Vec<String>, widths: &[usize]) {
     for (index, cell) in row.iter().enumerate() {
-        let width = widths.get(index).copied().unwrap_or(cell.len());
+        let width = widths.get(index).copied().unwrap_or(cell.width());
         if index + 1 == row.len() {
             print!("{cell}");
         } else {
-            print!("{cell:width$}  ");
+            let visual_width = cell.width();
+            let padding = if width > visual_width { width - visual_width } else { 0 };
+            print!("{cell}{}  ", " ".repeat(padding));
         }
     }
     println!();

@@ -4,8 +4,8 @@ mod cli;
 mod config;
 
 use cli::{
-    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, UpgradeArgs, VersionCheckArgs,
-    WorkflowArgs,
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs, UpgradeArgs,
+    VersionCheckArgs, WorkflowArgs,
 };
 use fastforge_app_store_connect::cli::AppStoreConnectArgs;
 use fastforge_google_play_console::cli::GooglePlayConsoleArgs;
@@ -31,6 +31,8 @@ enum Commands {
     Publish(PublishArgs),
     #[command(about = "Release the current Flutter application")]
     Release(ReleaseArgs),
+    #[command(about = "Manage distribution store configuration")]
+    Store(StoreArgs),
     #[command(about = "Update Fastforge to the latest version")]
     Upgrade(UpgradeArgs),
     #[command(
@@ -65,6 +67,9 @@ async fn main() -> anyhow::Result<()> {
         }
         Commands::Release(args) => {
             cli::release::execute(args).await?;
+        }
+        Commands::Store(args) => {
+            cli::store::execute(args).await?;
         }
         Commands::Upgrade(args) => {
             cli::upgrade::execute(args).await?;

@@ -7,8 +7,8 @@ members = [
   "crates/app_packager",
   "crates/app_publisher",
   "crates/dmg_maker",
-  "crates/store_api_core",
-  "crates/store_api",
+  "crates/stores/app_store_connect",
+  "crates/stores/google_play_console",
   "apps/cli",
 ]
 

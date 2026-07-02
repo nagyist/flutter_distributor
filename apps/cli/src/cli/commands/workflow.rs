@@ -1,11 +1,17 @@
 use std::collections::HashMap;
+use std::io::IsTerminal;
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use async_trait::async_trait;
 use clap::{Args, Subcommand};
 use minact_core::actions::{Action, ActionContext, ActionOutput};
-use minact_core::{ActionRegistry, Engine, StepConclusion, WorkflowError, WorkflowParser};
+use minact_core::{
+    ActionRegistry, CommandStream, Engine, EngineResult, LogEvent, LogLevel, Reporter,
+    StepConclusion, WorkflowError, WorkflowParser,
+};
 use serde_json::{Map, Value};
+use tokio::sync::Mutex;
 
 #[derive(Args)]
 pub struct WorkflowArgs {
@@ -68,24 +74,7 @@ fn parse_key_val(s: &str) -> Result<KeyVal, String> {
     })
 }
 
-fn init_tracing() {
-    // Initialize tracing only once for minact-core output
-    use std::sync::Once;
-    static INIT: Once = Once::new();
-    INIT.call_once(|| {
-        tracing_subscriber::fmt()
-            .with_env_filter(
-                tracing_subscriber::EnvFilter::from_default_env()
-                    .add_directive(tracing::Level::INFO.into()),
-            )
-            .with_target(false)
-            .init();
-    });
-}
-
 pub async fn execute(args: &WorkflowArgs) -> anyhow::Result<()> {
-    init_tracing();
-
     match &args.command {
         WorkflowCommands::Run {
             file,
@@ -143,48 +132,229 @@ async fn cmd_run(
         }
     };
 
-    log::info!("Workflow: {}", workflow.name);
-    log::info!("Workspace: {}", workspace.display());
-    log::info!("Event: {}", event);
-    if !inputs.is_empty() {
-        log::info!("Inputs: {:?}", inputs);
-    }
-
     // Create engine with fastforge-specific built-in actions
-    let mut engine = Engine::with_actions(workspace.clone(), ActionRegistry::new());
+    let reporter: Arc<dyn Reporter> = Arc::new(PrettyReporter::default());
+    let mut engine =
+        Engine::with_actions_and_reporter(workspace.clone(), ActionRegistry::new(), reporter);
     engine.register_action(Box::new(FastforgePackageAction));
     engine.register_action(Box::new(FastforgePublishAction));
     let result = engine.run_workflow(&workflow, event, inputs).await?;
 
-    // Print summary
-    println!();
-    println!("═══════════════════════════════════════");
-    println!("  Workflow: {}", result.workflow_name);
-    println!(
-        "  Result: {}",
-        if result.success {
-            "✓ SUCCESS"
-        } else {
-            "✗ FAILED"
-        }
-    );
-    println!("═══════════════════════════════════════");
-
-    for (job_id, job_result) in &result.job_results {
-        let status = match job_result.conclusion {
-            minact_core::StepConclusion::Success => "✓",
-            minact_core::StepConclusion::Failure => "✗",
-            minact_core::StepConclusion::Cancelled => "◯",
-            minact_core::StepConclusion::Skipped => "–",
-        };
-        println!("  {} {} ({})", status, job_result.job_name, job_id);
-    }
+    print_pretty_summary(&result);
 
     if !result.success {
         std::process::exit(1);
     }
 
     Ok(())
+}
+
+fn sorted_job_results(result: &EngineResult) -> Vec<(&String, &minact_core::engine::JobResult)> {
+    let mut jobs: Vec<_> = result.job_results.iter().collect();
+    jobs.sort_by(|(left_id, _), (right_id, _)| left_id.cmp(right_id));
+    jobs
+}
+
+fn print_pretty_summary(result: &EngineResult) {
+    println!();
+    println!("{}", paint("Summary", Color::Bold));
+
+    for (job_id, job_result) in sorted_job_results(result) {
+        let status = match job_result.conclusion {
+            StepConclusion::Success => paint("✓", Color::Green),
+            StepConclusion::Failure => paint("✗", Color::Red),
+            StepConclusion::Cancelled => paint("◯", Color::Yellow),
+            StepConclusion::Skipped => paint("−", Color::Yellow),
+        };
+        println!("  {} {:<12} {}", status, job_id, job_result.job_name);
+    }
+}
+
+#[derive(Default)]
+struct PrettyReporter {
+    state: Mutex<PrettyState>,
+}
+
+#[derive(Default)]
+struct PrettyState {
+    current_job: String,
+}
+
+#[async_trait]
+impl Reporter for PrettyReporter {
+    async fn emit(&self, event: LogEvent) {
+        let mut state = self.state.lock().await;
+        match event {
+            LogEvent::WorkflowStarted {
+                workflow_name,
+                event_name,
+            } => {
+                println!(
+                    "{} {} {}",
+                    paint("●", Color::Cyan),
+                    paint(&workflow_name, Color::Bold),
+                    paint(&format!("· {}", event_name), Color::Dim)
+                );
+            }
+            LogEvent::ExecutionPlan { layers } => {
+                let plan = layers
+                    .iter()
+                    .map(|layer| layer.join(", "))
+                    .collect::<Vec<_>>()
+                    .join(" → ");
+                println!("  {} {}", paint("plan", Color::Dim), plan);
+            }
+            LogEvent::JobStarted { job_id, job_name } => {
+                state.current_job = job_id;
+                println!();
+                println!(
+                    "{} {} {}",
+                    paint("◆", Color::Blue),
+                    paint(&state.current_job, Color::Bold),
+                    paint(&job_name, Color::Dim)
+                );
+            }
+            LogEvent::JobSkipped {
+                job_id, condition, ..
+            } => {
+                println!(
+                    "  {} {} {}",
+                    paint("−", Color::Yellow),
+                    paint(&job_id, Color::Bold),
+                    paint(&format!("skipped {}", condition), Color::Dim)
+                );
+            }
+            LogEvent::JobFinished { success, .. } => {
+                if success {
+                    println!(
+                        "  {} {}",
+                        paint("✓", Color::Green),
+                        paint("job done", Color::Dim)
+                    );
+                } else {
+                    println!(
+                        "  {} {}",
+                        paint("✗", Color::Red),
+                        paint("job failed", Color::Red)
+                    );
+                }
+            }
+            LogEvent::StepStarted { step_name, .. } => {
+                println!(
+                    "  {} {}",
+                    paint("›", Color::Magenta),
+                    paint(&step_name, Color::Bold)
+                );
+            }
+            LogEvent::StepSkipped { condition, .. } => {
+                println!("    {} skipped {}", paint("−", Color::Yellow), condition);
+            }
+            LogEvent::ActionStarted { uses } => {
+                println!("    {} {}", paint("uses", Color::Dim), uses);
+            }
+            LogEvent::ActionInput { name, value } => {
+                println!("    {} {}={}", paint("with", Color::Dim), name, value);
+            }
+            LogEvent::ActionFinished { success, .. } => {
+                if success {
+                    println!(
+                        "    {} {}",
+                        paint("✓", Color::Green),
+                        paint("done", Color::Dim)
+                    );
+                } else {
+                    println!(
+                        "    {} {}",
+                        paint("✗", Color::Red),
+                        paint("failed", Color::Red)
+                    );
+                }
+            }
+            LogEvent::ActionError { message } => {
+                println!("    {} {}", paint("error", Color::Red), message);
+            }
+            LogEvent::CommandStarted { command, shell, .. } => {
+                let mut lines = command.lines();
+                if let Some(first_line) = lines.next() {
+                    let shell = if shell == "bash" {
+                        String::new()
+                    } else {
+                        format!(" [{}]", shell)
+                    };
+                    println!("    {}{} {}", paint("$", Color::Green), shell, first_line);
+                }
+                for line in lines {
+                    println!("      {}", line);
+                }
+            }
+            LogEvent::CommandOutput { stream, line } => {
+                let pipe = match stream {
+                    CommandStream::Stdout => paint("│", Color::Dim),
+                    CommandStream::Stderr => paint("│", Color::Yellow),
+                };
+                println!("    {} {}", pipe, line);
+            }
+            LogEvent::CommandFinished { success, status } => {
+                if success {
+                    println!(
+                        "    {} {}",
+                        paint("✓", Color::Green),
+                        paint(&short_status(&status), Color::Dim)
+                    );
+                } else {
+                    println!(
+                        "    {} {}",
+                        paint("✗", Color::Red),
+                        paint(&short_status(&status), Color::Red)
+                    );
+                }
+            }
+            LogEvent::Message { level, message } => {
+                let label = match level {
+                    LogLevel::Info => paint("info", Color::Dim),
+                    LogLevel::Warn => paint("warn", Color::Yellow),
+                    LogLevel::Error => paint("error", Color::Red),
+                };
+                println!("    {} {}", label, message);
+            }
+        }
+    }
+}
+
+enum Color {
+    Bold,
+    Dim,
+    Green,
+    Yellow,
+    Red,
+    Blue,
+    Cyan,
+    Magenta,
+}
+
+fn paint(text: &str, color: Color) -> String {
+    if !std::io::stdout().is_terminal() {
+        return text.to_string();
+    }
+
+    let code = match color {
+        Color::Bold => "1",
+        Color::Dim => "2",
+        Color::Green => "32",
+        Color::Yellow => "33",
+        Color::Red => "31",
+        Color::Blue => "34",
+        Color::Cyan => "36",
+        Color::Magenta => "35",
+    };
+    format!("\x1b[{}m{}\x1b[0m", code, text)
+}
+
+fn short_status(status: &str) -> String {
+    status
+        .strip_prefix("exit status: ")
+        .map(|code| format!("exit {}", code))
+        .unwrap_or_else(|| status.to_string())
 }
 
 fn cmd_list(dir: &Option<PathBuf>, verbose: bool) -> anyhow::Result<()> {

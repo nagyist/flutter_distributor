@@ -2,7 +2,7 @@
 
 English | [简体中文](./README-ZH.md)
 
-`fastforge` is the Rust CLI entry point of Fastforge. It orchestrates `analyze/build/package/publish/store/upgrade` subcommands.
+`fastforge` is the Rust CLI entry point of Fastforge. It orchestrates `analyze/build/package/publish/upgrade/workflow` subcommands.
 
 ## Quick Start
 
@@ -47,73 +47,61 @@ cargo install --path apps/cli
 fastforge --help
 ```
 
+### 6. Run a workflow locally
+
+Create a workflow file under `.fastforge/workflows/`, for example `.fastforge/workflows/android.yml`:
+
+```yaml
+name: Android release
+
+on:
+  workflow_dispatch:
+    inputs:
+      flavor:
+        description: Build flavor
+        default: production
+
+jobs:
+  package:
+    name: Package Android APK
+    steps:
+      - name: Build APK
+        uses: fastforge/package
+        with:
+          platform: android
+          target: apk
+          output: dist/
+          build-args: '{"build-flavor":"${{ inputs.flavor }}"}'
+```
+
+Run it from the project root:
+
+```bash
+# Run the only workflow found in .fastforge/workflows/
+fastforge workflow run
+
+# Run a specific workflow file
+fastforge workflow run --file .fastforge/workflows/android.yml
+
+# Pass workflow_dispatch inputs
+fastforge workflow run --file .fastforge/workflows/android.yml --input flavor=staging
+
+# Simulate another event or run against another workspace
+fastforge workflow run --event push --workspace /path/to/project --file .fastforge/workflows/android.yml
+
+# Inspect and validate workflows before running
+fastforge workflow list --verbose
+fastforge workflow validate .fastforge/workflows/android.yml
+```
+
 ## Available subcommands
 
 - `analyze`: Analyze application package metadata
 - `build`: Build Flutter app outputs directly
 - `package`: Package (command entry is in place)
 - `publish`: Publish (command entry is in place)
-- `store`: Manage apps in app stores (Google Play, App Store)
 - `upgrade`: Upgrade (command entry is in place)
-
-## Store management
-
-The `store` subcommand provides app store management operations for Google Play Console and App Store Connect.
-
-### Credentials
-
-Set up credentials via environment variables or project configuration (`.fastforge/config.yaml`):
-
-**App Store Connect:**
-```bash
-export APP_STORE_CONNECT_KEY_ID=D83848D23
-export APP_STORE_CONNECT_ISSUER_ID=227b0bbf-ada8-458c-9d62-3d8022b7d07f
-export APP_STORE_CONNECT_KEY_PATH=./AuthKey.p8
-```
-
-**Google Play Console:**
-```bash
-export GOOGLE_PLAY_SERVICE_ACCOUNT_JSON=./service-account.json
-```
-
-### Project configuration
-
-Add store configuration to `.fastforge/config.yaml` to avoid passing `--app-id` every time:
-
-```yaml
-stores:
-  appstore:
-    key_id: "D83848D23"
-    issuer_id: "227b0bbf-ada8-458c-9d62-3d8022b7d07f"
-    key_path: "./AuthKey.p8"
-    apps:
-      - id: "1234567890"
-        name: ios_production
-
-  googleplay:
-    key_path: "./service-account.json"
-    apps:
-      - id: "com.example.app"
-        name: android_production
-```
-
-### Usage examples
-
-```bash
-# List apps (App Store only, Google Play API limitation)
-fastforge store list-apps --store appstore
-
-# Get app details (with config, single app — app-id is optional)
-fastforge store get-app --store appstore
-
-# Get app details (multiple apps — use alias or ID)
-fastforge store get-app --store appstore --app ios_production
-fastforge store get-app --store googleplay --app-id com.example.app
-
-# List releases
-fastforge store list-releases --store appstore --app ios_production
-fastforge store list-releases --store googleplay --app-id com.example.app
-```
+- `workflow`: Run, list, and validate local workflows
 
 ## Development tips
 

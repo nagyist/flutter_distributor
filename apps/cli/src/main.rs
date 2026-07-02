@@ -4,9 +4,11 @@ mod cli;
 mod config;
 
 use cli::{
-    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, StoreArgs, UpgradeArgs,
-    VersionCheckArgs, WorkflowArgs,
+    AnalyzeArgs, BuildArgs, PackageArgs, PublishArgs, ReleaseArgs, UpgradeArgs, VersionCheckArgs,
+    WorkflowArgs,
 };
+use fastforge_app_store_connect::cli::AppStoreConnectArgs;
+use fastforge_google_play_console::cli::GooglePlayConsoleArgs;
 
 #[derive(Parser)]
 #[command(name = "fastforge")]
@@ -29,8 +31,6 @@ enum Commands {
     Publish(PublishArgs),
     #[command(about = "Release the current Flutter application")]
     Release(ReleaseArgs),
-    #[command(about = "Manage apps in app stores (Google Play, App Store)")]
-    Store(StoreArgs),
     #[command(about = "Update Fastforge to the latest version")]
     Upgrade(UpgradeArgs),
     #[command(
@@ -40,6 +40,10 @@ enum Commands {
     VersionCheck(VersionCheckArgs),
     #[command(about = "Execute workflows locally")]
     Workflow(WorkflowArgs),
+    #[command(name = "appstore", about = "Use App Store Connect")]
+    AppStore(AppStoreConnectArgs),
+    #[command(name = "googleplay", about = "Use Google Play Console")]
+    GooglePlay(GooglePlayConsoleArgs),
 }
 
 #[tokio::main]
@@ -62,9 +66,6 @@ async fn main() -> anyhow::Result<()> {
         Commands::Release(args) => {
             cli::release::execute(args).await?;
         }
-        Commands::Store(args) => {
-            cli::store::execute(args).await?;
-        }
         Commands::Upgrade(args) => {
             cli::upgrade::execute(args).await?;
         }
@@ -73,6 +74,12 @@ async fn main() -> anyhow::Result<()> {
         }
         Commands::Workflow(args) => {
             cli::workflow::execute(args).await?;
+        }
+        Commands::AppStore(args) => {
+            fastforge_app_store_connect::cli::execute(args).await?;
+        }
+        Commands::GooglePlay(args) => {
+            fastforge_google_play_console::cli::execute(args).await?;
         }
     }
 

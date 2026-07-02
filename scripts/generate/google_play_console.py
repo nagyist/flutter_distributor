@@ -18,7 +18,7 @@ from pathlib import Path
 # ── Paths ────────────────────────────────────────────────────────────────
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-OUTPUT = ROOT / "crates/store_clients/google_play_console"
+OUTPUT = ROOT / "crates/stores/google_play_console"
 CACHE_DIR = ROOT / ".cache/google_play_console"
 
 
@@ -198,10 +198,14 @@ def generate(pruned_path: Path):
         sys.exit(1)
 
     lib = OUTPUT / "src" / "lib.rs"
+    client = OUTPUT / "src" / "client.rs"
     if lib.exists():
-        lines = sum(1 for _ in lib.open())
-        size = lib.stat().st_size
-        print(f"       Generated {lib.relative_to(ROOT)} ({lines} lines, {size / 1024:.0f} KB)")
+        lib.replace(client)
+        lib.write_text("pub mod client;\n\npub use client::*;\n")
+        lines = sum(1 for _ in client.open())
+        size = client.stat().st_size
+        print(f"       Generated {client.relative_to(ROOT)} ({lines} lines, {size / 1024:.0f} KB)")
+        print(f"       Wrote {lib.relative_to(ROOT)}")
 
     # Fix up Cargo.toml metadata (progenitor overwrites it)
     cargo_toml = OUTPUT / "Cargo.toml"

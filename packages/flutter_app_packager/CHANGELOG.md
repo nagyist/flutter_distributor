@@ -1,3 +1,11 @@
+## 0.6.9
+
+* fix(msix): auto-detect architecture from build output directory (#349)
+* fix(linux-pacman): include 'opt/' directory in bsdtar archive (#346)
+* feat: add configurable EXE installer architectures
+* fix: desktop entry version key (#347)
+* chore: update custom and pkg app package makers
+
 ## 0.6.8
 
 * fix(macos): edit pkg PackageInfo in-place to simplify component metadata handling

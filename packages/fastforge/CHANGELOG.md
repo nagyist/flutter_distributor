@@ -1,3 +1,10 @@
+## 0.6.9
+
+* fix(msix): auto-detect architecture from build output directory (#349)
+* fix(linux-pacman): include 'opt/' directory in bsdtar archive (#346)
+* feat: add configurable EXE installer architectures
+* fix: desktop entry version key (#347)
+
 ## 0.6.8
 
 * fix: ensure non-zero exit code on packaging/publishing errors (#344)

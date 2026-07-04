@@ -1,3 +1,7 @@
+## 0.6.8
+
+* chore: update pgyer publisher configuration and tests
+
 ## 0.6.7
 
 * fix(qiniu): clamp sent value within bounds to prevent progress bar overflow

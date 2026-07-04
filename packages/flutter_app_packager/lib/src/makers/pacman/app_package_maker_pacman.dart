@@ -134,6 +134,7 @@ class AppPackageMakerPacman extends AppPackageMaker {
         '.PKGINFO',
         '.INSTALL',
         'usr',
+        'opt',
       ],
       environment: {
         'LANG': 'C',
@@ -156,6 +157,7 @@ class AppPackageMakerPacman extends AppPackageMaker {
         '.INSTALL',
         '.PKGINFO',
         'usr',
+        'opt',
       ],
       environment: {
         'LANG': 'C',

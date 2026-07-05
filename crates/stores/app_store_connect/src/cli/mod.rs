@@ -6,6 +6,7 @@ use clap::{Args, Subcommand};
 pub use commands::api::ApiArgs;
 pub use commands::app::AppArgs;
 pub use commands::build::BuildArgs;
+pub use commands::catalog::CatalogArgs;
 pub use commands::version::VersionArgs;
 
 #[derive(Args, Debug)]
@@ -27,6 +28,8 @@ pub enum AppStoreConnectCommand {
     Version(VersionArgs),
     #[command(about = "Call raw App Store Connect API endpoints")]
     Api(ApiArgs),
+    #[command(about = "Manage your app's store data (metadata, screenshots, previews)")]
+    Catalog(CatalogArgs),
 }
 
 pub async fn execute(root: &AppStoreConnectArgs) -> Result<()> {
@@ -37,6 +40,7 @@ pub async fn execute(root: &AppStoreConnectArgs) -> Result<()> {
             commands::version::execute(args, &root.global).await
         }
         AppStoreConnectCommand::Api(args) => commands::api::execute(args, &root.global).await,
+        AppStoreConnectCommand::Catalog(args) => commands::catalog::execute(args, &root.global).await,
     }
 }
 

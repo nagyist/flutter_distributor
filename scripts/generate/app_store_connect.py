@@ -96,6 +96,12 @@ KEEP_PATHS = {
     '/v1/apps/{id}/appStoreVersions',  # GET - list versions
     '/v1/appStoreVersions/{id}/appStoreVersionLocalizations',  # GET - list version localizations
     '/v1/appStoreVersionLocalizations/{id}',  # GET/PATCH - version listing localization
+    '/v1/appStoreVersionLocalizations/{id}/appScreenshotSets',  # GET - screenshot sets
+    '/v1/appScreenshotSets/{id}/appScreenshots',  # GET - screenshots
+    '/v1/appStoreVersionLocalizations/{id}/appPreviewSets',  # GET - preview sets
+    '/v1/appPreviewSets/{id}/appPreviews',  # GET - previews
+    '/v1/appScreenshots/{id}',  # GET - single screenshot (fetch imageUrl)
+    '/v1/appPreviews/{id}',  # GET - single preview (fetch videoUrl)
 }
 
 # Resource schemas whose `relationships` field can be stripped
@@ -161,20 +167,22 @@ def prune(spec_path: Path) -> Path:
     strip_included(schemas, 'AppResponse')
     strip_included(schemas, 'AppStoreVersionsResponse')
 
-    # Strip relationships from resource schemas
+    # Strip relationships from resource schemas, except those needed by catalog
+    RELATIONSHIPS_KEEP = {'AppInfo'}
     for name in RESOURCE_SCHEMAS:
+        if name in RELATIONSHIPS_KEEP:
+            continue
         schema = schemas.get(name)
         if schema and 'relationships' in schema.get('properties', {}):
             del schema['properties']['relationships']
 
     # Strip unused attribute fields to avoid pulling in unnecessary enum schemas
-    # Code only uses: App.{name, bundleId}, AppStoreVersion.{versionString, appStoreState, earliestReleaseDate, createdDate}
-    # Build.{version}, AppInfoLocalization.{name,subtitle}, AppStoreVersionLocalization.{description,promotionalText,whatsNew}
+    # Coding note: The catalog command also uses platform, appVersionState, and
+    # relationships.primaryCategory/secondaryCategory on AppInfo.
     _strip_attrs(schemas, 'App', [
         'subscriptionStatusUrl', 'subscriptionStatusUrlVersion',
         'subscriptionStatusUrlForSandbox', 'subscriptionStatusUrlVersionForSandbox',
         'contentRightsDeclaration', 'streamlinedPurchasingEnabled',
-        'accessibilityUrl', 'sku', 'primaryLocale', 'isOrEverWasMadeForKids',
     ])
     _strip_attrs(schemas, 'Build', [
         'iconAssetToken', 'buildAudienceType',
@@ -184,10 +192,15 @@ def prune(spec_path: Path) -> Path:
         'processingState', 'usesNonExemptEncryption',
     ])
     _strip_attrs(schemas, 'AppStoreVersion', [
-        'platform', 'appVersionState',
         'copyright', 'reviewType', 'releaseType',
         'usesIdfa', 'downloadable',
     ])
+    # Strip uploadOperations from media types — API returns null, can't be Vec<T>
+    _strip_attrs(schemas, 'AppScreenshot', ['uploadOperations'])
+    _strip_attrs(schemas, 'AppPreview', ['uploadOperations'])
+    # Strip warnings from AppMediaAssetState — API returns null, can't be Vec<T>
+    amas = schemas.get('AppMediaAssetState', {})
+    amas.get('properties', {}).pop('warnings', None)
 
     # Build pruned spec
     new_spec = {

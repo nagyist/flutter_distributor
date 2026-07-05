@@ -2333,10 +2333,23 @@ pub mod types {
     ///    "attributes": {
     ///      "type": "object",
     ///      "properties": {
+    ///        "accessibilityUrl": {
+    ///          "type": "string",
+    ///          "format": "uri"
+    ///        },
     ///        "bundleId": {
     ///          "type": "string"
     ///        },
+    ///        "isOrEverWasMadeForKids": {
+    ///          "type": "boolean"
+    ///        },
     ///        "name": {
+    ///          "type": "string"
+    ///        },
+    ///        "primaryLocale": {
+    ///          "type": "string"
+    ///        },
+    ///        "sku": {
     ///          "type": "string"
     ///        }
     ///      }
@@ -2376,10 +2389,23 @@ pub mod types {
     ///{
     ///  "type": "object",
     ///  "properties": {
+    ///    "accessibilityUrl": {
+    ///      "type": "string",
+    ///      "format": "uri"
+    ///    },
     ///    "bundleId": {
     ///      "type": "string"
     ///    },
+    ///    "isOrEverWasMadeForKids": {
+    ///      "type": "boolean"
+    ///    },
     ///    "name": {
+    ///      "type": "string"
+    ///    },
+    ///    "primaryLocale": {
+    ///      "type": "string"
+    ///    },
+    ///    "sku": {
     ///      "type": "string"
     ///    }
     ///  }
@@ -2389,20 +2415,44 @@ pub mod types {
     #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
     pub struct AppAttributes {
         #[serde(
+            rename = "accessibilityUrl",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub accessibility_url: ::std::option::Option<::std::string::String>,
+        #[serde(
             rename = "bundleId",
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
         pub bundle_id: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "isOrEverWasMadeForKids",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub is_or_ever_was_made_for_kids: ::std::option::Option<bool>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "primaryLocale",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub primary_locale: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub sku: ::std::option::Option<::std::string::String>,
     }
 
     impl ::std::default::Default for AppAttributes {
         fn default() -> Self {
             Self {
+                accessibility_url: Default::default(),
                 bundle_id: Default::default(),
+                is_or_ever_was_made_for_kids: Default::default(),
                 name: Default::default(),
+                primary_locale: Default::default(),
+                sku: Default::default(),
             }
         }
     }
@@ -3038,6 +3088,1160 @@ pub mod types {
         }
     }
 
+    ///`AppCustomProductPageLocalization`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppCustomProductPageLocalization",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "locale": {
+    ///          "type": "string"
+    ///        },
+    ///        "promotionalText": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appCustomProductPageVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCustomProductPageVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appPreviewSets": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appPreviewSets"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "appScreenshotSets": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appScreenshotSets"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "searchKeywords": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appKeywords"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCustomProductPageLocalizations"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalization {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppCustomProductPageLocalizationAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<AppCustomProductPageLocalizationRelationships>,
+        #[serde(rename = "type")]
+        pub type_: AppCustomProductPageLocalizationType,
+    }
+
+    ///`AppCustomProductPageLocalizationAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "locale": {
+    ///      "type": "string"
+    ///    },
+    ///    "promotionalText": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub locale: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "promotionalText",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub promotional_text: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppCustomProductPageLocalizationAttributes {
+        fn default() -> Self {
+            Self {
+                locale: Default::default(),
+                promotional_text: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appCustomProductPageVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCustomProductPageVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appPreviewSets": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appPreviewSets"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "appScreenshotSets": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appScreenshotSets"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "searchKeywords": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appKeywords"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationships {
+        #[serde(
+            rename = "appCustomProductPageVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_custom_product_page_version: ::std::option::Option<
+            AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersion,
+        >,
+        #[serde(
+            rename = "appPreviewSets",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_preview_sets:
+            ::std::option::Option<AppCustomProductPageLocalizationRelationshipsAppPreviewSets>,
+        #[serde(
+            rename = "appScreenshotSets",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_screenshot_sets:
+            ::std::option::Option<AppCustomProductPageLocalizationRelationshipsAppScreenshotSets>,
+        #[serde(
+            rename = "searchKeywords",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub search_keywords:
+            ::std::option::Option<AppCustomProductPageLocalizationRelationshipsSearchKeywords>,
+    }
+
+    impl ::std::default::Default for AppCustomProductPageLocalizationRelationships {
+        fn default() -> Self {
+            Self {
+                app_custom_product_page_version: Default::default(),
+                app_preview_sets: Default::default(),
+                app_screenshot_sets: Default::default(),
+                search_keywords: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCustomProductPageVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCustomProductPageVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType,
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCustomProductPageVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType {
+        #[serde(rename = "appCustomProductPageVersions")]
+        AppCustomProductPageVersions,
+    }
+
+    impl ::std::fmt::Display
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCustomProductPageVersions => f.write_str("appCustomProductPageVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCustomProductPageVersions" => Ok(Self::AppCustomProductPageVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppPreviewSets`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appPreviewSets"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppPreviewSets {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data:
+            ::std::vec::Vec<AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for AppCustomProductPageLocalizationRelationshipsAppPreviewSets {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appPreviewSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType,
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviewSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType {
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+    }
+
+    impl ::std::fmt::Display
+        for AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviewSets => f.write_str("appPreviewSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviewSets" => Ok(Self::AppPreviewSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppScreenshotSets`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appScreenshotSets"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppScreenshotSets {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data:
+            ::std::vec::Vec<AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for AppCustomProductPageLocalizationRelationshipsAppScreenshotSets {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appScreenshotSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType,
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshotSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType {
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+    }
+
+    impl ::std::fmt::Display
+        for AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshotSets => f.write_str("appScreenshotSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshotSets" => Ok(Self::AppScreenshotSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsSearchKeywords`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appKeywords"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsSearchKeywords {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data:
+            ::std::vec::Vec<AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for AppCustomProductPageLocalizationRelationshipsSearchKeywords {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appKeywords"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType,
+    }
+
+    ///`AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appKeywords"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType {
+        #[serde(rename = "appKeywords")]
+        AppKeywords,
+    }
+
+    impl ::std::fmt::Display
+        for AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppKeywords => f.write_str("appKeywords"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appKeywords" => Ok(Self::AppKeywords),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppCustomProductPageLocalizationRelationshipsSearchKeywordsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppCustomProductPageLocalizationType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCustomProductPageLocalizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppCustomProductPageLocalizationType {
+        #[serde(rename = "appCustomProductPageLocalizations")]
+        AppCustomProductPageLocalizations,
+    }
+
+    impl ::std::fmt::Display for AppCustomProductPageLocalizationType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCustomProductPageLocalizations => {
+                    f.write_str("appCustomProductPageLocalizations")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppCustomProductPageLocalizationType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCustomProductPageLocalizations" => Ok(Self::AppCustomProductPageLocalizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppCustomProductPageLocalizationType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppCustomProductPageLocalizationType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppCustomProductPageLocalizationType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
     ///`AppInfo`
     ///
     /// <details><summary>JSON schema</summary>
@@ -3130,6 +4334,256 @@ pub mod types {
     ///    "links": {
     ///      "$ref": "#/components/schemas/ResourceLinks"
     ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "ageRatingDeclaration": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "ageRatingDeclarations"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "app": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "apps"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appInfoLocalizations": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appInfoLocalizations"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "primaryCategory": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "primarySubcategoryOne": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "primarySubcategoryTwo": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "secondaryCategory": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "secondarySubcategoryOne": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "secondarySubcategoryTwo": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCategories"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        },
+    ///        "territoryAgeRatings": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
     ///    "type": {
     ///      "type": "string",
     ///      "enum": [
@@ -3147,6 +4601,8 @@ pub mod types {
         pub id: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<AppInfoRelationships>,
         #[serde(rename = "type")]
         pub type_: AppInfoType,
     }
@@ -4955,6 +6411,1803 @@ pub mod types {
         pub meta: ::std::option::Option<PagingInformation>,
     }
 
+    ///`AppInfoRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "ageRatingDeclaration": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "ageRatingDeclarations"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "app": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "apps"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appInfoLocalizations": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appInfoLocalizations"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "primaryCategory": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "primarySubcategoryOne": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "primarySubcategoryTwo": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "secondaryCategory": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "secondarySubcategoryOne": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "secondarySubcategoryTwo": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCategories"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    },
+    ///    "territoryAgeRatings": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationships {
+        #[serde(
+            rename = "ageRatingDeclaration",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub age_rating_declaration: ::std::option::Option<AppInfoRelationshipsAgeRatingDeclaration>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub app: ::std::option::Option<AppInfoRelationshipsApp>,
+        #[serde(
+            rename = "appInfoLocalizations",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_info_localizations: ::std::option::Option<AppInfoRelationshipsAppInfoLocalizations>,
+        #[serde(
+            rename = "primaryCategory",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub primary_category: ::std::option::Option<AppInfoRelationshipsPrimaryCategory>,
+        #[serde(
+            rename = "primarySubcategoryOne",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub primary_subcategory_one:
+            ::std::option::Option<AppInfoRelationshipsPrimarySubcategoryOne>,
+        #[serde(
+            rename = "primarySubcategoryTwo",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub primary_subcategory_two:
+            ::std::option::Option<AppInfoRelationshipsPrimarySubcategoryTwo>,
+        #[serde(
+            rename = "secondaryCategory",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub secondary_category: ::std::option::Option<AppInfoRelationshipsSecondaryCategory>,
+        #[serde(
+            rename = "secondarySubcategoryOne",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub secondary_subcategory_one:
+            ::std::option::Option<AppInfoRelationshipsSecondarySubcategoryOne>,
+        #[serde(
+            rename = "secondarySubcategoryTwo",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub secondary_subcategory_two:
+            ::std::option::Option<AppInfoRelationshipsSecondarySubcategoryTwo>,
+        #[serde(
+            rename = "territoryAgeRatings",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub territory_age_ratings: ::std::option::Option<AppInfoRelationshipsTerritoryAgeRatings>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationships {
+        fn default() -> Self {
+            Self {
+                age_rating_declaration: Default::default(),
+                app: Default::default(),
+                app_info_localizations: Default::default(),
+                primary_category: Default::default(),
+                primary_subcategory_one: Default::default(),
+                primary_subcategory_two: Default::default(),
+                secondary_category: Default::default(),
+                secondary_subcategory_one: Default::default(),
+                secondary_subcategory_two: Default::default(),
+                territory_age_ratings: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsAgeRatingDeclaration`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "ageRatingDeclarations"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsAgeRatingDeclaration {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsAgeRatingDeclarationData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsAgeRatingDeclaration {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsAgeRatingDeclarationData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "ageRatingDeclarations"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsAgeRatingDeclarationData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsAgeRatingDeclarationDataType,
+    }
+
+    ///`AppInfoRelationshipsAgeRatingDeclarationDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "ageRatingDeclarations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsAgeRatingDeclarationDataType {
+        #[serde(rename = "ageRatingDeclarations")]
+        AgeRatingDeclarations,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsAgeRatingDeclarationDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AgeRatingDeclarations => f.write_str("ageRatingDeclarations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsAgeRatingDeclarationDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "ageRatingDeclarations" => Ok(Self::AgeRatingDeclarations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsAgeRatingDeclarationDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsAgeRatingDeclarationDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsAgeRatingDeclarationDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsApp`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "apps"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsApp {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsAppData>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsApp {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsAppData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "apps"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsAppData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsAppDataType,
+    }
+
+    ///`AppInfoRelationshipsAppDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "apps"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsAppDataType {
+        #[serde(rename = "apps")]
+        Apps,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsAppDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Apps => f.write_str("apps"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsAppDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "apps" => Ok(Self::Apps),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppInfoRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppInfoRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsAppInfoLocalizations`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appInfoLocalizations"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsAppInfoLocalizations {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<AppInfoRelationshipsAppInfoLocalizationsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsAppInfoLocalizations {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsAppInfoLocalizationsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appInfoLocalizations"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsAppInfoLocalizationsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsAppInfoLocalizationsDataItemType,
+    }
+
+    ///`AppInfoRelationshipsAppInfoLocalizationsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appInfoLocalizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsAppInfoLocalizationsDataItemType {
+        #[serde(rename = "appInfoLocalizations")]
+        AppInfoLocalizations,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsAppInfoLocalizationsDataItemType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppInfoLocalizations => f.write_str("appInfoLocalizations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsAppInfoLocalizationsDataItemType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appInfoLocalizations" => Ok(Self::AppInfoLocalizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsAppInfoLocalizationsDataItemType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsAppInfoLocalizationsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsAppInfoLocalizationsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimaryCategory`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimaryCategory {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsPrimaryCategoryData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsPrimaryCategory {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimaryCategoryData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimaryCategoryData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsPrimaryCategoryDataType,
+    }
+
+    ///`AppInfoRelationshipsPrimaryCategoryDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsPrimaryCategoryDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsPrimaryCategoryDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsPrimaryCategoryDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsPrimaryCategoryDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsPrimaryCategoryDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsPrimaryCategoryDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryOne`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimarySubcategoryOne {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsPrimarySubcategoryOneData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsPrimarySubcategoryOne {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryOneData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimarySubcategoryOneData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsPrimarySubcategoryOneDataType,
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryOneDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsPrimarySubcategoryOneDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsPrimarySubcategoryOneDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsPrimarySubcategoryOneDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsPrimarySubcategoryOneDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsPrimarySubcategoryOneDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsPrimarySubcategoryOneDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryTwo`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimarySubcategoryTwo {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsPrimarySubcategoryTwoData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsPrimarySubcategoryTwo {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryTwoData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsPrimarySubcategoryTwoData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsPrimarySubcategoryTwoDataType,
+    }
+
+    ///`AppInfoRelationshipsPrimarySubcategoryTwoDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsPrimarySubcategoryTwoDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsPrimarySubcategoryTwoDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsPrimarySubcategoryTwoDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsPrimarySubcategoryTwoDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsPrimarySubcategoryTwoDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsPrimarySubcategoryTwoDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondaryCategory`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondaryCategory {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsSecondaryCategoryData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsSecondaryCategory {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondaryCategoryData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondaryCategoryData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsSecondaryCategoryDataType,
+    }
+
+    ///`AppInfoRelationshipsSecondaryCategoryDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsSecondaryCategoryDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsSecondaryCategoryDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsSecondaryCategoryDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsSecondaryCategoryDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsSecondaryCategoryDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsSecondaryCategoryDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryOne`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondarySubcategoryOne {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsSecondarySubcategoryOneData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsSecondarySubcategoryOne {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryOneData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondarySubcategoryOneData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsSecondarySubcategoryOneDataType,
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryOneDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsSecondarySubcategoryOneDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsSecondarySubcategoryOneDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsSecondarySubcategoryOneDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsSecondarySubcategoryOneDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsSecondarySubcategoryOneDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsSecondarySubcategoryOneDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryTwo`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCategories"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondarySubcategoryTwo {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppInfoRelationshipsSecondarySubcategoryTwoData>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsSecondarySubcategoryTwo {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+            }
+        }
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryTwoData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCategories"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsSecondarySubcategoryTwoData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppInfoRelationshipsSecondarySubcategoryTwoDataType,
+    }
+
+    ///`AppInfoRelationshipsSecondarySubcategoryTwoDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCategories"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppInfoRelationshipsSecondarySubcategoryTwoDataType {
+        #[serde(rename = "appCategories")]
+        AppCategories,
+    }
+
+    impl ::std::fmt::Display for AppInfoRelationshipsSecondarySubcategoryTwoDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCategories => f.write_str("appCategories"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppInfoRelationshipsSecondarySubcategoryTwoDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCategories" => Ok(Self::AppCategories),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppInfoRelationshipsSecondarySubcategoryTwoDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppInfoRelationshipsSecondarySubcategoryTwoDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppInfoRelationshipsSecondarySubcategoryTwoDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppInfoRelationshipsTerritoryAgeRatings`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppInfoRelationshipsTerritoryAgeRatings {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+    }
+
+    impl ::std::default::Default for AppInfoRelationshipsTerritoryAgeRatings {
+        fn default() -> Self {
+            Self {
+                links: Default::default(),
+            }
+        }
+    }
+
     ///`AppInfoType`
     ///
     /// <details><summary>JSON schema</summary>
@@ -5605,6 +8858,926 @@ pub mod types {
         ) -> ::std::result::Result<Self, self::error::ConversionError> {
             value.parse()
         }
+    }
+
+    ///`AppMediaAssetState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "errors": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppMediaStateError"
+    ///      }
+    ///    },
+    ///    "state": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "AWAITING_UPLOAD",
+    ///        "UPLOAD_COMPLETE",
+    ///        "COMPLETE",
+    ///        "FAILED"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppMediaAssetState {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub errors: ::std::vec::Vec<AppMediaStateError>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<AppMediaAssetStateState>,
+    }
+
+    impl ::std::default::Default for AppMediaAssetState {
+        fn default() -> Self {
+            Self {
+                errors: Default::default(),
+                state: Default::default(),
+            }
+        }
+    }
+
+    ///`AppMediaAssetStateState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "AWAITING_UPLOAD",
+    ///    "UPLOAD_COMPLETE",
+    ///    "COMPLETE",
+    ///    "FAILED"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppMediaAssetStateState {
+        #[serde(rename = "AWAITING_UPLOAD")]
+        AwaitingUpload,
+        #[serde(rename = "UPLOAD_COMPLETE")]
+        UploadComplete,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+        #[serde(rename = "FAILED")]
+        Failed,
+    }
+
+    impl ::std::fmt::Display for AppMediaAssetStateState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AwaitingUpload => f.write_str("AWAITING_UPLOAD"),
+                Self::UploadComplete => f.write_str("UPLOAD_COMPLETE"),
+                Self::Complete => f.write_str("COMPLETE"),
+                Self::Failed => f.write_str("FAILED"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppMediaAssetStateState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "AWAITING_UPLOAD" => Ok(Self::AwaitingUpload),
+                "UPLOAD_COMPLETE" => Ok(Self::UploadComplete),
+                "COMPLETE" => Ok(Self::Complete),
+                "FAILED" => Ok(Self::Failed),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppMediaAssetStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppMediaAssetStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppMediaAssetStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppMediaPreviewFrameImageState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "errors": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppMediaStateError"
+    ///      }
+    ///    },
+    ///    "state": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "PROCESSING",
+    ///        "COMPLETE",
+    ///        "FAILED"
+    ///      ]
+    ///    },
+    ///    "warnings": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppMediaStateError"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppMediaPreviewFrameImageState {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub errors: ::std::vec::Vec<AppMediaStateError>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<AppMediaPreviewFrameImageStateState>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub warnings: ::std::vec::Vec<AppMediaStateError>,
+    }
+
+    impl ::std::default::Default for AppMediaPreviewFrameImageState {
+        fn default() -> Self {
+            Self {
+                errors: Default::default(),
+                state: Default::default(),
+                warnings: Default::default(),
+            }
+        }
+    }
+
+    ///`AppMediaPreviewFrameImageStateState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "PROCESSING",
+    ///    "COMPLETE",
+    ///    "FAILED"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppMediaPreviewFrameImageStateState {
+        #[serde(rename = "PROCESSING")]
+        Processing,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+        #[serde(rename = "FAILED")]
+        Failed,
+    }
+
+    impl ::std::fmt::Display for AppMediaPreviewFrameImageStateState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Processing => f.write_str("PROCESSING"),
+                Self::Complete => f.write_str("COMPLETE"),
+                Self::Failed => f.write_str("FAILED"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppMediaPreviewFrameImageStateState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "PROCESSING" => Ok(Self::Processing),
+                "COMPLETE" => Ok(Self::Complete),
+                "FAILED" => Ok(Self::Failed),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppMediaPreviewFrameImageStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppMediaPreviewFrameImageStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppMediaPreviewFrameImageStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppMediaStateError`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "code": {
+    ///      "type": "string"
+    ///    },
+    ///    "description": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppMediaStateError {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub code: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppMediaStateError {
+        fn default() -> Self {
+            Self {
+                code: Default::default(),
+                description: Default::default(),
+            }
+        }
+    }
+
+    ///`AppMediaVideoState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "errors": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppMediaStateError"
+    ///      }
+    ///    },
+    ///    "state": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "AWAITING_UPLOAD",
+    ///        "UPLOAD_COMPLETE",
+    ///        "PROCESSING",
+    ///        "COMPLETE",
+    ///        "FAILED"
+    ///      ]
+    ///    },
+    ///    "warnings": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppMediaStateError"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppMediaVideoState {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub errors: ::std::vec::Vec<AppMediaStateError>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<AppMediaVideoStateState>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub warnings: ::std::vec::Vec<AppMediaStateError>,
+    }
+
+    impl ::std::default::Default for AppMediaVideoState {
+        fn default() -> Self {
+            Self {
+                errors: Default::default(),
+                state: Default::default(),
+                warnings: Default::default(),
+            }
+        }
+    }
+
+    ///`AppMediaVideoStateState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "AWAITING_UPLOAD",
+    ///    "UPLOAD_COMPLETE",
+    ///    "PROCESSING",
+    ///    "COMPLETE",
+    ///    "FAILED"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppMediaVideoStateState {
+        #[serde(rename = "AWAITING_UPLOAD")]
+        AwaitingUpload,
+        #[serde(rename = "UPLOAD_COMPLETE")]
+        UploadComplete,
+        #[serde(rename = "PROCESSING")]
+        Processing,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+        #[serde(rename = "FAILED")]
+        Failed,
+    }
+
+    impl ::std::fmt::Display for AppMediaVideoStateState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AwaitingUpload => f.write_str("AWAITING_UPLOAD"),
+                Self::UploadComplete => f.write_str("UPLOAD_COMPLETE"),
+                Self::Processing => f.write_str("PROCESSING"),
+                Self::Complete => f.write_str("COMPLETE"),
+                Self::Failed => f.write_str("FAILED"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppMediaVideoStateState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "AWAITING_UPLOAD" => Ok(Self::AwaitingUpload),
+                "UPLOAD_COMPLETE" => Ok(Self::UploadComplete),
+                "PROCESSING" => Ok(Self::Processing),
+                "COMPLETE" => Ok(Self::Complete),
+                "FAILED" => Ok(Self::Failed),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppMediaVideoStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppMediaVideoStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppMediaVideoStateState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreview`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppPreview",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "assetDeliveryState": {
+    ///          "$ref": "#/components/schemas/AppMediaAssetState"
+    ///        },
+    ///        "fileName": {
+    ///          "type": "string"
+    ///        },
+    ///        "fileSize": {
+    ///          "type": "integer"
+    ///        },
+    ///        "mimeType": {
+    ///          "type": "string"
+    ///        },
+    ///        "previewFrameImage": {
+    ///          "$ref": "#/components/schemas/PreviewFrameImage"
+    ///        },
+    ///        "previewFrameTimeCode": {
+    ///          "type": "string"
+    ///        },
+    ///        "previewImage": {
+    ///          "$ref": "#/components/schemas/ImageAsset"
+    ///        },
+    ///        "sourceFileChecksum": {
+    ///          "type": "string"
+    ///        },
+    ///        "videoDeliveryState": {
+    ///          "$ref": "#/components/schemas/AppMediaVideoState"
+    ///        },
+    ///        "videoUrl": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appPreviewSet": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appPreviewSets"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appPreviews"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreview {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppPreviewAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<AppPreviewRelationships>,
+        #[serde(rename = "type")]
+        pub type_: AppPreviewType,
+    }
+
+    ///`AppPreviewAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "assetDeliveryState": {
+    ///      "$ref": "#/components/schemas/AppMediaAssetState"
+    ///    },
+    ///    "fileName": {
+    ///      "type": "string"
+    ///    },
+    ///    "fileSize": {
+    ///      "type": "integer"
+    ///    },
+    ///    "mimeType": {
+    ///      "type": "string"
+    ///    },
+    ///    "previewFrameImage": {
+    ///      "$ref": "#/components/schemas/PreviewFrameImage"
+    ///    },
+    ///    "previewFrameTimeCode": {
+    ///      "type": "string"
+    ///    },
+    ///    "previewImage": {
+    ///      "$ref": "#/components/schemas/ImageAsset"
+    ///    },
+    ///    "sourceFileChecksum": {
+    ///      "type": "string"
+    ///    },
+    ///    "videoDeliveryState": {
+    ///      "$ref": "#/components/schemas/AppMediaVideoState"
+    ///    },
+    ///    "videoUrl": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewAttributes {
+        #[serde(
+            rename = "assetDeliveryState",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub asset_delivery_state: ::std::option::Option<AppMediaAssetState>,
+        #[serde(
+            rename = "fileName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "fileSize",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_size: ::std::option::Option<i64>,
+        #[serde(
+            rename = "mimeType",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub mime_type: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "previewFrameImage",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub preview_frame_image: ::std::option::Option<PreviewFrameImage>,
+        #[serde(
+            rename = "previewFrameTimeCode",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub preview_frame_time_code: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "previewImage",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub preview_image: ::std::option::Option<ImageAsset>,
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "videoDeliveryState",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub video_delivery_state: ::std::option::Option<AppMediaVideoState>,
+        #[serde(
+            rename = "videoUrl",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub video_url: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppPreviewAttributes {
+        fn default() -> Self {
+            Self {
+                asset_delivery_state: Default::default(),
+                file_name: Default::default(),
+                file_size: Default::default(),
+                mime_type: Default::default(),
+                preview_frame_image: Default::default(),
+                preview_frame_time_code: Default::default(),
+                preview_image: Default::default(),
+                source_file_checksum: Default::default(),
+                video_delivery_state: Default::default(),
+                video_url: Default::default(),
+            }
+        }
+    }
+
+    ///`AppPreviewRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appPreviewSet": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appPreviewSets"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewRelationships {
+        #[serde(
+            rename = "appPreviewSet",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_preview_set: ::std::option::Option<AppPreviewRelationshipsAppPreviewSet>,
+    }
+
+    impl ::std::default::Default for AppPreviewRelationships {
+        fn default() -> Self {
+            Self {
+                app_preview_set: Default::default(),
+            }
+        }
+    }
+
+    ///`AppPreviewRelationshipsAppPreviewSet`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appPreviewSets"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewRelationshipsAppPreviewSet {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppPreviewRelationshipsAppPreviewSetData>,
+    }
+
+    impl ::std::default::Default for AppPreviewRelationshipsAppPreviewSet {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`AppPreviewRelationshipsAppPreviewSetData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appPreviewSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewRelationshipsAppPreviewSetData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppPreviewRelationshipsAppPreviewSetDataType,
+    }
+
+    ///`AppPreviewRelationshipsAppPreviewSetDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviewSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewRelationshipsAppPreviewSetDataType {
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+    }
+
+    impl ::std::fmt::Display for AppPreviewRelationshipsAppPreviewSetDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviewSets => f.write_str("appPreviewSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewRelationshipsAppPreviewSetDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviewSets" => Ok(Self::AppPreviewSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewRelationshipsAppPreviewSetDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewRelationshipsAppPreviewSetDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewRelationshipsAppPreviewSetDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppPreviewResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/AppPreview"
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppPreviewSet"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewResponse {
+        pub data: AppPreview,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppPreviewSet>,
+        pub links: DocumentLinks,
     }
 
     ///`AppPreviewSet`
@@ -6673,6 +10846,1117 @@ pub mod types {
         }
     }
 
+    ///`AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "previewType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem {
+        #[serde(rename = "previewType")]
+        PreviewType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::PreviewType => f.write_str("previewType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "previewType" => Ok(Self::PreviewType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "previewFrameTimeCode",
+    ///    "mimeType",
+    ///    "videoUrl",
+    ///    "previewFrameImage",
+    ///    "previewImage",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "videoDeliveryState",
+    ///    "appPreviewSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "previewFrameTimeCode")]
+        PreviewFrameTimeCode,
+        #[serde(rename = "mimeType")]
+        MimeType,
+        #[serde(rename = "videoUrl")]
+        VideoUrl,
+        #[serde(rename = "previewFrameImage")]
+        PreviewFrameImage,
+        #[serde(rename = "previewImage")]
+        PreviewImage,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "videoDeliveryState")]
+        VideoDeliveryState,
+        #[serde(rename = "appPreviewSet")]
+        AppPreviewSet,
+    }
+
+    impl ::std::fmt::Display for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::PreviewFrameTimeCode => f.write_str("previewFrameTimeCode"),
+                Self::MimeType => f.write_str("mimeType"),
+                Self::VideoUrl => f.write_str("videoUrl"),
+                Self::PreviewFrameImage => f.write_str("previewFrameImage"),
+                Self::PreviewImage => f.write_str("previewImage"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::VideoDeliveryState => f.write_str("videoDeliveryState"),
+                Self::AppPreviewSet => f.write_str("appPreviewSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "previewFrameTimeCode" => Ok(Self::PreviewFrameTimeCode),
+                "mimeType" => Ok(Self::MimeType),
+                "videoUrl" => Ok(Self::VideoUrl),
+                "previewFrameImage" => Ok(Self::PreviewFrameImage),
+                "previewImage" => Ok(Self::PreviewImage),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "videoDeliveryState" => Ok(Self::VideoDeliveryState),
+                "appPreviewSet" => Ok(Self::AppPreviewSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviewSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appPreviewSet")]
+        AppPreviewSet,
+    }
+
+    impl ::std::fmt::Display for AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviewSet => f.write_str("appPreviewSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviewSet" => Ok(Self::AppPreviewSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewSetsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppPreviewSetsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppPreviewSet"
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "oneOf": [
+    ///          {
+    ///            "$ref":
+    /// "#/components/schemas/AppCustomProductPageLocalization"
+    ///          },
+    ///          {
+    ///            "$ref": "#/components/schemas/AppPreview"
+    ///          },
+    ///          {
+    ///            "$ref":
+    /// "#/components/schemas/AppStoreVersionExperimentTreatmentLocalization"
+    ///          },
+    ///          {
+    ///            "$ref": "#/components/schemas/AppStoreVersionLocalization"
+    ///          }
+    ///        ]
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewSetsResponse {
+        pub data: ::std::vec::Vec<AppPreviewSet>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppPreviewSetsResponseIncludedItem>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    ///`AppPreviewSetsResponseIncludedItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "oneOf": [
+    ///    {
+    ///      "$ref": "#/components/schemas/AppCustomProductPageLocalization"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/AppPreview"
+    ///    },
+    ///    {
+    ///      "$ref":
+    /// "#/components/schemas/AppStoreVersionExperimentTreatmentLocalization"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/AppStoreVersionLocalization"
+    ///    }
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AppPreviewSetsResponseIncludedItem {
+        CustomProductPageLocalization(AppCustomProductPageLocalization),
+        Preview(AppPreview),
+        StoreVersionExperimentTreatmentLocalization(AppStoreVersionExperimentTreatmentLocalization),
+        StoreVersionLocalization(AppStoreVersionLocalization),
+    }
+
+    impl ::std::convert::From<AppCustomProductPageLocalization> for AppPreviewSetsResponseIncludedItem {
+        fn from(value: AppCustomProductPageLocalization) -> Self {
+            Self::CustomProductPageLocalization(value)
+        }
+    }
+
+    impl ::std::convert::From<AppPreview> for AppPreviewSetsResponseIncludedItem {
+        fn from(value: AppPreview) -> Self {
+            Self::Preview(value)
+        }
+    }
+
+    impl ::std::convert::From<AppStoreVersionExperimentTreatmentLocalization>
+        for AppPreviewSetsResponseIncludedItem
+    {
+        fn from(value: AppStoreVersionExperimentTreatmentLocalization) -> Self {
+            Self::StoreVersionExperimentTreatmentLocalization(value)
+        }
+    }
+
+    impl ::std::convert::From<AppStoreVersionLocalization> for AppPreviewSetsResponseIncludedItem {
+        fn from(value: AppStoreVersionLocalization) -> Self {
+            Self::StoreVersionLocalization(value)
+        }
+    }
+
+    ///`AppPreviewType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewType {
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display for AppPreviewType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppPreviewType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppPreviewType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppPreviewUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "previewFrameTimeCode": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "sourceFileChecksum": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "uploaded": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appPreviews"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewUpdateRequest {
+        pub data: AppPreviewUpdateRequestData,
+    }
+
+    ///`AppPreviewUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "previewFrameTimeCode": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "sourceFileChecksum": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "uploaded": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appPreviews"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppPreviewUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppPreviewUpdateRequestDataType,
+    }
+
+    ///`AppPreviewUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "previewFrameTimeCode": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "sourceFileChecksum": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "uploaded": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewUpdateRequestDataAttributes {
+        #[serde(
+            rename = "previewFrameTimeCode",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub preview_frame_time_code: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub uploaded: ::std::option::Option<bool>,
+    }
+
+    impl ::std::default::Default for AppPreviewUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                preview_frame_time_code: Default::default(),
+                source_file_checksum: Default::default(),
+                uploaded: Default::default(),
+            }
+        }
+    }
+
+    ///`AppPreviewUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewUpdateRequestDataType {
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display for AppPreviewUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppPreviewUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppPreviewUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewsGetInstanceFieldsAppPreviewSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "previewType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewsGetInstanceFieldsAppPreviewSetsItem {
+        #[serde(rename = "previewType")]
+        PreviewType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display for AppPreviewsGetInstanceFieldsAppPreviewSetsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::PreviewType => f.write_str("previewType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewsGetInstanceFieldsAppPreviewSetsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "previewType" => Ok(Self::PreviewType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewsGetInstanceFieldsAppPreviewSetsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewsGetInstanceFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewsGetInstanceFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewsGetInstanceFieldsAppPreviewsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "previewFrameTimeCode",
+    ///    "mimeType",
+    ///    "videoUrl",
+    ///    "previewFrameImage",
+    ///    "previewImage",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "videoDeliveryState",
+    ///    "appPreviewSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewsGetInstanceFieldsAppPreviewsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "previewFrameTimeCode")]
+        PreviewFrameTimeCode,
+        #[serde(rename = "mimeType")]
+        MimeType,
+        #[serde(rename = "videoUrl")]
+        VideoUrl,
+        #[serde(rename = "previewFrameImage")]
+        PreviewFrameImage,
+        #[serde(rename = "previewImage")]
+        PreviewImage,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "videoDeliveryState")]
+        VideoDeliveryState,
+        #[serde(rename = "appPreviewSet")]
+        AppPreviewSet,
+    }
+
+    impl ::std::fmt::Display for AppPreviewsGetInstanceFieldsAppPreviewsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::PreviewFrameTimeCode => f.write_str("previewFrameTimeCode"),
+                Self::MimeType => f.write_str("mimeType"),
+                Self::VideoUrl => f.write_str("videoUrl"),
+                Self::PreviewFrameImage => f.write_str("previewFrameImage"),
+                Self::PreviewImage => f.write_str("previewImage"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::VideoDeliveryState => f.write_str("videoDeliveryState"),
+                Self::AppPreviewSet => f.write_str("appPreviewSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewsGetInstanceFieldsAppPreviewsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "previewFrameTimeCode" => Ok(Self::PreviewFrameTimeCode),
+                "mimeType" => Ok(Self::MimeType),
+                "videoUrl" => Ok(Self::VideoUrl),
+                "previewFrameImage" => Ok(Self::PreviewFrameImage),
+                "previewImage" => Ok(Self::PreviewImage),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "videoDeliveryState" => Ok(Self::VideoDeliveryState),
+                "appPreviewSet" => Ok(Self::AppPreviewSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewsGetInstanceFieldsAppPreviewsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppPreviewsGetInstanceFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppPreviewsGetInstanceFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewsGetInstanceIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviewSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppPreviewsGetInstanceIncludeItem {
+        #[serde(rename = "appPreviewSet")]
+        AppPreviewSet,
+    }
+
+    impl ::std::fmt::Display for AppPreviewsGetInstanceIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviewSet => f.write_str("appPreviewSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppPreviewsGetInstanceIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviewSet" => Ok(Self::AppPreviewSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppPreviewsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppPreviewsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppPreviewsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppPreviewsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppPreviewsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppPreview"
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppPreviewSet"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppPreviewsResponse {
+        pub data: ::std::vec::Vec<AppPreview>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppPreviewSet>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
     ///`AppResponse`
     ///
     /// <details><summary>JSON schema</summary>
@@ -6711,6 +11995,438 @@ pub mod types {
         pub data: App,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub included: ::std::vec::Vec<Build>,
+        pub links: DocumentLinks,
+    }
+
+    ///`AppScreenshot`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppScreenshot",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "assetDeliveryState": {
+    ///          "$ref": "#/components/schemas/AppMediaAssetState"
+    ///        },
+    ///        "assetToken": {
+    ///          "type": "string"
+    ///        },
+    ///        "assetType": {
+    ///          "type": "string"
+    ///        },
+    ///        "fileName": {
+    ///          "type": "string"
+    ///        },
+    ///        "fileSize": {
+    ///          "type": "integer"
+    ///        },
+    ///        "imageAsset": {
+    ///          "$ref": "#/components/schemas/ImageAsset"
+    ///        },
+    ///        "sourceFileChecksum": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appScreenshotSet": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appScreenshotSets"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appScreenshots"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshot {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppScreenshotAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<AppScreenshotRelationships>,
+        #[serde(rename = "type")]
+        pub type_: AppScreenshotType,
+    }
+
+    ///`AppScreenshotAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "assetDeliveryState": {
+    ///      "$ref": "#/components/schemas/AppMediaAssetState"
+    ///    },
+    ///    "assetToken": {
+    ///      "type": "string"
+    ///    },
+    ///    "assetType": {
+    ///      "type": "string"
+    ///    },
+    ///    "fileName": {
+    ///      "type": "string"
+    ///    },
+    ///    "fileSize": {
+    ///      "type": "integer"
+    ///    },
+    ///    "imageAsset": {
+    ///      "$ref": "#/components/schemas/ImageAsset"
+    ///    },
+    ///    "sourceFileChecksum": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotAttributes {
+        #[serde(
+            rename = "assetDeliveryState",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub asset_delivery_state: ::std::option::Option<AppMediaAssetState>,
+        #[serde(
+            rename = "assetToken",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub asset_token: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "assetType",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub asset_type: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "fileName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "fileSize",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_size: ::std::option::Option<i64>,
+        #[serde(
+            rename = "imageAsset",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub image_asset: ::std::option::Option<ImageAsset>,
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppScreenshotAttributes {
+        fn default() -> Self {
+            Self {
+                asset_delivery_state: Default::default(),
+                asset_token: Default::default(),
+                asset_type: Default::default(),
+                file_name: Default::default(),
+                file_size: Default::default(),
+                image_asset: Default::default(),
+                source_file_checksum: Default::default(),
+            }
+        }
+    }
+
+    ///`AppScreenshotRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appScreenshotSet": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appScreenshotSets"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotRelationships {
+        #[serde(
+            rename = "appScreenshotSet",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_screenshot_set: ::std::option::Option<AppScreenshotRelationshipsAppScreenshotSet>,
+    }
+
+    impl ::std::default::Default for AppScreenshotRelationships {
+        fn default() -> Self {
+            Self {
+                app_screenshot_set: Default::default(),
+            }
+        }
+    }
+
+    ///`AppScreenshotRelationshipsAppScreenshotSet`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appScreenshotSets"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotRelationshipsAppScreenshotSet {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppScreenshotRelationshipsAppScreenshotSetData>,
+    }
+
+    impl ::std::default::Default for AppScreenshotRelationshipsAppScreenshotSet {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`AppScreenshotRelationshipsAppScreenshotSetData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appScreenshotSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotRelationshipsAppScreenshotSetData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppScreenshotRelationshipsAppScreenshotSetDataType,
+    }
+
+    ///`AppScreenshotRelationshipsAppScreenshotSetDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshotSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotRelationshipsAppScreenshotSetDataType {
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotRelationshipsAppScreenshotSetDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshotSets => f.write_str("appScreenshotSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotRelationshipsAppScreenshotSetDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshotSets" => Ok(Self::AppScreenshotSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotRelationshipsAppScreenshotSetDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotRelationshipsAppScreenshotSetDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotRelationshipsAppScreenshotSetDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppScreenshotResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/AppScreenshot"
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppScreenshotSet"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotResponse {
+        pub data: AppScreenshot,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppScreenshotSet>,
         pub links: DocumentLinks,
     }
 
@@ -7783,6 +13499,1072 @@ pub mod types {
         }
     }
 
+    ///`AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "screenshotDisplayType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem {
+        #[serde(rename = "screenshotDisplayType")]
+        ScreenshotDisplayType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ScreenshotDisplayType => f.write_str("screenshotDisplayType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "screenshotDisplayType" => Ok(Self::ScreenshotDisplayType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "imageAsset",
+    ///    "assetToken",
+    ///    "assetType",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appScreenshotSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "imageAsset")]
+        ImageAsset,
+        #[serde(rename = "assetToken")]
+        AssetToken,
+        #[serde(rename = "assetType")]
+        AssetType,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appScreenshotSet")]
+        AppScreenshotSet,
+    }
+
+    impl ::std::fmt::Display
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::ImageAsset => f.write_str("imageAsset"),
+                Self::AssetToken => f.write_str("assetToken"),
+                Self::AssetType => f.write_str("assetType"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppScreenshotSet => f.write_str("appScreenshotSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "imageAsset" => Ok(Self::ImageAsset),
+                "assetToken" => Ok(Self::AssetToken),
+                "assetType" => Ok(Self::AssetType),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appScreenshotSet" => Ok(Self::AppScreenshotSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshotSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appScreenshotSet")]
+        AppScreenshotSet,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshotSet => f.write_str("appScreenshotSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshotSet" => Ok(Self::AppScreenshotSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotSetsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppScreenshotSetsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppScreenshotSet"
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "oneOf": [
+    ///          {
+    ///            "$ref":
+    /// "#/components/schemas/AppCustomProductPageLocalization"
+    ///          },
+    ///          {
+    ///            "$ref": "#/components/schemas/AppScreenshot"
+    ///          },
+    ///          {
+    ///            "$ref":
+    /// "#/components/schemas/AppStoreVersionExperimentTreatmentLocalization"
+    ///          },
+    ///          {
+    ///            "$ref": "#/components/schemas/AppStoreVersionLocalization"
+    ///          }
+    ///        ]
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotSetsResponse {
+        pub data: ::std::vec::Vec<AppScreenshotSet>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppScreenshotSetsResponseIncludedItem>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    ///`AppScreenshotSetsResponseIncludedItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "oneOf": [
+    ///    {
+    ///      "$ref": "#/components/schemas/AppCustomProductPageLocalization"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/AppScreenshot"
+    ///    },
+    ///    {
+    ///      "$ref":
+    /// "#/components/schemas/AppStoreVersionExperimentTreatmentLocalization"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/AppStoreVersionLocalization"
+    ///    }
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AppScreenshotSetsResponseIncludedItem {
+        CustomProductPageLocalization(AppCustomProductPageLocalization),
+        Screenshot(AppScreenshot),
+        StoreVersionExperimentTreatmentLocalization(AppStoreVersionExperimentTreatmentLocalization),
+        StoreVersionLocalization(AppStoreVersionLocalization),
+    }
+
+    impl ::std::convert::From<AppCustomProductPageLocalization>
+        for AppScreenshotSetsResponseIncludedItem
+    {
+        fn from(value: AppCustomProductPageLocalization) -> Self {
+            Self::CustomProductPageLocalization(value)
+        }
+    }
+
+    impl ::std::convert::From<AppScreenshot> for AppScreenshotSetsResponseIncludedItem {
+        fn from(value: AppScreenshot) -> Self {
+            Self::Screenshot(value)
+        }
+    }
+
+    impl ::std::convert::From<AppStoreVersionExperimentTreatmentLocalization>
+        for AppScreenshotSetsResponseIncludedItem
+    {
+        fn from(value: AppStoreVersionExperimentTreatmentLocalization) -> Self {
+            Self::StoreVersionExperimentTreatmentLocalization(value)
+        }
+    }
+
+    impl ::std::convert::From<AppStoreVersionLocalization> for AppScreenshotSetsResponseIncludedItem {
+        fn from(value: AppStoreVersionLocalization) -> Self {
+            Self::StoreVersionLocalization(value)
+        }
+    }
+
+    ///`AppScreenshotType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotType {
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppScreenshotType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppScreenshotType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppScreenshotUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "sourceFileChecksum": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "uploaded": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appScreenshots"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotUpdateRequest {
+        pub data: AppScreenshotUpdateRequestData,
+    }
+
+    ///`AppScreenshotUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "sourceFileChecksum": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "uploaded": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appScreenshots"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppScreenshotUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppScreenshotUpdateRequestDataType,
+    }
+
+    ///`AppScreenshotUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "sourceFileChecksum": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "uploaded": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotUpdateRequestDataAttributes {
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub uploaded: ::std::option::Option<bool>,
+    }
+
+    impl ::std::default::Default for AppScreenshotUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                source_file_checksum: Default::default(),
+                uploaded: Default::default(),
+            }
+        }
+    }
+
+    ///`AppScreenshotUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotUpdateRequestDataType {
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppScreenshotUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppScreenshotUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "screenshotDisplayType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem {
+        #[serde(rename = "screenshotDisplayType")]
+        ScreenshotDisplayType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ScreenshotDisplayType => f.write_str("screenshotDisplayType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "screenshotDisplayType" => Ok(Self::ScreenshotDisplayType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotsGetInstanceFieldsAppScreenshotsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "imageAsset",
+    ///    "assetToken",
+    ///    "assetType",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appScreenshotSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotsGetInstanceFieldsAppScreenshotsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "imageAsset")]
+        ImageAsset,
+        #[serde(rename = "assetToken")]
+        AssetToken,
+        #[serde(rename = "assetType")]
+        AssetType,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appScreenshotSet")]
+        AppScreenshotSet,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotsGetInstanceFieldsAppScreenshotsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::ImageAsset => f.write_str("imageAsset"),
+                Self::AssetToken => f.write_str("assetToken"),
+                Self::AssetType => f.write_str("assetType"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppScreenshotSet => f.write_str("appScreenshotSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotsGetInstanceFieldsAppScreenshotsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "imageAsset" => Ok(Self::ImageAsset),
+                "assetToken" => Ok(Self::AssetToken),
+                "assetType" => Ok(Self::AssetType),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appScreenshotSet" => Ok(Self::AppScreenshotSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotsGetInstanceFieldsAppScreenshotsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppScreenshotsGetInstanceFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppScreenshotsGetInstanceFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotsGetInstanceIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshotSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppScreenshotsGetInstanceIncludeItem {
+        #[serde(rename = "appScreenshotSet")]
+        AppScreenshotSet,
+    }
+
+    impl ::std::fmt::Display for AppScreenshotsGetInstanceIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshotSet => f.write_str("appScreenshotSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppScreenshotsGetInstanceIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshotSet" => Ok(Self::AppScreenshotSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppScreenshotsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppScreenshotsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppScreenshotsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppScreenshotsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppScreenshotsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppScreenshot"
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppScreenshotSet"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppScreenshotsResponse {
+        pub data: ::std::vec::Vec<AppScreenshot>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppScreenshotSet>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
     ///`AppStoreAgeRating`
     ///
     /// <details><summary>JSON schema</summary>
@@ -7994,6 +14776,9 @@ pub mod types {
     ///        "appStoreState": {
     ///          "$ref": "#/components/schemas/AppStoreVersionState"
     ///        },
+    ///        "appVersionState": {
+    ///          "$ref": "#/components/schemas/AppVersionState"
+    ///        },
     ///        "createdDate": {
     ///          "type": "string",
     ///          "format": "date-time"
@@ -8001,6 +14786,9 @@ pub mod types {
     ///        "earliestReleaseDate": {
     ///          "type": "string",
     ///          "format": "date-time"
+    ///        },
+    ///        "platform": {
+    ///          "$ref": "#/components/schemas/Platform"
     ///        },
     ///        "versionString": {
     ///          "type": "string"
@@ -8045,6 +14833,9 @@ pub mod types {
     ///    "appStoreState": {
     ///      "$ref": "#/components/schemas/AppStoreVersionState"
     ///    },
+    ///    "appVersionState": {
+    ///      "$ref": "#/components/schemas/AppVersionState"
+    ///    },
     ///    "createdDate": {
     ///      "type": "string",
     ///      "format": "date-time"
@@ -8052,6 +14843,9 @@ pub mod types {
     ///    "earliestReleaseDate": {
     ///      "type": "string",
     ///      "format": "date-time"
+    ///    },
+    ///    "platform": {
+    ///      "$ref": "#/components/schemas/Platform"
     ///    },
     ///    "versionString": {
     ///      "type": "string"
@@ -8069,6 +14863,12 @@ pub mod types {
         )]
         pub app_store_state: ::std::option::Option<AppStoreVersionState>,
         #[serde(
+            rename = "appVersionState",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_version_state: ::std::option::Option<AppVersionState>,
+        #[serde(
             rename = "createdDate",
             default,
             skip_serializing_if = "::std::option::Option::is_none"
@@ -8080,6 +14880,8 @@ pub mod types {
             skip_serializing_if = "::std::option::Option::is_none"
         )]
         pub earliest_release_date: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub platform: ::std::option::Option<Platform>,
         #[serde(
             rename = "versionString",
             default,
@@ -8092,10 +14894,825 @@ pub mod types {
         fn default() -> Self {
             Self {
                 app_store_state: Default::default(),
+                app_version_state: Default::default(),
                 created_date: Default::default(),
                 earliest_release_date: Default::default(),
+                platform: Default::default(),
                 version_string: Default::default(),
             }
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalization`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreVersionExperimentTreatmentLocalization",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "locale": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appPreviewSets": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appPreviewSets"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "appScreenshotSets": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appScreenshotSets"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionExperimentTreatment": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersionExperimentTreatments"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperimentTreatmentLocalizations"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalization {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes:
+            ::std::option::Option<AppStoreVersionExperimentTreatmentLocalizationAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships:
+            ::std::option::Option<AppStoreVersionExperimentTreatmentLocalizationRelationships>,
+        #[serde(rename = "type")]
+        pub type_: AppStoreVersionExperimentTreatmentLocalizationType,
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "locale": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub locale: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppStoreVersionExperimentTreatmentLocalizationAttributes {
+        fn default() -> Self {
+            Self {
+                locale: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appPreviewSets": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appPreviewSets"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "appScreenshotSets": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appScreenshotSets"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionExperimentTreatment": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersionExperimentTreatments"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationships { # [serde (rename = "appPreviewSets" , default , skip_serializing_if = "::std::option::Option::is_none")] pub app_preview_sets : :: std :: option :: Option < AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSets > , # [serde (rename = "appScreenshotSets" , default , skip_serializing_if = "::std::option::Option::is_none")] pub app_screenshot_sets : :: std :: option :: Option < AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSets > , # [serde (rename = "appStoreVersionExperimentTreatment" , default , skip_serializing_if = "::std::option::Option::is_none")] pub app_store_version_experiment_treatment : :: std :: option :: Option < AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatment > , }
+    impl ::std::default::Default for AppStoreVersionExperimentTreatmentLocalizationRelationships {
+        fn default() -> Self {
+            Self {
+                app_preview_sets: Default::default(),
+                app_screenshot_sets: Default::default(),
+                app_store_version_experiment_treatment: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSets`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appPreviewSets"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSets {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<
+            AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItem,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSets
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appPreviewSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType,
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appPreviewSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType {
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppPreviewSets => f.write_str("appPreviewSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appPreviewSets" => Ok(Self::AppPreviewSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppPreviewSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSets`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appScreenshotSets"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSets {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<
+            AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItem,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSets
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appScreenshotSets"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItem { pub id : :: std :: string :: String , # [serde (rename = "type")] pub type_ : AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType , }
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appScreenshotSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType {
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppScreenshotSets => f.write_str("appScreenshotSets"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appScreenshotSets" => Ok(Self::AppScreenshotSets),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppScreenshotSetsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatment`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersionExperimentTreatments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatment { # [serde (default , skip_serializing_if = "::std::option::Option::is_none")] pub data : :: std :: option :: Option < AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentData > , }
+    impl :: std :: default :: Default for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatment { fn default () -> Self { Self { data : Default :: default () , } } }
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperimentTreatments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentData { pub id : :: std :: string :: String , # [serde (rename = "type")] pub type_ : AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType , }
+    ///`AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperimentTreatments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType
+    {
+        #[serde(rename = "appStoreVersionExperimentTreatments")]
+        AppStoreVersionExperimentTreatments,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: AppStoreVersionExperimentTreatments => f . write_str ("appStoreVersionExperimentTreatments") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "appStoreVersionExperimentTreatments" => Ok (Self :: AppStoreVersionExperimentTreatments) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionExperimentTreatmentLocalizationRelationshipsAppStoreVersionExperimentTreatmentDataType { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionExperimentTreatmentLocalizationType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperimentTreatmentLocalizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionExperimentTreatmentLocalizationType {
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalizations")]
+        AppStoreVersionExperimentTreatmentLocalizations,
+    }
+
+    impl ::std::fmt::Display for AppStoreVersionExperimentTreatmentLocalizationType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionExperimentTreatmentLocalizations => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalizations")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreVersionExperimentTreatmentLocalizationType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionExperimentTreatmentLocalizations" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalizations)
+                }
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreVersionExperimentTreatmentLocalizationType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionExperimentTreatmentLocalizationType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
         }
     }
 
@@ -8752,6 +16369,1303 @@ pub mod types {
 
     impl ::std::convert::TryFrom<::std::string::String>
         for AppStoreVersionLocalizationUpdateRequestDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "locale",
+    ///    "promotionalText",
+    ///    "appCustomProductPageVersion",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets",
+    ///    "searchKeywords"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem
+    {
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "promotionalText")]
+        PromotionalText,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Locale => f . write_str ("locale") , Self :: PromotionalText => f . write_str ("promotionalText") , Self :: AppCustomProductPageVersion => f . write_str ("appCustomProductPageVersion") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , Self :: SearchKeywords => f . write_str ("searchKeywords") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "locale" => Ok (Self :: Locale) , "promotionalText" => Ok (Self :: PromotionalText) , "appCustomProductPageVersion" => Ok (Self :: AppCustomProductPageVersion) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , "searchKeywords" => Ok (Self :: SearchKeywords) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "previewType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem {
+        #[serde(rename = "previewType")]
+        PreviewType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::PreviewType => f.write_str("previewType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "previewType" => Ok(Self::PreviewType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "previewFrameTimeCode",
+    ///    "mimeType",
+    ///    "videoUrl",
+    ///    "previewFrameImage",
+    ///    "previewImage",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "videoDeliveryState",
+    ///    "appPreviewSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "previewFrameTimeCode")]
+        PreviewFrameTimeCode,
+        #[serde(rename = "mimeType")]
+        MimeType,
+        #[serde(rename = "videoUrl")]
+        VideoUrl,
+        #[serde(rename = "previewFrameImage")]
+        PreviewFrameImage,
+        #[serde(rename = "previewImage")]
+        PreviewImage,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "videoDeliveryState")]
+        VideoDeliveryState,
+        #[serde(rename = "appPreviewSet")]
+        AppPreviewSet,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::PreviewFrameTimeCode => f.write_str("previewFrameTimeCode"),
+                Self::MimeType => f.write_str("mimeType"),
+                Self::VideoUrl => f.write_str("videoUrl"),
+                Self::PreviewFrameImage => f.write_str("previewFrameImage"),
+                Self::PreviewImage => f.write_str("previewImage"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::VideoDeliveryState => f.write_str("videoDeliveryState"),
+                Self::AppPreviewSet => f.write_str("appPreviewSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "previewFrameTimeCode" => Ok(Self::PreviewFrameTimeCode),
+                "mimeType" => Ok(Self::MimeType),
+                "videoUrl" => Ok(Self::VideoUrl),
+                "previewFrameImage" => Ok(Self::PreviewFrameImage),
+                "previewImage" => Ok(Self::PreviewImage),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "videoDeliveryState" => Ok(Self::VideoDeliveryState),
+                "appPreviewSet" => Ok(Self::AppPreviewSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "locale",
+    ///    "appStoreVersionExperimentTreatment",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem
+    {
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "appStoreVersionExperimentTreatment")]
+        AppStoreVersionExperimentTreatment,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Locale => f . write_str ("locale") , Self :: AppStoreVersionExperimentTreatment => f . write_str ("appStoreVersionExperimentTreatment") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "locale" => Ok (Self :: Locale) , "appStoreVersionExperimentTreatment" => Ok (Self :: AppStoreVersionExperimentTreatment) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "description",
+    ///    "locale",
+    ///    "keywords",
+    ///    "marketingUrl",
+    ///    "promotionalText",
+    ///    "supportUrl",
+    ///    "whatsNew",
+    ///    "appStoreVersion",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets",
+    ///    "searchKeywords"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem
+    {
+        #[serde(rename = "description")]
+        Description,
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "keywords")]
+        Keywords,
+        #[serde(rename = "marketingUrl")]
+        MarketingUrl,
+        #[serde(rename = "promotionalText")]
+        PromotionalText,
+        #[serde(rename = "supportUrl")]
+        SupportUrl,
+        #[serde(rename = "whatsNew")]
+        WhatsNew,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Description => f . write_str ("description") , Self :: Locale => f . write_str ("locale") , Self :: Keywords => f . write_str ("keywords") , Self :: MarketingUrl => f . write_str ("marketingUrl") , Self :: PromotionalText => f . write_str ("promotionalText") , Self :: SupportUrl => f . write_str ("supportUrl") , Self :: WhatsNew => f . write_str ("whatsNew") , Self :: AppStoreVersion => f . write_str ("appStoreVersion") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , Self :: SearchKeywords => f . write_str ("searchKeywords") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "description" => Ok (Self :: Description) , "locale" => Ok (Self :: Locale) , "keywords" => Ok (Self :: Keywords) , "marketingUrl" => Ok (Self :: MarketingUrl) , "promotionalText" => Ok (Self :: PromotionalText) , "supportUrl" => Ok (Self :: SupportUrl) , "whatsNew" => Ok (Self :: WhatsNew) , "appStoreVersion" => Ok (Self :: AppStoreVersion) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , "searchKeywords" => Ok (Self :: SearchKeywords) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "IPHONE_67",
+    ///    "IPHONE_61",
+    ///    "IPHONE_65",
+    ///    "IPHONE_58",
+    ///    "IPHONE_55",
+    ///    "IPHONE_47",
+    ///    "IPHONE_40",
+    ///    "IPHONE_35",
+    ///    "IPAD_PRO_3GEN_129",
+    ///    "IPAD_PRO_3GEN_11",
+    ///    "IPAD_PRO_129",
+    ///    "IPAD_105",
+    ///    "IPAD_97",
+    ///    "DESKTOP",
+    ///    "APPLE_TV",
+    ///    "APPLE_VISION_PRO"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem {
+        #[serde(rename = "IPHONE_67")]
+        Iphone67,
+        #[serde(rename = "IPHONE_61")]
+        Iphone61,
+        #[serde(rename = "IPHONE_65")]
+        Iphone65,
+        #[serde(rename = "IPHONE_58")]
+        Iphone58,
+        #[serde(rename = "IPHONE_55")]
+        Iphone55,
+        #[serde(rename = "IPHONE_47")]
+        Iphone47,
+        #[serde(rename = "IPHONE_40")]
+        Iphone40,
+        #[serde(rename = "IPHONE_35")]
+        Iphone35,
+        #[serde(rename = "IPAD_PRO_3GEN_129")]
+        IpadPro3gen129,
+        #[serde(rename = "IPAD_PRO_3GEN_11")]
+        IpadPro3gen11,
+        #[serde(rename = "IPAD_PRO_129")]
+        IpadPro129,
+        #[serde(rename = "IPAD_105")]
+        Ipad105,
+        #[serde(rename = "IPAD_97")]
+        Ipad97,
+        #[serde(rename = "DESKTOP")]
+        Desktop,
+        #[serde(rename = "APPLE_TV")]
+        AppleTv,
+        #[serde(rename = "APPLE_VISION_PRO")]
+        AppleVisionPro,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Iphone67 => f.write_str("IPHONE_67"),
+                Self::Iphone61 => f.write_str("IPHONE_61"),
+                Self::Iphone65 => f.write_str("IPHONE_65"),
+                Self::Iphone58 => f.write_str("IPHONE_58"),
+                Self::Iphone55 => f.write_str("IPHONE_55"),
+                Self::Iphone47 => f.write_str("IPHONE_47"),
+                Self::Iphone40 => f.write_str("IPHONE_40"),
+                Self::Iphone35 => f.write_str("IPHONE_35"),
+                Self::IpadPro3gen129 => f.write_str("IPAD_PRO_3GEN_129"),
+                Self::IpadPro3gen11 => f.write_str("IPAD_PRO_3GEN_11"),
+                Self::IpadPro129 => f.write_str("IPAD_PRO_129"),
+                Self::Ipad105 => f.write_str("IPAD_105"),
+                Self::Ipad97 => f.write_str("IPAD_97"),
+                Self::Desktop => f.write_str("DESKTOP"),
+                Self::AppleTv => f.write_str("APPLE_TV"),
+                Self::AppleVisionPro => f.write_str("APPLE_VISION_PRO"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "IPHONE_67" => Ok(Self::Iphone67),
+                "IPHONE_61" => Ok(Self::Iphone61),
+                "IPHONE_65" => Ok(Self::Iphone65),
+                "IPHONE_58" => Ok(Self::Iphone58),
+                "IPHONE_55" => Ok(Self::Iphone55),
+                "IPHONE_47" => Ok(Self::Iphone47),
+                "IPHONE_40" => Ok(Self::Iphone40),
+                "IPHONE_35" => Ok(Self::Iphone35),
+                "IPAD_PRO_3GEN_129" => Ok(Self::IpadPro3gen129),
+                "IPAD_PRO_3GEN_11" => Ok(Self::IpadPro3gen11),
+                "IPAD_PRO_129" => Ok(Self::IpadPro129),
+                "IPAD_105" => Ok(Self::Ipad105),
+                "IPAD_97" => Ok(Self::Ipad97),
+                "DESKTOP" => Ok(Self::Desktop),
+                "APPLE_TV" => Ok(Self::AppleTv),
+                "APPLE_VISION_PRO" => Ok(Self::AppleVisionPro),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appPreviews"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appPreviews")]
+        AppPreviews,
+    }
+
+    impl ::std::fmt::Display for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppPreviews => f.write_str("appPreviews"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appPreviews" => Ok(Self::AppPreviews),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "locale",
+    ///    "promotionalText",
+    ///    "appCustomProductPageVersion",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets",
+    ///    "searchKeywords"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem
+    {
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "promotionalText")]
+        PromotionalText,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Locale => f . write_str ("locale") , Self :: PromotionalText => f . write_str ("promotionalText") , Self :: AppCustomProductPageVersion => f . write_str ("appCustomProductPageVersion") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , Self :: SearchKeywords => f . write_str ("searchKeywords") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "locale" => Ok (Self :: Locale) , "promotionalText" => Ok (Self :: PromotionalText) , "appCustomProductPageVersion" => Ok (Self :: AppCustomProductPageVersion) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , "searchKeywords" => Ok (Self :: SearchKeywords) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "screenshotDisplayType",
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem {
+        #[serde(rename = "screenshotDisplayType")]
+        ScreenshotDisplayType,
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ScreenshotDisplayType => f.write_str("screenshotDisplayType"),
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "screenshotDisplayType" => Ok(Self::ScreenshotDisplayType),
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "imageAsset",
+    ///    "assetToken",
+    ///    "assetType",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appScreenshotSet"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "imageAsset")]
+        ImageAsset,
+        #[serde(rename = "assetToken")]
+        AssetToken,
+        #[serde(rename = "assetType")]
+        AssetType,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appScreenshotSet")]
+        AppScreenshotSet,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::ImageAsset => f.write_str("imageAsset"),
+                Self::AssetToken => f.write_str("assetToken"),
+                Self::AssetType => f.write_str("assetType"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppScreenshotSet => f.write_str("appScreenshotSet"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "imageAsset" => Ok(Self::ImageAsset),
+                "assetToken" => Ok(Self::AssetToken),
+                "assetType" => Ok(Self::AssetType),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appScreenshotSet" => Ok(Self::AppScreenshotSet),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "locale",
+    ///    "appStoreVersionExperimentTreatment",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem
+    {
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "appStoreVersionExperimentTreatment")]
+        AppStoreVersionExperimentTreatment,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Locale => f . write_str ("locale") , Self :: AppStoreVersionExperimentTreatment => f . write_str ("appStoreVersionExperimentTreatment") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "locale" => Ok (Self :: Locale) , "appStoreVersionExperimentTreatment" => Ok (Self :: AppStoreVersionExperimentTreatment) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "description",
+    ///    "locale",
+    ///    "keywords",
+    ///    "marketingUrl",
+    ///    "promotionalText",
+    ///    "supportUrl",
+    ///    "whatsNew",
+    ///    "appStoreVersion",
+    ///    "appScreenshotSets",
+    ///    "appPreviewSets",
+    ///    "searchKeywords"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem
+    {
+        #[serde(rename = "description")]
+        Description,
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "keywords")]
+        Keywords,
+        #[serde(rename = "marketingUrl")]
+        MarketingUrl,
+        #[serde(rename = "promotionalText")]
+        PromotionalText,
+        #[serde(rename = "supportUrl")]
+        SupportUrl,
+        #[serde(rename = "whatsNew")]
+        WhatsNew,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appScreenshotSets")]
+        AppScreenshotSets,
+        #[serde(rename = "appPreviewSets")]
+        AppPreviewSets,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: Description => f . write_str ("description") , Self :: Locale => f . write_str ("locale") , Self :: Keywords => f . write_str ("keywords") , Self :: MarketingUrl => f . write_str ("marketingUrl") , Self :: PromotionalText => f . write_str ("promotionalText") , Self :: SupportUrl => f . write_str ("supportUrl") , Self :: WhatsNew => f . write_str ("whatsNew") , Self :: AppStoreVersion => f . write_str ("appStoreVersion") , Self :: AppScreenshotSets => f . write_str ("appScreenshotSets") , Self :: AppPreviewSets => f . write_str ("appPreviewSets") , Self :: SearchKeywords => f . write_str ("searchKeywords") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "description" => Ok (Self :: Description) , "locale" => Ok (Self :: Locale) , "keywords" => Ok (Self :: Keywords) , "marketingUrl" => Ok (Self :: MarketingUrl) , "promotionalText" => Ok (Self :: PromotionalText) , "supportUrl" => Ok (Self :: SupportUrl) , "whatsNew" => Ok (Self :: WhatsNew) , "appStoreVersion" => Ok (Self :: AppStoreVersion) , "appScreenshotSets" => Ok (Self :: AppScreenshotSets) , "appPreviewSets" => Ok (Self :: AppPreviewSets) , "searchKeywords" => Ok (Self :: SearchKeywords) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "APP_IPHONE_67",
+    ///    "APP_IPHONE_61",
+    ///    "APP_IPHONE_65",
+    ///    "APP_IPHONE_58",
+    ///    "APP_IPHONE_55",
+    ///    "APP_IPHONE_47",
+    ///    "APP_IPHONE_40",
+    ///    "APP_IPHONE_35",
+    ///    "APP_IPAD_PRO_3GEN_129",
+    ///    "APP_IPAD_PRO_3GEN_11",
+    ///    "APP_IPAD_PRO_129",
+    ///    "APP_IPAD_105",
+    ///    "APP_IPAD_97",
+    ///    "APP_DESKTOP",
+    ///    "APP_WATCH_ULTRA",
+    ///    "APP_WATCH_SERIES_10",
+    ///    "APP_WATCH_SERIES_7",
+    ///    "APP_WATCH_SERIES_4",
+    ///    "APP_WATCH_SERIES_3",
+    ///    "APP_APPLE_TV",
+    ///    "APP_APPLE_VISION_PRO",
+    ///    "IMESSAGE_APP_IPHONE_67",
+    ///    "IMESSAGE_APP_IPHONE_61",
+    ///    "IMESSAGE_APP_IPHONE_65",
+    ///    "IMESSAGE_APP_IPHONE_58",
+    ///    "IMESSAGE_APP_IPHONE_55",
+    ///    "IMESSAGE_APP_IPHONE_47",
+    ///    "IMESSAGE_APP_IPHONE_40",
+    ///    "IMESSAGE_APP_IPAD_PRO_3GEN_129",
+    ///    "IMESSAGE_APP_IPAD_PRO_3GEN_11",
+    ///    "IMESSAGE_APP_IPAD_PRO_129",
+    ///    "IMESSAGE_APP_IPAD_105",
+    ///    "IMESSAGE_APP_IPAD_97"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem
+    {
+        #[serde(rename = "APP_IPHONE_67")]
+        AppIphone67,
+        #[serde(rename = "APP_IPHONE_61")]
+        AppIphone61,
+        #[serde(rename = "APP_IPHONE_65")]
+        AppIphone65,
+        #[serde(rename = "APP_IPHONE_58")]
+        AppIphone58,
+        #[serde(rename = "APP_IPHONE_55")]
+        AppIphone55,
+        #[serde(rename = "APP_IPHONE_47")]
+        AppIphone47,
+        #[serde(rename = "APP_IPHONE_40")]
+        AppIphone40,
+        #[serde(rename = "APP_IPHONE_35")]
+        AppIphone35,
+        #[serde(rename = "APP_IPAD_PRO_3GEN_129")]
+        AppIpadPro3gen129,
+        #[serde(rename = "APP_IPAD_PRO_3GEN_11")]
+        AppIpadPro3gen11,
+        #[serde(rename = "APP_IPAD_PRO_129")]
+        AppIpadPro129,
+        #[serde(rename = "APP_IPAD_105")]
+        AppIpad105,
+        #[serde(rename = "APP_IPAD_97")]
+        AppIpad97,
+        #[serde(rename = "APP_DESKTOP")]
+        AppDesktop,
+        #[serde(rename = "APP_WATCH_ULTRA")]
+        AppWatchUltra,
+        #[serde(rename = "APP_WATCH_SERIES_10")]
+        AppWatchSeries10,
+        #[serde(rename = "APP_WATCH_SERIES_7")]
+        AppWatchSeries7,
+        #[serde(rename = "APP_WATCH_SERIES_4")]
+        AppWatchSeries4,
+        #[serde(rename = "APP_WATCH_SERIES_3")]
+        AppWatchSeries3,
+        #[serde(rename = "APP_APPLE_TV")]
+        AppAppleTv,
+        #[serde(rename = "APP_APPLE_VISION_PRO")]
+        AppAppleVisionPro,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_67")]
+        ImessageAppIphone67,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_61")]
+        ImessageAppIphone61,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_65")]
+        ImessageAppIphone65,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_58")]
+        ImessageAppIphone58,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_55")]
+        ImessageAppIphone55,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_47")]
+        ImessageAppIphone47,
+        #[serde(rename = "IMESSAGE_APP_IPHONE_40")]
+        ImessageAppIphone40,
+        #[serde(rename = "IMESSAGE_APP_IPAD_PRO_3GEN_129")]
+        ImessageAppIpadPro3gen129,
+        #[serde(rename = "IMESSAGE_APP_IPAD_PRO_3GEN_11")]
+        ImessageAppIpadPro3gen11,
+        #[serde(rename = "IMESSAGE_APP_IPAD_PRO_129")]
+        ImessageAppIpadPro129,
+        #[serde(rename = "IMESSAGE_APP_IPAD_105")]
+        ImessageAppIpad105,
+        #[serde(rename = "IMESSAGE_APP_IPAD_97")]
+        ImessageAppIpad97,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: AppIphone67 => f . write_str ("APP_IPHONE_67") , Self :: AppIphone61 => f . write_str ("APP_IPHONE_61") , Self :: AppIphone65 => f . write_str ("APP_IPHONE_65") , Self :: AppIphone58 => f . write_str ("APP_IPHONE_58") , Self :: AppIphone55 => f . write_str ("APP_IPHONE_55") , Self :: AppIphone47 => f . write_str ("APP_IPHONE_47") , Self :: AppIphone40 => f . write_str ("APP_IPHONE_40") , Self :: AppIphone35 => f . write_str ("APP_IPHONE_35") , Self :: AppIpadPro3gen129 => f . write_str ("APP_IPAD_PRO_3GEN_129") , Self :: AppIpadPro3gen11 => f . write_str ("APP_IPAD_PRO_3GEN_11") , Self :: AppIpadPro129 => f . write_str ("APP_IPAD_PRO_129") , Self :: AppIpad105 => f . write_str ("APP_IPAD_105") , Self :: AppIpad97 => f . write_str ("APP_IPAD_97") , Self :: AppDesktop => f . write_str ("APP_DESKTOP") , Self :: AppWatchUltra => f . write_str ("APP_WATCH_ULTRA") , Self :: AppWatchSeries10 => f . write_str ("APP_WATCH_SERIES_10") , Self :: AppWatchSeries7 => f . write_str ("APP_WATCH_SERIES_7") , Self :: AppWatchSeries4 => f . write_str ("APP_WATCH_SERIES_4") , Self :: AppWatchSeries3 => f . write_str ("APP_WATCH_SERIES_3") , Self :: AppAppleTv => f . write_str ("APP_APPLE_TV") , Self :: AppAppleVisionPro => f . write_str ("APP_APPLE_VISION_PRO") , Self :: ImessageAppIphone67 => f . write_str ("IMESSAGE_APP_IPHONE_67") , Self :: ImessageAppIphone61 => f . write_str ("IMESSAGE_APP_IPHONE_61") , Self :: ImessageAppIphone65 => f . write_str ("IMESSAGE_APP_IPHONE_65") , Self :: ImessageAppIphone58 => f . write_str ("IMESSAGE_APP_IPHONE_58") , Self :: ImessageAppIphone55 => f . write_str ("IMESSAGE_APP_IPHONE_55") , Self :: ImessageAppIphone47 => f . write_str ("IMESSAGE_APP_IPHONE_47") , Self :: ImessageAppIphone40 => f . write_str ("IMESSAGE_APP_IPHONE_40") , Self :: ImessageAppIpadPro3gen129 => f . write_str ("IMESSAGE_APP_IPAD_PRO_3GEN_129") , Self :: ImessageAppIpadPro3gen11 => f . write_str ("IMESSAGE_APP_IPAD_PRO_3GEN_11") , Self :: ImessageAppIpadPro129 => f . write_str ("IMESSAGE_APP_IPAD_PRO_129") , Self :: ImessageAppIpad105 => f . write_str ("IMESSAGE_APP_IPAD_105") , Self :: ImessageAppIpad97 => f . write_str ("IMESSAGE_APP_IPAD_97") , } } }
+    impl :: std :: str :: FromStr for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "APP_IPHONE_67" => Ok (Self :: AppIphone67) , "APP_IPHONE_61" => Ok (Self :: AppIphone61) , "APP_IPHONE_65" => Ok (Self :: AppIphone65) , "APP_IPHONE_58" => Ok (Self :: AppIphone58) , "APP_IPHONE_55" => Ok (Self :: AppIphone55) , "APP_IPHONE_47" => Ok (Self :: AppIphone47) , "APP_IPHONE_40" => Ok (Self :: AppIphone40) , "APP_IPHONE_35" => Ok (Self :: AppIphone35) , "APP_IPAD_PRO_3GEN_129" => Ok (Self :: AppIpadPro3gen129) , "APP_IPAD_PRO_3GEN_11" => Ok (Self :: AppIpadPro3gen11) , "APP_IPAD_PRO_129" => Ok (Self :: AppIpadPro129) , "APP_IPAD_105" => Ok (Self :: AppIpad105) , "APP_IPAD_97" => Ok (Self :: AppIpad97) , "APP_DESKTOP" => Ok (Self :: AppDesktop) , "APP_WATCH_ULTRA" => Ok (Self :: AppWatchUltra) , "APP_WATCH_SERIES_10" => Ok (Self :: AppWatchSeries10) , "APP_WATCH_SERIES_7" => Ok (Self :: AppWatchSeries7) , "APP_WATCH_SERIES_4" => Ok (Self :: AppWatchSeries4) , "APP_WATCH_SERIES_3" => Ok (Self :: AppWatchSeries3) , "APP_APPLE_TV" => Ok (Self :: AppAppleTv) , "APP_APPLE_VISION_PRO" => Ok (Self :: AppAppleVisionPro) , "IMESSAGE_APP_IPHONE_67" => Ok (Self :: ImessageAppIphone67) , "IMESSAGE_APP_IPHONE_61" => Ok (Self :: ImessageAppIphone61) , "IMESSAGE_APP_IPHONE_65" => Ok (Self :: ImessageAppIphone65) , "IMESSAGE_APP_IPHONE_58" => Ok (Self :: ImessageAppIphone58) , "IMESSAGE_APP_IPHONE_55" => Ok (Self :: ImessageAppIphone55) , "IMESSAGE_APP_IPHONE_47" => Ok (Self :: ImessageAppIphone47) , "IMESSAGE_APP_IPHONE_40" => Ok (Self :: ImessageAppIphone40) , "IMESSAGE_APP_IPAD_PRO_3GEN_129" => Ok (Self :: ImessageAppIpadPro3gen129) , "IMESSAGE_APP_IPAD_PRO_3GEN_11" => Ok (Self :: ImessageAppIpadPro3gen11) , "IMESSAGE_APP_IPAD_PRO_129" => Ok (Self :: ImessageAppIpadPro129) , "IMESSAGE_APP_IPAD_105" => Ok (Self :: ImessageAppIpad105) , "IMESSAGE_APP_IPAD_97" => Ok (Self :: ImessageAppIpad97) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionLocalization",
+    ///    "appCustomProductPageLocalization",
+    ///    "appStoreVersionExperimentTreatmentLocalization",
+    ///    "appScreenshots"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appStoreVersionLocalization")]
+        AppStoreVersionLocalization,
+        #[serde(rename = "appCustomProductPageLocalization")]
+        AppCustomProductPageLocalization,
+        #[serde(rename = "appStoreVersionExperimentTreatmentLocalization")]
+        AppStoreVersionExperimentTreatmentLocalization,
+        #[serde(rename = "appScreenshots")]
+        AppScreenshots,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionLocalization => f.write_str("appStoreVersionLocalization"),
+                Self::AppCustomProductPageLocalization => {
+                    f.write_str("appCustomProductPageLocalization")
+                }
+                Self::AppStoreVersionExperimentTreatmentLocalization => {
+                    f.write_str("appStoreVersionExperimentTreatmentLocalization")
+                }
+                Self::AppScreenshots => f.write_str("appScreenshots"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionLocalization" => Ok(Self::AppStoreVersionLocalization),
+                "appCustomProductPageLocalization" => Ok(Self::AppCustomProductPageLocalization),
+                "appStoreVersionExperimentTreatmentLocalization" => {
+                    Ok(Self::AppStoreVersionExperimentTreatmentLocalization)
+                }
+                "appScreenshots" => Ok(Self::AppScreenshots),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem
     {
         type Error = self::error::ConversionError;
         fn try_from(
@@ -10975,6 +19889,149 @@ pub mod types {
     }
 
     impl ::std::convert::TryFrom<::std::string::String> for AppUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppVersionState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "ACCEPTED",
+    ///    "DEVELOPER_REJECTED",
+    ///    "IN_REVIEW",
+    ///    "INVALID_BINARY",
+    ///    "METADATA_REJECTED",
+    ///    "PENDING_APPLE_RELEASE",
+    ///    "PENDING_DEVELOPER_RELEASE",
+    ///    "PREPARE_FOR_SUBMISSION",
+    ///    "PROCESSING_FOR_DISTRIBUTION",
+    ///    "READY_FOR_DISTRIBUTION",
+    ///    "READY_FOR_REVIEW",
+    ///    "REJECTED",
+    ///    "REPLACED_WITH_NEW_VERSION",
+    ///    "WAITING_FOR_EXPORT_COMPLIANCE",
+    ///    "WAITING_FOR_REVIEW"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppVersionState {
+        #[serde(rename = "ACCEPTED")]
+        Accepted,
+        #[serde(rename = "DEVELOPER_REJECTED")]
+        DeveloperRejected,
+        #[serde(rename = "IN_REVIEW")]
+        InReview,
+        #[serde(rename = "INVALID_BINARY")]
+        InvalidBinary,
+        #[serde(rename = "METADATA_REJECTED")]
+        MetadataRejected,
+        #[serde(rename = "PENDING_APPLE_RELEASE")]
+        PendingAppleRelease,
+        #[serde(rename = "PENDING_DEVELOPER_RELEASE")]
+        PendingDeveloperRelease,
+        #[serde(rename = "PREPARE_FOR_SUBMISSION")]
+        PrepareForSubmission,
+        #[serde(rename = "PROCESSING_FOR_DISTRIBUTION")]
+        ProcessingForDistribution,
+        #[serde(rename = "READY_FOR_DISTRIBUTION")]
+        ReadyForDistribution,
+        #[serde(rename = "READY_FOR_REVIEW")]
+        ReadyForReview,
+        #[serde(rename = "REJECTED")]
+        Rejected,
+        #[serde(rename = "REPLACED_WITH_NEW_VERSION")]
+        ReplacedWithNewVersion,
+        #[serde(rename = "WAITING_FOR_EXPORT_COMPLIANCE")]
+        WaitingForExportCompliance,
+        #[serde(rename = "WAITING_FOR_REVIEW")]
+        WaitingForReview,
+    }
+
+    impl ::std::fmt::Display for AppVersionState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Accepted => f.write_str("ACCEPTED"),
+                Self::DeveloperRejected => f.write_str("DEVELOPER_REJECTED"),
+                Self::InReview => f.write_str("IN_REVIEW"),
+                Self::InvalidBinary => f.write_str("INVALID_BINARY"),
+                Self::MetadataRejected => f.write_str("METADATA_REJECTED"),
+                Self::PendingAppleRelease => f.write_str("PENDING_APPLE_RELEASE"),
+                Self::PendingDeveloperRelease => f.write_str("PENDING_DEVELOPER_RELEASE"),
+                Self::PrepareForSubmission => f.write_str("PREPARE_FOR_SUBMISSION"),
+                Self::ProcessingForDistribution => f.write_str("PROCESSING_FOR_DISTRIBUTION"),
+                Self::ReadyForDistribution => f.write_str("READY_FOR_DISTRIBUTION"),
+                Self::ReadyForReview => f.write_str("READY_FOR_REVIEW"),
+                Self::Rejected => f.write_str("REJECTED"),
+                Self::ReplacedWithNewVersion => f.write_str("REPLACED_WITH_NEW_VERSION"),
+                Self::WaitingForExportCompliance => f.write_str("WAITING_FOR_EXPORT_COMPLIANCE"),
+                Self::WaitingForReview => f.write_str("WAITING_FOR_REVIEW"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppVersionState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "ACCEPTED" => Ok(Self::Accepted),
+                "DEVELOPER_REJECTED" => Ok(Self::DeveloperRejected),
+                "IN_REVIEW" => Ok(Self::InReview),
+                "INVALID_BINARY" => Ok(Self::InvalidBinary),
+                "METADATA_REJECTED" => Ok(Self::MetadataRejected),
+                "PENDING_APPLE_RELEASE" => Ok(Self::PendingAppleRelease),
+                "PENDING_DEVELOPER_RELEASE" => Ok(Self::PendingDeveloperRelease),
+                "PREPARE_FOR_SUBMISSION" => Ok(Self::PrepareForSubmission),
+                "PROCESSING_FOR_DISTRIBUTION" => Ok(Self::ProcessingForDistribution),
+                "READY_FOR_DISTRIBUTION" => Ok(Self::ReadyForDistribution),
+                "READY_FOR_REVIEW" => Ok(Self::ReadyForReview),
+                "REJECTED" => Ok(Self::Rejected),
+                "REPLACED_WITH_NEW_VERSION" => Ok(Self::ReplacedWithNewVersion),
+                "WAITING_FOR_EXPORT_COMPLIANCE" => Ok(Self::WaitingForExportCompliance),
+                "WAITING_FOR_REVIEW" => Ok(Self::WaitingForReview),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppVersionState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppVersionState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppVersionState {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -22590,6 +31647,51 @@ pub mod types {
         pub pointer: ::std::string::String,
     }
 
+    ///`ImageAsset`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "height": {
+    ///      "type": "integer"
+    ///    },
+    ///    "templateUrl": {
+    ///      "type": "string"
+    ///    },
+    ///    "width": {
+    ///      "type": "integer"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ImageAsset {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub height: ::std::option::Option<i64>,
+        #[serde(
+            rename = "templateUrl",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub template_url: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub width: ::std::option::Option<i64>,
+    }
+
+    impl ::std::default::Default for ImageAsset {
+        fn default() -> Self {
+            Self {
+                height: Default::default(),
+                template_url: Default::default(),
+                width: Default::default(),
+            }
+        }
+    }
+
     ///`KidsAgeBand`
     ///
     /// <details><summary>JSON schema</summary>
@@ -22869,6 +31971,41 @@ pub mod types {
             value: ::std::string::String,
         ) -> ::std::result::Result<Self, self::error::ConversionError> {
             value.parse()
+        }
+    }
+
+    ///`PreviewFrameImage`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "image": {
+    ///      "$ref": "#/components/schemas/ImageAsset"
+    ///    },
+    ///    "state": {
+    ///      "$ref": "#/components/schemas/AppMediaPreviewFrameImageState"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct PreviewFrameImage {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub image: ::std::option::Option<ImageAsset>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<AppMediaPreviewFrameImageState>,
+    }
+
+    impl ::std::default::Default for PreviewFrameImage {
+        fn default() -> Self {
+            Self {
+                image: Default::default(),
+                state: Default::default(),
+            }
         }
     }
 
@@ -23582,6 +32719,290 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "app_info_localizations_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appPreviews/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_preview_sets`: the fields to include for returned
+    ///   resources of type appPreviewSets
+    /// - `fields_app_previews`: the fields to include for returned resources of
+    ///   type appPreviews
+    /// - `include`: comma-separated list of relationships to include
+    pub async fn app_previews_get_instance<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_preview_sets: Option<
+            &'a ::std::vec::Vec<types::AppPreviewsGetInstanceFieldsAppPreviewSetsItem>,
+        >,
+        fields_app_previews: Option<
+            &'a ::std::vec::Vec<types::AppPreviewsGetInstanceFieldsAppPreviewsItem>,
+        >,
+        include: Option<&'a ::std::vec::Vec<types::AppPreviewsGetInstanceIncludeItem>>,
+    ) -> Result<ResponseValue<types::AppPreviewResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appPreviews/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviewSets]",
+                &fields_app_preview_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviews]",
+                &fields_app_previews,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_previews_get_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/appPreviews/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: AppPreview representation
+    pub async fn app_previews_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::AppPreviewUpdateRequest,
+    ) -> Result<ResponseValue<types::AppPreviewResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appPreviews/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_previews_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appScreenshots/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_screenshot_sets`: the fields to include for returned
+    ///   resources of type appScreenshotSets
+    /// - `fields_app_screenshots`: the fields to include for returned resources
+    ///   of type appScreenshots
+    /// - `include`: comma-separated list of relationships to include
+    pub async fn app_screenshots_get_instance<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_screenshot_sets: Option<
+            &'a ::std::vec::Vec<types::AppScreenshotsGetInstanceFieldsAppScreenshotSetsItem>,
+        >,
+        fields_app_screenshots: Option<
+            &'a ::std::vec::Vec<types::AppScreenshotsGetInstanceFieldsAppScreenshotsItem>,
+        >,
+        include: Option<&'a ::std::vec::Vec<types::AppScreenshotsGetInstanceIncludeItem>>,
+    ) -> Result<ResponseValue<types::AppScreenshotResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appScreenshots/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshotSets]",
+                &fields_app_screenshot_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshots]",
+                &fields_app_screenshots,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_screenshots_get_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/appScreenshots/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: AppScreenshot representation
+    pub async fn app_screenshots_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::AppScreenshotUpdateRequest,
+    ) -> Result<ResponseValue<types::AppScreenshotResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appScreenshots/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_screenshots_update_instance",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;
@@ -24806,6 +34227,447 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "app_infos_app_info_localizations_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appPreviewSets/{id}/appPreviews`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_preview_sets`: the fields to include for returned
+    ///   resources of type appPreviewSets
+    /// - `fields_app_previews`: the fields to include for returned resources of
+    ///   type appPreviews
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    pub async fn app_preview_sets_app_previews_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_preview_sets: Option<
+            &'a ::std::vec::Vec<
+                types::AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewSetsItem,
+            >,
+        >,
+        fields_app_previews: Option<
+            &'a ::std::vec::Vec<
+                types::AppPreviewSetsAppPreviewsGetToManyRelatedFieldsAppPreviewsItem,
+            >,
+        >,
+        include: Option<
+            &'a ::std::vec::Vec<types::AppPreviewSetsAppPreviewsGetToManyRelatedIncludeItem>,
+        >,
+        limit: Option<i64>,
+    ) -> Result<ResponseValue<types::AppPreviewsResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appPreviewSets/{}/appPreviews",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviewSets]",
+                &fields_app_preview_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviews]",
+                &fields_app_previews,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_preview_sets_app_previews_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appScreenshotSets/{id}/appScreenshots`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_screenshot_sets`: the fields to include for returned
+    ///   resources of type appScreenshotSets
+    /// - `fields_app_screenshots`: the fields to include for returned resources
+    ///   of type appScreenshots
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    pub async fn app_screenshot_sets_app_screenshots_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_screenshot_sets: Option<
+            &'a ::std::vec::Vec<
+                types::AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotSetsItem,
+            >,
+        >,
+        fields_app_screenshots: Option<
+            &'a ::std::vec::Vec<
+                types::AppScreenshotSetsAppScreenshotsGetToManyRelatedFieldsAppScreenshotsItem,
+            >,
+        >,
+        include: Option<
+            &'a ::std::vec::Vec<types::AppScreenshotSetsAppScreenshotsGetToManyRelatedIncludeItem>,
+        >,
+        limit: Option<i64>,
+    ) -> Result<ResponseValue<types::AppScreenshotsResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appScreenshotSets/{}/appScreenshots",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshotSets]",
+                &fields_app_screenshot_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshots]",
+                &fields_app_screenshots,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_screenshot_sets_app_screenshots_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to
+    /// `/v1/appStoreVersionLocalizations/{id}/appPreviewSets`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_custom_product_page_localizations`: the fields to include
+    ///   for returned resources of type appCustomProductPageLocalizations
+    /// - `fields_app_preview_sets`: the fields to include for returned
+    ///   resources of type appPreviewSets
+    /// - `fields_app_previews`: the fields to include for returned resources of
+    ///   type appPreviews
+    /// - `fields_app_store_version_experiment_treatment_localizations`: the
+    ///   fields to include for returned resources of type
+    ///   appStoreVersionExperimentTreatmentLocalizations
+    /// - `fields_app_store_version_localizations`: the fields to include for
+    ///   returned resources of type appStoreVersionLocalizations
+    /// - `filter_app_custom_product_page_localization`: filter by id(s) of
+    ///   related 'appCustomProductPageLocalization'
+    /// - `filter_app_store_version_experiment_treatment_localization`: filter
+    ///   by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+    /// - `filter_preview_type`: filter by attribute 'previewType'
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    /// - `limit_app_previews`: maximum number of related appPreviews returned
+    ///   (when they are included)
+    pub async fn app_store_version_localizations_app_preview_sets_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_custom_product_page_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem > >,
+        fields_app_preview_sets : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewSetsItem > >,
+        fields_app_previews : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppPreviewsItem > >,
+        fields_app_store_version_experiment_treatment_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem > >,
+        fields_app_store_version_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem > >,
+        filter_app_custom_product_page_localization: Option<
+            &'a ::std::vec::Vec<::std::string::String>,
+        >,
+        filter_app_store_version_experiment_treatment_localization: Option<
+            &'a ::std::vec::Vec<::std::string::String>,
+        >,
+        filter_preview_type : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedFilterPreviewTypeItem > >,
+        include: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreVersionLocalizationsAppPreviewSetsGetToManyRelatedIncludeItem,
+            >,
+        >,
+        limit: Option<i64>,
+        limit_app_previews: Option<i64>,
+    ) -> Result<ResponseValue<types::AppPreviewSetsResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appStoreVersionLocalizations/{}/appPreviewSets",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appCustomProductPageLocalizations]",
+                &fields_app_custom_product_page_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviewSets]",
+                &fields_app_preview_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appPreviews]",
+                &fields_app_previews,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersionExperimentTreatmentLocalizations]",
+                &fields_app_store_version_experiment_treatment_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersionLocalizations]",
+                &fields_app_store_version_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[appCustomProductPageLocalization]",
+                &filter_app_custom_product_page_localization,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[appStoreVersionExperimentTreatmentLocalization]",
+                &filter_app_store_version_experiment_treatment_localization,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[previewType]",
+                &filter_preview_type,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[appPreviews]",
+                &limit_app_previews,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_version_localizations_app_preview_sets_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to
+    /// `/v1/appStoreVersionLocalizations/{id}/appScreenshotSets`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_custom_product_page_localizations`: the fields to include
+    ///   for returned resources of type appCustomProductPageLocalizations
+    /// - `fields_app_screenshot_sets`: the fields to include for returned
+    ///   resources of type appScreenshotSets
+    /// - `fields_app_screenshots`: the fields to include for returned resources
+    ///   of type appScreenshots
+    /// - `fields_app_store_version_experiment_treatment_localizations`: the
+    ///   fields to include for returned resources of type
+    ///   appStoreVersionExperimentTreatmentLocalizations
+    /// - `fields_app_store_version_localizations`: the fields to include for
+    ///   returned resources of type appStoreVersionLocalizations
+    /// - `filter_app_custom_product_page_localization`: filter by id(s) of
+    ///   related 'appCustomProductPageLocalization'
+    /// - `filter_app_store_version_experiment_treatment_localization`: filter
+    ///   by id(s) of related 'appStoreVersionExperimentTreatmentLocalization'
+    /// - `filter_screenshot_display_type`: filter by attribute
+    ///   'screenshotDisplayType'
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    /// - `limit_app_screenshots`: maximum number of related appScreenshots
+    ///   returned (when they are included)
+    pub async fn app_store_version_localizations_app_screenshot_sets_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_custom_product_page_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppCustomProductPageLocalizationsItem > >,
+        fields_app_screenshot_sets : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotSetsItem > >,
+        fields_app_screenshots : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppScreenshotsItem > >,
+        fields_app_store_version_experiment_treatment_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionExperimentTreatmentLocalizationsItem > >,
+        fields_app_store_version_localizations : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFieldsAppStoreVersionLocalizationsItem > >,
+        filter_app_custom_product_page_localization: Option<
+            &'a ::std::vec::Vec<::std::string::String>,
+        >,
+        filter_app_store_version_experiment_treatment_localization: Option<
+            &'a ::std::vec::Vec<::std::string::String>,
+        >,
+        filter_screenshot_display_type : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedFilterScreenshotDisplayTypeItem > >,
+        include: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreVersionLocalizationsAppScreenshotSetsGetToManyRelatedIncludeItem,
+            >,
+        >,
+        limit: Option<i64>,
+        limit_app_screenshots: Option<i64>,
+    ) -> Result<ResponseValue<types::AppScreenshotSetsResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appStoreVersionLocalizations/{}/appScreenshotSets",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appCustomProductPageLocalizations]",
+                &fields_app_custom_product_page_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshotSets]",
+                &fields_app_screenshot_sets,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appScreenshots]",
+                &fields_app_screenshots,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersionExperimentTreatmentLocalizations]",
+                &fields_app_store_version_experiment_treatment_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersionLocalizations]",
+                &fields_app_store_version_localizations,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[appCustomProductPageLocalization]",
+                &filter_app_custom_product_page_localization,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[appStoreVersionExperimentTreatmentLocalization]",
+                &filter_app_store_version_experiment_treatment_localization,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[screenshotDisplayType]",
+                &filter_screenshot_display_type,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[appScreenshots]",
+                &limit_app_screenshots,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_version_localizations_app_screenshot_sets_get_to_many_related",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;

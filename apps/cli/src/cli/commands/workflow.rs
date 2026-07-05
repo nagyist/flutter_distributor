@@ -438,6 +438,17 @@ fn cmd_validate(file: &std::path::Path) -> anyhow::Result<()> {
     }
 }
 
+/// Restores the original working directory when dropped.
+struct WorkingDirectoryGuard(Option<std::path::PathBuf>);
+
+impl Drop for WorkingDirectoryGuard {
+    fn drop(&mut self) {
+        if let Some(prev) = &self.0 {
+            std::env::set_current_dir(prev).ok();
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Built-in action: fastforge/package
 // ---------------------------------------------------------------------------
@@ -465,6 +476,17 @@ impl Action for FastforgePackageAction {
     }
 
     async fn run(&self, ctx: &ActionContext) -> Result<ActionOutput, WorkflowError> {
+        // Change to the working directory if specified (restored on drop)
+        let _wd_guard = if let Some(ref wd) = ctx.working_directory {
+            let prev = std::env::current_dir().ok();
+            std::env::set_current_dir(wd).map_err(|e| {
+                WorkflowError::Other(format!("Failed to chdir to {}: {}", wd.display(), e))
+            })?;
+            Some(WorkingDirectoryGuard(prev))
+        } else {
+            None
+        };
+
         let platform = &ctx.inputs["platform"];
         let target = &ctx.inputs["target"];
         let output = ctx
@@ -584,6 +606,17 @@ impl Action for FastforgePublishAction {
     }
 
     async fn run(&self, ctx: &ActionContext) -> Result<ActionOutput, WorkflowError> {
+        // Change to the working directory if specified (restored on drop)
+        let _wd_guard = if let Some(ref wd) = ctx.working_directory {
+            let prev = std::env::current_dir().ok();
+            std::env::set_current_dir(wd).map_err(|e| {
+                WorkflowError::Other(format!("Failed to chdir to {}: {}", wd.display(), e))
+            })?;
+            Some(WorkingDirectoryGuard(prev))
+        } else {
+            None
+        };
+
         let artifact_path = &ctx.inputs["path"];
         let target = &ctx.inputs["target"];
 

@@ -721,8 +721,10 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_urlencoded",
+ "serde_yaml",
  "tokio",
  "unicode-width",
+ "uuid",
 ]
 
 [[package]]
@@ -1510,7 +1512,7 @@ dependencies = [
 [[package]]
 name = "minact-core"
 version = "0.1.0"
-source = "git+https://github.com/fastforgedev/minact.git#5486dc1dd1a14d8de7d1f14e7446ecbd0565a4ac"
+source = "git+https://github.com/fastforgedev/minact.git#edfff7e195c971ad45780fa799b93be6d3242907"
 dependencies = [
  "anyhow",
  "async-trait",

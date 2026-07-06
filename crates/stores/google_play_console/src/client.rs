@@ -2349,6 +2349,163 @@ pub mod types {
         }
     }
 
+    ///An uploaded image. The resource for ImagesService.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "An uploaded image.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "description": "A unique id representing this image.",
+    ///      "type": "string"
+    ///    },
+    ///    "url": {
+    ///      "description": "A URL that will serve a preview of the image.",
+    ///      "type": "string"
+    ///    },
+    ///    "sha1": {
+    ///      "description": "A sha1 hash of the image.",
+    ///      "type": "string"
+    ///    },
+    ///    "sha256": {
+    ///      "description": "A sha256 hash of the image.",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct Image {
+        ///A unique id representing this image.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///A URL that will serve a preview of the image.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub url: ::std::option::Option<::std::string::String>,
+        ///A sha1 hash of the image.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub sha1: ::std::option::Option<::std::string::String>,
+        ///A sha256 hash of the image.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub sha256: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for Image {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                url: Default::default(),
+                sha1: Default::default(),
+                sha256: Default::default(),
+            }
+        }
+    }
+
+    ///Response listing all images.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Response listing all images.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "images": {
+    ///      "description": "All localized images.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/Image"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ImagesListResponse {
+        ///All images.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub images: ::std::vec::Vec<Image>,
+    }
+
+    impl ::std::default::Default for ImagesListResponse {
+        fn default() -> Self {
+            Self {
+                images: Default::default(),
+            }
+        }
+    }
+
+    ///Response for uploading an image.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Response for uploading an image.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "image": {
+    ///      "$ref": "#/components/schemas/Image"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ImagesUploadResponse {
+        ///The uploaded image.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub image: ::std::option::Option<Image>,
+    }
+
+    impl ::std::default::Default for ImagesUploadResponse {
+        fn default() -> Self {
+            Self {
+                image: Default::default(),
+            }
+        }
+    }
+
+    ///Response for deleting all images.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Response for deleting all images.",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "deleted": {
+    ///      "description": "The deleted images.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/Image"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ImagesDeleteAllResponse {
+        ///The deleted images.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub deleted: ::std::vec::Vec<Image>,
+    }
+
+    impl ::std::default::Default for ImagesDeleteAllResponse {
+        fn default() -> Self {
+            Self {
+                deleted: Default::default(),
+            }
+        }
+    }
+
     ///Localized text in given language.
     ///
     /// <details><summary>JSON schema</summary>
@@ -4349,7 +4506,6 @@ impl Client {
         access_token: Option<&'a str>,
         alt: Option<types::AndroidpublisherEditsCommitAlt>,
         callback: Option<&'a str>,
-        changes_not_sent_for_review: Option<bool>,
         fields: Option<&'a str>,
         key: Option<&'a str>,
         oauth_token: Option<&'a str>,
@@ -4384,10 +4540,6 @@ impl Client {
             ))
             .query(&progenitor_client::QueryParam::new("alt", &alt))
             .query(&progenitor_client::QueryParam::new("callback", &callback))
-            .query(&progenitor_client::QueryParam::new(
-                "changesNotSentForReview",
-                &changes_not_sent_for_review,
-            ))
             .query(&progenitor_client::QueryParam::new("fields", &fields))
             .query(&progenitor_client::QueryParam::new("key", &key))
             .query(&progenitor_client::QueryParam::new(
@@ -4414,6 +4566,134 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "androidpublisher_edits_commit",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Lists all images for the specified language and image type.
+    ///
+    ///Sends a `GET` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/listings/{language}/images/{imageType}`
+    pub async fn androidpublisher_edits_images_list<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        image_type: &'a str,
+    ) -> Result<ResponseValue<types::ImagesListResponse>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+            encode_path(&image_type.to_string()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_images_list",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Deletes all images for the specified language and image type.
+    ///
+    ///Sends a `DELETE` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/listings/{language}/images/{imageType}`
+    pub async fn androidpublisher_edits_images_deleteall<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        image_type: &'a str,
+    ) -> Result<ResponseValue<types::ImagesDeleteAllResponse>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+            encode_path(&image_type.to_string()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_images_deleteall",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Uploads an image for the specified language and image type.
+    ///
+    ///Sends a `POST` request to
+    /// `/androidpublisher/v3/applications/{packageName}/edits/{editId}/listings/{language}/images/{imageType}`
+    ///with the image bytes as the request body.
+    pub async fn androidpublisher_edits_images_upload<'a>(
+        &'a self,
+        package_name: &'a str,
+        edit_id: &'a str,
+        language: &'a str,
+        image_type: &'a str,
+        image_bytes: &'a [u8],
+        mime_type: &'a str,
+    ) -> Result<ResponseValue<types::ImagesUploadResponse>, Error<()>> {
+        let url = format!(
+            "{}/androidpublisher/v3/applications/{}/edits/{}/listings/{}/{}",
+            self.baseurl,
+            encode_path(&package_name.to_string()),
+            encode_path(&edit_id.to_string()),
+            encode_path(&language.to_string()),
+            encode_path(&image_type.to_string()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .header(::reqwest::header::CONTENT_TYPE, mime_type)
+            .body(image_bytes.to_vec())
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "androidpublisher_edits_images_upload",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;

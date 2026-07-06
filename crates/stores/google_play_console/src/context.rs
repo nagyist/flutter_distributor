@@ -1,4 +1,4 @@
-use crate::auth::{GooglePlayAuth, PUBLISHER_API, UPLOAD_BASE};
+use crate::auth::{GooglePlayAuth, PUBLISHER_API, PUBLISHER_BASE, UPLOAD_BASE};
 use anyhow::{Context as _, Result};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 
@@ -29,7 +29,9 @@ impl GooglePlayContext {
             .default_headers(headers)
             .build()
             .context("failed to build HTTP client")?;
-        let client = crate::Client::new_with_client(PUBLISHER_API, http.clone());
+        // 生成的 Client 内部会在 baseurl 后追加 /androidpublisher/v3/...，
+        // 所以 baseurl 只到根域名，避免路径重复。
+        let client = crate::Client::new_with_client(PUBLISHER_BASE, http.clone());
         Ok(Self {
             api_base: PUBLISHER_API,
             upload_base: UPLOAD_BASE,

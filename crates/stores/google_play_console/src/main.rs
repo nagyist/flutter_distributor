@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use fastforge_google_play_console::cli::{
     self,
-    ApiArgs, AppArgs, BundleArgs, EditArgs, GlobalArgs, TrackArgs,
+    ApiArgs, AppArgs, BundleArgs, CatalogArgs, EditArgs, GlobalArgs, TrackArgs,
 };
 
 #[derive(Parser)]
@@ -27,6 +27,8 @@ enum Commands {
     Bundle(BundleArgs),
     #[command(about = "List and update tracks")]
     Track(TrackArgs),
+    #[command(about = "Manage your app's store listing and track data (metadata)")]
+    Catalog(CatalogArgs),
     #[command(about = "Call raw Google Play Developer API endpoints")]
     Api(ApiArgs),
 }
@@ -39,6 +41,7 @@ async fn main() -> Result<()> {
         Commands::Edit(args) => cli::commands::edit::execute(args, &cli.global).await?,
         Commands::Bundle(args) => cli::commands::bundle::execute(args, &cli.global).await?,
         Commands::Track(args) => cli::commands::track::execute(args, &cli.global).await?,
+        Commands::Catalog(args) => cli::commands::catalog::execute(args, &cli.global).await?,
         Commands::Api(args) => cli::commands::api::execute(args, &cli.global).await?,
     }
     Ok(())

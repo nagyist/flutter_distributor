@@ -7,6 +7,7 @@ use std::fs;
 pub const CREDENTIALS_ENV: &str = "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON";
 pub const TOKEN_URI: &str = "https://oauth2.googleapis.com/token";
 pub const ANDROID_PUBLISHER_SCOPE: &str = "https://www.googleapis.com/auth/androidpublisher";
+pub const PUBLISHER_BASE: &str = "https://androidpublisher.googleapis.com";
 pub const PUBLISHER_API: &str = "https://androidpublisher.googleapis.com/androidpublisher/v3";
 pub const UPLOAD_BASE: &str = "https://androidpublisher.googleapis.com/upload/androidpublisher/v3";
 

@@ -6,6 +6,7 @@ use clap::{Args, Subcommand};
 pub use commands::api::ApiArgs;
 pub use commands::app::AppArgs;
 pub use commands::bundle::BundleArgs;
+pub use commands::catalog::{CatalogArgs, CatalogCommand};
 pub use commands::edit::EditArgs;
 pub use commands::track::TrackArgs;
 
@@ -28,6 +29,8 @@ pub enum GooglePlayConsoleCommand {
     Bundle(BundleArgs),
     #[command(about = "List and update tracks")]
     Track(TrackArgs),
+    #[command(about = "Manage your app's store listing and track data (metadata)")]
+    Catalog(CatalogArgs),
     #[command(about = "Call raw Google Play Developer API endpoints")]
     Api(ApiArgs),
 }
@@ -41,6 +44,9 @@ pub async fn execute(root: &GooglePlayConsoleArgs) -> Result<()> {
         }
         GooglePlayConsoleCommand::Track(args) => {
             commands::track::execute(args, &root.global).await
+        }
+        GooglePlayConsoleCommand::Catalog(args) => {
+            commands::catalog::execute(args, &root.global).await
         }
         GooglePlayConsoleCommand::Api(args) => commands::api::execute(args, &root.global).await,
     }

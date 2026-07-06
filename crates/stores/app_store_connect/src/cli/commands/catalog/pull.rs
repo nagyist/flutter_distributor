@@ -1,9 +1,10 @@
-use crate::cli::commands::app::resolve_app;
-use crate::cli::GlobalArgs;
 use crate::AppStoreConnectContext;
+use crate::cli::GlobalArgs;
+use crate::cli::commands::app::resolve_app;
 use anyhow::{Context, Result};
 use clap::Args;
 use serde_json::Value;
+use std::collections::HashMap;
 use std::path::Path;
 
 use crate::types as asc_types;
@@ -67,11 +68,23 @@ macro_rules! impl_has_links {
     };
 }
 
-impl_has_links!(asc_types::AppStoreVersionsResponse, asc_types::AppStoreVersion);
+impl_has_links!(
+    asc_types::AppStoreVersionsResponse,
+    asc_types::AppStoreVersion
+);
 impl_has_links!(asc_types::AppInfosResponse, asc_types::AppInfo);
-impl_has_links!(asc_types::AppInfoLocalizationsResponse, asc_types::AppInfoLocalization);
-impl_has_links!(asc_types::AppStoreVersionLocalizationsResponse, asc_types::AppStoreVersionLocalization);
-impl_has_links!(asc_types::AppScreenshotSetsResponse, asc_types::AppScreenshotSet);
+impl_has_links!(
+    asc_types::AppInfoLocalizationsResponse,
+    asc_types::AppInfoLocalization
+);
+impl_has_links!(
+    asc_types::AppStoreVersionLocalizationsResponse,
+    asc_types::AppStoreVersionLocalization
+);
+impl_has_links!(
+    asc_types::AppScreenshotSetsResponse,
+    asc_types::AppScreenshotSet
+);
 impl_has_links!(asc_types::AppScreenshotsResponse, asc_types::AppScreenshot);
 impl_has_links!(asc_types::AppPreviewSetsResponse, asc_types::AppPreviewSet);
 impl_has_links!(asc_types::AppPreviewsResponse, asc_types::AppPreview);
@@ -95,12 +108,28 @@ async fn fetch_versions(
         .client
         .apps_app_store_versions_get_to_many_related(
             app_id,
-            None, None, None, None, None, None, None,
-            None, None, None, None, None, None,
-            None, None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
             filter_platform.as_ref().map(|v| v.as_ref()),
             filter_version_string.as_ref().map(|v| v.as_ref()),
-            None, Some(200), None, None, None,
+            None,
+            Some(200),
+            None,
+            None,
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch versions: {e}"))?;
@@ -108,15 +137,19 @@ async fn fetch_versions(
 }
 
 /// Fetch all app infos via the generated typed client.
-async fn fetch_app_infos(
-    ctx: &AppStoreConnectContext,
-    app_id: &str,
-) -> Result<Vec<Value>> {
+async fn fetch_app_infos(ctx: &AppStoreConnectContext, app_id: &str) -> Result<Vec<Value>> {
     let resp = ctx
         .client
         .apps_app_infos_get_to_many_related(
             app_id,
-            None, None, None, None, None, None, Some(200), None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(200),
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch app infos: {e}"))?;
@@ -132,7 +165,11 @@ async fn fetch_app_info_localizations(
         .client
         .app_infos_app_info_localizations_get_to_many_related(
             app_info_id,
-            None, None, None, None, Some(200),
+            None,
+            None,
+            None,
+            None,
+            Some(200),
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch app info localizations: {e}"))?;
@@ -148,7 +185,17 @@ async fn fetch_version_localizations(
         .client
         .app_store_versions_app_store_version_localizations_get_to_many_related(
             version_id,
-            None, None, None, None, None, None, None, Some(200), None, None, None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(200),
+            None,
+            None,
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch version localizations: {e}"))?;
@@ -156,15 +203,22 @@ async fn fetch_version_localizations(
 }
 
 /// Fetch all screenshot sets via the generated typed client.
-async fn fetch_screenshot_sets(
-    ctx: &AppStoreConnectContext,
-    vloc_id: &str,
-) -> Result<Vec<Value>> {
+async fn fetch_screenshot_sets(ctx: &AppStoreConnectContext, vloc_id: &str) -> Result<Vec<Value>> {
     let resp = ctx
         .client
         .app_store_version_localizations_app_screenshot_sets_get_to_many_related(
             vloc_id,
-            None, None, None, None, None, None, None, None, None, Some(200), None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(200),
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch screenshot sets: {e}"))?;
@@ -172,15 +226,15 @@ async fn fetch_screenshot_sets(
 }
 
 /// Fetch all screenshots in a set via the generated typed client.
-async fn fetch_screenshots(
-    ctx: &AppStoreConnectContext,
-    ss_set_id: &str,
-) -> Result<Vec<Value>> {
+async fn fetch_screenshots(ctx: &AppStoreConnectContext, ss_set_id: &str) -> Result<Vec<Value>> {
     let resp = ctx
         .client
         .app_screenshot_sets_app_screenshots_get_to_many_related(
             ss_set_id,
-            None, None, None, Some(200),
+            None,
+            None,
+            None,
+            Some(200),
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch screenshots: {e}"))?;
@@ -188,15 +242,22 @@ async fn fetch_screenshots(
 }
 
 /// Fetch all preview sets via the generated typed client.
-async fn fetch_preview_sets(
-    ctx: &AppStoreConnectContext,
-    vloc_id: &str,
-) -> Result<Vec<Value>> {
+async fn fetch_preview_sets(ctx: &AppStoreConnectContext, vloc_id: &str) -> Result<Vec<Value>> {
     let resp = ctx
         .client
         .app_store_version_localizations_app_preview_sets_get_to_many_related(
             vloc_id,
-            None, None, None, None, None, None, None, None, None, Some(200), None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(200),
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch preview sets: {e}"))?;
@@ -204,16 +265,10 @@ async fn fetch_preview_sets(
 }
 
 /// Fetch all previews in a set via the generated typed client.
-async fn fetch_previews(
-    ctx: &AppStoreConnectContext,
-    pv_set_id: &str,
-) -> Result<Vec<Value>> {
+async fn fetch_previews(ctx: &AppStoreConnectContext, pv_set_id: &str) -> Result<Vec<Value>> {
     let resp = ctx
         .client
-        .app_preview_sets_app_previews_get_to_many_related(
-            pv_set_id,
-            None, None, None, Some(200),
-        )
+        .app_preview_sets_app_previews_get_to_many_related(pv_set_id, None, None, None, Some(200))
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch previews: {e}"))?;
     collect_pages(ctx, resp).await
@@ -229,16 +284,22 @@ fn resolve_image_url(attrs: &serde_json::Map<String, Value>) -> Option<String> {
         .extension()
         .and_then(|e| e.to_str())
         .unwrap_or("png");
-    Some(template
-        .replace("{w}", &width.to_string())
-        .replace("{h}", &height.to_string())
-        .replace("{f}", ext))
+    Some(
+        template
+            .replace("{w}", &width.to_string())
+            .replace("{h}", &height.to_string())
+            .replace("{f}", ext),
+    )
 }
 
 /// Resolve a preview video download URL from previewFrameTimeCode + videoUrl/templateUrl.
 fn resolve_video_url(attrs: &serde_json::Map<String, Value>) -> Option<String> {
     // Prefer direct videoUrl
-    if let Some(url) = attrs.get("videoUrl").and_then(Value::as_str).filter(|s| !s.is_empty()) {
+    if let Some(url) = attrs
+        .get("videoUrl")
+        .and_then(Value::as_str)
+        .filter(|s| !s.is_empty())
+    {
         return Some(url.to_string());
     }
     // Fallback: videoUrl may need a separate fetch with specific fields
@@ -275,7 +336,10 @@ async fn download_file(ctx: &AppStoreConnectContext, url: &str, dest: &Path) -> 
         .context("failed to download file")?
         .error_for_status()
         .context("download returned error")?;
-    let bytes = response.bytes().await.context("failed to read response body")?;
+    let bytes = response
+        .bytes()
+        .await
+        .context("failed to read response body")?;
     tokio::fs::write(dest, &bytes)
         .await
         .with_context(|| format!("failed to write {}", dest.display()))?;
@@ -291,8 +355,7 @@ fn ensure_dir(path: &Path) -> Result<()> {
 /// Write a YAML value to a file.
 fn write_yaml<T: serde::Serialize>(path: &Path, value: &T) -> Result<()> {
     let content = serde_yaml::to_string(value).context("failed to serialize YAML")?;
-    std::fs::write(path, &content)
-        .with_context(|| format!("failed to write {}", path.display()))
+    std::fs::write(path, &content).with_context(|| format!("failed to write {}", path.display()))
 }
 
 pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
@@ -335,7 +398,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
 
         // 3. Fetch appInfoLocalizations
         let localizations = fetch_app_info_localizations(&ctx, &info_id).await?;
-        let localizations_dir = output_root.join("app_info_localizations");
+        let localizations_dir = output_root.join("info");
         ensure_dir(&localizations_dir)?;
 
         for loc in &localizations {
@@ -349,43 +412,71 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     .context("failed to parse app info localization attributes")?;
             let loc_path = localizations_dir.join(format!("{locale}.yaml"));
             write_yaml(&loc_path, &yaml)?;
-            eprintln!("  ✓ app_info_localizations/{locale}.yaml");
+            eprintln!("  ✓ info/{locale}.yaml");
             pulled_count += 1;
         }
     }
 
     // 4. Fetch appStoreVersions
     eprintln!("📱 Fetching app store versions...");
-    let versions = fetch_versions(&ctx, &app_id, args.platform.as_deref(), args.version.as_deref()).await?;
+    let mut versions = fetch_versions(
+        &ctx,
+        &app_id,
+        args.platform.as_deref(),
+        args.version.as_deref(),
+    )
+    .await?;
+    sort_versions_for_asset_dedup(&mut versions);
+
+    let mut media_signatures: HashMap<(String, String, &'static str, String), Value> =
+        HashMap::new();
+    let mut version_localization_attrs: HashMap<
+        (String, String),
+        asc_types::AppStoreVersionLocalizationAttributes,
+    > = HashMap::new();
 
     for version in &versions {
         let version_id = version["id"].as_str().unwrap_or_default().to_string();
-        let platform = version["attributes"]["platform"].as_str().unwrap_or("IOS").to_string();
-        let version_string = version["attributes"]["versionString"].as_str().unwrap_or("0.0.0").to_string();
-        let version_dir = output_root.join("versions").join(format!("{platform}_{version_string}"));
+        let platform = version["attributes"]["platform"]
+            .as_str()
+            .unwrap_or("IOS")
+            .to_string();
+        let version_string = version["attributes"]["versionString"]
+            .as_str()
+            .unwrap_or("0.0.0")
+            .to_string();
+        let version_dir = output_root
+            .join("versions")
+            .join(&platform)
+            .join(&version_string);
         ensure_dir(&version_dir)?;
-
-        let version_attrs: asc_types::AppStoreVersionAttributes =
-            serde_json::from_value(version["attributes"].clone())
-                .context("failed to parse version attributes")?;
-        write_yaml(&version_dir.join("app_store_version.yaml"), &version_attrs)?;
-        eprintln!("  ✓ versions/{platform}_{version_string}/app_store_version.yaml");
-        pulled_count += 1;
 
         // 5. Fetch version localizations
         let version_locs = fetch_version_localizations(&ctx, &version_id).await?;
 
         for vloc in &version_locs {
-            let locale = vloc["attributes"]["locale"].as_str().unwrap_or("unknown").to_string();
-            let vloc_dir = version_dir.join("localizations").join(&locale);
-            ensure_dir(&vloc_dir)?;
+            let locale = vloc["attributes"]["locale"]
+                .as_str()
+                .unwrap_or("unknown")
+                .to_string();
+            let vloc_dir = version_dir.join(&locale);
 
             let vloc_attrs: asc_types::AppStoreVersionLocalizationAttributes =
                 serde_json::from_value(vloc["attributes"].clone())
                     .context("failed to parse version localization attributes")?;
-            write_yaml(&vloc_dir.join("app_store_version_localization.yaml"), &vloc_attrs)?;
-            eprintln!("  ✓ versions/{platform}_{version_string}/localizations/{locale}/app_store_version_localization.yaml");
-            pulled_count += 1;
+            let vloc_path = vloc_dir.join("version.yaml");
+            let previous_attrs = version_localization_attrs
+                .get(&(platform.clone(), locale.clone()))
+                .cloned();
+            let writable_attrs =
+                diff_version_localization_attrs(&vloc_attrs, previous_attrs.as_ref());
+            version_localization_attrs.insert((platform.clone(), locale.clone()), vloc_attrs);
+            if has_version_localization_changes(&writable_attrs) {
+                ensure_dir(&vloc_dir)?;
+                write_yaml(&vloc_path, &writable_attrs)?;
+                eprintln!("  ✓ versions/{platform}/{version_string}/{locale}/version.yaml");
+                pulled_count += 1;
+            }
 
             // 6. Fetch screenshot sets
             let vloc_id = vloc["id"].as_str().unwrap_or_default().to_string();
@@ -394,38 +485,58 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
             for ss_set in &screenshot_sets {
                 let ss_set_id = ss_set["id"].as_str().unwrap_or_default().to_string();
                 let display_type = ss_set["attributes"]["screenshotDisplayType"]
-                    .as_str().unwrap_or("UNKNOWN").to_string();
+                    .as_str()
+                    .unwrap_or("UNKNOWN")
+                    .to_string();
+                let screenshots = fetch_screenshots(&ctx, &ss_set_id).await?;
+                let signature = media_set_signature(&ss_set["attributes"], &screenshots);
+                let signature_key = (
+                    platform.clone(),
+                    locale.clone(),
+                    "screenshots",
+                    display_type.clone(),
+                );
+                if media_signatures.get(&signature_key) == Some(&signature) {
+                    eprintln!("  • skipped unchanged screenshots/{display_type}");
+                    continue;
+                }
+                media_signatures.insert(signature_key, signature);
+
                 let screenshots_dir = vloc_dir.join("screenshots").join(&display_type);
                 ensure_dir(&screenshots_dir)?;
 
-                let set_yaml: asc_types::AppScreenshotSetAttributes =
-                    serde_json::from_value(ss_set["attributes"].clone())
-                        .context("failed to parse screenshot set attributes")?;
-                write_yaml(&screenshots_dir.join("screenshot_set.yaml"), &set_yaml)?;
-                eprintln!("  ✓ .../screenshots/{display_type}/screenshot_set.yaml");
-                pulled_count += 1;
-
                 // 7. Fetch screenshots
-                let screenshots = fetch_screenshots(&ctx, &ss_set_id).await?;
-
                 for (idx, screenshot) in screenshots.iter().enumerate() {
                     let ss_id = screenshot["id"].as_str().unwrap_or_default().to_string();
-                    let ss_attrs = screenshot["attributes"].as_object().cloned().unwrap_or_default();
+                    let ss_attrs = screenshot["attributes"]
+                        .as_object()
+                        .cloned()
+                        .unwrap_or_default();
 
                     let seq = idx + 1;
-                    let file_name = ss_attrs.get("fileName").and_then(Value::as_str).unwrap_or("screenshot.png");
-                    let extension = Path::new(file_name).extension().and_then(|e| e.to_str()).unwrap_or("png");
+                    let file_name = ss_attrs
+                        .get("fileName")
+                        .and_then(Value::as_str)
+                        .unwrap_or("screenshot.png");
+                    let extension = Path::new(file_name)
+                        .extension()
+                        .and_then(|e| e.to_str())
+                        .unwrap_or("png");
                     let screenshot_filename = format!("{:03}_{}.{}", seq, ss_id, extension);
                     let screenshot_path = screenshots_dir.join(&screenshot_filename);
 
                     if let Some(image_url) = resolve_image_url(&ss_attrs) {
                         match download_file(&ctx, &image_url, &screenshot_path).await {
-                            Ok(_) => eprintln!("  ✓ .../screenshots/{display_type}/{screenshot_filename}"),
+                            Ok(_) => eprintln!(
+                                "  ✓ .../screenshots/{display_type}/{screenshot_filename}"
+                            ),
                             Err(e) => eprintln!("  ⚠ failed to download screenshot {ss_id}: {e}"),
                         }
                         pulled_count += 1;
                     } else {
-                        eprintln!("  ⚠ screenshot {ss_id} has no downloadable URL (state: not ready)");
+                        eprintln!(
+                            "  ⚠ screenshot {ss_id} has no downloadable URL (state: not ready)"
+                        );
                         std::fs::write(&screenshot_path, "")?;
                     }
                 }
@@ -438,33 +549,51 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
             for pv_set in &preview_sets {
                 let pv_set_id = pv_set["id"].as_str().unwrap_or_default().to_string();
                 let preview_type = pv_set["attributes"]["previewType"]
-                    .as_str().unwrap_or("UNKNOWN").to_string();
+                    .as_str()
+                    .unwrap_or("UNKNOWN")
+                    .to_string();
+                let previews = fetch_previews(&ctx, &pv_set_id).await?;
+                let signature = media_set_signature(&pv_set["attributes"], &previews);
+                let signature_key = (
+                    platform.clone(),
+                    locale.clone(),
+                    "previews",
+                    preview_type.clone(),
+                );
+                if media_signatures.get(&signature_key) == Some(&signature) {
+                    eprintln!("  • skipped unchanged previews/{preview_type}");
+                    continue;
+                }
+                media_signatures.insert(signature_key, signature);
+
                 let previews_dir = vloc_dir.join("previews").join(&preview_type);
                 ensure_dir(&previews_dir)?;
 
-                let set_yaml: asc_types::AppPreviewSetAttributes =
-                    serde_json::from_value(pv_set["attributes"].clone())
-                        .context("failed to parse preview set attributes")?;
-                write_yaml(&previews_dir.join("preview_set.yaml"), &set_yaml)?;
-                eprintln!("  ✓ .../previews/{preview_type}/preview_set.yaml");
-                pulled_count += 1;
-
                 // 9. Fetch previews
-                let previews = fetch_previews(&ctx, &pv_set_id).await?;
-
                 for (idx, preview) in previews.iter().enumerate() {
                     let pv_id = preview["id"].as_str().unwrap_or_default().to_string();
-                    let pv_attrs = preview["attributes"].as_object().cloned().unwrap_or_default();
+                    let pv_attrs = preview["attributes"]
+                        .as_object()
+                        .cloned()
+                        .unwrap_or_default();
 
                     let seq = idx + 1;
-                    let file_name = pv_attrs.get("fileName").and_then(Value::as_str).unwrap_or("preview.mov");
-                    let extension = Path::new(file_name).extension().and_then(|e| e.to_str()).unwrap_or("mov");
+                    let file_name = pv_attrs
+                        .get("fileName")
+                        .and_then(Value::as_str)
+                        .unwrap_or("preview.mov");
+                    let extension = Path::new(file_name)
+                        .extension()
+                        .and_then(|e| e.to_str())
+                        .unwrap_or("mov");
                     let preview_filename = format!("{:03}_{}.{}", seq, pv_id, extension);
                     let preview_path = previews_dir.join(&preview_filename);
 
                     if let Some(video_url) = resolve_video_url(&pv_attrs) {
                         match download_file(&ctx, &video_url, &preview_path).await {
-                            Ok(_) => eprintln!("  ✓ .../previews/{preview_type}/{preview_filename}"),
+                            Ok(_) => {
+                                eprintln!("  ✓ .../previews/{preview_type}/{preview_filename}")
+                            }
                             Err(e) => eprintln!("  ⚠ failed to download preview {pv_id}: {e}"),
                         }
                         pulled_count += 1;
@@ -478,6 +607,154 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     }
 
     let elapsed = start.elapsed();
-    eprintln!("\n✅ Pull complete: {pulled_count} resources synced to {} in {elapsed:?}", output_root.display());
+    eprintln!(
+        "\n✅ Pull complete: {pulled_count} resources synced to {} in {elapsed:?}",
+        output_root.display()
+    );
     Ok(())
+}
+
+fn sort_versions_for_asset_dedup(versions: &mut [Value]) {
+    versions.sort_by(|a, b| {
+        let a_platform = a["attributes"]["platform"].as_str().unwrap_or("");
+        let b_platform = b["attributes"]["platform"].as_str().unwrap_or("");
+        let a_created = a["attributes"]["createdDate"].as_str().unwrap_or("");
+        let b_created = b["attributes"]["createdDate"].as_str().unwrap_or("");
+        let a_version = a["attributes"]["versionString"].as_str().unwrap_or("");
+        let b_version = b["attributes"]["versionString"].as_str().unwrap_or("");
+
+        a_platform
+            .cmp(b_platform)
+            .then_with(|| a_created.cmp(b_created))
+            .then_with(|| compare_version_strings(a_version, b_version))
+    });
+}
+
+fn compare_version_strings(a: &str, b: &str) -> std::cmp::Ordering {
+    let mut a_parts = a.split('.');
+    let mut b_parts = b.split('.');
+
+    loop {
+        match (a_parts.next(), b_parts.next()) {
+            (Some(a_part), Some(b_part)) => {
+                let ordering = match (a_part.parse::<u64>(), b_part.parse::<u64>()) {
+                    (Ok(a_num), Ok(b_num)) => a_num.cmp(&b_num),
+                    _ => a_part.cmp(b_part),
+                };
+                if ordering != std::cmp::Ordering::Equal {
+                    return ordering;
+                }
+            }
+            (Some(_), None) => return std::cmp::Ordering::Greater,
+            (None, Some(_)) => return std::cmp::Ordering::Less,
+            (None, None) => return std::cmp::Ordering::Equal,
+        }
+    }
+}
+
+fn diff_version_localization_attrs(
+    current: &asc_types::AppStoreVersionLocalizationAttributes,
+    previous: Option<&asc_types::AppStoreVersionLocalizationAttributes>,
+) -> asc_types::AppStoreVersionLocalizationAttributes {
+    let mut diff = asc_types::AppStoreVersionLocalizationAttributes::default();
+
+    if changed(
+        &current.description,
+        previous.and_then(|attrs| attrs.description.as_ref()),
+    ) {
+        diff.description = current.description.clone();
+    }
+    if changed(
+        &current.keywords,
+        previous.and_then(|attrs| attrs.keywords.as_ref()),
+    ) {
+        diff.keywords = current.keywords.clone();
+    }
+    if changed(
+        &current.marketing_url,
+        previous.and_then(|attrs| attrs.marketing_url.as_ref()),
+    ) {
+        diff.marketing_url = current.marketing_url.clone();
+    }
+    if changed(
+        &current.promotional_text,
+        previous.and_then(|attrs| attrs.promotional_text.as_ref()),
+    ) {
+        diff.promotional_text = current.promotional_text.clone();
+    }
+    if changed(
+        &current.support_url,
+        previous.and_then(|attrs| attrs.support_url.as_ref()),
+    ) {
+        diff.support_url = current.support_url.clone();
+    }
+    if changed(
+        &current.whats_new,
+        previous.and_then(|attrs| attrs.whats_new.as_ref()),
+    ) {
+        diff.whats_new = current.whats_new.clone();
+    }
+
+    diff
+}
+
+fn changed(current: &Option<String>, previous: Option<&String>) -> bool {
+    current.as_ref() != previous
+}
+
+fn has_version_localization_changes(
+    attrs: &asc_types::AppStoreVersionLocalizationAttributes,
+) -> bool {
+    attrs.description.is_some()
+        || attrs.keywords.is_some()
+        || attrs.marketing_url.is_some()
+        || attrs.promotional_text.is_some()
+        || attrs.support_url.is_some()
+        || attrs.whats_new.is_some()
+}
+
+fn media_set_signature(set_attrs: &Value, media: &[Value]) -> Value {
+    let mut items: Vec<Value> = media
+        .iter()
+        .map(|item| media_asset_signature(&item["attributes"]))
+        .collect();
+
+    items.sort_by_key(|item| item.to_string());
+
+    serde_json::json!({
+        "set": stable_media_attrs(set_attrs),
+        "items": items,
+    })
+}
+
+fn media_asset_signature(attrs: &Value) -> Value {
+    serde_json::json!({
+        "fileName": attrs.get("fileName"),
+        "fileSize": attrs.get("fileSize"),
+        "sourceFileChecksum": attrs.get("sourceFileChecksum"),
+        "assetType": attrs.get("assetType"),
+        "mimeType": attrs.get("mimeType"),
+        "previewFrameTimeCode": attrs.get("previewFrameTimeCode"),
+        "imageAsset": stable_image_asset(attrs.get("imageAsset")),
+        "previewImage": stable_image_asset(attrs.get("previewImage")),
+        "previewFrameImage": stable_image_asset(attrs.get("previewFrameImage")),
+    })
+}
+
+fn stable_media_attrs(attrs: &Value) -> Value {
+    serde_json::json!({
+        "screenshotDisplayType": attrs.get("screenshotDisplayType"),
+        "previewType": attrs.get("previewType"),
+    })
+}
+
+fn stable_image_asset(asset: Option<&Value>) -> Value {
+    let Some(asset) = asset else {
+        return Value::Null;
+    };
+
+    serde_json::json!({
+        "width": asset.get("width"),
+        "height": asset.get("height"),
+    })
 }

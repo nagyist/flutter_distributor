@@ -102,6 +102,13 @@ KEEP_PATHS = {
     '/v1/appPreviewSets/{id}/appPreviews',  # GET - previews
     '/v1/appScreenshots/{id}',  # GET - single screenshot (fetch imageUrl)
     '/v1/appPreviews/{id}',  # GET - single preview (fetch videoUrl)
+    # App Store Review Details (审核信息)
+    '/v1/appStoreVersions/{id}/appStoreReviewDetail',  # GET - review detail for version
+    '/v1/appStoreReviewDetails',  # POST - create review detail
+    '/v1/appStoreReviewDetails/{id}',  # GET/PATCH - get/update review detail
+    '/v1/appStoreReviewDetails/{id}/appStoreReviewAttachments',  # GET - list attachments
+    '/v1/appStoreReviewAttachments',  # POST - create attachment
+    '/v1/appStoreReviewAttachments/{id}',  # GET - get single attachment
 }
 
 # Resource schemas whose `relationships` field can be stripped
@@ -109,7 +116,7 @@ RESOURCE_SCHEMAS = [
     'App', 'AppStoreVersion', 'Build', 'AppStoreVersionLocalization',
     'AppClip', 'AppClipDefaultExperience', 'AppCustomProductPage',
     'AppEncryptionDeclaration', 'AppEvent', 'AppInfo',
-    'AppStoreReviewDetail', 'AppStoreVersionExperiment', 'AppStoreVersionExperimentV2',
+    'AppStoreReviewAttachment', 'AppStoreReviewDetail', 'AppStoreVersionExperiment', 'AppStoreVersionExperimentV2',
     'AppStoreVersionPhasedRelease', 'AppStoreVersionSubmission',
     'BetaAppLocalization', 'BetaAppReviewDetail', 'BetaGroup',
     'BetaLicenseAgreement', 'AlternativeDistributionPackage',
@@ -168,7 +175,7 @@ def prune(spec_path: Path) -> Path:
     strip_included(schemas, 'AppStoreVersionsResponse')
 
     # Strip relationships from resource schemas, except those needed by catalog
-    RELATIONSHIPS_KEEP = {'AppInfo'}
+    RELATIONSHIPS_KEEP = {'AppInfo', 'AppStoreReviewDetail'}
     for name in RESOURCE_SCHEMAS:
         if name in RELATIONSHIPS_KEEP:
             continue
@@ -222,7 +229,7 @@ def prune(spec_path: Path) -> Path:
             for method, operation in methods.items():
                 if method == 'parameters':
                     new_spec['paths'][path][method] = operation
-                elif method.upper() in {'GET', 'PATCH'}:
+                elif method.upper() in {'GET', 'PATCH', 'POST'}:
                     new_spec['paths'][path][method] = operation
                     collect_refs(operation, refs, spec)
 

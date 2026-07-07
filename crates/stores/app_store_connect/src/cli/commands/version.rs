@@ -48,11 +48,11 @@ pub struct VersionSubmitArgs {
 }
 
 #[derive(Serialize, Clone)]
-struct VersionRow {
-    id: String,
-    version: String,
-    platform: String,
-    state: String,
+pub struct VersionRow {
+    pub id: String,
+    pub version: String,
+    pub platform: String,
+    pub state: String,
 }
 
 #[derive(Serialize)]
@@ -134,7 +134,7 @@ async fn submit(
     Ok(())
 }
 
-async fn list_versions(
+pub async fn list_versions(
     ctx: &AppStoreConnectContext,
     app_id: &str,
     limit: Option<i64>,
@@ -156,7 +156,7 @@ async fn list_versions(
         .collect()
 }
 
-async fn resolve_version(
+pub async fn resolve_version(
     ctx: &AppStoreConnectContext,
     app_id: &str,
     version: &str,

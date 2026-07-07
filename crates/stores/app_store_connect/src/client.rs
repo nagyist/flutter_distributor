@@ -14757,6 +14757,3831 @@ pub mod types {
         }
     }
 
+    ///`AppStoreReviewAttachment`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewAttachment",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "assetDeliveryState": {
+    ///          "$ref": "#/components/schemas/AppMediaAssetState"
+    ///        },
+    ///        "fileName": {
+    ///          "type": "string"
+    ///        },
+    ///        "fileSize": {
+    ///          "type": "integer"
+    ///        },
+    ///        "sourceFileChecksum": {
+    ///          "type": "string"
+    ///        },
+    ///        "uploadOperations": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "$ref": "#/components/schemas/UploadOperation"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewAttachments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachment {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppStoreReviewAttachmentAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewAttachmentType,
+    }
+
+    ///`AppStoreReviewAttachmentAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "assetDeliveryState": {
+    ///      "$ref": "#/components/schemas/AppMediaAssetState"
+    ///    },
+    ///    "fileName": {
+    ///      "type": "string"
+    ///    },
+    ///    "fileSize": {
+    ///      "type": "integer"
+    ///    },
+    ///    "sourceFileChecksum": {
+    ///      "type": "string"
+    ///    },
+    ///    "uploadOperations": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/UploadOperation"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentAttributes {
+        #[serde(
+            rename = "assetDeliveryState",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub asset_delivery_state: ::std::option::Option<AppMediaAssetState>,
+        #[serde(
+            rename = "fileName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "fileSize",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub file_size: ::std::option::Option<i64>,
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "uploadOperations",
+            default,
+            skip_serializing_if = "::std::vec::Vec::is_empty"
+        )]
+        pub upload_operations: ::std::vec::Vec<UploadOperation>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewAttachmentAttributes {
+        fn default() -> Self {
+            Self {
+                asset_delivery_state: Default::default(),
+                file_name: Default::default(),
+                file_size: Default::default(),
+                source_file_checksum: Default::default(),
+                upload_operations: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewAttachmentCreateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "relationships",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "fileName",
+    ///            "fileSize"
+    ///          ],
+    ///          "properties": {
+    ///            "fileName": {
+    ///              "type": "string"
+    ///            },
+    ///            "fileSize": {
+    ///              "type": "integer"
+    ///            }
+    ///          }
+    ///        },
+    ///        "relationships": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "appStoreReviewDetail"
+    ///          ],
+    ///          "properties": {
+    ///            "appStoreReviewDetail": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "data"
+    ///              ],
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appStoreReviewDetails"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreReviewAttachments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequest {
+        pub data: AppStoreReviewAttachmentCreateRequestData,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "relationships",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "fileName",
+    ///        "fileSize"
+    ///      ],
+    ///      "properties": {
+    ///        "fileName": {
+    ///          "type": "string"
+    ///        },
+    ///        "fileSize": {
+    ///          "type": "integer"
+    ///        }
+    ///      }
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "appStoreReviewDetail"
+    ///      ],
+    ///      "properties": {
+    ///        "appStoreReviewDetail": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "data"
+    ///          ],
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreReviewDetails"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewAttachments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequestData {
+        pub attributes: AppStoreReviewAttachmentCreateRequestDataAttributes,
+        pub relationships: AppStoreReviewAttachmentCreateRequestDataRelationships,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewAttachmentCreateRequestDataType,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "fileName",
+    ///    "fileSize"
+    ///  ],
+    ///  "properties": {
+    ///    "fileName": {
+    ///      "type": "string"
+    ///    },
+    ///    "fileSize": {
+    ///      "type": "integer"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequestDataAttributes {
+        #[serde(rename = "fileName")]
+        pub file_name: ::std::string::String,
+        #[serde(rename = "fileSize")]
+        pub file_size: i64,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "appStoreReviewDetail"
+    ///  ],
+    ///  "properties": {
+    ///    "appStoreReviewDetail": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "data"
+    ///      ],
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreReviewDetails"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequestDataRelationships {
+        #[serde(rename = "appStoreReviewDetail")]
+        pub app_store_review_detail:
+            AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetail,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetail`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreReviewDetails"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetail {
+        pub data: AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailData,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewDetails"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType,
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType {
+        #[serde(rename = "appStoreReviewDetails")]
+        AppStoreReviewDetails,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetails => f.write_str("appStoreReviewDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetails" => Ok(Self::AppStoreReviewDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentCreateRequestDataRelationshipsAppStoreReviewDetailDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentCreateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentCreateRequestDataType {
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewAttachmentCreateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewAttachmentCreateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewAttachmentCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentCreateRequestDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentCreateRequestDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewAttachmentResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/AppStoreReviewAttachment"
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppStoreReviewDetail"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentResponse {
+        pub data: AppStoreReviewAttachment,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppStoreReviewDetail>,
+        pub links: DocumentLinks,
+    }
+
+    ///`AppStoreReviewAttachmentType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentType {
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewAttachmentType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewAttachmentType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewAttachmentType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppStoreReviewAttachmentType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppStoreReviewAttachmentType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewAttachmentUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "sourceFileChecksum": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "uploaded": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreReviewAttachments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentUpdateRequest {
+        pub data: AppStoreReviewAttachmentUpdateRequestData,
+    }
+
+    ///`AppStoreReviewAttachmentUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "sourceFileChecksum": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "uploaded": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewAttachments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppStoreReviewAttachmentUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewAttachmentUpdateRequestDataType,
+    }
+
+    ///`AppStoreReviewAttachmentUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "sourceFileChecksum": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "uploaded": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentUpdateRequestDataAttributes {
+        #[serde(
+            rename = "sourceFileChecksum",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub source_file_checksum: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub uploaded: ::std::option::Option<bool>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewAttachmentUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                source_file_checksum: Default::default(),
+                uploaded: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewAttachmentUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentUpdateRequestDataType {
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewAttachmentUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewAttachmentUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewAttachmentUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentUpdateRequestDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentUpdateRequestDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "contactFirstName",
+    ///    "contactLastName",
+    ///    "contactPhone",
+    ///    "contactEmail",
+    ///    "demoAccountName",
+    ///    "demoAccountPassword",
+    ///    "demoAccountRequired",
+    ///    "notes",
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem {
+        #[serde(rename = "contactFirstName")]
+        ContactFirstName,
+        #[serde(rename = "contactLastName")]
+        ContactLastName,
+        #[serde(rename = "contactPhone")]
+        ContactPhone,
+        #[serde(rename = "contactEmail")]
+        ContactEmail,
+        #[serde(rename = "demoAccountName")]
+        DemoAccountName,
+        #[serde(rename = "demoAccountPassword")]
+        DemoAccountPassword,
+        #[serde(rename = "demoAccountRequired")]
+        DemoAccountRequired,
+        #[serde(rename = "notes")]
+        Notes,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ContactFirstName => f.write_str("contactFirstName"),
+                Self::ContactLastName => f.write_str("contactLastName"),
+                Self::ContactPhone => f.write_str("contactPhone"),
+                Self::ContactEmail => f.write_str("contactEmail"),
+                Self::DemoAccountName => f.write_str("demoAccountName"),
+                Self::DemoAccountPassword => f.write_str("demoAccountPassword"),
+                Self::DemoAccountRequired => f.write_str("demoAccountRequired"),
+                Self::Notes => f.write_str("notes"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "contactFirstName" => Ok(Self::ContactFirstName),
+                "contactLastName" => Ok(Self::ContactLastName),
+                "contactPhone" => Ok(Self::ContactPhone),
+                "contactEmail" => Ok(Self::ContactEmail),
+                "demoAccountName" => Ok(Self::DemoAccountName),
+                "demoAccountPassword" => Ok(Self::DemoAccountPassword),
+                "demoAccountRequired" => Ok(Self::DemoAccountRequired),
+                "notes" => Ok(Self::Notes),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentsGetInstanceIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewAttachmentsGetInstanceIncludeItem {
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewAttachmentsGetInstanceIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewAttachmentsGetInstanceIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewAttachmentsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewAttachmentsGetInstanceIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewAttachmentsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewAttachmentsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppStoreReviewAttachment"
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/AppStoreReviewDetail"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewAttachmentsResponse {
+        pub data: ::std::vec::Vec<AppStoreReviewAttachment>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppStoreReviewDetail>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    ///`AppStoreReviewDetail`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewDetail",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "contactEmail": {
+    ///          "type": "string"
+    ///        },
+    ///        "contactFirstName": {
+    ///          "type": "string"
+    ///        },
+    ///        "contactLastName": {
+    ///          "type": "string"
+    ///        },
+    ///        "contactPhone": {
+    ///          "type": "string"
+    ///        },
+    ///        "demoAccountName": {
+    ///          "type": "string"
+    ///        },
+    ///        "demoAccountPassword": {
+    ///          "type": "string"
+    ///        },
+    ///        "demoAccountRequired": {
+    ///          "type": "boolean"
+    ///        },
+    ///        "notes": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appStoreReviewAttachments": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "appStoreReviewAttachments"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewDetails"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetail {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppStoreReviewDetailAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<AppStoreReviewDetailRelationships>,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailType,
+    }
+
+    ///`AppStoreReviewDetailAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "contactEmail": {
+    ///      "type": "string"
+    ///    },
+    ///    "contactFirstName": {
+    ///      "type": "string"
+    ///    },
+    ///    "contactLastName": {
+    ///      "type": "string"
+    ///    },
+    ///    "contactPhone": {
+    ///      "type": "string"
+    ///    },
+    ///    "demoAccountName": {
+    ///      "type": "string"
+    ///    },
+    ///    "demoAccountPassword": {
+    ///      "type": "string"
+    ///    },
+    ///    "demoAccountRequired": {
+    ///      "type": "boolean"
+    ///    },
+    ///    "notes": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailAttributes {
+        #[serde(
+            rename = "contactEmail",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_email: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactFirstName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_first_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactLastName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_last_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactPhone",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_phone: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountPassword",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_password: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountRequired",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_required: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notes: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailAttributes {
+        fn default() -> Self {
+            Self {
+                contact_email: Default::default(),
+                contact_first_name: Default::default(),
+                contact_last_name: Default::default(),
+                contact_phone: Default::default(),
+                demo_account_name: Default::default(),
+                demo_account_password: Default::default(),
+                demo_account_required: Default::default(),
+                notes: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailCreateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewDetailCreateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "relationships",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "contactEmail": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactFirstName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactLastName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactPhone": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountPassword": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountRequired": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "notes": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "relationships": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "appStoreVersion"
+    ///          ],
+    ///          "properties": {
+    ///            "appStoreVersion": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "data"
+    ///              ],
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appStoreVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreReviewDetails"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequest {
+        pub data: AppStoreReviewDetailCreateRequestData,
+    }
+
+    ///`AppStoreReviewDetailCreateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "relationships",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "contactEmail": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactFirstName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactLastName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactPhone": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountPassword": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountRequired": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "notes": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "appStoreVersion"
+    ///      ],
+    ///      "properties": {
+    ///        "appStoreVersion": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "data"
+    ///          ],
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewDetails"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppStoreReviewDetailCreateRequestDataAttributes>,
+        pub relationships: AppStoreReviewDetailCreateRequestDataRelationships,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailCreateRequestDataType,
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "contactEmail": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactFirstName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactLastName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactPhone": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountPassword": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountRequired": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "notes": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequestDataAttributes {
+        #[serde(
+            rename = "contactEmail",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_email: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactFirstName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_first_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactLastName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_last_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactPhone",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_phone: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountPassword",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_password: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountRequired",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_required: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notes: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailCreateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                contact_email: Default::default(),
+                contact_first_name: Default::default(),
+                contact_last_name: Default::default(),
+                contact_phone: Default::default(),
+                demo_account_name: Default::default(),
+                demo_account_password: Default::default(),
+                demo_account_required: Default::default(),
+                notes: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "appStoreVersion"
+    ///  ],
+    ///  "properties": {
+    ///    "appStoreVersion": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "data"
+    ///      ],
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequestDataRelationships {
+        #[serde(rename = "appStoreVersion")]
+        pub app_store_version: AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersion,
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersion {
+        pub data: AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionData,
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType,
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType {
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailCreateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailCreateRequestDataType {
+        #[serde(rename = "appStoreReviewDetails")]
+        AppStoreReviewDetails,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailCreateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetails => f.write_str("appStoreReviewDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailCreateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetails" => Ok(Self::AppStoreReviewDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppStoreReviewDetailCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppStoreReviewDetailCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appStoreReviewAttachments": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "appStoreReviewAttachments"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailRelationships {
+        #[serde(
+            rename = "appStoreReviewAttachments",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_review_attachments:
+            ::std::option::Option<AppStoreReviewDetailRelationshipsAppStoreReviewAttachments>,
+        #[serde(
+            rename = "appStoreVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version:
+            ::std::option::Option<AppStoreReviewDetailRelationshipsAppStoreVersion>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailRelationships {
+        fn default() -> Self {
+            Self {
+                app_store_review_attachments: Default::default(),
+                app_store_version: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreReviewAttachments`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "appStoreReviewAttachments"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailRelationshipsAppStoreReviewAttachments {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data:
+            ::std::vec::Vec<AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailRelationshipsAppStoreReviewAttachments {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewAttachments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType,
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType {
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailRelationshipsAppStoreReviewAttachmentsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailRelationshipsAppStoreVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AppStoreReviewDetailRelationshipsAppStoreVersionData>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailRelationshipsAppStoreVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailRelationshipsAppStoreVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailRelationshipsAppStoreVersionDataType,
+    }
+
+    ///`AppStoreReviewDetailRelationshipsAppStoreVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailRelationshipsAppStoreVersionDataType {
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailRelationshipsAppStoreVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailRelationshipsAppStoreVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailRelationshipsAppStoreVersionDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewDetailResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/AppStoreReviewDetail"
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "oneOf": [
+    ///          {
+    ///            "$ref": "#/components/schemas/AppStoreReviewAttachment"
+    ///          },
+    ///          {
+    ///            "$ref": "#/components/schemas/AppStoreVersion"
+    ///          }
+    ///        ]
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailResponse {
+        pub data: AppStoreReviewDetail,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<AppStoreReviewDetailResponseIncludedItem>,
+        pub links: DocumentLinks,
+    }
+
+    ///`AppStoreReviewDetailResponseIncludedItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "oneOf": [
+    ///    {
+    ///      "$ref": "#/components/schemas/AppStoreReviewAttachment"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/AppStoreVersion"
+    ///    }
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AppStoreReviewDetailResponseIncludedItem {
+        ReviewAttachment(AppStoreReviewAttachment),
+        Version(AppStoreVersion),
+    }
+
+    impl ::std::convert::From<AppStoreReviewAttachment> for AppStoreReviewDetailResponseIncludedItem {
+        fn from(value: AppStoreReviewAttachment) -> Self {
+            Self::ReviewAttachment(value)
+        }
+    }
+
+    impl ::std::convert::From<AppStoreVersion> for AppStoreReviewDetailResponseIncludedItem {
+        fn from(value: AppStoreVersion) -> Self {
+            Self::Version(value)
+        }
+    }
+
+    ///`AppStoreReviewDetailType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailType {
+        #[serde(rename = "appStoreReviewDetails")]
+        AppStoreReviewDetails,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetails => f.write_str("appStoreReviewDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetails" => Ok(Self::AppStoreReviewDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppStoreReviewDetailType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppStoreReviewDetailType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "AppStoreReviewDetailUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "contactEmail": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactFirstName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactLastName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "contactPhone": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountName": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountPassword": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "demoAccountRequired": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "notes": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreReviewDetails"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailUpdateRequest {
+        pub data: AppStoreReviewDetailUpdateRequestData,
+    }
+
+    ///`AppStoreReviewDetailUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "contactEmail": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactFirstName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactLastName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "contactPhone": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountName": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountPassword": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "demoAccountRequired": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "notes": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreReviewDetails"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AppStoreReviewDetailUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: AppStoreReviewDetailUpdateRequestDataType,
+    }
+
+    ///`AppStoreReviewDetailUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "contactEmail": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactFirstName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactLastName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "contactPhone": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountName": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountPassword": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "demoAccountRequired": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "notes": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct AppStoreReviewDetailUpdateRequestDataAttributes {
+        #[serde(
+            rename = "contactEmail",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_email: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactFirstName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_first_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactLastName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_last_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "contactPhone",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub contact_phone: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountName",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_name: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountPassword",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_password: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "demoAccountRequired",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub demo_account_required: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notes: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for AppStoreReviewDetailUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                contact_email: Default::default(),
+                contact_first_name: Default::default(),
+                contact_last_name: Default::default(),
+                contact_phone: Default::default(),
+                demo_account_name: Default::default(),
+                demo_account_password: Default::default(),
+                demo_account_required: Default::default(),
+                notes: Default::default(),
+            }
+        }
+    }
+
+    ///`AppStoreReviewDetailUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailUpdateRequestDataType {
+        #[serde(rename = "appStoreReviewDetails")]
+        AppStoreReviewDetails,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetails => f.write_str("appStoreReviewDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetails" => Ok(Self::AppStoreReviewDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for AppStoreReviewDetailUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for AppStoreReviewDetailUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: FileSize => f . write_str ("fileSize") , Self :: FileName => f . write_str ("fileName") , Self :: SourceFileChecksum => f . write_str ("sourceFileChecksum") , Self :: UploadOperations => f . write_str ("uploadOperations") , Self :: AssetDeliveryState => f . write_str ("assetDeliveryState") , Self :: AppStoreReviewDetail => f . write_str ("appStoreReviewDetail") , } } }
+    impl :: std :: str :: FromStr for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "fileSize" => Ok (Self :: FileSize) , "fileName" => Ok (Self :: FileName) , "sourceFileChecksum" => Ok (Self :: SourceFileChecksum) , "uploadOperations" => Ok (Self :: UploadOperations) , "assetDeliveryState" => Ok (Self :: AssetDeliveryState) , "appStoreReviewDetail" => Ok (Self :: AppStoreReviewDetail) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "contactFirstName",
+    ///    "contactLastName",
+    ///    "contactPhone",
+    ///    "contactEmail",
+    ///    "demoAccountName",
+    ///    "demoAccountPassword",
+    ///    "demoAccountRequired",
+    ///    "notes",
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem
+    {
+        #[serde(rename = "contactFirstName")]
+        ContactFirstName,
+        #[serde(rename = "contactLastName")]
+        ContactLastName,
+        #[serde(rename = "contactPhone")]
+        ContactPhone,
+        #[serde(rename = "contactEmail")]
+        ContactEmail,
+        #[serde(rename = "demoAccountName")]
+        DemoAccountName,
+        #[serde(rename = "demoAccountPassword")]
+        DemoAccountPassword,
+        #[serde(rename = "demoAccountRequired")]
+        DemoAccountRequired,
+        #[serde(rename = "notes")]
+        Notes,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl :: std :: fmt :: Display for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: ContactFirstName => f . write_str ("contactFirstName") , Self :: ContactLastName => f . write_str ("contactLastName") , Self :: ContactPhone => f . write_str ("contactPhone") , Self :: ContactEmail => f . write_str ("contactEmail") , Self :: DemoAccountName => f . write_str ("demoAccountName") , Self :: DemoAccountPassword => f . write_str ("demoAccountPassword") , Self :: DemoAccountRequired => f . write_str ("demoAccountRequired") , Self :: Notes => f . write_str ("notes") , Self :: AppStoreVersion => f . write_str ("appStoreVersion") , Self :: AppStoreReviewAttachments => f . write_str ("appStoreReviewAttachments") , } } }
+    impl :: std :: str :: FromStr for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "contactFirstName" => Ok (Self :: ContactFirstName) , "contactLastName" => Ok (Self :: ContactLastName) , "contactPhone" => Ok (Self :: ContactPhone) , "contactEmail" => Ok (Self :: ContactEmail) , "demoAccountName" => Ok (Self :: DemoAccountName) , "demoAccountPassword" => Ok (Self :: DemoAccountPassword) , "demoAccountRequired" => Ok (Self :: DemoAccountRequired) , "notes" => Ok (Self :: Notes) , "appStoreVersion" => Ok (Self :: AppStoreVersion) , "appStoreReviewAttachments" => Ok (Self :: AppStoreReviewAttachments) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "contactFirstName",
+    ///    "contactLastName",
+    ///    "contactPhone",
+    ///    "contactEmail",
+    ///    "demoAccountName",
+    ///    "demoAccountPassword",
+    ///    "demoAccountRequired",
+    ///    "notes",
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem {
+        #[serde(rename = "contactFirstName")]
+        ContactFirstName,
+        #[serde(rename = "contactLastName")]
+        ContactLastName,
+        #[serde(rename = "contactPhone")]
+        ContactPhone,
+        #[serde(rename = "contactEmail")]
+        ContactEmail,
+        #[serde(rename = "demoAccountName")]
+        DemoAccountName,
+        #[serde(rename = "demoAccountPassword")]
+        DemoAccountPassword,
+        #[serde(rename = "demoAccountRequired")]
+        DemoAccountRequired,
+        #[serde(rename = "notes")]
+        Notes,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ContactFirstName => f.write_str("contactFirstName"),
+                Self::ContactLastName => f.write_str("contactLastName"),
+                Self::ContactPhone => f.write_str("contactPhone"),
+                Self::ContactEmail => f.write_str("contactEmail"),
+                Self::DemoAccountName => f.write_str("demoAccountName"),
+                Self::DemoAccountPassword => f.write_str("demoAccountPassword"),
+                Self::DemoAccountRequired => f.write_str("demoAccountRequired"),
+                Self::Notes => f.write_str("notes"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "contactFirstName" => Ok(Self::ContactFirstName),
+                "contactLastName" => Ok(Self::ContactLastName),
+                "contactPhone" => Ok(Self::ContactPhone),
+                "contactEmail" => Ok(Self::ContactEmail),
+                "demoAccountName" => Ok(Self::DemoAccountName),
+                "demoAccountPassword" => Ok(Self::DemoAccountPassword),
+                "demoAccountRequired" => Ok(Self::DemoAccountRequired),
+                "notes" => Ok(Self::Notes),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreReviewDetailsGetInstanceIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreReviewDetailsGetInstanceIncludeItem {
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreReviewDetailsGetInstanceIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreReviewDetailsGetInstanceIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppStoreReviewDetailsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreReviewDetailsGetInstanceIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreReviewDetailsGetInstanceIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
     ///`AppStoreVersion`
     ///
     /// <details><summary>JSON schema</summary>
@@ -18653,6 +22478,526 @@ pub mod types {
     }
 
     impl ::std::convert::TryFrom<::std::string::String> for AppStoreVersionType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "fileSize",
+    ///    "fileName",
+    ///    "sourceFileChecksum",
+    ///    "uploadOperations",
+    ///    "assetDeliveryState",
+    ///    "appStoreReviewDetail"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem {
+        #[serde(rename = "fileSize")]
+        FileSize,
+        #[serde(rename = "fileName")]
+        FileName,
+        #[serde(rename = "sourceFileChecksum")]
+        SourceFileChecksum,
+        #[serde(rename = "uploadOperations")]
+        UploadOperations,
+        #[serde(rename = "assetDeliveryState")]
+        AssetDeliveryState,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::FileSize => f.write_str("fileSize"),
+                Self::FileName => f.write_str("fileName"),
+                Self::SourceFileChecksum => f.write_str("sourceFileChecksum"),
+                Self::UploadOperations => f.write_str("uploadOperations"),
+                Self::AssetDeliveryState => f.write_str("assetDeliveryState"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "fileSize" => Ok(Self::FileSize),
+                "fileName" => Ok(Self::FileName),
+                "sourceFileChecksum" => Ok(Self::SourceFileChecksum),
+                "uploadOperations" => Ok(Self::UploadOperations),
+                "assetDeliveryState" => Ok(Self::AssetDeliveryState),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "contactFirstName",
+    ///    "contactLastName",
+    ///    "contactPhone",
+    ///    "contactEmail",
+    ///    "demoAccountName",
+    ///    "demoAccountPassword",
+    ///    "demoAccountRequired",
+    ///    "notes",
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem {
+        #[serde(rename = "contactFirstName")]
+        ContactFirstName,
+        #[serde(rename = "contactLastName")]
+        ContactLastName,
+        #[serde(rename = "contactPhone")]
+        ContactPhone,
+        #[serde(rename = "contactEmail")]
+        ContactEmail,
+        #[serde(rename = "demoAccountName")]
+        DemoAccountName,
+        #[serde(rename = "demoAccountPassword")]
+        DemoAccountPassword,
+        #[serde(rename = "demoAccountRequired")]
+        DemoAccountRequired,
+        #[serde(rename = "notes")]
+        Notes,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ContactFirstName => f.write_str("contactFirstName"),
+                Self::ContactLastName => f.write_str("contactLastName"),
+                Self::ContactPhone => f.write_str("contactPhone"),
+                Self::ContactEmail => f.write_str("contactEmail"),
+                Self::DemoAccountName => f.write_str("demoAccountName"),
+                Self::DemoAccountPassword => f.write_str("demoAccountPassword"),
+                Self::DemoAccountRequired => f.write_str("demoAccountRequired"),
+                Self::Notes => f.write_str("notes"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "contactFirstName" => Ok(Self::ContactFirstName),
+                "contactLastName" => Ok(Self::ContactLastName),
+                "contactPhone" => Ok(Self::ContactPhone),
+                "contactEmail" => Ok(Self::ContactEmail),
+                "demoAccountName" => Ok(Self::DemoAccountName),
+                "demoAccountPassword" => Ok(Self::DemoAccountPassword),
+                "demoAccountRequired" => Ok(Self::DemoAccountRequired),
+                "notes" => Ok(Self::Notes),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersion",
+    ///    "appStoreReviewAttachments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem {
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreReviewAttachments")]
+        AppStoreReviewAttachments,
+    }
+
+    impl ::std::fmt::Display for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreReviewAttachments => f.write_str("appStoreReviewAttachments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreReviewAttachments" => Ok(Self::AppStoreReviewAttachments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem
+    {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -31647,6 +35992,41 @@ pub mod types {
         pub pointer: ::std::string::String,
     }
 
+    ///`HttpHeader`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "name": {
+    ///      "type": "string"
+    ///    },
+    ///    "value": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct HttpHeader {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for HttpHeader {
+        fn default() -> Self {
+            Self {
+                name: Default::default(),
+                value: Default::default(),
+            }
+        }
+    }
+
     ///`ImageAsset`
     ///
     /// <details><summary>JSON schema</summary>
@@ -32540,6 +36920,66 @@ pub mod types {
             value.parse()
         }
     }
+
+    ///`UploadOperation`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "length": {
+    ///      "type": "integer"
+    ///    },
+    ///    "method": {
+    ///      "type": "string"
+    ///    },
+    ///    "offset": {
+    ///      "type": "integer"
+    ///    },
+    ///    "requestHeaders": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/HttpHeader"
+    ///      }
+    ///    },
+    ///    "url": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct UploadOperation {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub length: ::std::option::Option<i64>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub method: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub offset: ::std::option::Option<i64>,
+        #[serde(
+            rename = "requestHeaders",
+            default,
+            skip_serializing_if = "::std::vec::Vec::is_empty"
+        )]
+        pub request_headers: ::std::vec::Vec<HttpHeader>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub url: ::std::option::Option<::std::string::String>,
+    }
+
+    impl ::std::default::Default for UploadOperation {
+        fn default() -> Self {
+            Self {
+                length: Default::default(),
+                method: Default::default(),
+                offset: Default::default(),
+                request_headers: Default::default(),
+                url: Default::default(),
+            }
+        }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -33003,6 +37443,434 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "app_screenshots_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `POST` request to `/v1/appStoreReviewAttachments`
+    ///
+    ///Arguments:
+    /// - `body`: AppStoreReviewAttachment representation
+    pub async fn app_store_review_attachments_create_instance<'a>(
+        &'a self,
+        body: &'a types::AppStoreReviewAttachmentCreateRequest,
+    ) -> Result<ResponseValue<types::AppStoreReviewAttachmentResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!("{}/v1/appStoreReviewAttachments", self.baseurl,);
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_attachments_create_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            201u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appStoreReviewAttachments/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_store_review_attachments`: the fields to include for
+    ///   returned resources of type appStoreReviewAttachments
+    /// - `fields_app_store_review_details`: the fields to include for returned
+    ///   resources of type appStoreReviewDetails
+    /// - `include`: comma-separated list of relationships to include
+    pub async fn app_store_review_attachments_get_instance<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_store_review_attachments: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewAttachmentsItem,
+            >,
+        >,
+        fields_app_store_review_details: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreReviewAttachmentsGetInstanceFieldsAppStoreReviewDetailsItem,
+            >,
+        >,
+        include: Option<
+            &'a ::std::vec::Vec<types::AppStoreReviewAttachmentsGetInstanceIncludeItem>,
+        >,
+    ) -> Result<ResponseValue<types::AppStoreReviewAttachmentResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreReviewAttachments/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewAttachments]",
+                &fields_app_store_review_attachments,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewDetails]",
+                &fields_app_store_review_details,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_attachments_get_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/appStoreReviewAttachments/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: AppStoreReviewAttachment representation
+    pub async fn app_store_review_attachments_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::AppStoreReviewAttachmentUpdateRequest,
+    ) -> Result<ResponseValue<types::AppStoreReviewAttachmentResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreReviewAttachments/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_attachments_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `POST` request to `/v1/appStoreReviewDetails`
+    ///
+    ///Arguments:
+    /// - `body`: AppStoreReviewDetail representation
+    pub async fn app_store_review_details_create_instance<'a>(
+        &'a self,
+        body: &'a types::AppStoreReviewDetailCreateRequest,
+    ) -> Result<ResponseValue<types::AppStoreReviewDetailResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!("{}/v1/appStoreReviewDetails", self.baseurl,);
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_details_create_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            201u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/appStoreReviewDetails/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_store_review_attachments`: the fields to include for
+    ///   returned resources of type appStoreReviewAttachments
+    /// - `fields_app_store_review_details`: the fields to include for returned
+    ///   resources of type appStoreReviewDetails
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit_app_store_review_attachments`: maximum number of related
+    ///   appStoreReviewAttachments returned (when they are included)
+    pub async fn app_store_review_details_get_instance<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_store_review_attachments: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem,
+            >,
+        >,
+        fields_app_store_review_details: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem,
+            >,
+        >,
+        fields_app_store_versions: Option<
+            &'a ::std::vec::Vec<types::AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem>,
+        >,
+        include: Option<&'a ::std::vec::Vec<types::AppStoreReviewDetailsGetInstanceIncludeItem>>,
+        limit_app_store_review_attachments: Option<i64>,
+    ) -> Result<ResponseValue<types::AppStoreReviewDetailResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreReviewDetails/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewAttachments]",
+                &fields_app_store_review_attachments,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewDetails]",
+                &fields_app_store_review_details,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[appStoreReviewAttachments]",
+                &limit_app_store_review_attachments,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_details_get_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/appStoreReviewDetails/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: AppStoreReviewDetail representation
+    pub async fn app_store_review_details_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::AppStoreReviewDetailUpdateRequest,
+    ) -> Result<ResponseValue<types::AppStoreReviewDetailResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreReviewDetails/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_details_update_instance",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;
@@ -34426,6 +39294,89 @@ impl Client {
     }
 
     ///Sends a `GET` request to
+    /// `/v1/appStoreReviewDetails/{id}/appStoreReviewAttachments`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_store_review_attachments`: the fields to include for
+    ///   returned resources of type appStoreReviewAttachments
+    /// - `fields_app_store_review_details`: the fields to include for returned
+    ///   resources of type appStoreReviewDetails
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    pub async fn app_store_review_details_app_store_review_attachments_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_store_review_attachments : Option < & 'a :: std :: vec :: Vec < types :: AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewAttachmentsItem > >,
+        fields_app_store_review_details : Option < & 'a :: std :: vec :: Vec < types :: AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedFieldsAppStoreReviewDetailsItem > >,
+        include: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreReviewDetailsAppStoreReviewAttachmentsGetToManyRelatedIncludeItem,
+            >,
+        >,
+        limit: Option<i64>,
+    ) -> Result<ResponseValue<types::AppStoreReviewAttachmentsResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreReviewDetails/{}/appStoreReviewAttachments",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewAttachments]",
+                &fields_app_store_review_attachments,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewDetails]",
+                &fields_app_store_review_details,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id:
+                "app_store_review_details_app_store_review_attachments_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to
     /// `/v1/appStoreVersionLocalizations/{id}/appPreviewSets`
     ///
     ///Arguments:
@@ -34668,6 +39619,99 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "app_store_version_localizations_app_screenshot_sets_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to
+    /// `/v1/appStoreVersions/{id}/appStoreReviewDetail`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_store_review_attachments`: the fields to include for
+    ///   returned resources of type appStoreReviewAttachments
+    /// - `fields_app_store_review_details`: the fields to include for returned
+    ///   resources of type appStoreReviewDetails
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit_app_store_review_attachments`: maximum number of related
+    ///   appStoreReviewAttachments returned (when they are included)
+    pub async fn app_store_versions_app_store_review_detail_get_to_one_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_store_review_attachments : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem > >,
+        fields_app_store_review_details : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem > >,
+        fields_app_store_versions : Option < & 'a :: std :: vec :: Vec < types :: AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem > >,
+        include: Option<
+            &'a ::std::vec::Vec<
+                types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem,
+            >,
+        >,
+        limit_app_store_review_attachments: Option<i64>,
+    ) -> Result<ResponseValue<types::AppStoreReviewDetailResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/appStoreVersions/{}/appStoreReviewDetail",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewAttachments]",
+                &fields_app_store_review_attachments,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreReviewDetails]",
+                &fields_app_store_review_details,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[appStoreReviewAttachments]",
+                &limit_app_store_review_attachments,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_versions_app_store_review_detail_get_to_one_related",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;

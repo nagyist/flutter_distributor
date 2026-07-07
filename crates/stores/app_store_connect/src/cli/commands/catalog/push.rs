@@ -3,7 +3,11 @@ use crate::cli::GlobalArgs;
 use crate::cli::commands::app::resolve_app;
 use crate::types::{
     self as asc_types, AppInfoLocalizationAttributes, AppStoreVersionAttributes,
-    AppStoreVersionLocalizationAttributes, Platform,
+    AppStoreVersionLocalizationAttributes,
+    AppStoreVersionLocalizationUpdateRequest, AppStoreVersionLocalizationUpdateRequestData,
+    AppStoreVersionLocalizationUpdateRequestDataAttributes,
+    AppStoreVersionLocalizationUpdateRequestDataType,
+    Platform,
 };
 use anyhow::{Context, Result, anyhow};
 use clap::Args;
@@ -156,6 +160,25 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                 push_update_version_localization(&ctx, &existing.id, &vloc_yaml).await?;
             } else {
                 push_create_version_localization(&ctx, &version_id, &vloc_yaml).await?;
+            }
+        }
+
+        // Execute: review detail
+        let review_yaml_path = version_path.join("review.yaml");
+        if review_yaml_path.exists() {
+            push_review_detail(&ctx, &version_id, &review_yaml_path).await?;
+
+            // Execute: review attachments
+            let review_dir = version_path.join("review.d");
+            if review_dir.exists() {
+                let review_detail_id = resolve_review_detail_id(&ctx, &version_id).await?;
+                for entry in std::fs::read_dir(&review_dir).context("reading review.d")? {
+                    let entry = entry?;
+                    let path = entry.path();
+                    if path.extension().and_then(|e| e.to_str()) == Some("yaml") {
+                        push_review_attachment(&ctx, &review_detail_id, &path).await?;
+                    }
+                }
             }
         }
     }
@@ -390,28 +413,25 @@ async fn push_update_version_localization(
     id: &str,
     yaml: &AppStoreVersionLocalizationAttributes,
 ) -> Result<()> {
-    let mut attrs = json!({});
-    if let Some(ref v) = yaml.description {
-        attrs["description"] = json!(v);
-    }
-    if let Some(ref v) = yaml.keywords {
-        attrs["keywords"] = json!(v);
-    }
-    if let Some(ref v) = yaml.marketing_url {
-        attrs["marketingUrl"] = json!(v);
-    }
-    if let Some(ref v) = yaml.promotional_text {
-        attrs["promotionalText"] = json!(v);
-    }
-    if let Some(ref v) = yaml.support_url {
-        attrs["supportUrl"] = json!(v);
-    }
-    if let Some(ref v) = yaml.whats_new {
-        attrs["whatsNew"] = json!(v);
-    }
-    ctx.http.patch(ctx.url(&format!("/v1/appStoreVersionLocalizations/{id}")))
-        .json(&json!({"data": {"type": "appStoreVersionLocalizations", "id": id, "attributes": attrs}}))
-        .send().await?.error_for_status()?;
+    let mut attrs = AppStoreVersionLocalizationUpdateRequestDataAttributes::default();
+    attrs.description = yaml.description.clone();
+    attrs.keywords = yaml.keywords.clone();
+    attrs.marketing_url = yaml.marketing_url.clone();
+    attrs.promotional_text = yaml.promotional_text.clone();
+    attrs.support_url = yaml.support_url.clone();
+    attrs.whats_new = yaml.whats_new.clone();
+
+    let body = AppStoreVersionLocalizationUpdateRequest {
+        data: AppStoreVersionLocalizationUpdateRequestData {
+            attributes: Some(attrs),
+            id: id.to_string(),
+            type_: AppStoreVersionLocalizationUpdateRequestDataType::AppStoreVersionLocalizations,
+        },
+    };
+    ctx.client
+        .app_store_version_localizations_update_instance(id, &body)
+        .await
+        .map_err(|e| anyhow!("failed to update version localization {id}: {e}"))?;
     Ok(())
 }
 
@@ -448,11 +468,6 @@ async fn push_create_version_localization(
 
 struct CurrentAppVersion {
     id: String,
-}
-
-struct CurrentAppVersionLocalization {
-    id: String,
-    locale: String,
 }
 
 async fn fetch_all_versions_simple(
@@ -504,6 +519,10 @@ async fn fetch_all_versions_simple(
         .map(|v| CurrentAppVersion { id: v.id })
         .collect())
 }
+struct CurrentAppVersionLocalization {
+    id: String,
+    locale: String,
+}
 
 async fn fetch_version_localizations_simple(
     ctx: &AppStoreConnectContext,
@@ -538,4 +557,209 @@ async fn fetch_version_localizations_simple(
             })
         })
         .collect())
+}
+
+// ── App Store Review Detail (审核信息) push ─────────────────────────
+
+#[derive(serde::Deserialize)]
+struct ReviewAttachmentYaml {
+    _id: Option<String>,
+    file_name: Option<String>,
+    file_size: Option<i64>,
+    source_file_checksum: Option<String>,
+}
+
+/// Resolve the review detail ID for a version, if one exists.
+async fn resolve_review_detail_id(
+    ctx: &AppStoreConnectContext,
+    version_id: &str,
+) -> Result<String> {
+    let resp = ctx
+        .client
+        .app_store_versions_app_store_review_detail_get_to_one_related(
+            version_id,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem>>,
+            None::<i64>,
+        )
+        .await
+        .map_err(|_| anyhow!("no review detail found for version {version_id}"))?;
+    Ok(resp.into_inner().data.id)
+}
+
+/// Push review detail: update if exists (by resolving server-side), otherwise create.
+async fn push_review_detail(
+    ctx: &AppStoreConnectContext,
+    version_id: &str,
+    yaml_path: &Path,
+) -> Result<()> {
+    let yaml: asc_types::AppStoreReviewDetailAttributes = read_yaml(yaml_path)?;
+
+    // Try to resolve an existing review detail from the server first
+    let existing_id = ctx
+        .client
+        .app_store_versions_app_store_review_detail_get_to_one_related(
+            version_id,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewAttachmentsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreReviewDetailsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedFieldsAppStoreVersionsItem>>,
+            None::<&Vec<asc_types::AppStoreVersionsAppStoreReviewDetailGetToOneRelatedIncludeItem>>,
+            None::<i64>,
+        )
+        .await
+        .ok()
+        .map(|r| r.into_inner().data.id);
+
+    if let Some(ref detail_id) = existing_id {
+        // Fetch existing review detail to get current values
+        let existing_resp = ctx
+            .client
+            .app_store_review_details_get_instance(
+                detail_id,
+                None::<&Vec<asc_types::AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewAttachmentsItem>>,
+                None::<&Vec<asc_types::AppStoreReviewDetailsGetInstanceFieldsAppStoreReviewDetailsItem>>,
+                None::<&Vec<asc_types::AppStoreReviewDetailsGetInstanceFieldsAppStoreVersionsItem>>,
+                None::<&Vec<asc_types::AppStoreReviewDetailsGetInstanceIncludeItem>>,
+                None::<i64>,
+            )
+            .await
+            .map_err(|e| anyhow!("failed to fetch existing review detail: {e}"))?;
+        let existing_attrs = existing_resp.into_inner().data.attributes;
+
+        // Extract existing values for fallback
+        let (existing_email, existing_first_name, existing_last_name, existing_phone,
+             existing_demo_name, existing_demo_pw, existing_demo_req, existing_notes) = existing_attrs
+            .map(|a| (
+                a.contact_email,
+                a.contact_first_name,
+                a.contact_last_name,
+                a.contact_phone,
+                a.demo_account_name,
+                a.demo_account_password,
+                a.demo_account_required,
+                a.notes,
+            ))
+            .unwrap_or_default();
+
+        // Only update if YAML values differ from existing server values
+        let has_changes = yaml.contact_email != existing_email
+            || yaml.contact_first_name != existing_first_name
+            || yaml.contact_last_name != existing_last_name
+            || yaml.contact_phone != existing_phone
+            || yaml.demo_account_name != existing_demo_name
+            || yaml.demo_account_password != existing_demo_pw
+            || yaml.demo_account_required != existing_demo_req
+            || yaml.notes != existing_notes;
+
+        if !has_changes {
+            eprintln!("  - review.yaml (unchanged, id: {detail_id})");
+            return Ok(());
+        }
+
+        let mut attrs = asc_types::AppStoreReviewDetailUpdateRequestDataAttributes::default();
+        attrs.contact_first_name = yaml.contact_first_name.clone().or(existing_first_name);
+        attrs.contact_last_name = yaml.contact_last_name.clone().or(existing_last_name);
+        attrs.contact_phone = yaml.contact_phone.clone().or(existing_phone);
+        attrs.contact_email = yaml.contact_email.clone().or(existing_email);
+        attrs.demo_account_name = yaml.demo_account_name.clone().or(existing_demo_name);
+        attrs.demo_account_password = yaml.demo_account_password.clone().or(existing_demo_pw);
+        attrs.demo_account_required = yaml.demo_account_required.or(existing_demo_req);
+        attrs.notes = yaml.notes.clone().or(existing_notes);
+
+        let body = asc_types::AppStoreReviewDetailUpdateRequest {
+            data: asc_types::AppStoreReviewDetailUpdateRequestData {
+                attributes: Some(attrs),
+                id: detail_id.clone(),
+                type_: asc_types::AppStoreReviewDetailUpdateRequestDataType::AppStoreReviewDetails,
+            },
+        };
+        ctx.client
+            .app_store_review_details_update_instance(detail_id, &body)
+            .await
+            .map_err(|e| anyhow!("failed to update review detail: {e}"))?;
+        eprintln!("  ✓ review.yaml (updated, id: {detail_id})");
+    } else {
+        // Create new review detail
+        let mut attrs = asc_types::AppStoreReviewDetailCreateRequestDataAttributes::default();
+        attrs.contact_email = yaml.contact_email.clone();
+        attrs.contact_first_name = yaml.contact_first_name.clone();
+        attrs.contact_last_name = yaml.contact_last_name.clone();
+        attrs.contact_phone = yaml.contact_phone.clone();
+        attrs.demo_account_name = yaml.demo_account_name.clone();
+        attrs.demo_account_password = yaml.demo_account_password.clone();
+        attrs.demo_account_required = yaml.demo_account_required;
+        attrs.notes = yaml.notes.clone();
+
+        let body = asc_types::AppStoreReviewDetailCreateRequest {
+            data: asc_types::AppStoreReviewDetailCreateRequestData {
+                attributes: Some(attrs),
+                relationships: asc_types::AppStoreReviewDetailCreateRequestDataRelationships {
+                    app_store_version:
+                        asc_types::AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersion {
+                            data:
+                                asc_types::AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionData {
+                                    id: version_id.to_string(),
+                                    type_: asc_types::AppStoreReviewDetailCreateRequestDataRelationshipsAppStoreVersionDataType::AppStoreVersions,
+                                },
+                        },
+                },
+                type_: asc_types::AppStoreReviewDetailCreateRequestDataType::AppStoreReviewDetails,
+            },
+        };
+        ctx.client
+            .app_store_review_details_create_instance(&body)
+            .await
+            .map_err(|e| anyhow!("failed to create review detail: {e}"))?;
+        eprintln!("  ✓ review.yaml (created)");
+    }
+
+    Ok(())
+}
+
+/// Push a review attachment: create or update based on _id presence.
+async fn push_review_attachment(
+    ctx: &AppStoreConnectContext,
+    _review_detail_id: &str,
+    yaml_path: &Path,
+) -> Result<()> {
+    let yaml: ReviewAttachmentYaml = read_yaml(yaml_path)?;
+    let file_name = yaml
+        .file_name
+        .clone()
+        .unwrap_or_else(|| "unknown".to_string());
+
+    if let Some(attachment_id) = &yaml._id {
+        // Update via PATCH
+        let mut attrs = asc_types::AppStoreReviewAttachmentUpdateRequestDataAttributes::default();
+        if let Some(checksum) = &yaml.source_file_checksum {
+            attrs.source_file_checksum = Some(checksum.clone());
+        }
+        if yaml.file_size.is_some() {
+            attrs.uploaded = Some(true);
+        }
+
+        let body = asc_types::AppStoreReviewAttachmentUpdateRequest {
+            data: asc_types::AppStoreReviewAttachmentUpdateRequestData {
+                attributes: Some(attrs),
+                id: attachment_id.clone(),
+                type_: asc_types::AppStoreReviewAttachmentUpdateRequestDataType::AppStoreReviewAttachments,
+            },
+        };
+        ctx.client
+            .app_store_review_attachments_update_instance(attachment_id, &body)
+            .await
+            .map_err(|e| anyhow!("failed to update attachment {attachment_id}: {e}"))?;
+        eprintln!("  ✓ review.d/{attachment_id}.yaml (updated)");
+    } else {
+        // Create via POST
+        // New attachments require actual file upload operations which is complex;
+        // For now, just log a warning that creating new attachments needs manual handling
+        eprintln!(
+            "  ⚠ review.d/{file_name}.yaml: new attachment creation requires upload operations"
+        );
+    }
+
+    Ok(())
 }

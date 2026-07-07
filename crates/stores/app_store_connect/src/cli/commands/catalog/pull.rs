@@ -434,6 +434,10 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         (String, String),
         asc_types::AppStoreVersionLocalizationAttributes,
     > = HashMap::new();
+    let mut review_detail_attrs: HashMap<
+        String,
+        asc_types::AppStoreReviewDetailAttributes,
+    > = HashMap::new();
 
     for version in &versions {
         let version_id = version["id"].as_str().unwrap_or_default().to_string();
@@ -603,6 +607,19 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     }
                 }
             }
+
+            // 10. Fetch review detail (审核信息) for this version (with dedup)
+            let prev_review = review_detail_attrs.get(&platform).cloned();
+            let pulled = fetch_and_write_review_detail(
+                &ctx,
+                &version_id,
+                &version_dir,
+                &platform,
+                prev_review.as_ref(),
+                &mut review_detail_attrs,
+            )
+            .await?;
+            pulled_count += pulled;
         }
     }
 
@@ -612,6 +629,197 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         output_root.display()
     );
     Ok(())
+}
+
+/// Fetch review detail and attachments for a version and write to local YAML.
+/// Skips writing if the attributes are unchanged from a previous version's review.
+async fn fetch_and_write_review_detail(
+    ctx: &AppStoreConnectContext,
+    version_id: &str,
+    version_dir: &Path,
+    platform: &str,
+    previous: Option<&asc_types::AppStoreReviewDetailAttributes>,
+    attrs_map: &mut HashMap<
+        String,
+        asc_types::AppStoreReviewDetailAttributes,
+    >,
+) -> Result<u64> {
+    let mut count = 0u64;
+
+    // Fetch review detail via raw HTTP
+    let fields = [
+        "contactEmail",
+        "contactFirstName",
+        "contactLastName",
+        "contactPhone",
+        "demoAccountName",
+        "demoAccountPassword",
+        "demoAccountRequired",
+        "notes",
+    ];
+    let response = ctx
+        .http
+        .get(ctx.url(&format!(
+            "/v1/appStoreVersions/{version_id}/appStoreReviewDetail"
+        )))
+        .query(&[(
+            "fields[appStoreReviewDetails]",
+            &fields.join(","),
+        )])
+        .send()
+        .await
+        .context("failed to fetch review detail")?;
+
+    if response.status() == reqwest::StatusCode::NOT_FOUND {
+        return Ok(count);
+    }
+
+    let response: serde_json::Value = response
+        .error_for_status()
+        .context("failed to fetch review detail")?
+        .json()
+        .await?;
+
+    let data = response
+        .get("data")
+        .ok_or_else(|| anyhow::anyhow!("missing review detail data"))?;
+    let detail_id = data
+        .get("id")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .to_string();
+    let attrs_obj = data
+        .get("attributes")
+        .and_then(Value::as_object)
+        .ok_or_else(|| anyhow::anyhow!("missing review detail attributes"))?;
+
+    // Build current review attributes
+    let current = asc_types::AppStoreReviewDetailAttributes {
+        contact_email: attrs_obj.get("contactEmail").and_then(Value::as_str).map(|s| s.to_string()),
+        contact_first_name: attrs_obj.get("contactFirstName").and_then(Value::as_str).map(|s| s.to_string()),
+        contact_last_name: attrs_obj.get("contactLastName").and_then(Value::as_str).map(|s| s.to_string()),
+        contact_phone: attrs_obj.get("contactPhone").and_then(Value::as_str).map(|s| s.to_string()),
+        demo_account_name: attrs_obj.get("demoAccountName").and_then(Value::as_str).map(|s| s.to_string()),
+        demo_account_password: attrs_obj.get("demoAccountPassword").and_then(Value::as_str).map(|s| s.to_string()),
+        demo_account_required: attrs_obj.get("demoAccountRequired").and_then(Value::as_bool),
+        notes: attrs_obj.get("notes").and_then(Value::as_str).map(|s| s.to_string()),
+    };
+
+    // Check if unchanged from previous version (dedup)
+    let has_changes = match previous {
+        Some(prev) => {
+            current.contact_email != prev.contact_email
+                || current.contact_first_name != prev.contact_first_name
+                || current.contact_last_name != prev.contact_last_name
+                || current.contact_phone != prev.contact_phone
+                || current.demo_account_name != prev.demo_account_name
+                || current.demo_account_password != prev.demo_account_password
+                || current.demo_account_required != prev.demo_account_required
+                || current.notes != prev.notes
+        }
+        None => true,
+    };
+
+    // Store for future dedup (even if we skip writing, we need to track the latest)
+    attrs_map.insert(platform.to_string(), current.clone());
+
+    if !has_changes {
+        eprintln!("  • skipped unchanged review.yaml");
+        // Still fetch attachments for the latest version that has changes
+        // For unchanged versions, skip attachments too
+        return Ok(count);
+    }
+
+    // Write review detail attributes as YAML, preserving _id
+    #[derive(serde::Serialize)]
+    struct ReviewWithId {
+        _id: Option<String>,
+        #[serde(flatten)]
+        attributes: asc_types::AppStoreReviewDetailAttributes,
+    }
+
+    let review_path = version_dir.join("review.yaml");
+    write_yaml(
+        &review_path,
+        &ReviewWithId {
+            _id: Some(detail_id.clone()),
+            attributes: current,
+        },
+    )?;
+    eprintln!("  ✓ review.yaml (id: {detail_id})");
+    count += 1;
+
+    // Fetch attachments if any
+    let att_fields = ["fileName", "fileSize", "sourceFileChecksum", "assetDeliveryState"];
+    let attachments_response = ctx
+        .http
+        .get(ctx.url(&format!(
+            "/v1/appStoreReviewDetails/{detail_id}/appStoreReviewAttachments"
+        )))
+        .query(&[(
+            "fields[appStoreReviewAttachments]",
+            &att_fields.join(","),
+        )])
+        .send()
+        .await
+        .context("failed to fetch review attachments")?;
+
+    if attachments_response.status() != reqwest::StatusCode::NOT_FOUND {
+        let attachments_value: serde_json::Value = attachments_response
+            .error_for_status()
+            .context("failed to fetch review attachments")?
+            .json()
+            .await?;
+
+        if let Some(attachments) = attachments_value.get("data").and_then(Value::as_array) {
+            if !attachments.is_empty() {
+                let review_dir = version_dir.join("review.d");
+                ensure_dir(&review_dir)?;
+
+                for attachment in attachments {
+                    let att_id = attachment
+                        .get("id")
+                        .and_then(Value::as_str)
+                        .unwrap_or_default()
+                        .to_string();
+                    let a_attrs = attachment
+                        .get("attributes")
+                        .and_then(Value::as_object)
+                        .cloned()
+                        .unwrap_or_default();
+
+                    #[derive(serde::Serialize)]
+                    struct AttachmentYaml {
+                        _id: Option<String>,
+                        file_name: Option<String>,
+                        file_size: Option<i64>,
+                        source_file_checksum: Option<String>,
+                    }
+
+                    let att_path = review_dir.join(format!("{att_id}.yaml"));
+                    write_yaml(
+                        &att_path,
+                        &AttachmentYaml {
+                            _id: Some(att_id.clone()),
+                            file_name: a_attrs
+                                .get("fileName")
+                                .and_then(Value::as_str)
+                                .map(|s| s.to_string()),
+                            file_size: a_attrs.get("fileSize").and_then(Value::as_i64),
+                            source_file_checksum: a_attrs
+                                .get("sourceFileChecksum")
+                                .and_then(Value::as_str)
+                                .map(|s| s.to_string()),
+                        },
+                    )?;
+                    eprintln!("  ✓ review.d/{att_id}.yaml");
+                    count += 1;
+                }
+            }
+        }
+    }
+
+    Ok(count)
 }
 
 fn sort_versions_for_asset_dedup(versions: &mut [Value]) {

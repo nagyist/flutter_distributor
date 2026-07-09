@@ -412,13 +412,14 @@ async fn push_update_version_localization(
     id: &str,
     yaml: &AppStoreVersionLocalizationAttributes,
 ) -> Result<()> {
-    let mut attrs = AppStoreVersionLocalizationUpdateRequestDataAttributes::default();
-    attrs.description = yaml.description.clone();
-    attrs.keywords = yaml.keywords.clone();
-    attrs.marketing_url = yaml.marketing_url.clone();
-    attrs.promotional_text = yaml.promotional_text.clone();
-    attrs.support_url = yaml.support_url.clone();
-    attrs.whats_new = yaml.whats_new.clone();
+    let attrs = AppStoreVersionLocalizationUpdateRequestDataAttributes {
+        description: yaml.description.clone(),
+        keywords: yaml.keywords.clone(),
+        marketing_url: yaml.marketing_url.clone(),
+        promotional_text: yaml.promotional_text.clone(),
+        support_url: yaml.support_url.clone(),
+        whats_new: yaml.whats_new.clone(),
+    };
 
     let body = AppStoreVersionLocalizationUpdateRequest {
         data: AppStoreVersionLocalizationUpdateRequestData {
@@ -501,8 +502,8 @@ async fn fetch_all_versions_simple(
             None,
             None,
             None,
-            filter_platform.as_ref().map(|v: &Vec<_>| v.as_ref()),
-            filter_version.as_ref().map(|v| v.as_ref()),
+            filter_platform.as_ref(),
+            filter_version.as_ref(),
             None,
             Some(1),
             None,
@@ -667,15 +668,16 @@ async fn push_review_detail(
             return Ok(());
         }
 
-        let mut attrs = asc_types::AppStoreReviewDetailUpdateRequestDataAttributes::default();
-        attrs.contact_first_name = yaml.contact_first_name.clone().or(existing_first_name);
-        attrs.contact_last_name = yaml.contact_last_name.clone().or(existing_last_name);
-        attrs.contact_phone = yaml.contact_phone.clone().or(existing_phone);
-        attrs.contact_email = yaml.contact_email.clone().or(existing_email);
-        attrs.demo_account_name = yaml.demo_account_name.clone().or(existing_demo_name);
-        attrs.demo_account_password = yaml.demo_account_password.clone().or(existing_demo_pw);
-        attrs.demo_account_required = yaml.demo_account_required.or(existing_demo_req);
-        attrs.notes = yaml.notes.clone().or(existing_notes);
+        let attrs = asc_types::AppStoreReviewDetailUpdateRequestDataAttributes {
+            contact_first_name: yaml.contact_first_name.clone().or(existing_first_name),
+            contact_last_name: yaml.contact_last_name.clone().or(existing_last_name),
+            contact_phone: yaml.contact_phone.clone().or(existing_phone),
+            contact_email: yaml.contact_email.clone().or(existing_email),
+            demo_account_name: yaml.demo_account_name.clone().or(existing_demo_name),
+            demo_account_password: yaml.demo_account_password.clone().or(existing_demo_pw),
+            demo_account_required: yaml.demo_account_required.or(existing_demo_req),
+            notes: yaml.notes.clone().or(existing_notes),
+        };
 
         let body = asc_types::AppStoreReviewDetailUpdateRequest {
             data: asc_types::AppStoreReviewDetailUpdateRequestData {
@@ -691,15 +693,16 @@ async fn push_review_detail(
         eprintln!("  ✓ review.yaml (updated, id: {detail_id})");
     } else {
         // Create new review detail
-        let mut attrs = asc_types::AppStoreReviewDetailCreateRequestDataAttributes::default();
-        attrs.contact_email = yaml.contact_email.clone();
-        attrs.contact_first_name = yaml.contact_first_name.clone();
-        attrs.contact_last_name = yaml.contact_last_name.clone();
-        attrs.contact_phone = yaml.contact_phone.clone();
-        attrs.demo_account_name = yaml.demo_account_name.clone();
-        attrs.demo_account_password = yaml.demo_account_password.clone();
-        attrs.demo_account_required = yaml.demo_account_required;
-        attrs.notes = yaml.notes.clone();
+        let attrs = asc_types::AppStoreReviewDetailCreateRequestDataAttributes {
+            contact_email: yaml.contact_email.clone(),
+            contact_first_name: yaml.contact_first_name.clone(),
+            contact_last_name: yaml.contact_last_name.clone(),
+            contact_phone: yaml.contact_phone.clone(),
+            demo_account_name: yaml.demo_account_name.clone(),
+            demo_account_password: yaml.demo_account_password.clone(),
+            demo_account_required: yaml.demo_account_required,
+            notes: yaml.notes.clone(),
+        };
 
         let body = asc_types::AppStoreReviewDetailCreateRequest {
             data: asc_types::AppStoreReviewDetailCreateRequestData {

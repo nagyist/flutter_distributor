@@ -103,12 +103,11 @@ fn screenshot_files(screenshots_type_dir: &Path) -> Result<Vec<std::path::PathBu
     for entry in std::fs::read_dir(screenshots_type_dir).context("reading screenshots")? {
         let entry = entry?;
         let path = entry.path();
-        if path.is_file() {
-            if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
-                if !name.starts_with('.') {
-                    files.push(path);
-                }
-            }
+        if path.is_file()
+            && let Some(name) = path.file_name().and_then(|n| n.to_str())
+            && !name.starts_with('.')
+        {
+            files.push(path);
         }
     }
     files.sort();

@@ -123,8 +123,8 @@ async fn fetch_versions(
             None,
             None,
             None,
-            filter_platform.as_ref().map(|v| v.as_ref()),
-            filter_version_string.as_ref().map(|v| v.as_ref()),
+            filter_platform.as_ref(),
+            filter_version_string.as_ref(),
             None,
             Some(200),
             None,
@@ -391,7 +391,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
 
     // 2. Fetch appInfos
     eprintln!("📦 Fetching app info...");
-    let app_infos = fetch_app_infos(&ctx, &app_id).await?;
+    let app_infos = fetch_app_infos(&ctx, app_id).await?;
 
     for app_info in &app_infos {
         let info_id = app_info["id"].as_str().unwrap_or_default().to_string();
@@ -421,7 +421,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     eprintln!("📱 Fetching app store versions...");
     let mut versions = fetch_versions(
         &ctx,
-        &app_id,
+        app_id,
         args.platform.as_deref(),
         args.version.as_deref(),
     )
@@ -788,50 +788,52 @@ async fn fetch_and_write_review_detail(
             .json()
             .await?;
 
-        if let Some(attachments) = attachments_value.get("data").and_then(Value::as_array) {
-            if !attachments.is_empty() {
-                let review_dir = version_dir.join("review.d");
-                ensure_dir(&review_dir)?;
+        if let Some(attachments) = attachments_value
+            .get("data")
+            .and_then(Value::as_array)
+            .filter(|a| !a.is_empty())
+        {
+            let review_dir = version_dir.join("review.d");
+            ensure_dir(&review_dir)?;
 
-                for attachment in attachments {
-                    let att_id = attachment
-                        .get("id")
-                        .and_then(Value::as_str)
-                        .unwrap_or_default()
-                        .to_string();
-                    let a_attrs = attachment
-                        .get("attributes")
-                        .and_then(Value::as_object)
-                        .cloned()
-                        .unwrap_or_default();
+            for attachment in attachments {
+                let att_id = attachment
+                    .get("id")
+                    .and_then(Value::as_str)
+                    .unwrap_or_default()
+                    .to_string();
+                let a_attrs = attachment
+                    .get("attributes")
+                    .and_then(Value::as_object)
+                    .cloned()
+                    .unwrap_or_default();
 
-                    #[derive(serde::Serialize)]
-                    struct AttachmentYaml {
-                        _id: Option<String>,
-                        file_name: Option<String>,
-                        file_size: Option<i64>,
-                        source_file_checksum: Option<String>,
-                    }
-
-                    let att_path = review_dir.join(format!("{att_id}.yaml"));
-                    write_yaml(
-                        &att_path,
-                        &AttachmentYaml {
-                            _id: Some(att_id.clone()),
-                            file_name: a_attrs
-                                .get("fileName")
-                                .and_then(Value::as_str)
-                                .map(|s| s.to_string()),
-                            file_size: a_attrs.get("fileSize").and_then(Value::as_i64),
-                            source_file_checksum: a_attrs
-                                .get("sourceFileChecksum")
-                                .and_then(Value::as_str)
-                                .map(|s| s.to_string()),
-                        },
-                    )?;
-                    eprintln!("  ✓ review.d/{att_id}.yaml");
-                    count += 1;
+                #[derive(serde::Serialize)]
+                struct AttachmentYaml {
+                    _id: Option<String>,
+                    file_name: Option<String>,
+                    file_size: Option<i64>,
+                    source_file_checksum: Option<String>,
                 }
+
+                let att_path = review_dir.join(format!("{att_id}.yaml"));
+                write_yaml(
+                    &att_path,
+                    &AttachmentYaml {
+                        _id: Some(att_id.clone()),
+                        file_name: a_attrs
+                            .get("fileName")
+                            .and_then(Value::as_str)
+                            .map(|s| s.to_string()),
+                        file_size: a_attrs.get("fileSize").and_then(Value::as_i64),
+                        source_file_checksum: a_attrs
+                            .get("sourceFileChecksum")
+                            .and_then(Value::as_str)
+                            .map(|s| s.to_string()),
+                    },
+                )?;
+                eprintln!("  ✓ review.d/{att_id}.yaml");
+                count += 1;
             }
         }
     }

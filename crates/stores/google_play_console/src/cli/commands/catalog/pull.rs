@@ -157,7 +157,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
             let images = match images_resp {
                 Ok(resp) => resp.into_inner().images,
                 Err(e) => {
-                    eprintln!("  ⚠ {} ({language}/{api_type}): {e}", "skipped");
+                    eprintln!("  ⚠ skipped ({language}/{api_type}): {e}");
                     continue;
                 }
             };

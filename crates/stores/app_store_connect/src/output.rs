@@ -74,11 +74,7 @@ fn print_row(row: Vec<String>, widths: &[usize]) {
             print!("{cell}");
         } else {
             let visual_width = cell.width();
-            let padding = if width > visual_width {
-                width - visual_width
-            } else {
-                0
-            };
+            let padding = width.saturating_sub(visual_width);
             print!("{cell}{}  ", " ".repeat(padding));
         }
     }

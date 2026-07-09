@@ -434,10 +434,8 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         (String, String),
         asc_types::AppStoreVersionLocalizationAttributes,
     > = HashMap::new();
-    let mut review_detail_attrs: HashMap<
-        String,
-        asc_types::AppStoreReviewDetailAttributes,
-    > = HashMap::new();
+    let mut review_detail_attrs: HashMap<String, asc_types::AppStoreReviewDetailAttributes> =
+        HashMap::new();
 
     for version in &versions {
         let version_id = version["id"].as_str().unwrap_or_default().to_string();
@@ -639,10 +637,7 @@ async fn fetch_and_write_review_detail(
     version_dir: &Path,
     platform: &str,
     previous: Option<&asc_types::AppStoreReviewDetailAttributes>,
-    attrs_map: &mut HashMap<
-        String,
-        asc_types::AppStoreReviewDetailAttributes,
-    >,
+    attrs_map: &mut HashMap<String, asc_types::AppStoreReviewDetailAttributes>,
 ) -> Result<u64> {
     let mut count = 0u64;
 
@@ -662,10 +657,7 @@ async fn fetch_and_write_review_detail(
         .get(ctx.url(&format!(
             "/v1/appStoreVersions/{version_id}/appStoreReviewDetail"
         )))
-        .query(&[(
-            "fields[appStoreReviewDetails]",
-            &fields.join(","),
-        )])
+        .query(&[("fields[appStoreReviewDetails]", &fields.join(","))])
         .send()
         .await
         .context("failed to fetch review detail")?;
@@ -695,14 +687,37 @@ async fn fetch_and_write_review_detail(
 
     // Build current review attributes
     let current = asc_types::AppStoreReviewDetailAttributes {
-        contact_email: attrs_obj.get("contactEmail").and_then(Value::as_str).map(|s| s.to_string()),
-        contact_first_name: attrs_obj.get("contactFirstName").and_then(Value::as_str).map(|s| s.to_string()),
-        contact_last_name: attrs_obj.get("contactLastName").and_then(Value::as_str).map(|s| s.to_string()),
-        contact_phone: attrs_obj.get("contactPhone").and_then(Value::as_str).map(|s| s.to_string()),
-        demo_account_name: attrs_obj.get("demoAccountName").and_then(Value::as_str).map(|s| s.to_string()),
-        demo_account_password: attrs_obj.get("demoAccountPassword").and_then(Value::as_str).map(|s| s.to_string()),
-        demo_account_required: attrs_obj.get("demoAccountRequired").and_then(Value::as_bool),
-        notes: attrs_obj.get("notes").and_then(Value::as_str).map(|s| s.to_string()),
+        contact_email: attrs_obj
+            .get("contactEmail")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        contact_first_name: attrs_obj
+            .get("contactFirstName")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        contact_last_name: attrs_obj
+            .get("contactLastName")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        contact_phone: attrs_obj
+            .get("contactPhone")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        demo_account_name: attrs_obj
+            .get("demoAccountName")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        demo_account_password: attrs_obj
+            .get("demoAccountPassword")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
+        demo_account_required: attrs_obj
+            .get("demoAccountRequired")
+            .and_then(Value::as_bool),
+        notes: attrs_obj
+            .get("notes")
+            .and_then(Value::as_str)
+            .map(|s| s.to_string()),
     };
 
     // Check if unchanged from previous version (dedup)
@@ -750,16 +765,18 @@ async fn fetch_and_write_review_detail(
     count += 1;
 
     // Fetch attachments if any
-    let att_fields = ["fileName", "fileSize", "sourceFileChecksum", "assetDeliveryState"];
+    let att_fields = [
+        "fileName",
+        "fileSize",
+        "sourceFileChecksum",
+        "assetDeliveryState",
+    ];
     let attachments_response = ctx
         .http
         .get(ctx.url(&format!(
             "/v1/appStoreReviewDetails/{detail_id}/appStoreReviewAttachments"
         )))
-        .query(&[(
-            "fields[appStoreReviewAttachments]",
-            &att_fields.join(","),
-        )])
+        .query(&[("fields[appStoreReviewAttachments]", &att_fields.join(","))])
         .send()
         .await
         .context("failed to fetch review attachments")?;

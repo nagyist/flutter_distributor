@@ -1,7 +1,7 @@
 use crate::cli::GlobalArgs;
+use crate::{GooglePlayContext, print_json, print_table};
 use anyhow::Result;
 use clap::{Args, Subcommand};
-use crate::{GooglePlayContext, print_json, print_table};
 use serde::Serialize;
 use serde_json::{Value, json};
 

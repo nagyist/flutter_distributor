@@ -1,8 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use fastforge_app_store_connect::cli::{
-    self,
-    ApiArgs, AppArgs, BuildArgs, GlobalArgs, VersionArgs,
+    self, ApiArgs, AppArgs, BuildArgs, GlobalArgs, VersionArgs,
 };
 
 #[derive(Parser)]

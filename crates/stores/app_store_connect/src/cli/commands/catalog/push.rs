@@ -3,11 +3,10 @@ use crate::cli::GlobalArgs;
 use crate::cli::commands::app::resolve_app;
 use crate::types::{
     self as asc_types, AppInfoLocalizationAttributes, AppStoreVersionAttributes,
-    AppStoreVersionLocalizationAttributes,
-    AppStoreVersionLocalizationUpdateRequest, AppStoreVersionLocalizationUpdateRequestData,
+    AppStoreVersionLocalizationAttributes, AppStoreVersionLocalizationUpdateRequest,
+    AppStoreVersionLocalizationUpdateRequestData,
     AppStoreVersionLocalizationUpdateRequestDataAttributes,
-    AppStoreVersionLocalizationUpdateRequestDataType,
-    Platform,
+    AppStoreVersionLocalizationUpdateRequestDataType, Platform,
 };
 use anyhow::{Context, Result, anyhow};
 use clap::Args;
@@ -629,18 +628,28 @@ async fn push_review_detail(
         let existing_attrs = existing_resp.into_inner().data.attributes;
 
         // Extract existing values for fallback
-        let (existing_email, existing_first_name, existing_last_name, existing_phone,
-             existing_demo_name, existing_demo_pw, existing_demo_req, existing_notes) = existing_attrs
-            .map(|a| (
-                a.contact_email,
-                a.contact_first_name,
-                a.contact_last_name,
-                a.contact_phone,
-                a.demo_account_name,
-                a.demo_account_password,
-                a.demo_account_required,
-                a.notes,
-            ))
+        let (
+            existing_email,
+            existing_first_name,
+            existing_last_name,
+            existing_phone,
+            existing_demo_name,
+            existing_demo_pw,
+            existing_demo_req,
+            existing_notes,
+        ) = existing_attrs
+            .map(|a| {
+                (
+                    a.contact_email,
+                    a.contact_first_name,
+                    a.contact_last_name,
+                    a.contact_phone,
+                    a.demo_account_name,
+                    a.demo_account_password,
+                    a.demo_account_required,
+                    a.notes,
+                )
+            })
             .unwrap_or_default();
 
         // Only update if YAML values differ from existing server values

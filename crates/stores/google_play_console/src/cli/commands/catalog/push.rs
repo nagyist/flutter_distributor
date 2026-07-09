@@ -1,7 +1,7 @@
+use crate::GooglePlayContext;
 use crate::cli::GlobalArgs;
 use crate::cli::commands::edit::{commit_edit, create_edit};
 use crate::client::types::{Listing, Track};
-use crate::GooglePlayContext;
 use anyhow::{Context, Result};
 use clap::Args;
 use std::path::Path;
@@ -163,10 +163,7 @@ fn discover_screenshot_actions(base_dir: &Path, actions: &mut Vec<PushAction>) -
                     resource_type: "images".into(),
                     language: Some(language.clone()),
                     action: "upload",
-                    details: format!(
-                        "screenshots/{language}/{dir_name}/ ({} files)",
-                        files.len()
-                    ),
+                    details: format!("screenshots/{language}/{dir_name}/ ({} files)", files.len()),
                 });
             }
         }
@@ -184,10 +181,7 @@ async fn push_images(
     dir_name: &str,
     api_type: &str,
 ) -> Result<()> {
-    let type_dir = base_dir
-        .join("screenshots")
-        .join(language)
-        .join(dir_name);
+    let type_dir = base_dir.join("screenshots").join(language).join(dir_name);
 
     let files = screenshot_files(&type_dir)?;
     if files.is_empty() {
@@ -312,7 +306,17 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                 package_name,
                 &edit_id,
                 &language,
-                None, None, None, None, None, None, None, None, None, None, None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
                 &listing,
             )
             .await
@@ -345,10 +349,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                 if files.is_empty() {
                     continue;
                 }
-                eprintln!(
-                    "  pushing {language}/{dir_name} ({} files)...",
-                    files.len()
-                );
+                eprintln!("  pushing {language}/{dir_name} ({} files)...", files.len());
                 push_images(
                     &ctx,
                     package_name,
@@ -369,18 +370,24 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
 
         // The API's track field uses the original name including colons (e.g., "wear:production").
         // The YAML body already contains the `track` field with the correct name.
-        let actual_track = track
-            .track
-            .as_deref()
-            .unwrap_or(&track_name)
-            .to_string();
+        let actual_track = track.track.as_deref().unwrap_or(&track_name).to_string();
 
         ctx.client
             .androidpublisher_edits_tracks_update(
                 package_name,
                 &edit_id,
                 &actual_track,
-                None, None, None, None, None, None, None, None, None, None, None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
                 &track,
             )
             .await

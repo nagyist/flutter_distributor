@@ -1,9 +1,9 @@
 use crate::cli::GlobalArgs;
 use crate::cli::commands::app::resolve_app;
 use crate::cli::commands::build::{get_build, latest_build};
+use crate::{AppStoreConnectContext, print_json, print_table};
 use anyhow::{Result, anyhow};
 use clap::{Args, Subcommand};
-use crate::{AppStoreConnectContext, print_json, print_table};
 use serde::Serialize;
 use serde_json::{Value, json};
 use std::time::{Duration, Instant};

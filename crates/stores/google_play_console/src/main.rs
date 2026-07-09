@@ -1,8 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use fastforge_google_play_console::cli::{
-    self,
-    ApiArgs, AppArgs, BundleArgs, CatalogArgs, EditArgs, GlobalArgs, TrackArgs,
+    self, ApiArgs, AppArgs, BundleArgs, CatalogArgs, EditArgs, GlobalArgs, TrackArgs,
 };
 
 #[derive(Parser)]

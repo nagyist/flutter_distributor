@@ -42,9 +42,7 @@ pub async fn execute(root: &GooglePlayConsoleArgs) -> Result<()> {
         GooglePlayConsoleCommand::Bundle(args) => {
             commands::bundle::execute(args, &root.global).await
         }
-        GooglePlayConsoleCommand::Track(args) => {
-            commands::track::execute(args, &root.global).await
-        }
+        GooglePlayConsoleCommand::Track(args) => commands::track::execute(args, &root.global).await,
         GooglePlayConsoleCommand::Catalog(args) => {
             commands::catalog::execute(args, &root.global).await
         }

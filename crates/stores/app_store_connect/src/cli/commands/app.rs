@@ -1,7 +1,7 @@
 use crate::cli::GlobalArgs;
+use crate::{AppStoreConnectContext, print_json, print_table};
 use anyhow::{Result, anyhow};
 use clap::{Args, Subcommand};
-use crate::{AppStoreConnectContext, print_json, print_table};
 use serde::Serialize;
 use serde_json::Value;
 

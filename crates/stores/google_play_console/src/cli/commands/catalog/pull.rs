@@ -1,6 +1,6 @@
+use crate::GooglePlayContext;
 use crate::cli::GlobalArgs;
 use crate::cli::commands::edit::{create_edit, delete_edit};
-use crate::GooglePlayContext;
 use anyhow::{Context, Result};
 use clap::Args;
 use std::path::Path;
@@ -107,7 +107,17 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         .androidpublisher_edits_listings_list(
             package_name,
             &edit_id,
-            None, None, None, None, None, None, None, None, None, None, None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch listings: {e}"))?;
@@ -129,7 +139,11 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         pulled_count += 1;
     }
 
-    eprintln!("  Found {} languages: {:?}", listing_languages.len(), listing_languages);
+    eprintln!(
+        "  Found {} languages: {:?}",
+        listing_languages.len(),
+        listing_languages
+    );
 
     // 4. Fetch screenshots & images for each listing language
     eprintln!("🖼️  Fetching screenshots and images...");
@@ -137,12 +151,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         for (dir_name, api_type) in IMAGE_TYPES {
             let images_resp = ctx
                 .client
-                .androidpublisher_edits_images_list(
-                    package_name,
-                    &edit_id,
-                    language,
-                    api_type,
-                )
+                .androidpublisher_edits_images_list(package_name, &edit_id, language, api_type)
                 .await;
 
             let images = match images_resp {
@@ -180,9 +189,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                         pulled_count += 1;
                     }
                     Err(e) => {
-                        eprintln!(
-                            "  ⚠ failed to download {language}/{dir_name}/{image_id}: {e}"
-                        );
+                        eprintln!("  ⚠ failed to download {language}/{dir_name}/{image_id}: {e}");
                     }
                 }
             }
@@ -196,7 +203,17 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         .androidpublisher_edits_tracks_list(
             package_name,
             &edit_id,
-            None, None, None, None, None, None, None, None, None, None, None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
         )
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch tracks: {e}"))?;

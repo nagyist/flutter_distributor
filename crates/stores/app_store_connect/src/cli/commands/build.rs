@@ -1,8 +1,8 @@
 use crate::cli::GlobalArgs;
 use crate::cli::commands::app::resolve_app;
+use crate::{AppStoreConnectContext, print_json, print_table};
 use anyhow::{Context as _, Result, anyhow};
 use clap::{Args, Subcommand};
-use crate::{AppStoreConnectContext, print_json, print_table};
 use serde::Serialize;
 use serde_json::Value;
 use std::path::Path;

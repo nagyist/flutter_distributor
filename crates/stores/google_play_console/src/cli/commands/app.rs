@@ -1,8 +1,8 @@
 use crate::cli::GlobalArgs;
 use crate::cli::commands::edit::{create_edit, delete_edit};
+use crate::{GooglePlayContext, print_json, print_table};
 use anyhow::Result;
 use clap::{Args, Subcommand};
-use crate::{GooglePlayContext, print_json, print_table};
 use serde::Serialize;
 
 const PLAY_CONSOLE_URL_PREFIX: &str = "https://play.google.com/console/u/0/developers";

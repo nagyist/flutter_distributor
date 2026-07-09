@@ -40,7 +40,9 @@ pub async fn execute(root: &AppStoreConnectArgs) -> Result<()> {
             commands::version::execute(args, &root.global).await
         }
         AppStoreConnectCommand::Api(args) => commands::api::execute(args, &root.global).await,
-        AppStoreConnectCommand::Catalog(args) => commands::catalog::execute(args, &root.global).await,
+        AppStoreConnectCommand::Catalog(args) => {
+            commands::catalog::execute(args, &root.global).await
+        }
     }
 }
 

@@ -10,7 +10,7 @@
 [discord-url]: https://discord.gg/zPa6EZ2jqb
 [all-contributors-image]: https://img.shields.io/github/all-contributors/fastforgedev/fastforge?color=ee8449&style=flat-square
 
-卓越的 [Flutter](https://flutter.dev) 应用打包与发布工具，为您提供一站式解决方案，满足各种分发需求。
+让每一个应用更快抵达用户 — 用一套清晰的配置完成构建、打包与发布。覆盖主流分发格式和应用市场，也能自然融入团队的 CI/CD 流程。
 
 > [!WARNING]
 > **Rust 迁移进行中：** Fastforge 的核心正在用 [Rust](https://www.rust-lang.org/) 重写，以实现更好的性能、更小的安装体积，以及对 Dart SDK 零运行时依赖。新的实现位于 [`crates/`](./crates) 目录，与现有 Dart 包并行开发。

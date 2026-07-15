@@ -1,4 +1,9 @@
-# fastforge <sub>formerly Flutter Distributor</sub>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./apps/docs/public/brand-lockup.svg">
+  <img alt="Fastforge" src="./apps/docs/public/brand-lockup.svg" width="480">
+</picture>
+
+# Fastforge <sub>formerly Flutter Distributor</sub>
 
 [![pub version][pub-image]][pub-url] [![pub downloads][pub-dm-image]][pub-dm-url] [![][discord-image]][discord-url] [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos) [![All Contributors][all-contributors-image]](#contributors)
 
@@ -10,12 +15,13 @@
 [discord-url]: https://discord.gg/zPa6EZ2jqb
 [all-contributors-image]: https://img.shields.io/github/all-contributors/fastforgedev/fastforge?color=ee8449&style=flat-square
 
-The ultimate all-in-one [Flutter](https://flutter.dev) application packaging and distribution tool, providing a seamless solution for all your distribution needs.
+Ship every app faster to your users — Build, package, and publish with one clear configuration. Target popular distribution formats and app stores while fitting naturally into your CI/CD pipeline.
 
 > [!WARNING]
 > **Rust Migration In Progress:** The core of Fastforge is being rewritten in [Rust](https://www.rust-lang.org/) to deliver better performance, a smaller install footprint, and zero runtime dependencies on the Dart SDK. The new implementation lives in the [`crates/`](./crates) directory and is being developed in parallel with the existing Dart packages.
 >
 > **What this means for you:**
+>
 > - The current Dart-based CLI (`dart pub global activate fastforge`) continues to work and receives bug fixes.
 > - The Rust CLI will be released as a native binary — no Dart or Flutter SDK required to run it.
 > - APIs and configuration formats are designed to remain compatible; any breaking changes will be clearly announced.
@@ -69,6 +75,7 @@ dart pub global activate fastforge
 ```
 
 > **Windows users:** After activation, ensure the pub cache bin directory is in your PATH:
+>
 > 1. Open **System Properties** → **Advanced** → **Environment Variables**
 > 2. Under **User variables**, select `Path` → **Edit**
 > 3. Add `%APPDATA%\Pub\Cache\bin` and click **OK**

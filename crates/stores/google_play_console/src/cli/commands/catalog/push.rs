@@ -237,6 +237,11 @@ async fn push_images(
 
 pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
     let ctx = GooglePlayContext::from_env().await?;
+    execute_with_context(args, &ctx).await
+}
+
+/// Push catalog data using an existing Google Play context.
+pub async fn execute_with_context(args: &PushArgs, ctx: &GooglePlayContext) -> Result<()> {
     let mut actions: Vec<PushAction> = Vec::new();
     let package_name = &args.package_name;
 
@@ -292,7 +297,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
 
     // Execute phase
     eprintln!("\n🚀 Creating edit...");
-    let edit_id = create_edit(&ctx, package_name).await?;
+    let edit_id = create_edit(ctx, package_name).await?;
     eprintln!("  ✓ Edit created: {edit_id}");
 
     // Push listings (generated client)
@@ -350,7 +355,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                 }
                 eprintln!("  pushing {language}/{dir_name} ({} files)...", files.len());
                 push_images(
-                    &ctx,
+                    ctx,
                     package_name,
                     &edit_id,
                     &base_dir,
@@ -396,7 +401,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
 
     // Commit the edit
     eprintln!("  💾 Committing edit...");
-    commit_edit(&ctx, package_name, &edit_id).await?;
+    commit_edit(ctx, package_name, &edit_id).await?;
     eprintln!("  ✓ Edit committed: {edit_id}");
 
     eprintln!("\n✅ Push complete. {} resources pushed.", actions.len());

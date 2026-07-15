@@ -1,5 +1,6 @@
 pub mod pull;
 pub mod push;
+mod screenshots;
 
 use crate::cli::GlobalArgs;
 use anyhow::Result;

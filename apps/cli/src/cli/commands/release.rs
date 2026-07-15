@@ -6,7 +6,10 @@ use std::collections::HashMap;
 use crate::config::DistributeOptions;
 use crate::config::release::ReleaseJob;
 
-use super::package::package_flutter_artifact;
+use super::package::{
+    is_flutter_project, package_flutter_artifact, package_native_android_artifact,
+    package_native_ios_artifact, package_native_macos_artifact,
+};
 use super::publish::publish_artifact;
 
 #[derive(Args)]
@@ -124,16 +127,56 @@ pub async fn execute(args: &ReleaseArgs) -> Result<()> {
                 continue;
             }
 
-            let artifacts = package_flutter_artifact(
-                &job.package.platform,
-                &job.package.target,
-                yaml_map_to_json_map(job.package.build_args.as_ref())?,
-                _vars.clone(),
-                &opts.output,
-                opts.artifact_name.clone(),
-                !args.skip_clean,
-                job.package.hooks.as_ref(),
-            )?;
+            let is_native = !is_flutter_project();
+
+            let artifacts = if is_native && job.package.platform == "macos" {
+                log::info!(
+                    "Detected native macOS Xcode project (no pubspec.yaml), using Xcode builder"
+                );
+                package_native_macos_artifact(
+                    &job.package.target,
+                    yaml_map_to_json_map(job.package.build_args.as_ref())?,
+                    _vars.clone(),
+                    &opts.output,
+                    opts.artifact_name.clone(),
+                    job.package.hooks.as_ref(),
+                )?
+            } else if is_native && job.package.platform == "ios" {
+                log::info!(
+                    "Detected native iOS Xcode project (no pubspec.yaml), using Xcode builder"
+                );
+                package_native_ios_artifact(
+                    &job.package.target,
+                    yaml_map_to_json_map(job.package.build_args.as_ref())?,
+                    _vars.clone(),
+                    &opts.output,
+                    opts.artifact_name.clone(),
+                    job.package.hooks.as_ref(),
+                )?
+            } else if is_native && job.package.platform == "android" {
+                log::info!(
+                    "Detected native Android project (no pubspec.yaml), using Gradle builder"
+                );
+                package_native_android_artifact(
+                    &job.package.target,
+                    yaml_map_to_json_map(job.package.build_args.as_ref())?,
+                    _vars.clone(),
+                    &opts.output,
+                    opts.artifact_name.clone(),
+                    job.package.hooks.as_ref(),
+                )?
+            } else {
+                package_flutter_artifact(
+                    &job.package.platform,
+                    &job.package.target,
+                    yaml_map_to_json_map(job.package.build_args.as_ref())?,
+                    _vars.clone(),
+                    &opts.output,
+                    opts.artifact_name.clone(),
+                    !args.skip_clean,
+                    job.package.hooks.as_ref(),
+                )?
+            };
 
             for artifact in &artifacts {
                 println!(

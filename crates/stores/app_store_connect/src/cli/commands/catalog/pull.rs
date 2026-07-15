@@ -7,6 +7,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::path::Path;
 
+use super::screenshots::{self, ScreenshotManifestEntry};
 use crate::types as asc_types;
 
 /// Helper: fetch first page via typed client then follow `links.next` via raw HTTP.
@@ -360,12 +361,17 @@ fn write_yaml<T: serde::Serialize>(path: &Path, value: &T) -> Result<()> {
 
 pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     let ctx = AppStoreConnectContext::from_env()?;
+    execute_with_context(args, &ctx).await
+}
+
+/// Pull catalog data using an existing App Store Connect context.
+pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext) -> Result<()> {
     let start = std::time::Instant::now();
     let mut pulled_count = 0u64;
 
     // 1. Resolve app
     eprintln!("🔍 Resolving app '{}'...", args.app);
-    let app_row = resolve_app(&ctx, &args.app).await?;
+    let app_row = resolve_app(ctx, &args.app).await?;
     let bundle_id = &app_row.bundle_id;
     let app_id = &app_row.id;
 
@@ -391,13 +397,13 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
 
     // 2. Fetch appInfos
     eprintln!("📦 Fetching app info...");
-    let app_infos = fetch_app_infos(&ctx, app_id).await?;
+    let app_infos = fetch_app_infos(ctx, app_id).await?;
 
     for app_info in &app_infos {
         let info_id = app_info["id"].as_str().unwrap_or_default().to_string();
 
         // 3. Fetch appInfoLocalizations
-        let localizations = fetch_app_info_localizations(&ctx, &info_id).await?;
+        let localizations = fetch_app_info_localizations(ctx, &info_id).await?;
         let localizations_dir = output_root.join("info");
         ensure_dir(&localizations_dir)?;
 
@@ -420,7 +426,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     // 4. Fetch appStoreVersions
     eprintln!("📱 Fetching app store versions...");
     let mut versions = fetch_versions(
-        &ctx,
+        ctx,
         app_id,
         args.platform.as_deref(),
         args.version.as_deref(),
@@ -454,7 +460,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
         ensure_dir(&version_dir)?;
 
         // 5. Fetch version localizations
-        let version_locs = fetch_version_localizations(&ctx, &version_id).await?;
+        let version_locs = fetch_version_localizations(ctx, &version_id).await?;
 
         for vloc in &version_locs {
             let locale = vloc["attributes"]["locale"]
@@ -482,7 +488,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
 
             // 6. Fetch screenshot sets
             let vloc_id = vloc["id"].as_str().unwrap_or_default().to_string();
-            let screenshot_sets = fetch_screenshot_sets(&ctx, &vloc_id).await?;
+            let screenshot_sets = fetch_screenshot_sets(ctx, &vloc_id).await?;
 
             for ss_set in &screenshot_sets {
                 let ss_set_id = ss_set["id"].as_str().unwrap_or_default().to_string();
@@ -490,7 +496,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     .as_str()
                     .unwrap_or("UNKNOWN")
                     .to_string();
-                let screenshots = fetch_screenshots(&ctx, &ss_set_id).await?;
+                let screenshots = fetch_screenshots(ctx, &ss_set_id).await?;
                 let signature = media_set_signature(&ss_set["attributes"], &screenshots);
                 let signature_key = (
                     platform.clone(),
@@ -505,7 +511,8 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                 media_signatures.insert(signature_key, signature);
 
                 let screenshots_dir = vloc_dir.join("screenshots").join(&display_type);
-                ensure_dir(&screenshots_dir)?;
+                screenshots::prepare_screenshot_directory(&screenshots_dir)?;
+                let mut manifest_entries = Vec::new();
 
                 // 7. Fetch screenshots
                 for (idx, screenshot) in screenshots.iter().enumerate() {
@@ -528,13 +535,20 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     let screenshot_path = screenshots_dir.join(&screenshot_filename);
 
                     if let Some(image_url) = resolve_image_url(&ss_attrs) {
-                        match download_file(&ctx, &image_url, &screenshot_path).await {
-                            Ok(_) => eprintln!(
-                                "  ✓ .../screenshots/{display_type}/{screenshot_filename}"
-                            ),
+                        match download_file(ctx, &image_url, &screenshot_path).await {
+                            Ok(_) => {
+                                manifest_entries.push(ScreenshotManifestEntry {
+                                    file_name: screenshot_filename.clone(),
+                                    remote_id: ss_id.clone(),
+                                    checksum: screenshots::screenshot_checksum(&screenshot_path)?,
+                                });
+                                eprintln!(
+                                    "  ✓ .../screenshots/{display_type}/{screenshot_filename}"
+                                );
+                                pulled_count += 1;
+                            }
                             Err(e) => eprintln!("  ⚠ failed to download screenshot {ss_id}: {e}"),
                         }
-                        pulled_count += 1;
                     } else {
                         eprintln!(
                             "  ⚠ screenshot {ss_id} has no downloadable URL (state: not ready)"
@@ -542,11 +556,12 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                         std::fs::write(&screenshot_path, "")?;
                     }
                 }
+                screenshots::write_screenshot_manifest(&screenshots_dir, &manifest_entries)?;
             }
 
             // 8. Fetch preview sets
             let vloc_id = vloc["id"].as_str().unwrap_or_default().to_string();
-            let preview_sets = fetch_preview_sets(&ctx, &vloc_id).await?;
+            let preview_sets = fetch_preview_sets(ctx, &vloc_id).await?;
 
             for pv_set in &preview_sets {
                 let pv_set_id = pv_set["id"].as_str().unwrap_or_default().to_string();
@@ -554,7 +569,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     .as_str()
                     .unwrap_or("UNKNOWN")
                     .to_string();
-                let previews = fetch_previews(&ctx, &pv_set_id).await?;
+                let previews = fetch_previews(ctx, &pv_set_id).await?;
                 let signature = media_set_signature(&pv_set["attributes"], &previews);
                 let signature_key = (
                     platform.clone(),
@@ -592,7 +607,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
                     let preview_path = previews_dir.join(&preview_filename);
 
                     if let Some(video_url) = resolve_video_url(&pv_attrs) {
-                        match download_file(&ctx, &video_url, &preview_path).await {
+                        match download_file(ctx, &video_url, &preview_path).await {
                             Ok(_) => {
                                 eprintln!("  ✓ .../previews/{preview_type}/{preview_filename}")
                             }
@@ -609,7 +624,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
             // 10. Fetch review detail (审核信息) for this version (with dedup)
             let prev_review = review_detail_attrs.get(&platform).cloned();
             let pulled = fetch_and_write_review_detail(
-                &ctx,
+                ctx,
                 &version_id,
                 &version_dir,
                 &platform,

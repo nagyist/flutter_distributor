@@ -1,6 +1,7 @@
 mod custom;
 mod flutter;
 mod gradle;
+mod xcode;
 
 use crate::flutter::command::FlutterCommand;
 use crate::flutter::{
@@ -15,6 +16,8 @@ use std::path::Path;
 use std::time::Instant;
 
 pub use crate::custom::{CustomAppBuilder, CustomBuilder};
+pub use crate::xcode::ios::{IOSXcodeAppBuilder, IOSXcodeBuilder};
+pub use crate::xcode::{MacOSXcodeAppBuilder, MacOSXcodeBuilder};
 pub use crate::gradle::{
     GradleAndroidAabBuilder, GradleAndroidApkBuilder, GradleAppBuilder, GradleKmpAndroidAabBuilder,
     GradleKmpAndroidApkBuilder, GradleKmpDesktopBuilder, GradleKmpIosFrameworkBuilder,

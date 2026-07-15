@@ -13,6 +13,8 @@ use clap::Args;
 use serde_json::{Value, json};
 use std::path::Path;
 
+use super::screenshots;
+
 #[derive(Args, Debug)]
 pub struct PushArgs {
     #[arg(long = "app")]
@@ -35,10 +37,15 @@ struct PushAction {
 
 pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
     let ctx = AppStoreConnectContext::from_env()?;
+    execute_with_context(args, &ctx).await
+}
+
+/// Push catalog data using an existing App Store Connect context.
+pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext) -> Result<()> {
     let mut actions: Vec<PushAction> = Vec::new();
 
     eprintln!("🔍 Resolving app '{}'...", args.app);
-    let app_row = resolve_app(&ctx, &args.app).await?;
+    let app_row = resolve_app(ctx, &args.app).await?;
     let bundle_id = &app_row.bundle_id;
     let base_dir = args
         .input
@@ -87,6 +94,18 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                     details: format!("versions/{platform_dir}/{version_dir}/{locale}/version.yaml"),
                 });
             }
+
+            for (display_type, file_count) in screenshots::discover_screenshot_sets(&vloc_path)? {
+                actions.push(PushAction {
+                    resource_type: "appScreenshots".into(),
+                    resource_id: None,
+                    locale: Some(locale.clone()),
+                    action: "sync",
+                    details: format!(
+                        "versions/{platform_dir}/{version_dir}/{locale}/screenshots/{display_type}/ ({file_count} files)"
+                    ),
+                });
+            }
         }
     }
 
@@ -108,8 +127,8 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
     let app_id = app_row.id.clone();
 
     // Execute: app info localizations
-    let current_app_info = fetch_current_app_info(&ctx, &app_id).await?;
-    let existing_locales = fetch_current_app_info_localizations(&ctx, &current_app_info.id).await?;
+    let current_app_info = fetch_current_app_info(ctx, &app_id).await?;
+    let existing_locales = fetch_current_app_info_localizations(ctx, &current_app_info.id).await?;
     if loc_dir.exists() {
         for entry in std::fs::read_dir(&loc_dir).context("reading info localizations")? {
             let entry = entry?;
@@ -118,10 +137,10 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
                 let loc: AppInfoLocalizationAttributes = read_yaml(&path)?;
                 let locale = loc.locale.clone().unwrap_or_default();
                 if let Some(existing) = existing_locales.iter().find(|e| e.locale == locale) {
-                    push_update_app_info_localization(&ctx, &existing.id, &loc).await?;
+                    push_update_app_info_localization(ctx, &existing.id, &loc).await?;
                     eprintln!("  ✓ info/{locale}.yaml (id: {})", existing.id);
                 } else {
-                    push_create_app_info_localization(&ctx, &current_app_info.id, &loc).await?;
+                    push_create_app_info_localization(ctx, &current_app_info.id, &loc).await?;
                     eprintln!("  ✓ info/{locale}.yaml (new)");
                 }
             }
@@ -134,7 +153,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
         let (platform, version_str) =
             resolve_version_identity(&version_path, &platform_dir, &version_dir)?;
         let existing_versions =
-            fetch_all_versions_simple(&ctx, &app_id, &platform, &version_str).await?;
+            fetch_all_versions_simple(ctx, &app_id, &platform, &version_str).await?;
         let version_id = if let Some(v) = existing_versions.first() {
             v.id.clone()
         } else {
@@ -142,7 +161,7 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
             continue;
         };
 
-        let existing_vlocs = fetch_version_localizations_simple(&ctx, &version_id).await?;
+        let existing_vlocs = fetch_version_localizations_simple(ctx, &version_id).await?;
         for vloc_path in version_localization_dirs(&version_path)? {
             let locale = vloc_path
                 .file_name()
@@ -156,26 +175,54 @@ pub async fn execute(args: &PushArgs, _global: &GlobalArgs) -> Result<()> {
             let mut vloc_yaml: AppStoreVersionLocalizationAttributes = read_yaml(&vloc_yaml_path)?;
             vloc_yaml.locale = Some(locale.clone());
             if let Some(existing) = existing_vlocs.iter().find(|e| e.locale == locale) {
-                push_update_version_localization(&ctx, &existing.id, &vloc_yaml).await?;
+                push_update_version_localization(ctx, &existing.id, &vloc_yaml).await?;
             } else {
-                push_create_version_localization(&ctx, &version_id, &vloc_yaml).await?;
+                push_create_version_localization(ctx, &version_id, &vloc_yaml).await?;
             }
+        }
+
+        // Execute: screenshots. Refresh localizations because the metadata pass above may
+        // have created a locale that did not exist when the version was first queried.
+        let current_vlocs = fetch_version_localizations_simple(ctx, &version_id).await?;
+        for vloc_path in version_localization_dirs(&version_path)? {
+            if screenshots::discover_screenshot_sets(&vloc_path)?.is_empty() {
+                continue;
+            }
+            let locale = vloc_path
+                .file_name()
+                .and_then(|name| name.to_str())
+                .unwrap_or_default();
+            let localization = current_vlocs
+                .iter()
+                .find(|localization| localization.locale == locale)
+                .ok_or_else(|| {
+                    anyhow!(
+                        "cannot push screenshots for locale {locale}: App Store version localization not found"
+                    )
+                })?;
+            let summary =
+                screenshots::sync_localization_screenshots(ctx, &localization.id, &vloc_path)
+                    .await?;
+            eprintln!(
+                "  ✓ screenshots/{locale}: {} reused, {} uploaded, {} deleted",
+                summary.reused, summary.uploaded, summary.deleted
+            );
         }
 
         // Execute: review detail
         let review_yaml_path = version_path.join("review.yaml");
         if review_yaml_path.exists() {
-            push_review_detail(&ctx, &version_id, &review_yaml_path).await?;
+            push_review_detail(ctx, &version_id, &review_yaml_path).await?;
 
             // Execute: review attachments
             let review_dir = version_path.join("review.d");
             if review_dir.exists() {
-                let review_detail_id = resolve_review_detail_id(&ctx, &version_id).await?;
+                let review_detail_id = resolve_review_detail_id(ctx, &version_id).await?;
                 for entry in std::fs::read_dir(&review_dir).context("reading review.d")? {
                     let entry = entry?;
                     let path = entry.path();
                     if path.extension().and_then(|e| e.to_str()) == Some("yaml") {
-                        push_review_attachment(&ctx, &review_detail_id, &path).await?;
+                        push_review_attachment(ctx, &review_detail_id, &path).await?;
                     }
                 }
             }

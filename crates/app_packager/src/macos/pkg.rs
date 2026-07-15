@@ -14,6 +14,8 @@ pub struct MacOSPkgPackager {
     pub sign_identity: Option<String>,
     /// Installation path prefix (defaults to `/Applications/`)
     pub install_path: Option<String>,
+    /// Optional path to a directory containing pre/post-install scripts.
+    pub scripts: Option<String>,
 }
 
 impl MacOSPkgPackager {
@@ -31,6 +33,7 @@ impl MacOSPkgPackager {
         struct Config {
             install_path: Option<String>,
             sign_identity: Option<String>,
+            scripts: Option<String>,
         }
         let cfg: Config = serde_yaml::from_str(&content).map_err(|e| {
             PackageError::General(format!("Failed to parse {}: {}", path.display(), e))
@@ -38,6 +41,7 @@ impl MacOSPkgPackager {
         Ok(Self {
             sign_identity: cfg.sign_identity,
             install_path: cfg.install_path,
+            scripts: cfg.scripts,
         })
     }
 }
@@ -96,13 +100,25 @@ impl AppPackager for MacOSPkgPackager {
             p
         };
 
-        run(Command::new("xcrun").args([
-            "productbuild",
-            "--component",
-            &app_path.display().to_string(),
-            install_path,
-            &unsigned_path.display().to_string(),
-        ]))?;
+        let mut productbuild_args = vec![
+            "productbuild".to_string(),
+            "--component".to_string(),
+            app_path.display().to_string(),
+            install_path.to_string(),
+        ];
+
+        // Include installer scripts if configured
+        if let Some(scripts_dir) = &self.scripts {
+            let scripts_path = Path::new(scripts_dir);
+            if scripts_path.exists() {
+                productbuild_args.push("--scripts".to_string());
+                productbuild_args.push(scripts_path.to_string_lossy().to_string());
+            }
+        }
+
+        productbuild_args.push(unsigned_path.display().to_string());
+
+        run(Command::new("xcrun").args(&productbuild_args))?;
 
         if let Some(identity) = &self.sign_identity {
             run(Command::new("xcrun").args([

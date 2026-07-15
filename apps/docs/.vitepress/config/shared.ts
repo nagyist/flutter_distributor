@@ -66,7 +66,7 @@ export const shared = defineConfig({
 
   /* prettier-ignore */
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/logo-mini.png' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo-mini.svg' }],
     ['meta', { name: 'theme-color', content: '#155dfc' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:locale', content: 'en' }],
@@ -96,7 +96,7 @@ export const shared = defineConfig({
   ],
 
   themeConfig: {
-    logo: { src: '/logo-mini.png', width: 24, height: 24 },
+    logo: { src: '/logo-mini.svg', width: 24, height: 24 },
 
     socialLinks: [
       {
@@ -120,7 +120,7 @@ export const shared = defineConfig({
         customIcon: {
           fastforge: localIconLoader(
             import.meta.url,
-            '../../public/logo-mini.png'
+            '../../public/logo-mini.svg'
           ),
           firebase: 'logos:firebase',
         },

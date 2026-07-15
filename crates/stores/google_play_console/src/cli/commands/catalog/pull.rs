@@ -74,6 +74,11 @@ fn ext_from_url(url: &str) -> &str {
 
 pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     let ctx = GooglePlayContext::from_env().await?;
+    execute_with_context(args, &ctx).await
+}
+
+/// Pull catalog data using an existing Google Play context.
+pub async fn execute_with_context(args: &PullArgs, ctx: &GooglePlayContext) -> Result<()> {
     let start = std::time::Instant::now();
     let mut pulled_count = 0u64;
     let package_name = &args.package_name;
@@ -96,7 +101,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
 
     // 2. Create a temporary edit for reading
     eprintln!("📦 Creating temporary edit...");
-    let edit_id = create_edit(&ctx, package_name)
+    let edit_id = create_edit(ctx, package_name)
         .await
         .context("failed to create edit for reading")?;
 
@@ -233,7 +238,7 @@ pub async fn execute(args: &PullArgs, _global: &GlobalArgs) -> Result<()> {
     }
 
     // 6. Delete the temporary edit (cleanup)
-    delete_edit(&ctx, package_name, &edit_id)
+    delete_edit(ctx, package_name, &edit_id)
         .await
         .context("failed to clean up temporary edit")?;
 

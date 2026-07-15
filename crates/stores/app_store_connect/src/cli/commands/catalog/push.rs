@@ -13,7 +13,7 @@ use clap::Args;
 use serde_json::{Value, json};
 use std::path::Path;
 
-use super::screenshots;
+use super::{VersionMetadata, screenshots};
 
 #[derive(Args, Debug)]
 pub struct PushArgs {
@@ -78,6 +78,20 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
     let versions_dir = base_dir.join("versions");
     for version_path in version_dirs(&versions_dir)? {
         let (platform_dir, version_dir) = version_path_segments(&version_path);
+        let version_yaml_path = version_path.join("version.yaml");
+        if version_yaml_path.exists() {
+            let metadata: VersionMetadata = read_yaml(&version_yaml_path)?;
+            if metadata.copyright.is_some() {
+                actions.push(PushAction {
+                    resource_type: "appStoreVersions".into(),
+                    resource_id: None,
+                    locale: None,
+                    action: "update",
+                    details: format!("versions/{platform_dir}/{version_dir}/version.yaml"),
+                });
+            }
+        }
+
         for vloc_path in version_localization_dirs(&version_path)? {
             let locale = vloc_path
                 .file_name()
@@ -161,6 +175,11 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
             continue;
         };
 
+        let version_yaml_path = version_path.join("version.yaml");
+        if version_yaml_path.exists() {
+            push_version_metadata(ctx, &version_id, &version_yaml_path).await?;
+        }
+
         let existing_vlocs = fetch_version_localizations_simple(ctx, &version_id).await?;
         for vloc_path in version_localization_dirs(&version_path)? {
             let locale = vloc_path
@@ -237,6 +256,37 @@ fn read_yaml<T: serde::de::DeserializeOwned>(path: &Path) -> Result<T> {
     let content = std::fs::read_to_string(path)
         .with_context(|| format!("failed to read {}", path.display()))?;
     serde_yaml::from_str(&content).with_context(|| format!("failed to parse {}", path.display()))
+}
+
+async fn push_version_metadata(
+    ctx: &AppStoreConnectContext,
+    version_id: &str,
+    yaml_path: &Path,
+) -> Result<()> {
+    let metadata: VersionMetadata = read_yaml(yaml_path)?;
+    let Some(copyright) = metadata.copyright else {
+        return Ok(());
+    };
+
+    ctx.http
+        .patch(ctx.url(&format!("/v1/appStoreVersions/{version_id}")))
+        .json(&version_update_body(version_id, copyright))
+        .send()
+        .await?
+        .error_for_status()
+        .with_context(|| format!("failed to update copyright for version {version_id}"))?;
+    eprintln!("  ✓ version.yaml (id: {version_id})");
+    Ok(())
+}
+
+fn version_update_body(version_id: &str, copyright: String) -> Value {
+    json!({
+        "data": {
+            "type": "appStoreVersions",
+            "id": version_id,
+            "attributes": { "copyright": copyright }
+        }
+    })
 }
 
 fn version_dirs(versions_dir: &Path) -> Result<Vec<std::path::PathBuf>> {
@@ -821,4 +871,33 @@ async fn push_review_attachment(
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn version_update_only_contains_editable_copyright() {
+        assert_eq!(
+            version_update_body("version-id", "2026 Example Inc.".to_string()),
+            json!({
+                "data": {
+                    "type": "appStoreVersions",
+                    "id": "version-id",
+                    "attributes": { "copyright": "2026 Example Inc." }
+                }
+            })
+        );
+    }
+
+    #[test]
+    fn version_metadata_ignores_identity_fields() {
+        let metadata: VersionMetadata = serde_yaml::from_str(
+            "platform: IOS\nversionString: 1.2.3\ncopyright: 2026 Example Inc.\n",
+        )
+        .unwrap();
+
+        assert_eq!(metadata.copyright.as_deref(), Some("2026 Example Inc."));
+    }
 }

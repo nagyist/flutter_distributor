@@ -7,6 +7,7 @@ use serde_json::Value;
 use std::collections::HashMap;
 use std::path::Path;
 
+use super::VersionMetadata;
 use super::screenshots::{self, ScreenshotManifestEntry};
 use crate::types as asc_types;
 
@@ -97,6 +98,12 @@ async fn fetch_versions(
     platform: Option<&str>,
     version: Option<&str>,
 ) -> Result<Vec<Value>> {
+    let fields_app_store_versions = Some(vec![
+        asc_types::AppsAppStoreVersionsGetToManyRelatedFieldsAppStoreVersionsItem::Platform,
+        asc_types::AppsAppStoreVersionsGetToManyRelatedFieldsAppStoreVersionsItem::VersionString,
+        asc_types::AppsAppStoreVersionsGetToManyRelatedFieldsAppStoreVersionsItem::CreatedDate,
+        asc_types::AppsAppStoreVersionsGetToManyRelatedFieldsAppStoreVersionsItem::Copyright,
+    ]);
     let filter_platform = Some(vec![match platform.unwrap_or("IOS") {
         "MAC_OS" => asc_types::AppsAppStoreVersionsGetToManyRelatedFilterPlatformItem::MacOs,
         "TV_OS" => asc_types::AppsAppStoreVersionsGetToManyRelatedFilterPlatformItem::TvOs,
@@ -116,7 +123,7 @@ async fn fetch_versions(
             None,
             None,
             None,
-            None,
+            fields_app_store_versions.as_ref(),
             None,
             None,
             None,
@@ -458,6 +465,17 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
             .join(&platform)
             .join(&version_string);
         ensure_dir(&version_dir)?;
+
+        if let Some(copyright) = version["attributes"]["copyright"].as_str() {
+            write_yaml(
+                &version_dir.join("version.yaml"),
+                &VersionMetadata {
+                    copyright: Some(copyright.to_string()),
+                },
+            )?;
+            eprintln!("  ✓ versions/{platform}/{version_string}/version.yaml");
+            pulled_count += 1;
+        }
 
         // 5. Fetch version localizations
         let version_locs = fetch_version_localizations(ctx, &version_id).await?;
@@ -999,4 +1017,25 @@ fn stable_image_asset(asset: Option<&Value>) -> Value {
         "width": asset.get("width"),
         "height": asset.get("height"),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn app_store_version_attributes_preserve_copyright() {
+        let attrs: asc_types::AppStoreVersionAttributes = serde_json::from_value(serde_json::json!({
+            "platform": "IOS",
+            "versionString": "1.2.3",
+            "copyright": "2026 Example Inc."
+        }))
+        .unwrap();
+
+        assert_eq!(attrs.copyright.as_deref(), Some("2026 Example Inc."));
+        assert_eq!(
+            serde_json::to_value(attrs).unwrap()["copyright"],
+            "2026 Example Inc."
+        );
+    }
 }

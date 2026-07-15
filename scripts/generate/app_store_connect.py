@@ -184,8 +184,8 @@ def prune(spec_path: Path) -> Path:
             del schema['properties']['relationships']
 
     # Strip unused attribute fields to avoid pulling in unnecessary enum schemas
-    # Coding note: The catalog command also uses platform, appVersionState, and
-    # relationships.primaryCategory/secondaryCategory on AppInfo.
+    # Coding note: The catalog command also uses platform, appVersionState,
+    # copyright, and relationships.primaryCategory/secondaryCategory on AppInfo.
     _strip_attrs(schemas, 'App', [
         'subscriptionStatusUrl', 'subscriptionStatusUrlVersion',
         'subscriptionStatusUrlForSandbox', 'subscriptionStatusUrlVersionForSandbox',
@@ -199,7 +199,7 @@ def prune(spec_path: Path) -> Path:
         'processingState', 'usesNonExemptEncryption',
     ])
     _strip_attrs(schemas, 'AppStoreVersion', [
-        'copyright', 'reviewType', 'releaseType',
+        'reviewType', 'releaseType',
         'usesIdfa', 'downloadable',
     ])
     # Strip uploadOperations from media types — API returns null, can't be Vec<T>

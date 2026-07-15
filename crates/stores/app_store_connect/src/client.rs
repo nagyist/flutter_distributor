@@ -18665,6 +18665,9 @@ pub mod types {
     ///      "type": "string",
     ///      "format": "date-time"
     ///    },
+    ///    "copyright": {
+    ///      "type": "string"
+    ///    },
     ///    "earliestReleaseDate": {
     ///      "type": "string",
     ///      "format": "date-time"
@@ -18693,6 +18696,8 @@ pub mod types {
             skip_serializing_if = "::std::option::Option::is_none"
         )]
         pub app_version_state: ::std::option::Option<AppVersionState>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub copyright: ::std::option::Option<::std::string::String>,
         #[serde(
             rename = "createdDate",
             default,
@@ -18720,6 +18725,7 @@ pub mod types {
             Self {
                 app_store_state: Default::default(),
                 app_version_state: Default::default(),
+                copyright: Default::default(),
                 created_date: Default::default(),
                 earliest_release_date: Default::default(),
                 platform: Default::default(),

@@ -101,6 +101,10 @@ Catalog 文件仍使用 `.fastforge/stores/appstore/` 和
 `.fastforge/stores/googleplay/` 下的默认目录。命令会按配置顺序处理全部应用；
 单个应用失败不会中断后续应用，最终会打印汇总并以错误状态退出。
 
+对于 App Store 版本，`pull` 会把 `copyright` 等版本级元数据写入
+`versions/<platform>/<version>/version.yaml`。修改该值后运行 `push`，即可更新
+App Store Connect 中对应版本的版权信息。
+
 对于 App Store 截图，`pull` 会在每个显示类型目录中写入隐藏 manifest。
 `push` 会根据远端 ID 和校验值复用未变化的截图，替换内容已修改或处理失败的截图，
 删除非空本地显示类型目录中已经不存在的远端截图，并按照本地文件名重新排序。

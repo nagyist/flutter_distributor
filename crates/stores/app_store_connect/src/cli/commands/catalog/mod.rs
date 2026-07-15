@@ -5,9 +5,16 @@ mod screenshots;
 use crate::cli::GlobalArgs;
 use anyhow::Result;
 use clap::{Args, Subcommand};
+use serde::{Deserialize, Serialize};
 
 pub use pull::PullArgs;
 pub use push::PushArgs;
+
+#[derive(Debug, Default, Deserialize, Serialize)]
+struct VersionMetadata {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    copyright: Option<String>,
+}
 
 #[derive(Args, Debug)]
 pub struct CatalogArgs {

@@ -102,6 +102,10 @@ Catalog files use the existing default directories under
 apps are processed in order. If one app fails, the remaining apps continue and
 the command exits with an error after printing a summary.
 
+For App Store versions, `pull` writes version-level metadata such as `copyright`
+to `versions/<platform>/<version>/version.yaml`. Editing that value and running
+`push` updates the corresponding App Store Connect version.
+
 For App Store screenshots, `pull` writes a hidden manifest beside each display
 type directory. During `push`, unchanged screenshots are reused by remote ID and
 checksum, changed or failed uploads are replaced, remote screenshots missing

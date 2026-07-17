@@ -1,7 +1,7 @@
 #[allow(unused_imports)]
-pub use progenitor_client::{ByteStream, ClientInfo, Error, ResponseValue};
+use progenitor_client::{encode_path, ClientHooks, OperationInfo, RequestBuilderExt};
 #[allow(unused_imports)]
-use progenitor_client::{ClientHooks, OperationInfo, RequestBuilderExt, encode_path};
+pub use progenitor_client::{ByteStream, ClientInfo, Error, ResponseValue};
 /// Types used as operation parameters and responses.
 #[allow(clippy::all)]
 pub mod types {
@@ -18604,6 +18604,9 @@ pub mod types {
     ///        "appVersionState": {
     ///          "$ref": "#/components/schemas/AppVersionState"
     ///        },
+    ///        "copyright": {
+    ///          "type": "string"
+    ///        },
     ///        "createdDate": {
     ///          "type": "string",
     ///          "format": "date-time"
@@ -18660,6 +18663,9 @@ pub mod types {
     ///    },
     ///    "appVersionState": {
     ///      "$ref": "#/components/schemas/AppVersionState"
+    ///    },
+    ///    "copyright": {
+    ///      "type": "string"
     ///    },
     ///    "createdDate": {
     ///      "type": "string",
@@ -35373,6 +35379,1200 @@ pub mod types {
         pub meta: ::std::option::Option<PagingInformation>,
     }
 
+    ///`AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "actorType",
+    ///    "userFirstName",
+    ///    "userLastName",
+    ///    "userEmail",
+    ///    "apiKeyId"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem {
+        #[serde(rename = "actorType")]
+        ActorType,
+        #[serde(rename = "userFirstName")]
+        UserFirstName,
+        #[serde(rename = "userLastName")]
+        UserLastName,
+        #[serde(rename = "userEmail")]
+        UserEmail,
+        #[serde(rename = "apiKeyId")]
+        ApiKeyId,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ActorType => f.write_str("actorType"),
+                Self::UserFirstName => f.write_str("userFirstName"),
+                Self::UserLastName => f.write_str("userLastName"),
+                Self::UserEmail => f.write_str("userEmail"),
+                Self::ApiKeyId => f.write_str("apiKeyId"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "actorType" => Ok(Self::ActorType),
+                "userFirstName" => Ok(Self::UserFirstName),
+                "userLastName" => Ok(Self::UserLastName),
+                "userEmail" => Ok(Self::UserEmail),
+                "apiKeyId" => Ok(Self::ApiKeyId),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "accessibilityUrl",
+    ///    "name",
+    ///    "bundleId",
+    ///    "sku",
+    ///    "primaryLocale",
+    ///    "isOrEverWasMadeForKids",
+    ///    "subscriptionStatusUrl",
+    ///    "subscriptionStatusUrlVersion",
+    ///    "subscriptionStatusUrlForSandbox",
+    ///    "subscriptionStatusUrlVersionForSandbox",
+    ///    "contentRightsDeclaration",
+    ///    "streamlinedPurchasingEnabled",
+    ///    "accessibilityDeclarations",
+    ///    "appEncryptionDeclarations",
+    ///    "appStoreIcon",
+    ///    "ciProduct",
+    ///    "betaTesters",
+    ///    "betaGroups",
+    ///    "appStoreVersions",
+    ///    "appTags",
+    ///    "preReleaseVersions",
+    ///    "betaAppLocalizations",
+    ///    "builds",
+    ///    "betaLicenseAgreement",
+    ///    "betaAppReviewDetail",
+    ///    "appInfos",
+    ///    "appClips",
+    ///    "appPricePoints",
+    ///    "endUserLicenseAgreement",
+    ///    "appPriceSchedule",
+    ///    "appAvailabilityV2",
+    ///    "inAppPurchases",
+    ///    "subscriptionGroups",
+    ///    "gameCenterEnabledVersions",
+    ///    "perfPowerMetrics",
+    ///    "appCustomProductPages",
+    ///    "inAppPurchasesV2",
+    ///    "promotedPurchases",
+    ///    "appEvents",
+    ///    "reviewSubmissions",
+    ///    "subscriptionGracePeriod",
+    ///    "customerReviews",
+    ///    "customerReviewSummarizations",
+    ///    "gameCenterDetail",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "alternativeDistributionKey",
+    ///    "analyticsReportRequests",
+    ///    "marketplaceSearchDetail",
+    ///    "buildUploads",
+    ///    "backgroundAssets",
+    ///    "betaFeedbackScreenshotSubmissions",
+    ///    "betaFeedbackCrashSubmissions",
+    ///    "searchKeywords",
+    ///    "webhooks",
+    ///    "androidToIosAppMappingDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem {
+        #[serde(rename = "accessibilityUrl")]
+        AccessibilityUrl,
+        #[serde(rename = "name")]
+        Name,
+        #[serde(rename = "bundleId")]
+        BundleId,
+        #[serde(rename = "sku")]
+        Sku,
+        #[serde(rename = "primaryLocale")]
+        PrimaryLocale,
+        #[serde(rename = "isOrEverWasMadeForKids")]
+        IsOrEverWasMadeForKids,
+        #[serde(rename = "subscriptionStatusUrl")]
+        SubscriptionStatusUrl,
+        #[serde(rename = "subscriptionStatusUrlVersion")]
+        SubscriptionStatusUrlVersion,
+        #[serde(rename = "subscriptionStatusUrlForSandbox")]
+        SubscriptionStatusUrlForSandbox,
+        #[serde(rename = "subscriptionStatusUrlVersionForSandbox")]
+        SubscriptionStatusUrlVersionForSandbox,
+        #[serde(rename = "contentRightsDeclaration")]
+        ContentRightsDeclaration,
+        #[serde(rename = "streamlinedPurchasingEnabled")]
+        StreamlinedPurchasingEnabled,
+        #[serde(rename = "accessibilityDeclarations")]
+        AccessibilityDeclarations,
+        #[serde(rename = "appEncryptionDeclarations")]
+        AppEncryptionDeclarations,
+        #[serde(rename = "appStoreIcon")]
+        AppStoreIcon,
+        #[serde(rename = "ciProduct")]
+        CiProduct,
+        #[serde(rename = "betaTesters")]
+        BetaTesters,
+        #[serde(rename = "betaGroups")]
+        BetaGroups,
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+        #[serde(rename = "appTags")]
+        AppTags,
+        #[serde(rename = "preReleaseVersions")]
+        PreReleaseVersions,
+        #[serde(rename = "betaAppLocalizations")]
+        BetaAppLocalizations,
+        #[serde(rename = "builds")]
+        Builds,
+        #[serde(rename = "betaLicenseAgreement")]
+        BetaLicenseAgreement,
+        #[serde(rename = "betaAppReviewDetail")]
+        BetaAppReviewDetail,
+        #[serde(rename = "appInfos")]
+        AppInfos,
+        #[serde(rename = "appClips")]
+        AppClips,
+        #[serde(rename = "appPricePoints")]
+        AppPricePoints,
+        #[serde(rename = "endUserLicenseAgreement")]
+        EndUserLicenseAgreement,
+        #[serde(rename = "appPriceSchedule")]
+        AppPriceSchedule,
+        #[serde(rename = "appAvailabilityV2")]
+        AppAvailabilityV2,
+        #[serde(rename = "inAppPurchases")]
+        InAppPurchases,
+        #[serde(rename = "subscriptionGroups")]
+        SubscriptionGroups,
+        #[serde(rename = "gameCenterEnabledVersions")]
+        GameCenterEnabledVersions,
+        #[serde(rename = "perfPowerMetrics")]
+        PerfPowerMetrics,
+        #[serde(rename = "appCustomProductPages")]
+        AppCustomProductPages,
+        #[serde(rename = "inAppPurchasesV2")]
+        InAppPurchasesV2,
+        #[serde(rename = "promotedPurchases")]
+        PromotedPurchases,
+        #[serde(rename = "appEvents")]
+        AppEvents,
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+        #[serde(rename = "subscriptionGracePeriod")]
+        SubscriptionGracePeriod,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "customerReviewSummarizations")]
+        CustomerReviewSummarizations,
+        #[serde(rename = "gameCenterDetail")]
+        GameCenterDetail,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "alternativeDistributionKey")]
+        AlternativeDistributionKey,
+        #[serde(rename = "analyticsReportRequests")]
+        AnalyticsReportRequests,
+        #[serde(rename = "marketplaceSearchDetail")]
+        MarketplaceSearchDetail,
+        #[serde(rename = "buildUploads")]
+        BuildUploads,
+        #[serde(rename = "backgroundAssets")]
+        BackgroundAssets,
+        #[serde(rename = "betaFeedbackScreenshotSubmissions")]
+        BetaFeedbackScreenshotSubmissions,
+        #[serde(rename = "betaFeedbackCrashSubmissions")]
+        BetaFeedbackCrashSubmissions,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+        #[serde(rename = "webhooks")]
+        Webhooks,
+        #[serde(rename = "androidToIosAppMappingDetails")]
+        AndroidToIosAppMappingDetails,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AccessibilityUrl => f.write_str("accessibilityUrl"),
+                Self::Name => f.write_str("name"),
+                Self::BundleId => f.write_str("bundleId"),
+                Self::Sku => f.write_str("sku"),
+                Self::PrimaryLocale => f.write_str("primaryLocale"),
+                Self::IsOrEverWasMadeForKids => f.write_str("isOrEverWasMadeForKids"),
+                Self::SubscriptionStatusUrl => f.write_str("subscriptionStatusUrl"),
+                Self::SubscriptionStatusUrlVersion => f.write_str("subscriptionStatusUrlVersion"),
+                Self::SubscriptionStatusUrlForSandbox => {
+                    f.write_str("subscriptionStatusUrlForSandbox")
+                }
+                Self::SubscriptionStatusUrlVersionForSandbox => {
+                    f.write_str("subscriptionStatusUrlVersionForSandbox")
+                }
+                Self::ContentRightsDeclaration => f.write_str("contentRightsDeclaration"),
+                Self::StreamlinedPurchasingEnabled => f.write_str("streamlinedPurchasingEnabled"),
+                Self::AccessibilityDeclarations => f.write_str("accessibilityDeclarations"),
+                Self::AppEncryptionDeclarations => f.write_str("appEncryptionDeclarations"),
+                Self::AppStoreIcon => f.write_str("appStoreIcon"),
+                Self::CiProduct => f.write_str("ciProduct"),
+                Self::BetaTesters => f.write_str("betaTesters"),
+                Self::BetaGroups => f.write_str("betaGroups"),
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+                Self::AppTags => f.write_str("appTags"),
+                Self::PreReleaseVersions => f.write_str("preReleaseVersions"),
+                Self::BetaAppLocalizations => f.write_str("betaAppLocalizations"),
+                Self::Builds => f.write_str("builds"),
+                Self::BetaLicenseAgreement => f.write_str("betaLicenseAgreement"),
+                Self::BetaAppReviewDetail => f.write_str("betaAppReviewDetail"),
+                Self::AppInfos => f.write_str("appInfos"),
+                Self::AppClips => f.write_str("appClips"),
+                Self::AppPricePoints => f.write_str("appPricePoints"),
+                Self::EndUserLicenseAgreement => f.write_str("endUserLicenseAgreement"),
+                Self::AppPriceSchedule => f.write_str("appPriceSchedule"),
+                Self::AppAvailabilityV2 => f.write_str("appAvailabilityV2"),
+                Self::InAppPurchases => f.write_str("inAppPurchases"),
+                Self::SubscriptionGroups => f.write_str("subscriptionGroups"),
+                Self::GameCenterEnabledVersions => f.write_str("gameCenterEnabledVersions"),
+                Self::PerfPowerMetrics => f.write_str("perfPowerMetrics"),
+                Self::AppCustomProductPages => f.write_str("appCustomProductPages"),
+                Self::InAppPurchasesV2 => f.write_str("inAppPurchasesV2"),
+                Self::PromotedPurchases => f.write_str("promotedPurchases"),
+                Self::AppEvents => f.write_str("appEvents"),
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+                Self::SubscriptionGracePeriod => f.write_str("subscriptionGracePeriod"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::CustomerReviewSummarizations => f.write_str("customerReviewSummarizations"),
+                Self::GameCenterDetail => f.write_str("gameCenterDetail"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::AlternativeDistributionKey => f.write_str("alternativeDistributionKey"),
+                Self::AnalyticsReportRequests => f.write_str("analyticsReportRequests"),
+                Self::MarketplaceSearchDetail => f.write_str("marketplaceSearchDetail"),
+                Self::BuildUploads => f.write_str("buildUploads"),
+                Self::BackgroundAssets => f.write_str("backgroundAssets"),
+                Self::BetaFeedbackScreenshotSubmissions => {
+                    f.write_str("betaFeedbackScreenshotSubmissions")
+                }
+                Self::BetaFeedbackCrashSubmissions => f.write_str("betaFeedbackCrashSubmissions"),
+                Self::SearchKeywords => f.write_str("searchKeywords"),
+                Self::Webhooks => f.write_str("webhooks"),
+                Self::AndroidToIosAppMappingDetails => f.write_str("androidToIosAppMappingDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "accessibilityUrl" => Ok(Self::AccessibilityUrl),
+                "name" => Ok(Self::Name),
+                "bundleId" => Ok(Self::BundleId),
+                "sku" => Ok(Self::Sku),
+                "primaryLocale" => Ok(Self::PrimaryLocale),
+                "isOrEverWasMadeForKids" => Ok(Self::IsOrEverWasMadeForKids),
+                "subscriptionStatusUrl" => Ok(Self::SubscriptionStatusUrl),
+                "subscriptionStatusUrlVersion" => Ok(Self::SubscriptionStatusUrlVersion),
+                "subscriptionStatusUrlForSandbox" => Ok(Self::SubscriptionStatusUrlForSandbox),
+                "subscriptionStatusUrlVersionForSandbox" => {
+                    Ok(Self::SubscriptionStatusUrlVersionForSandbox)
+                }
+                "contentRightsDeclaration" => Ok(Self::ContentRightsDeclaration),
+                "streamlinedPurchasingEnabled" => Ok(Self::StreamlinedPurchasingEnabled),
+                "accessibilityDeclarations" => Ok(Self::AccessibilityDeclarations),
+                "appEncryptionDeclarations" => Ok(Self::AppEncryptionDeclarations),
+                "appStoreIcon" => Ok(Self::AppStoreIcon),
+                "ciProduct" => Ok(Self::CiProduct),
+                "betaTesters" => Ok(Self::BetaTesters),
+                "betaGroups" => Ok(Self::BetaGroups),
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                "appTags" => Ok(Self::AppTags),
+                "preReleaseVersions" => Ok(Self::PreReleaseVersions),
+                "betaAppLocalizations" => Ok(Self::BetaAppLocalizations),
+                "builds" => Ok(Self::Builds),
+                "betaLicenseAgreement" => Ok(Self::BetaLicenseAgreement),
+                "betaAppReviewDetail" => Ok(Self::BetaAppReviewDetail),
+                "appInfos" => Ok(Self::AppInfos),
+                "appClips" => Ok(Self::AppClips),
+                "appPricePoints" => Ok(Self::AppPricePoints),
+                "endUserLicenseAgreement" => Ok(Self::EndUserLicenseAgreement),
+                "appPriceSchedule" => Ok(Self::AppPriceSchedule),
+                "appAvailabilityV2" => Ok(Self::AppAvailabilityV2),
+                "inAppPurchases" => Ok(Self::InAppPurchases),
+                "subscriptionGroups" => Ok(Self::SubscriptionGroups),
+                "gameCenterEnabledVersions" => Ok(Self::GameCenterEnabledVersions),
+                "perfPowerMetrics" => Ok(Self::PerfPowerMetrics),
+                "appCustomProductPages" => Ok(Self::AppCustomProductPages),
+                "inAppPurchasesV2" => Ok(Self::InAppPurchasesV2),
+                "promotedPurchases" => Ok(Self::PromotedPurchases),
+                "appEvents" => Ok(Self::AppEvents),
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                "subscriptionGracePeriod" => Ok(Self::SubscriptionGracePeriod),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "customerReviewSummarizations" => Ok(Self::CustomerReviewSummarizations),
+                "gameCenterDetail" => Ok(Self::GameCenterDetail),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "alternativeDistributionKey" => Ok(Self::AlternativeDistributionKey),
+                "analyticsReportRequests" => Ok(Self::AnalyticsReportRequests),
+                "marketplaceSearchDetail" => Ok(Self::MarketplaceSearchDetail),
+                "buildUploads" => Ok(Self::BuildUploads),
+                "backgroundAssets" => Ok(Self::BackgroundAssets),
+                "betaFeedbackScreenshotSubmissions" => Ok(Self::BetaFeedbackScreenshotSubmissions),
+                "betaFeedbackCrashSubmissions" => Ok(Self::BetaFeedbackCrashSubmissions),
+                "searchKeywords" => Ok(Self::SearchKeywords),
+                "webhooks" => Ok(Self::Webhooks),
+                "androidToIosAppMappingDetails" => Ok(Self::AndroidToIosAppMappingDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "state",
+    ///    "appStoreVersion",
+    ///    "appCustomProductPageVersion",
+    ///    "appStoreVersionExperiment",
+    ///    "appStoreVersionExperimentV2",
+    ///    "appEvent",
+    ///    "backgroundAssetVersion",
+    ///    "gameCenterAchievementVersion",
+    ///    "gameCenterActivityVersion",
+    ///    "gameCenterChallengeVersion",
+    ///    "gameCenterLeaderboardSetVersion",
+    ///    "gameCenterLeaderboardVersion"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appStoreVersionExperiment")]
+        AppStoreVersionExperiment,
+        #[serde(rename = "appStoreVersionExperimentV2")]
+        AppStoreVersionExperimentV2,
+        #[serde(rename = "appEvent")]
+        AppEvent,
+        #[serde(rename = "backgroundAssetVersion")]
+        BackgroundAssetVersion,
+        #[serde(rename = "gameCenterAchievementVersion")]
+        GameCenterAchievementVersion,
+        #[serde(rename = "gameCenterActivityVersion")]
+        GameCenterActivityVersion,
+        #[serde(rename = "gameCenterChallengeVersion")]
+        GameCenterChallengeVersion,
+        #[serde(rename = "gameCenterLeaderboardSetVersion")]
+        GameCenterLeaderboardSetVersion,
+        #[serde(rename = "gameCenterLeaderboardVersion")]
+        GameCenterLeaderboardVersion,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::State => f.write_str("state"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppCustomProductPageVersion => f.write_str("appCustomProductPageVersion"),
+                Self::AppStoreVersionExperiment => f.write_str("appStoreVersionExperiment"),
+                Self::AppStoreVersionExperimentV2 => f.write_str("appStoreVersionExperimentV2"),
+                Self::AppEvent => f.write_str("appEvent"),
+                Self::BackgroundAssetVersion => f.write_str("backgroundAssetVersion"),
+                Self::GameCenterAchievementVersion => f.write_str("gameCenterAchievementVersion"),
+                Self::GameCenterActivityVersion => f.write_str("gameCenterActivityVersion"),
+                Self::GameCenterChallengeVersion => f.write_str("gameCenterChallengeVersion"),
+                Self::GameCenterLeaderboardSetVersion => {
+                    f.write_str("gameCenterLeaderboardSetVersion")
+                }
+                Self::GameCenterLeaderboardVersion => f.write_str("gameCenterLeaderboardVersion"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "state" => Ok(Self::State),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appCustomProductPageVersion" => Ok(Self::AppCustomProductPageVersion),
+                "appStoreVersionExperiment" => Ok(Self::AppStoreVersionExperiment),
+                "appStoreVersionExperimentV2" => Ok(Self::AppStoreVersionExperimentV2),
+                "appEvent" => Ok(Self::AppEvent),
+                "backgroundAssetVersion" => Ok(Self::BackgroundAssetVersion),
+                "gameCenterAchievementVersion" => Ok(Self::GameCenterAchievementVersion),
+                "gameCenterActivityVersion" => Ok(Self::GameCenterActivityVersion),
+                "gameCenterChallengeVersion" => Ok(Self::GameCenterChallengeVersion),
+                "gameCenterLeaderboardSetVersion" => Ok(Self::GameCenterLeaderboardSetVersion),
+                "gameCenterLeaderboardVersion" => Ok(Self::GameCenterLeaderboardVersion),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "submittedDate",
+    ///    "state",
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "submittedDate")]
+        SubmittedDate,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::SubmittedDate => f.write_str("submittedDate"),
+                Self::State => f.write_str("state"),
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "submittedDate" => Ok(Self::SubmittedDate),
+                "state" => Ok(Self::State),
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "IOS",
+    ///    "MAC_OS",
+    ///    "TV_OS",
+    ///    "VISION_OS"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem {
+        #[serde(rename = "IOS")]
+        Ios,
+        #[serde(rename = "MAC_OS")]
+        MacOs,
+        #[serde(rename = "TV_OS")]
+        TvOs,
+        #[serde(rename = "VISION_OS")]
+        VisionOs,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Ios => f.write_str("IOS"),
+                Self::MacOs => f.write_str("MAC_OS"),
+                Self::TvOs => f.write_str("TV_OS"),
+                Self::VisionOs => f.write_str("VISION_OS"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "IOS" => Ok(Self::Ios),
+                "MAC_OS" => Ok(Self::MacOs),
+                "TV_OS" => Ok(Self::TvOs),
+                "VISION_OS" => Ok(Self::VisionOs),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedFilterStateItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "READY_FOR_REVIEW",
+    ///    "WAITING_FOR_REVIEW",
+    ///    "IN_REVIEW",
+    ///    "UNRESOLVED_ISSUES",
+    ///    "CANCELING",
+    ///    "COMPLETING",
+    ///    "COMPLETE"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedFilterStateItem {
+        #[serde(rename = "READY_FOR_REVIEW")]
+        ReadyForReview,
+        #[serde(rename = "WAITING_FOR_REVIEW")]
+        WaitingForReview,
+        #[serde(rename = "IN_REVIEW")]
+        InReview,
+        #[serde(rename = "UNRESOLVED_ISSUES")]
+        UnresolvedIssues,
+        #[serde(rename = "CANCELING")]
+        Canceling,
+        #[serde(rename = "COMPLETING")]
+        Completing,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedFilterStateItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReadyForReview => f.write_str("READY_FOR_REVIEW"),
+                Self::WaitingForReview => f.write_str("WAITING_FOR_REVIEW"),
+                Self::InReview => f.write_str("IN_REVIEW"),
+                Self::UnresolvedIssues => f.write_str("UNRESOLVED_ISSUES"),
+                Self::Canceling => f.write_str("CANCELING"),
+                Self::Completing => f.write_str("COMPLETING"),
+                Self::Complete => f.write_str("COMPLETE"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedFilterStateItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "READY_FOR_REVIEW" => Ok(Self::ReadyForReview),
+                "WAITING_FOR_REVIEW" => Ok(Self::WaitingForReview),
+                "IN_REVIEW" => Ok(Self::InReview),
+                "UNRESOLVED_ISSUES" => Ok(Self::UnresolvedIssues),
+                "CANCELING" => Ok(Self::Canceling),
+                "COMPLETING" => Ok(Self::Completing),
+                "COMPLETE" => Ok(Self::Complete),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppsReviewSubmissionsGetToManyRelatedFilterStateItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFilterStateItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedFilterStateItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`AppsReviewSubmissionsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum AppsReviewSubmissionsGetToManyRelatedIncludeItem {
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for AppsReviewSubmissionsGetToManyRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for AppsReviewSubmissionsGetToManyRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for AppsReviewSubmissionsGetToManyRelatedIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for AppsReviewSubmissionsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
     ///`BrazilAgeRating`
     ///
     /// <details><summary>JSON schema</summary>
@@ -36618,6 +37818,11670 @@ pub mod types {
         }
     }
 
+    ///`ReviewSubmission`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmission",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "platform": {
+    ///          "$ref": "#/components/schemas/Platform"
+    ///        },
+    ///        "state": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "READY_FOR_REVIEW",
+    ///            "WAITING_FOR_REVIEW",
+    ///            "IN_REVIEW",
+    ///            "UNRESOLVED_ISSUES",
+    ///            "CANCELING",
+    ///            "COMPLETING",
+    ///            "COMPLETE"
+    ///          ]
+    ///        },
+    ///        "submittedDate": {
+    ///          "type": "string",
+    ///          "format": "date-time"
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "app": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "apps"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionForReview": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "items": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "id",
+    ///                  "type"
+    ///                ],
+    ///                "properties": {
+    ///                  "id": {
+    ///                    "type": "string"
+    ///                  },
+    ///                  "type": {
+    ///                    "type": "string",
+    ///                    "enum": [
+    ///                      "reviewSubmissionItems"
+    ///                    ]
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "links": {
+    ///              "$ref": "#/components/schemas/RelationshipLinks"
+    ///            },
+    ///            "meta": {
+    ///              "$ref": "#/components/schemas/PagingInformation"
+    ///            }
+    ///          }
+    ///        },
+    ///        "lastUpdatedByActor": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "actors"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "submittedByActor": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "actors"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmission {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<ReviewSubmissionAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<ReviewSubmissionRelationships>,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionType,
+    }
+
+    ///`ReviewSubmissionAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "platform": {
+    ///      "$ref": "#/components/schemas/Platform"
+    ///    },
+    ///    "state": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "READY_FOR_REVIEW",
+    ///        "WAITING_FOR_REVIEW",
+    ///        "IN_REVIEW",
+    ///        "UNRESOLVED_ISSUES",
+    ///        "CANCELING",
+    ///        "COMPLETING",
+    ///        "COMPLETE"
+    ///      ]
+    ///    },
+    ///    "submittedDate": {
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub platform: ::std::option::Option<Platform>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<ReviewSubmissionAttributesState>,
+        #[serde(
+            rename = "submittedDate",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub submitted_date: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionAttributes {
+        fn default() -> Self {
+            Self {
+                platform: Default::default(),
+                state: Default::default(),
+                submitted_date: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionAttributesState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "READY_FOR_REVIEW",
+    ///    "WAITING_FOR_REVIEW",
+    ///    "IN_REVIEW",
+    ///    "UNRESOLVED_ISSUES",
+    ///    "CANCELING",
+    ///    "COMPLETING",
+    ///    "COMPLETE"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionAttributesState {
+        #[serde(rename = "READY_FOR_REVIEW")]
+        ReadyForReview,
+        #[serde(rename = "WAITING_FOR_REVIEW")]
+        WaitingForReview,
+        #[serde(rename = "IN_REVIEW")]
+        InReview,
+        #[serde(rename = "UNRESOLVED_ISSUES")]
+        UnresolvedIssues,
+        #[serde(rename = "CANCELING")]
+        Canceling,
+        #[serde(rename = "COMPLETING")]
+        Completing,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionAttributesState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReadyForReview => f.write_str("READY_FOR_REVIEW"),
+                Self::WaitingForReview => f.write_str("WAITING_FOR_REVIEW"),
+                Self::InReview => f.write_str("IN_REVIEW"),
+                Self::UnresolvedIssues => f.write_str("UNRESOLVED_ISSUES"),
+                Self::Canceling => f.write_str("CANCELING"),
+                Self::Completing => f.write_str("COMPLETING"),
+                Self::Complete => f.write_str("COMPLETE"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionAttributesState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "READY_FOR_REVIEW" => Ok(Self::ReadyForReview),
+                "WAITING_FOR_REVIEW" => Ok(Self::WaitingForReview),
+                "IN_REVIEW" => Ok(Self::InReview),
+                "UNRESOLVED_ISSUES" => Ok(Self::UnresolvedIssues),
+                "CANCELING" => Ok(Self::Canceling),
+                "COMPLETING" => Ok(Self::Completing),
+                "COMPLETE" => Ok(Self::Complete),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionCreateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionCreateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "relationships",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "platform": {
+    ///              "$ref": "#/components/schemas/Platform"
+    ///            }
+    ///          }
+    ///        },
+    ///        "relationships": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "app"
+    ///          ],
+    ///          "properties": {
+    ///            "app": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "data"
+    ///              ],
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "apps"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "reviewSubmissions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequest {
+        pub data: ReviewSubmissionCreateRequestData,
+    }
+
+    ///`ReviewSubmissionCreateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "relationships",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "platform": {
+    ///          "$ref": "#/components/schemas/Platform"
+    ///        }
+    ///      }
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "app"
+    ///      ],
+    ///      "properties": {
+    ///        "app": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "data"
+    ///          ],
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "apps"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<ReviewSubmissionCreateRequestDataAttributes>,
+        pub relationships: ReviewSubmissionCreateRequestDataRelationships,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionCreateRequestDataType,
+    }
+
+    ///`ReviewSubmissionCreateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "platform": {
+    ///      "$ref": "#/components/schemas/Platform"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequestDataAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub platform: ::std::option::Option<Platform>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionCreateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                platform: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionCreateRequestDataRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "app"
+    ///  ],
+    ///  "properties": {
+    ///    "app": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "data"
+    ///      ],
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "apps"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequestDataRelationships {
+        pub app: ReviewSubmissionCreateRequestDataRelationshipsApp,
+    }
+
+    ///`ReviewSubmissionCreateRequestDataRelationshipsApp`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "apps"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequestDataRelationshipsApp {
+        pub data: ReviewSubmissionCreateRequestDataRelationshipsAppData,
+    }
+
+    ///`ReviewSubmissionCreateRequestDataRelationshipsAppData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "apps"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionCreateRequestDataRelationshipsAppData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionCreateRequestDataRelationshipsAppDataType,
+    }
+
+    ///`ReviewSubmissionCreateRequestDataRelationshipsAppDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "apps"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionCreateRequestDataRelationshipsAppDataType {
+        #[serde(rename = "apps")]
+        Apps,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionCreateRequestDataRelationshipsAppDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Apps => f.write_str("apps"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionCreateRequestDataRelationshipsAppDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "apps" => Ok(Self::Apps),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionCreateRequestDataRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionCreateRequestDataRelationshipsAppDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionCreateRequestDataRelationshipsAppDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionCreateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionCreateRequestDataType {
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionCreateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionCreateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionItem",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "state": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "READY_FOR_REVIEW",
+    ///            "ACCEPTED",
+    ///            "APPROVED",
+    ///            "REJECTED",
+    ///            "REMOVED"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/ResourceLinks"
+    ///    },
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "appCustomProductPageVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCustomProductPageVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appEvent": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appEvents"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionExperiment": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersionExperiments"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionExperimentV2": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersionExperiments"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "backgroundAssetVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "backgroundAssetVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterAchievementVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterAchievementVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterActivityVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterActivityVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterChallengeVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterChallengeVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterLeaderboardSetVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterLeaderboardSetVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterLeaderboardVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterLeaderboardVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissionItems"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItem {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<ReviewSubmissionItemAttributes>,
+        pub id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<ResourceLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<ReviewSubmissionItemRelationships>,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemType,
+    }
+
+    ///`ReviewSubmissionItemAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "state": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "READY_FOR_REVIEW",
+    ///        "ACCEPTED",
+    ///        "APPROVED",
+    ///        "REJECTED",
+    ///        "REMOVED"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub state: ::std::option::Option<ReviewSubmissionItemAttributesState>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemAttributes {
+        fn default() -> Self {
+            Self {
+                state: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemAttributesState`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "READY_FOR_REVIEW",
+    ///    "ACCEPTED",
+    ///    "APPROVED",
+    ///    "REJECTED",
+    ///    "REMOVED"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemAttributesState {
+        #[serde(rename = "READY_FOR_REVIEW")]
+        ReadyForReview,
+        #[serde(rename = "ACCEPTED")]
+        Accepted,
+        #[serde(rename = "APPROVED")]
+        Approved,
+        #[serde(rename = "REJECTED")]
+        Rejected,
+        #[serde(rename = "REMOVED")]
+        Removed,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemAttributesState {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReadyForReview => f.write_str("READY_FOR_REVIEW"),
+                Self::Accepted => f.write_str("ACCEPTED"),
+                Self::Approved => f.write_str("APPROVED"),
+                Self::Rejected => f.write_str("REJECTED"),
+                Self::Removed => f.write_str("REMOVED"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemAttributesState {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "READY_FOR_REVIEW" => Ok(Self::ReadyForReview),
+                "ACCEPTED" => Ok(Self::Accepted),
+                "APPROVED" => Ok(Self::Approved),
+                "REJECTED" => Ok(Self::Rejected),
+                "REMOVED" => Ok(Self::Removed),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionItemAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionItemAttributesState {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionItemCreateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "relationships",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "relationships": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "reviewSubmission"
+    ///          ],
+    ///          "properties": {
+    ///            "appCustomProductPageVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appCustomProductPageVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "appEvent": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appEvents"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "appStoreVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appStoreVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "appStoreVersionExperiment": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appStoreVersionExperiments"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "appStoreVersionExperimentV2": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "appStoreVersionExperiments"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "backgroundAssetVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "backgroundAssetVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "gameCenterAchievementVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "gameCenterAchievementVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "gameCenterActivityVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "gameCenterActivityVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "gameCenterChallengeVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "gameCenterChallengeVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "gameCenterLeaderboardSetVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "gameCenterLeaderboardSetVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "gameCenterLeaderboardVersion": {
+    ///              "type": "object",
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "gameCenterLeaderboardVersions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            },
+    ///            "reviewSubmission": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "data"
+    ///              ],
+    ///              "properties": {
+    ///                "data": {
+    ///                  "type": "object",
+    ///                  "required": [
+    ///                    "id",
+    ///                    "type"
+    ///                  ],
+    ///                  "properties": {
+    ///                    "id": {
+    ///                      "type": "string"
+    ///                    },
+    ///                    "type": {
+    ///                      "type": "string",
+    ///                      "enum": [
+    ///                        "reviewSubmissions"
+    ///                      ]
+    ///                    }
+    ///                  }
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "reviewSubmissionItems"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequest {
+        pub data: ReviewSubmissionItemCreateRequestData,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "relationships",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "relationships": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "reviewSubmission"
+    ///      ],
+    ///      "properties": {
+    ///        "appCustomProductPageVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appCustomProductPageVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appEvent": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appEvents"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionExperiment": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersionExperiments"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "appStoreVersionExperimentV2": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "appStoreVersionExperiments"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "backgroundAssetVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "backgroundAssetVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterAchievementVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterAchievementVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterActivityVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterActivityVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterChallengeVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterChallengeVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterLeaderboardSetVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterLeaderboardSetVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "gameCenterLeaderboardVersion": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "gameCenterLeaderboardVersions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "reviewSubmission": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "data"
+    ///          ],
+    ///          "properties": {
+    ///            "data": {
+    ///              "type": "object",
+    ///              "required": [
+    ///                "id",
+    ///                "type"
+    ///              ],
+    ///              "properties": {
+    ///                "id": {
+    ///                  "type": "string"
+    ///                },
+    ///                "type": {
+    ///                  "type": "string",
+    ///                  "enum": [
+    ///                    "reviewSubmissions"
+    ///                  ]
+    ///                }
+    ///              }
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissionItems"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestData {
+        pub relationships: ReviewSubmissionItemCreateRequestDataRelationships,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemCreateRequestDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "reviewSubmission"
+    ///  ],
+    ///  "properties": {
+    ///    "appCustomProductPageVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCustomProductPageVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appEvent": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appEvents"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionExperiment": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersionExperiments"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionExperimentV2": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersionExperiments"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "backgroundAssetVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "backgroundAssetVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterAchievementVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterAchievementVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterActivityVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterActivityVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterChallengeVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterChallengeVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterLeaderboardSetVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterLeaderboardSetVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterLeaderboardVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterLeaderboardVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "reviewSubmission": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "data"
+    ///      ],
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "reviewSubmissions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationships {
+        #[serde(
+            rename = "appCustomProductPageVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_custom_product_page_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersion,
+        >,
+        #[serde(
+            rename = "appEvent",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_event:
+            ::std::option::Option<ReviewSubmissionItemCreateRequestDataRelationshipsAppEvent>,
+        #[serde(
+            rename = "appStoreVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersion,
+        >,
+        #[serde(
+            rename = "appStoreVersionExperiment",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version_experiment: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperiment,
+        >,
+        #[serde(
+            rename = "appStoreVersionExperimentV2",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version_experiment_v2: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2,
+        >,
+        #[serde(
+            rename = "backgroundAssetVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub background_asset_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersion,
+        >,
+        #[serde(
+            rename = "gameCenterAchievementVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_achievement_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersion,
+        >,
+        #[serde(
+            rename = "gameCenterActivityVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_activity_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersion,
+        >,
+        #[serde(
+            rename = "gameCenterChallengeVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_challenge_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersion,
+        >,
+        #[serde(
+            rename = "gameCenterLeaderboardSetVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_leaderboard_set_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersion,
+        >,
+        #[serde(
+            rename = "gameCenterLeaderboardVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_leaderboard_version: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersion,
+        >,
+        #[serde(rename = "reviewSubmission")]
+        pub review_submission: ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmission,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCustomProductPageVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCustomProductPageVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCustomProductPageVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType {
+        #[serde(rename = "appCustomProductPageVersions")]
+        AppCustomProductPageVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCustomProductPageVersions => f.write_str("appCustomProductPageVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCustomProductPageVersions" => Ok(Self::AppCustomProductPageVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppEvent`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appEvents"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppEvent {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemCreateRequestDataRelationshipsAppEventData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemCreateRequestDataRelationshipsAppEvent {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppEventData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appEvents"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppEventData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appEvents"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType {
+        #[serde(rename = "appEvents")]
+        AppEvents,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppEvents => f.write_str("appEvents"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appEvents" => Ok(Self::AppEvents),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppEventDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionData,
+        >,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType {
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperiment`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersionExperiments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperiment {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperiment
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperiments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperiments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType {
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersionExperiments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2 {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2Data,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2Data`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperiments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2Data {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperiments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType {
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "backgroundAssetVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "backgroundAssetVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "backgroundAssetVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType {
+        #[serde(rename = "backgroundAssetVersions")]
+        BackgroundAssetVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::BackgroundAssetVersions => f.write_str("backgroundAssetVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "backgroundAssetVersions" => Ok(Self::BackgroundAssetVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterAchievementVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterAchievementVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterAchievementVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType {
+        #[serde(rename = "gameCenterAchievementVersions")]
+        GameCenterAchievementVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterAchievementVersions => f.write_str("gameCenterAchievementVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterAchievementVersions" => Ok(Self::GameCenterAchievementVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterActivityVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterActivityVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterActivityVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType {
+        #[serde(rename = "gameCenterActivityVersions")]
+        GameCenterActivityVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterActivityVersions => f.write_str("gameCenterActivityVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterActivityVersions" => Ok(Self::GameCenterActivityVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterChallengeVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterChallengeVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterChallengeVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType {
+        #[serde(rename = "gameCenterChallengeVersions")]
+        GameCenterChallengeVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterChallengeVersions => f.write_str("gameCenterChallengeVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterChallengeVersions" => Ok(Self::GameCenterChallengeVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterLeaderboardSetVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterLeaderboardSetVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionData { pub id : :: std :: string :: String , # [serde (rename = "type")] pub type_ : ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType , }
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterLeaderboardSetVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType {
+        #[serde(rename = "gameCenterLeaderboardSetVersions")]
+        GameCenterLeaderboardSetVersions,
+    }
+
+    impl :: std :: fmt :: Display for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType { fn fmt (& self , f : & mut :: std :: fmt :: Formatter < '_ >) -> :: std :: fmt :: Result { match * self { Self :: GameCenterLeaderboardSetVersions => f . write_str ("gameCenterLeaderboardSetVersions") , } } }
+    impl :: std :: str :: FromStr for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType { type Err = self :: error :: ConversionError ; fn from_str (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { match value { "gameCenterLeaderboardSetVersions" => Ok (Self :: GameCenterLeaderboardSetVersions) , _ => Err ("invalid value" . into ()) , } } }
+    impl :: std :: convert :: TryFrom < & str > for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType { type Error = self :: error :: ConversionError ; fn try_from (value : & str) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < & :: std :: string :: String > for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType { type Error = self :: error :: ConversionError ; fn try_from (value : & :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    impl :: std :: convert :: TryFrom < :: std :: string :: String > for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardSetVersionDataType { type Error = self :: error :: ConversionError ; fn try_from (value : :: std :: string :: String) -> :: std :: result :: Result < Self , self :: error :: ConversionError > { value . parse () } }
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterLeaderboardVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionData,
+        >,
+    }
+
+    impl ::std::default::Default
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersion
+    {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterLeaderboardVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_:
+            ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterLeaderboardVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType {
+        #[serde(rename = "gameCenterLeaderboardVersions")]
+        GameCenterLeaderboardVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterLeaderboardVersions => f.write_str("gameCenterLeaderboardVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterLeaderboardVersions" => Ok(Self::GameCenterLeaderboardVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmission`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "reviewSubmissions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmission {
+        pub data: ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionData,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType,
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType {
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemCreateRequestDataRelationshipsReviewSubmissionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemCreateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissionItems"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemCreateRequestDataType {
+        #[serde(rename = "reviewSubmissionItems")]
+        ReviewSubmissionItems,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemCreateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissionItems => f.write_str("reviewSubmissionItems"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemCreateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissionItems" => Ok(Self::ReviewSubmissionItems),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionItemCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionItemCreateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "appCustomProductPageVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appCustomProductPageVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appEvent": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appEvents"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionExperiment": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersionExperiments"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionExperimentV2": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersionExperiments"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "backgroundAssetVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "backgroundAssetVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterAchievementVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterAchievementVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterActivityVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterActivityVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterChallengeVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterChallengeVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterLeaderboardSetVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterLeaderboardSetVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "gameCenterLeaderboardVersion": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "gameCenterLeaderboardVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationships {
+        #[serde(
+            rename = "appCustomProductPageVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_custom_product_page_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppCustomProductPageVersion>,
+        #[serde(
+            rename = "appEvent",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_event: ::std::option::Option<ReviewSubmissionItemRelationshipsAppEvent>,
+        #[serde(
+            rename = "appStoreVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersion>,
+        #[serde(
+            rename = "appStoreVersionExperiment",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version_experiment:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersionExperiment>,
+        #[serde(
+            rename = "appStoreVersionExperimentV2",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version_experiment_v2:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2>,
+        #[serde(
+            rename = "backgroundAssetVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub background_asset_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsBackgroundAssetVersion>,
+        #[serde(
+            rename = "gameCenterAchievementVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_achievement_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterAchievementVersion>,
+        #[serde(
+            rename = "gameCenterActivityVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_activity_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterActivityVersion>,
+        #[serde(
+            rename = "gameCenterChallengeVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_challenge_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterChallengeVersion>,
+        #[serde(
+            rename = "gameCenterLeaderboardSetVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_leaderboard_set_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersion>,
+        #[serde(
+            rename = "gameCenterLeaderboardVersion",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub game_center_leaderboard_version:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersion>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationships {
+        fn default() -> Self {
+            Self {
+                app_custom_product_page_version: Default::default(),
+                app_event: Default::default(),
+                app_store_version: Default::default(),
+                app_store_version_experiment: Default::default(),
+                app_store_version_experiment_v2: Default::default(),
+                background_asset_version: Default::default(),
+                game_center_achievement_version: Default::default(),
+                game_center_activity_version: Default::default(),
+                game_center_challenge_version: Default::default(),
+                game_center_leaderboard_set_version: Default::default(),
+                game_center_leaderboard_version: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppCustomProductPageVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appCustomProductPageVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppCustomProductPageVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppCustomProductPageVersionData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsAppCustomProductPageVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppCustomProductPageVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appCustomProductPageVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppCustomProductPageVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appCustomProductPageVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType {
+        #[serde(rename = "appCustomProductPageVersions")]
+        AppCustomProductPageVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppCustomProductPageVersions => f.write_str("appCustomProductPageVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appCustomProductPageVersions" => Ok(Self::AppCustomProductPageVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppCustomProductPageVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppEvent`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appEvents"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppEvent {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionItemRelationshipsAppEventData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsAppEvent {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppEventData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appEvents"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppEventData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsAppEventDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppEventDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appEvents"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsAppEventDataType {
+        #[serde(rename = "appEvents")]
+        AppEvents,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsAppEventDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppEvents => f.write_str("appEvents"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsAppEventDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appEvents" => Ok(Self::AppEvents),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemRelationshipsAppEventDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppEventDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppEventDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersionData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsAppStoreVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsAppStoreVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsAppStoreVersionDataType {
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsAppStoreVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsAppStoreVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemRelationshipsAppStoreVersionDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperiment`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersionExperiments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersionExperiment {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersionExperimentData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsAppStoreVersionExperiment {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperimentData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperiments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersionExperimentData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperiments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType {
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersionExperiments"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2 {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2Data>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2 {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2Data`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersionExperiments"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2Data {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersionExperiments"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType {
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsAppStoreVersionExperimentV2DataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsBackgroundAssetVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "backgroundAssetVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsBackgroundAssetVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsBackgroundAssetVersionData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsBackgroundAssetVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsBackgroundAssetVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "backgroundAssetVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsBackgroundAssetVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "backgroundAssetVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType {
+        #[serde(rename = "backgroundAssetVersions")]
+        BackgroundAssetVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::BackgroundAssetVersions => f.write_str("backgroundAssetVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "backgroundAssetVersions" => Ok(Self::BackgroundAssetVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsBackgroundAssetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterAchievementVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterAchievementVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterAchievementVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemRelationshipsGameCenterAchievementVersionData,
+        >,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsGameCenterAchievementVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterAchievementVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterAchievementVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterAchievementVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterAchievementVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType {
+        #[serde(rename = "gameCenterAchievementVersions")]
+        GameCenterAchievementVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterAchievementVersions => f.write_str("gameCenterAchievementVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterAchievementVersions" => Ok(Self::GameCenterAchievementVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterAchievementVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterActivityVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterActivityVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterActivityVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterActivityVersionData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsGameCenterActivityVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterActivityVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterActivityVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterActivityVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterActivityVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType {
+        #[serde(rename = "gameCenterActivityVersions")]
+        GameCenterActivityVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterActivityVersions => f.write_str("gameCenterActivityVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterActivityVersions" => Ok(Self::GameCenterActivityVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterActivityVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterChallengeVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterChallengeVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterChallengeVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data:
+            ::std::option::Option<ReviewSubmissionItemRelationshipsGameCenterChallengeVersionData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsGameCenterChallengeVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterChallengeVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterChallengeVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterChallengeVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterChallengeVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType {
+        #[serde(rename = "gameCenterChallengeVersions")]
+        GameCenterChallengeVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterChallengeVersions => f.write_str("gameCenterChallengeVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterChallengeVersions" => Ok(Self::GameCenterChallengeVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterChallengeVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterLeaderboardSetVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionData,
+        >,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterLeaderboardSetVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterLeaderboardSetVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType {
+        #[serde(rename = "gameCenterLeaderboardSetVersions")]
+        GameCenterLeaderboardSetVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterLeaderboardSetVersions => {
+                    f.write_str("gameCenterLeaderboardSetVersions")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterLeaderboardSetVersions" => Ok(Self::GameCenterLeaderboardSetVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardSetVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersion`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "gameCenterLeaderboardVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersion {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<
+            ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionData,
+        >,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersion {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "gameCenterLeaderboardVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType,
+    }
+
+    ///`ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "gameCenterLeaderboardVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType {
+        #[serde(rename = "gameCenterLeaderboardVersions")]
+        GameCenterLeaderboardVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::GameCenterLeaderboardVersions => f.write_str("gameCenterLeaderboardVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "gameCenterLeaderboardVersions" => Ok(Self::GameCenterLeaderboardVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionItemRelationshipsGameCenterLeaderboardVersionDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionItemResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/ReviewSubmissionItem"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemResponse {
+        pub data: ReviewSubmissionItem,
+        pub links: DocumentLinks,
+    }
+
+    ///`ReviewSubmissionItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissionItems"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemType {
+        #[serde(rename = "reviewSubmissionItems")]
+        ReviewSubmissionItems,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissionItems => f.write_str("reviewSubmissionItems"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissionItems" => Ok(Self::ReviewSubmissionItems),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionItemType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionItemType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionItemUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "removed": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "resolved": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "reviewSubmissionItems"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemUpdateRequest {
+        pub data: ReviewSubmissionItemUpdateRequestData,
+    }
+
+    ///`ReviewSubmissionItemUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "removed": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "resolved": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissionItems"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<ReviewSubmissionItemUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionItemUpdateRequestDataType,
+    }
+
+    ///`ReviewSubmissionItemUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "removed": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "resolved": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemUpdateRequestDataAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub removed: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub resolved: ::std::option::Option<bool>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionItemUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                removed: Default::default(),
+                resolved: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionItemUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissionItems"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionItemUpdateRequestDataType {
+        #[serde(rename = "reviewSubmissionItems")]
+        ReviewSubmissionItems,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionItemUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissionItems => f.write_str("reviewSubmissionItems"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionItemUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissionItems" => Ok(Self::ReviewSubmissionItems),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionItemUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionItemUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionItemUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionItemsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionItemsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/ReviewSubmissionItem"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionItemsResponse {
+        pub data: ::std::vec::Vec<ReviewSubmissionItem>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    ///`ReviewSubmissionRelationships`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "app": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "apps"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "appStoreVersionForReview": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "appStoreVersions"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "items": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "id",
+    ///              "type"
+    ///            ],
+    ///            "properties": {
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "type": {
+    ///                "type": "string",
+    ///                "enum": [
+    ///                  "reviewSubmissionItems"
+    ///                ]
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "links": {
+    ///          "$ref": "#/components/schemas/RelationshipLinks"
+    ///        },
+    ///        "meta": {
+    ///          "$ref": "#/components/schemas/PagingInformation"
+    ///        }
+    ///      }
+    ///    },
+    ///    "lastUpdatedByActor": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "actors"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "submittedByActor": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "id",
+    ///            "type"
+    ///          ],
+    ///          "properties": {
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "type": "string",
+    ///              "enum": [
+    ///                "actors"
+    ///              ]
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationships {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub app: ::std::option::Option<ReviewSubmissionRelationshipsApp>,
+        #[serde(
+            rename = "appStoreVersionForReview",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub app_store_version_for_review:
+            ::std::option::Option<ReviewSubmissionRelationshipsAppStoreVersionForReview>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub items: ::std::option::Option<ReviewSubmissionRelationshipsItems>,
+        #[serde(
+            rename = "lastUpdatedByActor",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub last_updated_by_actor:
+            ::std::option::Option<ReviewSubmissionRelationshipsLastUpdatedByActor>,
+        #[serde(
+            rename = "submittedByActor",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub submitted_by_actor:
+            ::std::option::Option<ReviewSubmissionRelationshipsSubmittedByActor>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationships {
+        fn default() -> Self {
+            Self {
+                app: Default::default(),
+                app_store_version_for_review: Default::default(),
+                items: Default::default(),
+                last_updated_by_actor: Default::default(),
+                submitted_by_actor: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsApp`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "apps"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsApp {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionRelationshipsAppData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationshipsApp {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsAppData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "apps"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsAppData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionRelationshipsAppDataType,
+    }
+
+    ///`ReviewSubmissionRelationshipsAppDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "apps"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionRelationshipsAppDataType {
+        #[serde(rename = "apps")]
+        Apps,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionRelationshipsAppDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Apps => f.write_str("apps"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionRelationshipsAppDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "apps" => Ok(Self::Apps),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionRelationshipsAppDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsAppStoreVersionForReview`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "appStoreVersions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsAppStoreVersionForReview {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionRelationshipsAppStoreVersionForReviewData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationshipsAppStoreVersionForReview {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsAppStoreVersionForReviewData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "appStoreVersions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsAppStoreVersionForReviewData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType,
+    }
+
+    ///`ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType {
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionRelationshipsAppStoreVersionForReviewDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsItems`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string",
+    ///            "enum": [
+    ///              "reviewSubmissionItems"
+    ///            ]
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/RelationshipLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsItems {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<ReviewSubmissionRelationshipsItemsDataItem>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<RelationshipLinks>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationshipsItems {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                links: Default::default(),
+                meta: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsItemsDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissionItems"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsItemsDataItem {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionRelationshipsItemsDataItemType,
+    }
+
+    ///`ReviewSubmissionRelationshipsItemsDataItemType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissionItems"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionRelationshipsItemsDataItemType {
+        #[serde(rename = "reviewSubmissionItems")]
+        ReviewSubmissionItems,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionRelationshipsItemsDataItemType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissionItems => f.write_str("reviewSubmissionItems"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionRelationshipsItemsDataItemType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissionItems" => Ok(Self::ReviewSubmissionItems),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionRelationshipsItemsDataItemType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionRelationshipsItemsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionRelationshipsItemsDataItemType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsLastUpdatedByActor`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "actors"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsLastUpdatedByActor {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionRelationshipsLastUpdatedByActorData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationshipsLastUpdatedByActor {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsLastUpdatedByActorData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "actors"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsLastUpdatedByActorData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionRelationshipsLastUpdatedByActorDataType,
+    }
+
+    ///`ReviewSubmissionRelationshipsLastUpdatedByActorDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "actors"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionRelationshipsLastUpdatedByActorDataType {
+        #[serde(rename = "actors")]
+        Actors,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionRelationshipsLastUpdatedByActorDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Actors => f.write_str("actors"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionRelationshipsLastUpdatedByActorDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "actors" => Ok(Self::Actors),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionRelationshipsLastUpdatedByActorDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionRelationshipsLastUpdatedByActorDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionRelationshipsLastUpdatedByActorDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsSubmittedByActor`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "actors"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsSubmittedByActor {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<ReviewSubmissionRelationshipsSubmittedByActorData>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionRelationshipsSubmittedByActor {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionRelationshipsSubmittedByActorData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "actors"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionRelationshipsSubmittedByActorData {
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionRelationshipsSubmittedByActorDataType,
+    }
+
+    ///`ReviewSubmissionRelationshipsSubmittedByActorDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "actors"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionRelationshipsSubmittedByActorDataType {
+        #[serde(rename = "actors")]
+        Actors,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionRelationshipsSubmittedByActorDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Actors => f.write_str("actors"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionRelationshipsSubmittedByActorDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "actors" => Ok(Self::Actors),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionRelationshipsSubmittedByActorDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionRelationshipsSubmittedByActorDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionRelationshipsSubmittedByActorDataType
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "$ref": "#/components/schemas/ReviewSubmission"
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/DocumentLinks"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionResponse {
+        pub data: ReviewSubmission,
+        pub links: DocumentLinks,
+    }
+
+    ///`ReviewSubmissionType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionType {
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionUpdateRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionUpdateRequest",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "canceled": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "platform": {
+    ///              "$ref": "#/components/schemas/Platform"
+    ///            },
+    ///            "submitted": {
+    ///              "type": [
+    ///                "boolean",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string",
+    ///          "enum": [
+    ///            "reviewSubmissions"
+    ///          ]
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionUpdateRequest {
+        pub data: ReviewSubmissionUpdateRequestData,
+    }
+
+    ///`ReviewSubmissionUpdateRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "canceled": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "platform": {
+    ///          "$ref": "#/components/schemas/Platform"
+    ///        },
+    ///        "submitted": {
+    ///          "type": [
+    ///            "boolean",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string",
+    ///      "enum": [
+    ///        "reviewSubmissions"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionUpdateRequestData {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<ReviewSubmissionUpdateRequestDataAttributes>,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ReviewSubmissionUpdateRequestDataType,
+    }
+
+    ///`ReviewSubmissionUpdateRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "canceled": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "platform": {
+    ///      "$ref": "#/components/schemas/Platform"
+    ///    },
+    ///    "submitted": {
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionUpdateRequestDataAttributes {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub canceled: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub platform: ::std::option::Option<Platform>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub submitted: ::std::option::Option<bool>,
+    }
+
+    impl ::std::default::Default for ReviewSubmissionUpdateRequestDataAttributes {
+        fn default() -> Self {
+            Self {
+                canceled: Default::default(),
+                platform: Default::default(),
+                submitted: Default::default(),
+            }
+        }
+    }
+
+    ///`ReviewSubmissionUpdateRequestDataType`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "reviewSubmissions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionUpdateRequestDataType {
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionUpdateRequestDataType {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionUpdateRequestDataType {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionUpdateRequestDataType {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFieldsActorsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "actorType",
+    ///    "userFirstName",
+    ///    "userLastName",
+    ///    "userEmail",
+    ///    "apiKeyId"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFieldsActorsItem {
+        #[serde(rename = "actorType")]
+        ActorType,
+        #[serde(rename = "userFirstName")]
+        UserFirstName,
+        #[serde(rename = "userLastName")]
+        UserLastName,
+        #[serde(rename = "userEmail")]
+        UserEmail,
+        #[serde(rename = "apiKeyId")]
+        ApiKeyId,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFieldsActorsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ActorType => f.write_str("actorType"),
+                Self::UserFirstName => f.write_str("userFirstName"),
+                Self::UserLastName => f.write_str("userLastName"),
+                Self::UserEmail => f.write_str("userEmail"),
+                Self::ApiKeyId => f.write_str("apiKeyId"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFieldsActorsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "actorType" => Ok(Self::ActorType),
+                "userFirstName" => Ok(Self::UserFirstName),
+                "userLastName" => Ok(Self::UserLastName),
+                "userEmail" => Ok(Self::UserEmail),
+                "apiKeyId" => Ok(Self::ApiKeyId),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFieldsActorsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFieldsAppsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "accessibilityUrl",
+    ///    "name",
+    ///    "bundleId",
+    ///    "sku",
+    ///    "primaryLocale",
+    ///    "isOrEverWasMadeForKids",
+    ///    "subscriptionStatusUrl",
+    ///    "subscriptionStatusUrlVersion",
+    ///    "subscriptionStatusUrlForSandbox",
+    ///    "subscriptionStatusUrlVersionForSandbox",
+    ///    "contentRightsDeclaration",
+    ///    "streamlinedPurchasingEnabled",
+    ///    "accessibilityDeclarations",
+    ///    "appEncryptionDeclarations",
+    ///    "appStoreIcon",
+    ///    "ciProduct",
+    ///    "betaTesters",
+    ///    "betaGroups",
+    ///    "appStoreVersions",
+    ///    "appTags",
+    ///    "preReleaseVersions",
+    ///    "betaAppLocalizations",
+    ///    "builds",
+    ///    "betaLicenseAgreement",
+    ///    "betaAppReviewDetail",
+    ///    "appInfos",
+    ///    "appClips",
+    ///    "appPricePoints",
+    ///    "endUserLicenseAgreement",
+    ///    "appPriceSchedule",
+    ///    "appAvailabilityV2",
+    ///    "inAppPurchases",
+    ///    "subscriptionGroups",
+    ///    "gameCenterEnabledVersions",
+    ///    "perfPowerMetrics",
+    ///    "appCustomProductPages",
+    ///    "inAppPurchasesV2",
+    ///    "promotedPurchases",
+    ///    "appEvents",
+    ///    "reviewSubmissions",
+    ///    "subscriptionGracePeriod",
+    ///    "customerReviews",
+    ///    "customerReviewSummarizations",
+    ///    "gameCenterDetail",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "alternativeDistributionKey",
+    ///    "analyticsReportRequests",
+    ///    "marketplaceSearchDetail",
+    ///    "buildUploads",
+    ///    "backgroundAssets",
+    ///    "betaFeedbackScreenshotSubmissions",
+    ///    "betaFeedbackCrashSubmissions",
+    ///    "searchKeywords",
+    ///    "webhooks",
+    ///    "androidToIosAppMappingDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFieldsAppsItem {
+        #[serde(rename = "accessibilityUrl")]
+        AccessibilityUrl,
+        #[serde(rename = "name")]
+        Name,
+        #[serde(rename = "bundleId")]
+        BundleId,
+        #[serde(rename = "sku")]
+        Sku,
+        #[serde(rename = "primaryLocale")]
+        PrimaryLocale,
+        #[serde(rename = "isOrEverWasMadeForKids")]
+        IsOrEverWasMadeForKids,
+        #[serde(rename = "subscriptionStatusUrl")]
+        SubscriptionStatusUrl,
+        #[serde(rename = "subscriptionStatusUrlVersion")]
+        SubscriptionStatusUrlVersion,
+        #[serde(rename = "subscriptionStatusUrlForSandbox")]
+        SubscriptionStatusUrlForSandbox,
+        #[serde(rename = "subscriptionStatusUrlVersionForSandbox")]
+        SubscriptionStatusUrlVersionForSandbox,
+        #[serde(rename = "contentRightsDeclaration")]
+        ContentRightsDeclaration,
+        #[serde(rename = "streamlinedPurchasingEnabled")]
+        StreamlinedPurchasingEnabled,
+        #[serde(rename = "accessibilityDeclarations")]
+        AccessibilityDeclarations,
+        #[serde(rename = "appEncryptionDeclarations")]
+        AppEncryptionDeclarations,
+        #[serde(rename = "appStoreIcon")]
+        AppStoreIcon,
+        #[serde(rename = "ciProduct")]
+        CiProduct,
+        #[serde(rename = "betaTesters")]
+        BetaTesters,
+        #[serde(rename = "betaGroups")]
+        BetaGroups,
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+        #[serde(rename = "appTags")]
+        AppTags,
+        #[serde(rename = "preReleaseVersions")]
+        PreReleaseVersions,
+        #[serde(rename = "betaAppLocalizations")]
+        BetaAppLocalizations,
+        #[serde(rename = "builds")]
+        Builds,
+        #[serde(rename = "betaLicenseAgreement")]
+        BetaLicenseAgreement,
+        #[serde(rename = "betaAppReviewDetail")]
+        BetaAppReviewDetail,
+        #[serde(rename = "appInfos")]
+        AppInfos,
+        #[serde(rename = "appClips")]
+        AppClips,
+        #[serde(rename = "appPricePoints")]
+        AppPricePoints,
+        #[serde(rename = "endUserLicenseAgreement")]
+        EndUserLicenseAgreement,
+        #[serde(rename = "appPriceSchedule")]
+        AppPriceSchedule,
+        #[serde(rename = "appAvailabilityV2")]
+        AppAvailabilityV2,
+        #[serde(rename = "inAppPurchases")]
+        InAppPurchases,
+        #[serde(rename = "subscriptionGroups")]
+        SubscriptionGroups,
+        #[serde(rename = "gameCenterEnabledVersions")]
+        GameCenterEnabledVersions,
+        #[serde(rename = "perfPowerMetrics")]
+        PerfPowerMetrics,
+        #[serde(rename = "appCustomProductPages")]
+        AppCustomProductPages,
+        #[serde(rename = "inAppPurchasesV2")]
+        InAppPurchasesV2,
+        #[serde(rename = "promotedPurchases")]
+        PromotedPurchases,
+        #[serde(rename = "appEvents")]
+        AppEvents,
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+        #[serde(rename = "subscriptionGracePeriod")]
+        SubscriptionGracePeriod,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "customerReviewSummarizations")]
+        CustomerReviewSummarizations,
+        #[serde(rename = "gameCenterDetail")]
+        GameCenterDetail,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "alternativeDistributionKey")]
+        AlternativeDistributionKey,
+        #[serde(rename = "analyticsReportRequests")]
+        AnalyticsReportRequests,
+        #[serde(rename = "marketplaceSearchDetail")]
+        MarketplaceSearchDetail,
+        #[serde(rename = "buildUploads")]
+        BuildUploads,
+        #[serde(rename = "backgroundAssets")]
+        BackgroundAssets,
+        #[serde(rename = "betaFeedbackScreenshotSubmissions")]
+        BetaFeedbackScreenshotSubmissions,
+        #[serde(rename = "betaFeedbackCrashSubmissions")]
+        BetaFeedbackCrashSubmissions,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+        #[serde(rename = "webhooks")]
+        Webhooks,
+        #[serde(rename = "androidToIosAppMappingDetails")]
+        AndroidToIosAppMappingDetails,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFieldsAppsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AccessibilityUrl => f.write_str("accessibilityUrl"),
+                Self::Name => f.write_str("name"),
+                Self::BundleId => f.write_str("bundleId"),
+                Self::Sku => f.write_str("sku"),
+                Self::PrimaryLocale => f.write_str("primaryLocale"),
+                Self::IsOrEverWasMadeForKids => f.write_str("isOrEverWasMadeForKids"),
+                Self::SubscriptionStatusUrl => f.write_str("subscriptionStatusUrl"),
+                Self::SubscriptionStatusUrlVersion => f.write_str("subscriptionStatusUrlVersion"),
+                Self::SubscriptionStatusUrlForSandbox => {
+                    f.write_str("subscriptionStatusUrlForSandbox")
+                }
+                Self::SubscriptionStatusUrlVersionForSandbox => {
+                    f.write_str("subscriptionStatusUrlVersionForSandbox")
+                }
+                Self::ContentRightsDeclaration => f.write_str("contentRightsDeclaration"),
+                Self::StreamlinedPurchasingEnabled => f.write_str("streamlinedPurchasingEnabled"),
+                Self::AccessibilityDeclarations => f.write_str("accessibilityDeclarations"),
+                Self::AppEncryptionDeclarations => f.write_str("appEncryptionDeclarations"),
+                Self::AppStoreIcon => f.write_str("appStoreIcon"),
+                Self::CiProduct => f.write_str("ciProduct"),
+                Self::BetaTesters => f.write_str("betaTesters"),
+                Self::BetaGroups => f.write_str("betaGroups"),
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+                Self::AppTags => f.write_str("appTags"),
+                Self::PreReleaseVersions => f.write_str("preReleaseVersions"),
+                Self::BetaAppLocalizations => f.write_str("betaAppLocalizations"),
+                Self::Builds => f.write_str("builds"),
+                Self::BetaLicenseAgreement => f.write_str("betaLicenseAgreement"),
+                Self::BetaAppReviewDetail => f.write_str("betaAppReviewDetail"),
+                Self::AppInfos => f.write_str("appInfos"),
+                Self::AppClips => f.write_str("appClips"),
+                Self::AppPricePoints => f.write_str("appPricePoints"),
+                Self::EndUserLicenseAgreement => f.write_str("endUserLicenseAgreement"),
+                Self::AppPriceSchedule => f.write_str("appPriceSchedule"),
+                Self::AppAvailabilityV2 => f.write_str("appAvailabilityV2"),
+                Self::InAppPurchases => f.write_str("inAppPurchases"),
+                Self::SubscriptionGroups => f.write_str("subscriptionGroups"),
+                Self::GameCenterEnabledVersions => f.write_str("gameCenterEnabledVersions"),
+                Self::PerfPowerMetrics => f.write_str("perfPowerMetrics"),
+                Self::AppCustomProductPages => f.write_str("appCustomProductPages"),
+                Self::InAppPurchasesV2 => f.write_str("inAppPurchasesV2"),
+                Self::PromotedPurchases => f.write_str("promotedPurchases"),
+                Self::AppEvents => f.write_str("appEvents"),
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+                Self::SubscriptionGracePeriod => f.write_str("subscriptionGracePeriod"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::CustomerReviewSummarizations => f.write_str("customerReviewSummarizations"),
+                Self::GameCenterDetail => f.write_str("gameCenterDetail"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::AlternativeDistributionKey => f.write_str("alternativeDistributionKey"),
+                Self::AnalyticsReportRequests => f.write_str("analyticsReportRequests"),
+                Self::MarketplaceSearchDetail => f.write_str("marketplaceSearchDetail"),
+                Self::BuildUploads => f.write_str("buildUploads"),
+                Self::BackgroundAssets => f.write_str("backgroundAssets"),
+                Self::BetaFeedbackScreenshotSubmissions => {
+                    f.write_str("betaFeedbackScreenshotSubmissions")
+                }
+                Self::BetaFeedbackCrashSubmissions => f.write_str("betaFeedbackCrashSubmissions"),
+                Self::SearchKeywords => f.write_str("searchKeywords"),
+                Self::Webhooks => f.write_str("webhooks"),
+                Self::AndroidToIosAppMappingDetails => f.write_str("androidToIosAppMappingDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFieldsAppsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "accessibilityUrl" => Ok(Self::AccessibilityUrl),
+                "name" => Ok(Self::Name),
+                "bundleId" => Ok(Self::BundleId),
+                "sku" => Ok(Self::Sku),
+                "primaryLocale" => Ok(Self::PrimaryLocale),
+                "isOrEverWasMadeForKids" => Ok(Self::IsOrEverWasMadeForKids),
+                "subscriptionStatusUrl" => Ok(Self::SubscriptionStatusUrl),
+                "subscriptionStatusUrlVersion" => Ok(Self::SubscriptionStatusUrlVersion),
+                "subscriptionStatusUrlForSandbox" => Ok(Self::SubscriptionStatusUrlForSandbox),
+                "subscriptionStatusUrlVersionForSandbox" => {
+                    Ok(Self::SubscriptionStatusUrlVersionForSandbox)
+                }
+                "contentRightsDeclaration" => Ok(Self::ContentRightsDeclaration),
+                "streamlinedPurchasingEnabled" => Ok(Self::StreamlinedPurchasingEnabled),
+                "accessibilityDeclarations" => Ok(Self::AccessibilityDeclarations),
+                "appEncryptionDeclarations" => Ok(Self::AppEncryptionDeclarations),
+                "appStoreIcon" => Ok(Self::AppStoreIcon),
+                "ciProduct" => Ok(Self::CiProduct),
+                "betaTesters" => Ok(Self::BetaTesters),
+                "betaGroups" => Ok(Self::BetaGroups),
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                "appTags" => Ok(Self::AppTags),
+                "preReleaseVersions" => Ok(Self::PreReleaseVersions),
+                "betaAppLocalizations" => Ok(Self::BetaAppLocalizations),
+                "builds" => Ok(Self::Builds),
+                "betaLicenseAgreement" => Ok(Self::BetaLicenseAgreement),
+                "betaAppReviewDetail" => Ok(Self::BetaAppReviewDetail),
+                "appInfos" => Ok(Self::AppInfos),
+                "appClips" => Ok(Self::AppClips),
+                "appPricePoints" => Ok(Self::AppPricePoints),
+                "endUserLicenseAgreement" => Ok(Self::EndUserLicenseAgreement),
+                "appPriceSchedule" => Ok(Self::AppPriceSchedule),
+                "appAvailabilityV2" => Ok(Self::AppAvailabilityV2),
+                "inAppPurchases" => Ok(Self::InAppPurchases),
+                "subscriptionGroups" => Ok(Self::SubscriptionGroups),
+                "gameCenterEnabledVersions" => Ok(Self::GameCenterEnabledVersions),
+                "perfPowerMetrics" => Ok(Self::PerfPowerMetrics),
+                "appCustomProductPages" => Ok(Self::AppCustomProductPages),
+                "inAppPurchasesV2" => Ok(Self::InAppPurchasesV2),
+                "promotedPurchases" => Ok(Self::PromotedPurchases),
+                "appEvents" => Ok(Self::AppEvents),
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                "subscriptionGracePeriod" => Ok(Self::SubscriptionGracePeriod),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "customerReviewSummarizations" => Ok(Self::CustomerReviewSummarizations),
+                "gameCenterDetail" => Ok(Self::GameCenterDetail),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "alternativeDistributionKey" => Ok(Self::AlternativeDistributionKey),
+                "analyticsReportRequests" => Ok(Self::AnalyticsReportRequests),
+                "marketplaceSearchDetail" => Ok(Self::MarketplaceSearchDetail),
+                "buildUploads" => Ok(Self::BuildUploads),
+                "backgroundAssets" => Ok(Self::BackgroundAssets),
+                "betaFeedbackScreenshotSubmissions" => Ok(Self::BetaFeedbackScreenshotSubmissions),
+                "betaFeedbackCrashSubmissions" => Ok(Self::BetaFeedbackCrashSubmissions),
+                "searchKeywords" => Ok(Self::SearchKeywords),
+                "webhooks" => Ok(Self::Webhooks),
+                "androidToIosAppMappingDetails" => Ok(Self::AndroidToIosAppMappingDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFieldsAppsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsAppsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsAppsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "state",
+    ///    "appStoreVersion",
+    ///    "appCustomProductPageVersion",
+    ///    "appStoreVersionExperiment",
+    ///    "appStoreVersionExperimentV2",
+    ///    "appEvent",
+    ///    "backgroundAssetVersion",
+    ///    "gameCenterAchievementVersion",
+    ///    "gameCenterActivityVersion",
+    ///    "gameCenterChallengeVersion",
+    ///    "gameCenterLeaderboardSetVersion",
+    ///    "gameCenterLeaderboardVersion"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem {
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appStoreVersionExperiment")]
+        AppStoreVersionExperiment,
+        #[serde(rename = "appStoreVersionExperimentV2")]
+        AppStoreVersionExperimentV2,
+        #[serde(rename = "appEvent")]
+        AppEvent,
+        #[serde(rename = "backgroundAssetVersion")]
+        BackgroundAssetVersion,
+        #[serde(rename = "gameCenterAchievementVersion")]
+        GameCenterAchievementVersion,
+        #[serde(rename = "gameCenterActivityVersion")]
+        GameCenterActivityVersion,
+        #[serde(rename = "gameCenterChallengeVersion")]
+        GameCenterChallengeVersion,
+        #[serde(rename = "gameCenterLeaderboardSetVersion")]
+        GameCenterLeaderboardSetVersion,
+        #[serde(rename = "gameCenterLeaderboardVersion")]
+        GameCenterLeaderboardVersion,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::State => f.write_str("state"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppCustomProductPageVersion => f.write_str("appCustomProductPageVersion"),
+                Self::AppStoreVersionExperiment => f.write_str("appStoreVersionExperiment"),
+                Self::AppStoreVersionExperimentV2 => f.write_str("appStoreVersionExperimentV2"),
+                Self::AppEvent => f.write_str("appEvent"),
+                Self::BackgroundAssetVersion => f.write_str("backgroundAssetVersion"),
+                Self::GameCenterAchievementVersion => f.write_str("gameCenterAchievementVersion"),
+                Self::GameCenterActivityVersion => f.write_str("gameCenterActivityVersion"),
+                Self::GameCenterChallengeVersion => f.write_str("gameCenterChallengeVersion"),
+                Self::GameCenterLeaderboardSetVersion => {
+                    f.write_str("gameCenterLeaderboardSetVersion")
+                }
+                Self::GameCenterLeaderboardVersion => f.write_str("gameCenterLeaderboardVersion"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "state" => Ok(Self::State),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appCustomProductPageVersion" => Ok(Self::AppCustomProductPageVersion),
+                "appStoreVersionExperiment" => Ok(Self::AppStoreVersionExperiment),
+                "appStoreVersionExperimentV2" => Ok(Self::AppStoreVersionExperimentV2),
+                "appEvent" => Ok(Self::AppEvent),
+                "backgroundAssetVersion" => Ok(Self::BackgroundAssetVersion),
+                "gameCenterAchievementVersion" => Ok(Self::GameCenterAchievementVersion),
+                "gameCenterActivityVersion" => Ok(Self::GameCenterActivityVersion),
+                "gameCenterChallengeVersion" => Ok(Self::GameCenterChallengeVersion),
+                "gameCenterLeaderboardSetVersion" => Ok(Self::GameCenterLeaderboardSetVersion),
+                "gameCenterLeaderboardVersion" => Ok(Self::GameCenterLeaderboardVersion),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "submittedDate",
+    ///    "state",
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "submittedDate")]
+        SubmittedDate,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::SubmittedDate => f.write_str("submittedDate"),
+                Self::State => f.write_str("state"),
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "submittedDate" => Ok(Self::SubmittedDate),
+                "state" => Ok(Self::State),
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFilterPlatformItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "IOS",
+    ///    "MAC_OS",
+    ///    "TV_OS",
+    ///    "VISION_OS"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFilterPlatformItem {
+        #[serde(rename = "IOS")]
+        Ios,
+        #[serde(rename = "MAC_OS")]
+        MacOs,
+        #[serde(rename = "TV_OS")]
+        TvOs,
+        #[serde(rename = "VISION_OS")]
+        VisionOs,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFilterPlatformItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Ios => f.write_str("IOS"),
+                Self::MacOs => f.write_str("MAC_OS"),
+                Self::TvOs => f.write_str("TV_OS"),
+                Self::VisionOs => f.write_str("VISION_OS"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFilterPlatformItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "IOS" => Ok(Self::Ios),
+                "MAC_OS" => Ok(Self::MacOs),
+                "TV_OS" => Ok(Self::TvOs),
+                "VISION_OS" => Ok(Self::VisionOs),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFilterPlatformItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFilterPlatformItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFilterPlatformItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionFilterStateItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "READY_FOR_REVIEW",
+    ///    "WAITING_FOR_REVIEW",
+    ///    "IN_REVIEW",
+    ///    "UNRESOLVED_ISSUES",
+    ///    "CANCELING",
+    ///    "COMPLETING",
+    ///    "COMPLETE"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionFilterStateItem {
+        #[serde(rename = "READY_FOR_REVIEW")]
+        ReadyForReview,
+        #[serde(rename = "WAITING_FOR_REVIEW")]
+        WaitingForReview,
+        #[serde(rename = "IN_REVIEW")]
+        InReview,
+        #[serde(rename = "UNRESOLVED_ISSUES")]
+        UnresolvedIssues,
+        #[serde(rename = "CANCELING")]
+        Canceling,
+        #[serde(rename = "COMPLETING")]
+        Completing,
+        #[serde(rename = "COMPLETE")]
+        Complete,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionFilterStateItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReadyForReview => f.write_str("READY_FOR_REVIEW"),
+                Self::WaitingForReview => f.write_str("WAITING_FOR_REVIEW"),
+                Self::InReview => f.write_str("IN_REVIEW"),
+                Self::UnresolvedIssues => f.write_str("UNRESOLVED_ISSUES"),
+                Self::Canceling => f.write_str("CANCELING"),
+                Self::Completing => f.write_str("COMPLETING"),
+                Self::Complete => f.write_str("COMPLETE"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionFilterStateItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "READY_FOR_REVIEW" => Ok(Self::ReadyForReview),
+                "WAITING_FOR_REVIEW" => Ok(Self::WaitingForReview),
+                "IN_REVIEW" => Ok(Self::InReview),
+                "UNRESOLVED_ISSUES" => Ok(Self::UnresolvedIssues),
+                "CANCELING" => Ok(Self::Canceling),
+                "COMPLETING" => Ok(Self::Completing),
+                "COMPLETE" => Ok(Self::Complete),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionFilterStateItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetCollectionFilterStateItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetCollectionFilterStateItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetCollectionIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetCollectionIncludeItem {
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetCollectionIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetCollectionIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetCollectionIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionsGetCollectionIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionsGetCollectionIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceFieldsActorsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "actorType",
+    ///    "userFirstName",
+    ///    "userLastName",
+    ///    "userEmail",
+    ///    "apiKeyId"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceFieldsActorsItem {
+        #[serde(rename = "actorType")]
+        ActorType,
+        #[serde(rename = "userFirstName")]
+        UserFirstName,
+        #[serde(rename = "userLastName")]
+        UserLastName,
+        #[serde(rename = "userEmail")]
+        UserEmail,
+        #[serde(rename = "apiKeyId")]
+        ApiKeyId,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceFieldsActorsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ActorType => f.write_str("actorType"),
+                Self::UserFirstName => f.write_str("userFirstName"),
+                Self::UserLastName => f.write_str("userLastName"),
+                Self::UserEmail => f.write_str("userEmail"),
+                Self::ApiKeyId => f.write_str("apiKeyId"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceFieldsActorsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "actorType" => Ok(Self::ActorType),
+                "userFirstName" => Ok(Self::UserFirstName),
+                "userLastName" => Ok(Self::UserLastName),
+                "userEmail" => Ok(Self::UserEmail),
+                "apiKeyId" => Ok(Self::ApiKeyId),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceFieldsActorsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsActorsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceFieldsAppsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "accessibilityUrl",
+    ///    "name",
+    ///    "bundleId",
+    ///    "sku",
+    ///    "primaryLocale",
+    ///    "isOrEverWasMadeForKids",
+    ///    "subscriptionStatusUrl",
+    ///    "subscriptionStatusUrlVersion",
+    ///    "subscriptionStatusUrlForSandbox",
+    ///    "subscriptionStatusUrlVersionForSandbox",
+    ///    "contentRightsDeclaration",
+    ///    "streamlinedPurchasingEnabled",
+    ///    "accessibilityDeclarations",
+    ///    "appEncryptionDeclarations",
+    ///    "appStoreIcon",
+    ///    "ciProduct",
+    ///    "betaTesters",
+    ///    "betaGroups",
+    ///    "appStoreVersions",
+    ///    "appTags",
+    ///    "preReleaseVersions",
+    ///    "betaAppLocalizations",
+    ///    "builds",
+    ///    "betaLicenseAgreement",
+    ///    "betaAppReviewDetail",
+    ///    "appInfos",
+    ///    "appClips",
+    ///    "appPricePoints",
+    ///    "endUserLicenseAgreement",
+    ///    "appPriceSchedule",
+    ///    "appAvailabilityV2",
+    ///    "inAppPurchases",
+    ///    "subscriptionGroups",
+    ///    "gameCenterEnabledVersions",
+    ///    "perfPowerMetrics",
+    ///    "appCustomProductPages",
+    ///    "inAppPurchasesV2",
+    ///    "promotedPurchases",
+    ///    "appEvents",
+    ///    "reviewSubmissions",
+    ///    "subscriptionGracePeriod",
+    ///    "customerReviews",
+    ///    "customerReviewSummarizations",
+    ///    "gameCenterDetail",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "alternativeDistributionKey",
+    ///    "analyticsReportRequests",
+    ///    "marketplaceSearchDetail",
+    ///    "buildUploads",
+    ///    "backgroundAssets",
+    ///    "betaFeedbackScreenshotSubmissions",
+    ///    "betaFeedbackCrashSubmissions",
+    ///    "searchKeywords",
+    ///    "webhooks",
+    ///    "androidToIosAppMappingDetails"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceFieldsAppsItem {
+        #[serde(rename = "accessibilityUrl")]
+        AccessibilityUrl,
+        #[serde(rename = "name")]
+        Name,
+        #[serde(rename = "bundleId")]
+        BundleId,
+        #[serde(rename = "sku")]
+        Sku,
+        #[serde(rename = "primaryLocale")]
+        PrimaryLocale,
+        #[serde(rename = "isOrEverWasMadeForKids")]
+        IsOrEverWasMadeForKids,
+        #[serde(rename = "subscriptionStatusUrl")]
+        SubscriptionStatusUrl,
+        #[serde(rename = "subscriptionStatusUrlVersion")]
+        SubscriptionStatusUrlVersion,
+        #[serde(rename = "subscriptionStatusUrlForSandbox")]
+        SubscriptionStatusUrlForSandbox,
+        #[serde(rename = "subscriptionStatusUrlVersionForSandbox")]
+        SubscriptionStatusUrlVersionForSandbox,
+        #[serde(rename = "contentRightsDeclaration")]
+        ContentRightsDeclaration,
+        #[serde(rename = "streamlinedPurchasingEnabled")]
+        StreamlinedPurchasingEnabled,
+        #[serde(rename = "accessibilityDeclarations")]
+        AccessibilityDeclarations,
+        #[serde(rename = "appEncryptionDeclarations")]
+        AppEncryptionDeclarations,
+        #[serde(rename = "appStoreIcon")]
+        AppStoreIcon,
+        #[serde(rename = "ciProduct")]
+        CiProduct,
+        #[serde(rename = "betaTesters")]
+        BetaTesters,
+        #[serde(rename = "betaGroups")]
+        BetaGroups,
+        #[serde(rename = "appStoreVersions")]
+        AppStoreVersions,
+        #[serde(rename = "appTags")]
+        AppTags,
+        #[serde(rename = "preReleaseVersions")]
+        PreReleaseVersions,
+        #[serde(rename = "betaAppLocalizations")]
+        BetaAppLocalizations,
+        #[serde(rename = "builds")]
+        Builds,
+        #[serde(rename = "betaLicenseAgreement")]
+        BetaLicenseAgreement,
+        #[serde(rename = "betaAppReviewDetail")]
+        BetaAppReviewDetail,
+        #[serde(rename = "appInfos")]
+        AppInfos,
+        #[serde(rename = "appClips")]
+        AppClips,
+        #[serde(rename = "appPricePoints")]
+        AppPricePoints,
+        #[serde(rename = "endUserLicenseAgreement")]
+        EndUserLicenseAgreement,
+        #[serde(rename = "appPriceSchedule")]
+        AppPriceSchedule,
+        #[serde(rename = "appAvailabilityV2")]
+        AppAvailabilityV2,
+        #[serde(rename = "inAppPurchases")]
+        InAppPurchases,
+        #[serde(rename = "subscriptionGroups")]
+        SubscriptionGroups,
+        #[serde(rename = "gameCenterEnabledVersions")]
+        GameCenterEnabledVersions,
+        #[serde(rename = "perfPowerMetrics")]
+        PerfPowerMetrics,
+        #[serde(rename = "appCustomProductPages")]
+        AppCustomProductPages,
+        #[serde(rename = "inAppPurchasesV2")]
+        InAppPurchasesV2,
+        #[serde(rename = "promotedPurchases")]
+        PromotedPurchases,
+        #[serde(rename = "appEvents")]
+        AppEvents,
+        #[serde(rename = "reviewSubmissions")]
+        ReviewSubmissions,
+        #[serde(rename = "subscriptionGracePeriod")]
+        SubscriptionGracePeriod,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "customerReviewSummarizations")]
+        CustomerReviewSummarizations,
+        #[serde(rename = "gameCenterDetail")]
+        GameCenterDetail,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "alternativeDistributionKey")]
+        AlternativeDistributionKey,
+        #[serde(rename = "analyticsReportRequests")]
+        AnalyticsReportRequests,
+        #[serde(rename = "marketplaceSearchDetail")]
+        MarketplaceSearchDetail,
+        #[serde(rename = "buildUploads")]
+        BuildUploads,
+        #[serde(rename = "backgroundAssets")]
+        BackgroundAssets,
+        #[serde(rename = "betaFeedbackScreenshotSubmissions")]
+        BetaFeedbackScreenshotSubmissions,
+        #[serde(rename = "betaFeedbackCrashSubmissions")]
+        BetaFeedbackCrashSubmissions,
+        #[serde(rename = "searchKeywords")]
+        SearchKeywords,
+        #[serde(rename = "webhooks")]
+        Webhooks,
+        #[serde(rename = "androidToIosAppMappingDetails")]
+        AndroidToIosAppMappingDetails,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceFieldsAppsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AccessibilityUrl => f.write_str("accessibilityUrl"),
+                Self::Name => f.write_str("name"),
+                Self::BundleId => f.write_str("bundleId"),
+                Self::Sku => f.write_str("sku"),
+                Self::PrimaryLocale => f.write_str("primaryLocale"),
+                Self::IsOrEverWasMadeForKids => f.write_str("isOrEverWasMadeForKids"),
+                Self::SubscriptionStatusUrl => f.write_str("subscriptionStatusUrl"),
+                Self::SubscriptionStatusUrlVersion => f.write_str("subscriptionStatusUrlVersion"),
+                Self::SubscriptionStatusUrlForSandbox => {
+                    f.write_str("subscriptionStatusUrlForSandbox")
+                }
+                Self::SubscriptionStatusUrlVersionForSandbox => {
+                    f.write_str("subscriptionStatusUrlVersionForSandbox")
+                }
+                Self::ContentRightsDeclaration => f.write_str("contentRightsDeclaration"),
+                Self::StreamlinedPurchasingEnabled => f.write_str("streamlinedPurchasingEnabled"),
+                Self::AccessibilityDeclarations => f.write_str("accessibilityDeclarations"),
+                Self::AppEncryptionDeclarations => f.write_str("appEncryptionDeclarations"),
+                Self::AppStoreIcon => f.write_str("appStoreIcon"),
+                Self::CiProduct => f.write_str("ciProduct"),
+                Self::BetaTesters => f.write_str("betaTesters"),
+                Self::BetaGroups => f.write_str("betaGroups"),
+                Self::AppStoreVersions => f.write_str("appStoreVersions"),
+                Self::AppTags => f.write_str("appTags"),
+                Self::PreReleaseVersions => f.write_str("preReleaseVersions"),
+                Self::BetaAppLocalizations => f.write_str("betaAppLocalizations"),
+                Self::Builds => f.write_str("builds"),
+                Self::BetaLicenseAgreement => f.write_str("betaLicenseAgreement"),
+                Self::BetaAppReviewDetail => f.write_str("betaAppReviewDetail"),
+                Self::AppInfos => f.write_str("appInfos"),
+                Self::AppClips => f.write_str("appClips"),
+                Self::AppPricePoints => f.write_str("appPricePoints"),
+                Self::EndUserLicenseAgreement => f.write_str("endUserLicenseAgreement"),
+                Self::AppPriceSchedule => f.write_str("appPriceSchedule"),
+                Self::AppAvailabilityV2 => f.write_str("appAvailabilityV2"),
+                Self::InAppPurchases => f.write_str("inAppPurchases"),
+                Self::SubscriptionGroups => f.write_str("subscriptionGroups"),
+                Self::GameCenterEnabledVersions => f.write_str("gameCenterEnabledVersions"),
+                Self::PerfPowerMetrics => f.write_str("perfPowerMetrics"),
+                Self::AppCustomProductPages => f.write_str("appCustomProductPages"),
+                Self::InAppPurchasesV2 => f.write_str("inAppPurchasesV2"),
+                Self::PromotedPurchases => f.write_str("promotedPurchases"),
+                Self::AppEvents => f.write_str("appEvents"),
+                Self::ReviewSubmissions => f.write_str("reviewSubmissions"),
+                Self::SubscriptionGracePeriod => f.write_str("subscriptionGracePeriod"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::CustomerReviewSummarizations => f.write_str("customerReviewSummarizations"),
+                Self::GameCenterDetail => f.write_str("gameCenterDetail"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::AlternativeDistributionKey => f.write_str("alternativeDistributionKey"),
+                Self::AnalyticsReportRequests => f.write_str("analyticsReportRequests"),
+                Self::MarketplaceSearchDetail => f.write_str("marketplaceSearchDetail"),
+                Self::BuildUploads => f.write_str("buildUploads"),
+                Self::BackgroundAssets => f.write_str("backgroundAssets"),
+                Self::BetaFeedbackScreenshotSubmissions => {
+                    f.write_str("betaFeedbackScreenshotSubmissions")
+                }
+                Self::BetaFeedbackCrashSubmissions => f.write_str("betaFeedbackCrashSubmissions"),
+                Self::SearchKeywords => f.write_str("searchKeywords"),
+                Self::Webhooks => f.write_str("webhooks"),
+                Self::AndroidToIosAppMappingDetails => f.write_str("androidToIosAppMappingDetails"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceFieldsAppsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "accessibilityUrl" => Ok(Self::AccessibilityUrl),
+                "name" => Ok(Self::Name),
+                "bundleId" => Ok(Self::BundleId),
+                "sku" => Ok(Self::Sku),
+                "primaryLocale" => Ok(Self::PrimaryLocale),
+                "isOrEverWasMadeForKids" => Ok(Self::IsOrEverWasMadeForKids),
+                "subscriptionStatusUrl" => Ok(Self::SubscriptionStatusUrl),
+                "subscriptionStatusUrlVersion" => Ok(Self::SubscriptionStatusUrlVersion),
+                "subscriptionStatusUrlForSandbox" => Ok(Self::SubscriptionStatusUrlForSandbox),
+                "subscriptionStatusUrlVersionForSandbox" => {
+                    Ok(Self::SubscriptionStatusUrlVersionForSandbox)
+                }
+                "contentRightsDeclaration" => Ok(Self::ContentRightsDeclaration),
+                "streamlinedPurchasingEnabled" => Ok(Self::StreamlinedPurchasingEnabled),
+                "accessibilityDeclarations" => Ok(Self::AccessibilityDeclarations),
+                "appEncryptionDeclarations" => Ok(Self::AppEncryptionDeclarations),
+                "appStoreIcon" => Ok(Self::AppStoreIcon),
+                "ciProduct" => Ok(Self::CiProduct),
+                "betaTesters" => Ok(Self::BetaTesters),
+                "betaGroups" => Ok(Self::BetaGroups),
+                "appStoreVersions" => Ok(Self::AppStoreVersions),
+                "appTags" => Ok(Self::AppTags),
+                "preReleaseVersions" => Ok(Self::PreReleaseVersions),
+                "betaAppLocalizations" => Ok(Self::BetaAppLocalizations),
+                "builds" => Ok(Self::Builds),
+                "betaLicenseAgreement" => Ok(Self::BetaLicenseAgreement),
+                "betaAppReviewDetail" => Ok(Self::BetaAppReviewDetail),
+                "appInfos" => Ok(Self::AppInfos),
+                "appClips" => Ok(Self::AppClips),
+                "appPricePoints" => Ok(Self::AppPricePoints),
+                "endUserLicenseAgreement" => Ok(Self::EndUserLicenseAgreement),
+                "appPriceSchedule" => Ok(Self::AppPriceSchedule),
+                "appAvailabilityV2" => Ok(Self::AppAvailabilityV2),
+                "inAppPurchases" => Ok(Self::InAppPurchases),
+                "subscriptionGroups" => Ok(Self::SubscriptionGroups),
+                "gameCenterEnabledVersions" => Ok(Self::GameCenterEnabledVersions),
+                "perfPowerMetrics" => Ok(Self::PerfPowerMetrics),
+                "appCustomProductPages" => Ok(Self::AppCustomProductPages),
+                "inAppPurchasesV2" => Ok(Self::InAppPurchasesV2),
+                "promotedPurchases" => Ok(Self::PromotedPurchases),
+                "appEvents" => Ok(Self::AppEvents),
+                "reviewSubmissions" => Ok(Self::ReviewSubmissions),
+                "subscriptionGracePeriod" => Ok(Self::SubscriptionGracePeriod),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "customerReviewSummarizations" => Ok(Self::CustomerReviewSummarizations),
+                "gameCenterDetail" => Ok(Self::GameCenterDetail),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "alternativeDistributionKey" => Ok(Self::AlternativeDistributionKey),
+                "analyticsReportRequests" => Ok(Self::AnalyticsReportRequests),
+                "marketplaceSearchDetail" => Ok(Self::MarketplaceSearchDetail),
+                "buildUploads" => Ok(Self::BuildUploads),
+                "backgroundAssets" => Ok(Self::BackgroundAssets),
+                "betaFeedbackScreenshotSubmissions" => Ok(Self::BetaFeedbackScreenshotSubmissions),
+                "betaFeedbackCrashSubmissions" => Ok(Self::BetaFeedbackCrashSubmissions),
+                "searchKeywords" => Ok(Self::SearchKeywords),
+                "webhooks" => Ok(Self::Webhooks),
+                "androidToIosAppMappingDetails" => Ok(Self::AndroidToIosAppMappingDetails),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceFieldsAppsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsAppsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionsGetInstanceFieldsAppsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "state",
+    ///    "appStoreVersion",
+    ///    "appCustomProductPageVersion",
+    ///    "appStoreVersionExperiment",
+    ///    "appStoreVersionExperimentV2",
+    ///    "appEvent",
+    ///    "backgroundAssetVersion",
+    ///    "gameCenterAchievementVersion",
+    ///    "gameCenterActivityVersion",
+    ///    "gameCenterChallengeVersion",
+    ///    "gameCenterLeaderboardSetVersion",
+    ///    "gameCenterLeaderboardVersion"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem {
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appStoreVersionExperiment")]
+        AppStoreVersionExperiment,
+        #[serde(rename = "appStoreVersionExperimentV2")]
+        AppStoreVersionExperimentV2,
+        #[serde(rename = "appEvent")]
+        AppEvent,
+        #[serde(rename = "backgroundAssetVersion")]
+        BackgroundAssetVersion,
+        #[serde(rename = "gameCenterAchievementVersion")]
+        GameCenterAchievementVersion,
+        #[serde(rename = "gameCenterActivityVersion")]
+        GameCenterActivityVersion,
+        #[serde(rename = "gameCenterChallengeVersion")]
+        GameCenterChallengeVersion,
+        #[serde(rename = "gameCenterLeaderboardSetVersion")]
+        GameCenterLeaderboardSetVersion,
+        #[serde(rename = "gameCenterLeaderboardVersion")]
+        GameCenterLeaderboardVersion,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::State => f.write_str("state"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppCustomProductPageVersion => f.write_str("appCustomProductPageVersion"),
+                Self::AppStoreVersionExperiment => f.write_str("appStoreVersionExperiment"),
+                Self::AppStoreVersionExperimentV2 => f.write_str("appStoreVersionExperimentV2"),
+                Self::AppEvent => f.write_str("appEvent"),
+                Self::BackgroundAssetVersion => f.write_str("backgroundAssetVersion"),
+                Self::GameCenterAchievementVersion => f.write_str("gameCenterAchievementVersion"),
+                Self::GameCenterActivityVersion => f.write_str("gameCenterActivityVersion"),
+                Self::GameCenterChallengeVersion => f.write_str("gameCenterChallengeVersion"),
+                Self::GameCenterLeaderboardSetVersion => {
+                    f.write_str("gameCenterLeaderboardSetVersion")
+                }
+                Self::GameCenterLeaderboardVersion => f.write_str("gameCenterLeaderboardVersion"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "state" => Ok(Self::State),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appCustomProductPageVersion" => Ok(Self::AppCustomProductPageVersion),
+                "appStoreVersionExperiment" => Ok(Self::AppStoreVersionExperiment),
+                "appStoreVersionExperimentV2" => Ok(Self::AppStoreVersionExperimentV2),
+                "appEvent" => Ok(Self::AppEvent),
+                "backgroundAssetVersion" => Ok(Self::BackgroundAssetVersion),
+                "gameCenterAchievementVersion" => Ok(Self::GameCenterAchievementVersion),
+                "gameCenterActivityVersion" => Ok(Self::GameCenterActivityVersion),
+                "gameCenterChallengeVersion" => Ok(Self::GameCenterChallengeVersion),
+                "gameCenterLeaderboardSetVersion" => Ok(Self::GameCenterLeaderboardSetVersion),
+                "gameCenterLeaderboardVersion" => Ok(Self::GameCenterLeaderboardVersion),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "submittedDate",
+    ///    "state",
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "submittedDate")]
+        SubmittedDate,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::SubmittedDate => f.write_str("submittedDate"),
+                Self::State => f.write_str("state"),
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "submittedDate" => Ok(Self::SubmittedDate),
+                "state" => Ok(Self::State),
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsGetInstanceIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "app",
+    ///    "items",
+    ///    "appStoreVersionForReview",
+    ///    "submittedByActor",
+    ///    "lastUpdatedByActor"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsGetInstanceIncludeItem {
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "items")]
+        Items,
+        #[serde(rename = "appStoreVersionForReview")]
+        AppStoreVersionForReview,
+        #[serde(rename = "submittedByActor")]
+        SubmittedByActor,
+        #[serde(rename = "lastUpdatedByActor")]
+        LastUpdatedByActor,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsGetInstanceIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::App => f.write_str("app"),
+                Self::Items => f.write_str("items"),
+                Self::AppStoreVersionForReview => f.write_str("appStoreVersionForReview"),
+                Self::SubmittedByActor => f.write_str("submittedByActor"),
+                Self::LastUpdatedByActor => f.write_str("lastUpdatedByActor"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsGetInstanceIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "app" => Ok(Self::App),
+                "items" => Ok(Self::Items),
+                "appStoreVersionForReview" => Ok(Self::AppStoreVersionForReview),
+                "submittedByActor" => Ok(Self::SubmittedByActor),
+                "lastUpdatedByActor" => Ok(Self::LastUpdatedByActor),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String> for ReviewSubmissionsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String> for ReviewSubmissionsGetInstanceIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "deepLink",
+    ///    "appCustomProductPage",
+    ///    "appCustomProductPageLocalizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "deepLink")]
+        DeepLink,
+        #[serde(rename = "appCustomProductPage")]
+        AppCustomProductPage,
+        #[serde(rename = "appCustomProductPageLocalizations")]
+        AppCustomProductPageLocalizations,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::DeepLink => f.write_str("deepLink"),
+                Self::AppCustomProductPage => f.write_str("appCustomProductPage"),
+                Self::AppCustomProductPageLocalizations => {
+                    f.write_str("appCustomProductPageLocalizations")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "deepLink" => Ok(Self::DeepLink),
+                "appCustomProductPage" => Ok(Self::AppCustomProductPage),
+                "appCustomProductPageLocalizations" => Ok(Self::AppCustomProductPageLocalizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "referenceName",
+    ///    "badge",
+    ///    "eventState",
+    ///    "deepLink",
+    ///    "purchaseRequirement",
+    ///    "primaryLocale",
+    ///    "priority",
+    ///    "purpose",
+    ///    "territorySchedules",
+    ///    "archivedTerritorySchedules",
+    ///    "localizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem {
+        #[serde(rename = "referenceName")]
+        ReferenceName,
+        #[serde(rename = "badge")]
+        Badge,
+        #[serde(rename = "eventState")]
+        EventState,
+        #[serde(rename = "deepLink")]
+        DeepLink,
+        #[serde(rename = "purchaseRequirement")]
+        PurchaseRequirement,
+        #[serde(rename = "primaryLocale")]
+        PrimaryLocale,
+        #[serde(rename = "priority")]
+        Priority,
+        #[serde(rename = "purpose")]
+        Purpose,
+        #[serde(rename = "territorySchedules")]
+        TerritorySchedules,
+        #[serde(rename = "archivedTerritorySchedules")]
+        ArchivedTerritorySchedules,
+        #[serde(rename = "localizations")]
+        Localizations,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::ReferenceName => f.write_str("referenceName"),
+                Self::Badge => f.write_str("badge"),
+                Self::EventState => f.write_str("eventState"),
+                Self::DeepLink => f.write_str("deepLink"),
+                Self::PurchaseRequirement => f.write_str("purchaseRequirement"),
+                Self::PrimaryLocale => f.write_str("primaryLocale"),
+                Self::Priority => f.write_str("priority"),
+                Self::Purpose => f.write_str("purpose"),
+                Self::TerritorySchedules => f.write_str("territorySchedules"),
+                Self::ArchivedTerritorySchedules => f.write_str("archivedTerritorySchedules"),
+                Self::Localizations => f.write_str("localizations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "referenceName" => Ok(Self::ReferenceName),
+                "badge" => Ok(Self::Badge),
+                "eventState" => Ok(Self::EventState),
+                "deepLink" => Ok(Self::DeepLink),
+                "purchaseRequirement" => Ok(Self::PurchaseRequirement),
+                "primaryLocale" => Ok(Self::PrimaryLocale),
+                "priority" => Ok(Self::Priority),
+                "purpose" => Ok(Self::Purpose),
+                "territorySchedules" => Ok(Self::TerritorySchedules),
+                "archivedTerritorySchedules" => Ok(Self::ArchivedTerritorySchedules),
+                "localizations" => Ok(Self::Localizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "name",
+    ///    "trafficProportion",
+    ///    "state",
+    ///    "reviewRequired",
+    ///    "startDate",
+    ///    "endDate",
+    ///    "appStoreVersion",
+    ///    "appStoreVersionExperimentTreatments",
+    ///    "platform",
+    ///    "app",
+    ///    "latestControlVersion",
+    ///    "controlVersions"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem {
+        #[serde(rename = "name")]
+        Name,
+        #[serde(rename = "trafficProportion")]
+        TrafficProportion,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "reviewRequired")]
+        ReviewRequired,
+        #[serde(rename = "startDate")]
+        StartDate,
+        #[serde(rename = "endDate")]
+        EndDate,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appStoreVersionExperimentTreatments")]
+        AppStoreVersionExperimentTreatments,
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "latestControlVersion")]
+        LatestControlVersion,
+        #[serde(rename = "controlVersions")]
+        ControlVersions,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Name => f.write_str("name"),
+                Self::TrafficProportion => f.write_str("trafficProportion"),
+                Self::State => f.write_str("state"),
+                Self::ReviewRequired => f.write_str("reviewRequired"),
+                Self::StartDate => f.write_str("startDate"),
+                Self::EndDate => f.write_str("endDate"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppStoreVersionExperimentTreatments => {
+                    f.write_str("appStoreVersionExperimentTreatments")
+                }
+                Self::Platform => f.write_str("platform"),
+                Self::App => f.write_str("app"),
+                Self::LatestControlVersion => f.write_str("latestControlVersion"),
+                Self::ControlVersions => f.write_str("controlVersions"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "name" => Ok(Self::Name),
+                "trafficProportion" => Ok(Self::TrafficProportion),
+                "state" => Ok(Self::State),
+                "reviewRequired" => Ok(Self::ReviewRequired),
+                "startDate" => Ok(Self::StartDate),
+                "endDate" => Ok(Self::EndDate),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appStoreVersionExperimentTreatments" => {
+                    Ok(Self::AppStoreVersionExperimentTreatments)
+                }
+                "platform" => Ok(Self::Platform),
+                "app" => Ok(Self::App),
+                "latestControlVersion" => Ok(Self::LatestControlVersion),
+                "controlVersions" => Ok(Self::ControlVersions),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "platform",
+    ///    "versionString",
+    ///    "appStoreState",
+    ///    "appVersionState",
+    ///    "copyright",
+    ///    "reviewType",
+    ///    "releaseType",
+    ///    "earliestReleaseDate",
+    ///    "usesIdfa",
+    ///    "downloadable",
+    ///    "createdDate",
+    ///    "app",
+    ///    "appStoreVersionLocalizations",
+    ///    "build",
+    ///    "appStoreVersionPhasedRelease",
+    ///    "gameCenterAppVersion",
+    ///    "routingAppCoverage",
+    ///    "appStoreReviewDetail",
+    ///    "appStoreVersionSubmission",
+    ///    "appClipDefaultExperience",
+    ///    "appStoreVersionExperiments",
+    ///    "appStoreVersionExperimentsV2",
+    ///    "customerReviews",
+    ///    "alternativeDistributionPackage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem {
+        #[serde(rename = "platform")]
+        Platform,
+        #[serde(rename = "versionString")]
+        VersionString,
+        #[serde(rename = "appStoreState")]
+        AppStoreState,
+        #[serde(rename = "appVersionState")]
+        AppVersionState,
+        #[serde(rename = "copyright")]
+        Copyright,
+        #[serde(rename = "reviewType")]
+        ReviewType,
+        #[serde(rename = "releaseType")]
+        ReleaseType,
+        #[serde(rename = "earliestReleaseDate")]
+        EarliestReleaseDate,
+        #[serde(rename = "usesIdfa")]
+        UsesIdfa,
+        #[serde(rename = "downloadable")]
+        Downloadable,
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "app")]
+        App,
+        #[serde(rename = "appStoreVersionLocalizations")]
+        AppStoreVersionLocalizations,
+        #[serde(rename = "build")]
+        Build,
+        #[serde(rename = "appStoreVersionPhasedRelease")]
+        AppStoreVersionPhasedRelease,
+        #[serde(rename = "gameCenterAppVersion")]
+        GameCenterAppVersion,
+        #[serde(rename = "routingAppCoverage")]
+        RoutingAppCoverage,
+        #[serde(rename = "appStoreReviewDetail")]
+        AppStoreReviewDetail,
+        #[serde(rename = "appStoreVersionSubmission")]
+        AppStoreVersionSubmission,
+        #[serde(rename = "appClipDefaultExperience")]
+        AppClipDefaultExperience,
+        #[serde(rename = "appStoreVersionExperiments")]
+        AppStoreVersionExperiments,
+        #[serde(rename = "appStoreVersionExperimentsV2")]
+        AppStoreVersionExperimentsV2,
+        #[serde(rename = "customerReviews")]
+        CustomerReviews,
+        #[serde(rename = "alternativeDistributionPackage")]
+        AlternativeDistributionPackage,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Platform => f.write_str("platform"),
+                Self::VersionString => f.write_str("versionString"),
+                Self::AppStoreState => f.write_str("appStoreState"),
+                Self::AppVersionState => f.write_str("appVersionState"),
+                Self::Copyright => f.write_str("copyright"),
+                Self::ReviewType => f.write_str("reviewType"),
+                Self::ReleaseType => f.write_str("releaseType"),
+                Self::EarliestReleaseDate => f.write_str("earliestReleaseDate"),
+                Self::UsesIdfa => f.write_str("usesIdfa"),
+                Self::Downloadable => f.write_str("downloadable"),
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::App => f.write_str("app"),
+                Self::AppStoreVersionLocalizations => f.write_str("appStoreVersionLocalizations"),
+                Self::Build => f.write_str("build"),
+                Self::AppStoreVersionPhasedRelease => f.write_str("appStoreVersionPhasedRelease"),
+                Self::GameCenterAppVersion => f.write_str("gameCenterAppVersion"),
+                Self::RoutingAppCoverage => f.write_str("routingAppCoverage"),
+                Self::AppStoreReviewDetail => f.write_str("appStoreReviewDetail"),
+                Self::AppStoreVersionSubmission => f.write_str("appStoreVersionSubmission"),
+                Self::AppClipDefaultExperience => f.write_str("appClipDefaultExperience"),
+                Self::AppStoreVersionExperiments => f.write_str("appStoreVersionExperiments"),
+                Self::AppStoreVersionExperimentsV2 => f.write_str("appStoreVersionExperimentsV2"),
+                Self::CustomerReviews => f.write_str("customerReviews"),
+                Self::AlternativeDistributionPackage => {
+                    f.write_str("alternativeDistributionPackage")
+                }
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "platform" => Ok(Self::Platform),
+                "versionString" => Ok(Self::VersionString),
+                "appStoreState" => Ok(Self::AppStoreState),
+                "appVersionState" => Ok(Self::AppVersionState),
+                "copyright" => Ok(Self::Copyright),
+                "reviewType" => Ok(Self::ReviewType),
+                "releaseType" => Ok(Self::ReleaseType),
+                "earliestReleaseDate" => Ok(Self::EarliestReleaseDate),
+                "usesIdfa" => Ok(Self::UsesIdfa),
+                "downloadable" => Ok(Self::Downloadable),
+                "createdDate" => Ok(Self::CreatedDate),
+                "app" => Ok(Self::App),
+                "appStoreVersionLocalizations" => Ok(Self::AppStoreVersionLocalizations),
+                "build" => Ok(Self::Build),
+                "appStoreVersionPhasedRelease" => Ok(Self::AppStoreVersionPhasedRelease),
+                "gameCenterAppVersion" => Ok(Self::GameCenterAppVersion),
+                "routingAppCoverage" => Ok(Self::RoutingAppCoverage),
+                "appStoreReviewDetail" => Ok(Self::AppStoreReviewDetail),
+                "appStoreVersionSubmission" => Ok(Self::AppStoreVersionSubmission),
+                "appClipDefaultExperience" => Ok(Self::AppClipDefaultExperience),
+                "appStoreVersionExperiments" => Ok(Self::AppStoreVersionExperiments),
+                "appStoreVersionExperimentsV2" => Ok(Self::AppStoreVersionExperimentsV2),
+                "customerReviews" => Ok(Self::CustomerReviews),
+                "alternativeDistributionPackage" => Ok(Self::AlternativeDistributionPackage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "createdDate",
+    ///    "platforms",
+    ///    "state",
+    ///    "stateDetails",
+    ///    "version",
+    ///    "locale",
+    ///    "backgroundAsset",
+    ///    "internalBetaRelease",
+    ///    "externalBetaRelease",
+    ///    "appStoreRelease",
+    ///    "assetFile",
+    ///    "manifestFile",
+    ///    "backgroundAssetUploadFiles"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem {
+        #[serde(rename = "createdDate")]
+        CreatedDate,
+        #[serde(rename = "platforms")]
+        Platforms,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "stateDetails")]
+        StateDetails,
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "locale")]
+        Locale,
+        #[serde(rename = "backgroundAsset")]
+        BackgroundAsset,
+        #[serde(rename = "internalBetaRelease")]
+        InternalBetaRelease,
+        #[serde(rename = "externalBetaRelease")]
+        ExternalBetaRelease,
+        #[serde(rename = "appStoreRelease")]
+        AppStoreRelease,
+        #[serde(rename = "assetFile")]
+        AssetFile,
+        #[serde(rename = "manifestFile")]
+        ManifestFile,
+        #[serde(rename = "backgroundAssetUploadFiles")]
+        BackgroundAssetUploadFiles,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::CreatedDate => f.write_str("createdDate"),
+                Self::Platforms => f.write_str("platforms"),
+                Self::State => f.write_str("state"),
+                Self::StateDetails => f.write_str("stateDetails"),
+                Self::Version => f.write_str("version"),
+                Self::Locale => f.write_str("locale"),
+                Self::BackgroundAsset => f.write_str("backgroundAsset"),
+                Self::InternalBetaRelease => f.write_str("internalBetaRelease"),
+                Self::ExternalBetaRelease => f.write_str("externalBetaRelease"),
+                Self::AppStoreRelease => f.write_str("appStoreRelease"),
+                Self::AssetFile => f.write_str("assetFile"),
+                Self::ManifestFile => f.write_str("manifestFile"),
+                Self::BackgroundAssetUploadFiles => f.write_str("backgroundAssetUploadFiles"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "createdDate" => Ok(Self::CreatedDate),
+                "platforms" => Ok(Self::Platforms),
+                "state" => Ok(Self::State),
+                "stateDetails" => Ok(Self::StateDetails),
+                "version" => Ok(Self::Version),
+                "locale" => Ok(Self::Locale),
+                "backgroundAsset" => Ok(Self::BackgroundAsset),
+                "internalBetaRelease" => Ok(Self::InternalBetaRelease),
+                "externalBetaRelease" => Ok(Self::ExternalBetaRelease),
+                "appStoreRelease" => Ok(Self::AppStoreRelease),
+                "assetFile" => Ok(Self::AssetFile),
+                "manifestFile" => Ok(Self::ManifestFile),
+                "backgroundAssetUploadFiles" => Ok(Self::BackgroundAssetUploadFiles),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "achievement",
+    ///    "localizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "achievement")]
+        Achievement,
+        #[serde(rename = "localizations")]
+        Localizations,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::Achievement => f.write_str("achievement"),
+                Self::Localizations => f.write_str("localizations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "achievement" => Ok(Self::Achievement),
+                "localizations" => Ok(Self::Localizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "fallbackUrl",
+    ///    "activity",
+    ///    "localizations",
+    ///    "defaultImage",
+    ///    "releases"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "fallbackUrl")]
+        FallbackUrl,
+        #[serde(rename = "activity")]
+        Activity,
+        #[serde(rename = "localizations")]
+        Localizations,
+        #[serde(rename = "defaultImage")]
+        DefaultImage,
+        #[serde(rename = "releases")]
+        Releases,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::FallbackUrl => f.write_str("fallbackUrl"),
+                Self::Activity => f.write_str("activity"),
+                Self::Localizations => f.write_str("localizations"),
+                Self::DefaultImage => f.write_str("defaultImage"),
+                Self::Releases => f.write_str("releases"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "fallbackUrl" => Ok(Self::FallbackUrl),
+                "activity" => Ok(Self::Activity),
+                "localizations" => Ok(Self::Localizations),
+                "defaultImage" => Ok(Self::DefaultImage),
+                "releases" => Ok(Self::Releases),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "challenge",
+    ///    "localizations",
+    ///    "releases",
+    ///    "defaultImage"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "challenge")]
+        Challenge,
+        #[serde(rename = "localizations")]
+        Localizations,
+        #[serde(rename = "releases")]
+        Releases,
+        #[serde(rename = "defaultImage")]
+        DefaultImage,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::Challenge => f.write_str("challenge"),
+                Self::Localizations => f.write_str("localizations"),
+                Self::Releases => f.write_str("releases"),
+                Self::DefaultImage => f.write_str("defaultImage"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "challenge" => Ok(Self::Challenge),
+                "localizations" => Ok(Self::Localizations),
+                "releases" => Ok(Self::Releases),
+                "defaultImage" => Ok(Self::DefaultImage),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "leaderboardSet",
+    ///    "localizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "leaderboardSet")]
+        LeaderboardSet,
+        #[serde(rename = "localizations")]
+        Localizations,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::LeaderboardSet => f.write_str("leaderboardSet"),
+                Self::Localizations => f.write_str("localizations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "leaderboardSet" => Ok(Self::LeaderboardSet),
+                "localizations" => Ok(Self::Localizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "version",
+    ///    "state",
+    ///    "leaderboard",
+    ///    "localizations"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem {
+        #[serde(rename = "version")]
+        Version,
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "leaderboard")]
+        Leaderboard,
+        #[serde(rename = "localizations")]
+        Localizations,
+    }
+
+    impl ::std::fmt::Display
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem
+    {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::Version => f.write_str("version"),
+                Self::State => f.write_str("state"),
+                Self::Leaderboard => f.write_str("leaderboard"),
+                Self::Localizations => f.write_str("localizations"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem
+    {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "version" => Ok(Self::Version),
+                "state" => Ok(Self::State),
+                "leaderboard" => Ok(Self::Leaderboard),
+                "localizations" => Ok(Self::Localizations),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "state",
+    ///    "appStoreVersion",
+    ///    "appCustomProductPageVersion",
+    ///    "appStoreVersionExperiment",
+    ///    "appStoreVersionExperimentV2",
+    ///    "appEvent",
+    ///    "backgroundAssetVersion",
+    ///    "gameCenterAchievementVersion",
+    ///    "gameCenterActivityVersion",
+    ///    "gameCenterChallengeVersion",
+    ///    "gameCenterLeaderboardSetVersion",
+    ///    "gameCenterLeaderboardVersion"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        #[serde(rename = "state")]
+        State,
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appStoreVersionExperiment")]
+        AppStoreVersionExperiment,
+        #[serde(rename = "appStoreVersionExperimentV2")]
+        AppStoreVersionExperimentV2,
+        #[serde(rename = "appEvent")]
+        AppEvent,
+        #[serde(rename = "backgroundAssetVersion")]
+        BackgroundAssetVersion,
+        #[serde(rename = "gameCenterAchievementVersion")]
+        GameCenterAchievementVersion,
+        #[serde(rename = "gameCenterActivityVersion")]
+        GameCenterActivityVersion,
+        #[serde(rename = "gameCenterChallengeVersion")]
+        GameCenterChallengeVersion,
+        #[serde(rename = "gameCenterLeaderboardSetVersion")]
+        GameCenterLeaderboardSetVersion,
+        #[serde(rename = "gameCenterLeaderboardVersion")]
+        GameCenterLeaderboardVersion,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::State => f.write_str("state"),
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppCustomProductPageVersion => f.write_str("appCustomProductPageVersion"),
+                Self::AppStoreVersionExperiment => f.write_str("appStoreVersionExperiment"),
+                Self::AppStoreVersionExperimentV2 => f.write_str("appStoreVersionExperimentV2"),
+                Self::AppEvent => f.write_str("appEvent"),
+                Self::BackgroundAssetVersion => f.write_str("backgroundAssetVersion"),
+                Self::GameCenterAchievementVersion => f.write_str("gameCenterAchievementVersion"),
+                Self::GameCenterActivityVersion => f.write_str("gameCenterActivityVersion"),
+                Self::GameCenterChallengeVersion => f.write_str("gameCenterChallengeVersion"),
+                Self::GameCenterLeaderboardSetVersion => {
+                    f.write_str("gameCenterLeaderboardSetVersion")
+                }
+                Self::GameCenterLeaderboardVersion => f.write_str("gameCenterLeaderboardVersion"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "state" => Ok(Self::State),
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appCustomProductPageVersion" => Ok(Self::AppCustomProductPageVersion),
+                "appStoreVersionExperiment" => Ok(Self::AppStoreVersionExperiment),
+                "appStoreVersionExperimentV2" => Ok(Self::AppStoreVersionExperimentV2),
+                "appEvent" => Ok(Self::AppEvent),
+                "backgroundAssetVersion" => Ok(Self::BackgroundAssetVersion),
+                "gameCenterAchievementVersion" => Ok(Self::GameCenterAchievementVersion),
+                "gameCenterActivityVersion" => Ok(Self::GameCenterActivityVersion),
+                "gameCenterChallengeVersion" => Ok(Self::GameCenterChallengeVersion),
+                "gameCenterLeaderboardSetVersion" => Ok(Self::GameCenterLeaderboardSetVersion),
+                "gameCenterLeaderboardVersion" => Ok(Self::GameCenterLeaderboardVersion),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsItemsGetToManyRelatedIncludeItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "enum": [
+    ///    "appStoreVersion",
+    ///    "appCustomProductPageVersion",
+    ///    "appStoreVersionExperiment",
+    ///    "appStoreVersionExperimentV2",
+    ///    "appEvent",
+    ///    "backgroundAssetVersion",
+    ///    "gameCenterAchievementVersion",
+    ///    "gameCenterActivityVersion",
+    ///    "gameCenterChallengeVersion",
+    ///    "gameCenterLeaderboardSetVersion",
+    ///    "gameCenterLeaderboardVersion"
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(
+        :: serde :: Deserialize,
+        :: serde :: Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd,
+    )]
+    pub enum ReviewSubmissionsItemsGetToManyRelatedIncludeItem {
+        #[serde(rename = "appStoreVersion")]
+        AppStoreVersion,
+        #[serde(rename = "appCustomProductPageVersion")]
+        AppCustomProductPageVersion,
+        #[serde(rename = "appStoreVersionExperiment")]
+        AppStoreVersionExperiment,
+        #[serde(rename = "appStoreVersionExperimentV2")]
+        AppStoreVersionExperimentV2,
+        #[serde(rename = "appEvent")]
+        AppEvent,
+        #[serde(rename = "backgroundAssetVersion")]
+        BackgroundAssetVersion,
+        #[serde(rename = "gameCenterAchievementVersion")]
+        GameCenterAchievementVersion,
+        #[serde(rename = "gameCenterActivityVersion")]
+        GameCenterActivityVersion,
+        #[serde(rename = "gameCenterChallengeVersion")]
+        GameCenterChallengeVersion,
+        #[serde(rename = "gameCenterLeaderboardSetVersion")]
+        GameCenterLeaderboardSetVersion,
+        #[serde(rename = "gameCenterLeaderboardVersion")]
+        GameCenterLeaderboardVersion,
+    }
+
+    impl ::std::fmt::Display for ReviewSubmissionsItemsGetToManyRelatedIncludeItem {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::AppStoreVersion => f.write_str("appStoreVersion"),
+                Self::AppCustomProductPageVersion => f.write_str("appCustomProductPageVersion"),
+                Self::AppStoreVersionExperiment => f.write_str("appStoreVersionExperiment"),
+                Self::AppStoreVersionExperimentV2 => f.write_str("appStoreVersionExperimentV2"),
+                Self::AppEvent => f.write_str("appEvent"),
+                Self::BackgroundAssetVersion => f.write_str("backgroundAssetVersion"),
+                Self::GameCenterAchievementVersion => f.write_str("gameCenterAchievementVersion"),
+                Self::GameCenterActivityVersion => f.write_str("gameCenterActivityVersion"),
+                Self::GameCenterChallengeVersion => f.write_str("gameCenterChallengeVersion"),
+                Self::GameCenterLeaderboardSetVersion => {
+                    f.write_str("gameCenterLeaderboardSetVersion")
+                }
+                Self::GameCenterLeaderboardVersion => f.write_str("gameCenterLeaderboardVersion"),
+            }
+        }
+    }
+
+    impl ::std::str::FromStr for ReviewSubmissionsItemsGetToManyRelatedIncludeItem {
+        type Err = self::error::ConversionError;
+        fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "appStoreVersion" => Ok(Self::AppStoreVersion),
+                "appCustomProductPageVersion" => Ok(Self::AppCustomProductPageVersion),
+                "appStoreVersionExperiment" => Ok(Self::AppStoreVersionExperiment),
+                "appStoreVersionExperimentV2" => Ok(Self::AppStoreVersionExperimentV2),
+                "appEvent" => Ok(Self::AppEvent),
+                "backgroundAssetVersion" => Ok(Self::BackgroundAssetVersion),
+                "gameCenterAchievementVersion" => Ok(Self::GameCenterAchievementVersion),
+                "gameCenterActivityVersion" => Ok(Self::GameCenterActivityVersion),
+                "gameCenterChallengeVersion" => Ok(Self::GameCenterChallengeVersion),
+                "gameCenterLeaderboardSetVersion" => Ok(Self::GameCenterLeaderboardSetVersion),
+                "gameCenterLeaderboardVersion" => Ok(Self::GameCenterLeaderboardVersion),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+
+    impl ::std::convert::TryFrom<&str> for ReviewSubmissionsItemsGetToManyRelatedIncludeItem {
+        type Error = self::error::ConversionError;
+        fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<&::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    impl ::std::convert::TryFrom<::std::string::String>
+        for ReviewSubmissionsItemsGetToManyRelatedIncludeItem
+    {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+
+    ///`ReviewSubmissionsResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "title": "ReviewSubmissionsResponse",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/ReviewSubmission"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "$ref": "#/components/schemas/PagedDocumentLinks"
+    ///    },
+    ///    "meta": {
+    ///      "$ref": "#/components/schemas/PagingInformation"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(:: serde :: Deserialize, :: serde :: Serialize, Clone, Debug)]
+    pub struct ReviewSubmissionsResponse {
+        pub data: ::std::vec::Vec<ReviewSubmission>,
+        pub links: PagedDocumentLinks,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<PagingInformation>,
+    }
+
     ///`ScreenshotDisplayType`
     ///
     /// <details><summary>JSON schema</summary>
@@ -37131,6 +49995,62 @@ impl Client {
         }
     }
 
+    ///Sends a `DELETE` request to `/v1/appInfoLocalizations/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn app_info_localizations_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appInfoLocalizations/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_info_localizations_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
     ///Sends a `PATCH` request to `/v1/appInfoLocalizations/{id}`
     ///
     ///Arguments:
@@ -37274,6 +50194,62 @@ impl Client {
         }
     }
 
+    ///Sends a `DELETE` request to `/v1/appPreviews/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn app_previews_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appPreviews/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_previews_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
     ///Sends a `PATCH` request to `/v1/appPreviews/{id}`
     ///
     ///Arguments:
@@ -37397,6 +50373,62 @@ impl Client {
         let response = result?;
         match response.status().as_u16() {
             200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `DELETE` request to `/v1/appScreenshots/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn app_screenshots_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appScreenshots/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_screenshots_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
             400u16 => Err(Error::ErrorResponse(
                 ResponseValue::from_response(response).await?,
             )),
@@ -37603,6 +50635,62 @@ impl Client {
         let response = result?;
         match response.status().as_u16() {
             200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `DELETE` request to `/v1/appStoreReviewAttachments/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn app_store_review_attachments_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appStoreReviewAttachments/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_review_attachments_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
             400u16 => Err(Error::ErrorResponse(
                 ResponseValue::from_response(response).await?,
             )),
@@ -38015,6 +51103,62 @@ impl Client {
         let response = result?;
         match response.status().as_u16() {
             200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `DELETE` request to `/v1/appStoreVersionLocalizations/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn app_store_version_localizations_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/appStoreVersionLocalizations/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "app_store_version_localizations_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
             400u16 => Err(Error::ErrorResponse(
                 ResponseValue::from_response(response).await?,
             )),
@@ -39034,6 +52178,544 @@ impl Client {
         }
     }
 
+    ///Sends a `POST` request to `/v1/reviewSubmissionItems`
+    ///
+    ///Arguments:
+    /// - `body`: ReviewSubmissionItem representation
+    pub async fn review_submission_items_create_instance<'a>(
+        &'a self,
+        body: &'a types::ReviewSubmissionItemCreateRequest,
+    ) -> Result<ResponseValue<types::ReviewSubmissionItemResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!("{}/v1/reviewSubmissionItems", self.baseurl,);
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submission_items_create_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            201u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `DELETE` request to `/v1/reviewSubmissionItems/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    pub async fn review_submission_items_delete_instance<'a>(
+        &'a self,
+        id: &'a str,
+    ) -> Result<ResponseValue<()>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/reviewSubmissionItems/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .delete(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submission_items_delete_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            204u16 => Ok(ResponseValue::empty(response)),
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/reviewSubmissionItems/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: ReviewSubmissionItem representation
+    pub async fn review_submission_items_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::ReviewSubmissionItemUpdateRequest,
+    ) -> Result<ResponseValue<types::ReviewSubmissionItemResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/reviewSubmissionItems/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submission_items_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/reviewSubmissions`
+    ///
+    ///Arguments:
+    /// - `fields_actors`: the fields to include for returned resources of type
+    ///   actors
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `fields_apps`: the fields to include for returned resources of type
+    ///   apps
+    /// - `fields_review_submission_items`: the fields to include for returned
+    ///   resources of type reviewSubmissionItems
+    /// - `fields_review_submissions`: the fields to include for returned
+    ///   resources of type reviewSubmissions
+    /// - `filter_app`: filter by id(s) of related 'app'
+    /// - `filter_platform`: filter by attribute 'platform'
+    /// - `filter_state`: filter by attribute 'state'
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    /// - `limit_items`: maximum number of related items returned (when they are
+    ///   included)
+    pub async fn review_submissions_get_collection<'a>(
+        &'a self,
+        fields_actors: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFieldsActorsItem>,
+        >,
+        fields_app_store_versions: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFieldsAppStoreVersionsItem>,
+        >,
+        fields_apps: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFieldsAppsItem>,
+        >,
+        fields_review_submission_items: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsGetCollectionFieldsReviewSubmissionItemsItem,
+            >,
+        >,
+        fields_review_submissions: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFieldsReviewSubmissionsItem>,
+        >,
+        filter_app: &'a ::std::vec::Vec<::std::string::String>,
+        filter_platform: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFilterPlatformItem>,
+        >,
+        filter_state: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionFilterStateItem>,
+        >,
+        include: Option<&'a ::std::vec::Vec<types::ReviewSubmissionsGetCollectionIncludeItem>>,
+        limit: Option<i64>,
+        limit_items: Option<i64>,
+    ) -> Result<ResponseValue<types::ReviewSubmissionsResponse>, Error<types::ErrorResponse>> {
+        let url = format!("{}/v1/reviewSubmissions", self.baseurl,);
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[actors]",
+                &fields_actors,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[apps]",
+                &fields_apps,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissionItems]",
+                &fields_review_submission_items,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissions]",
+                &fields_review_submissions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[app]",
+                &filter_app,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[platform]",
+                &filter_platform,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[state]",
+                &filter_state,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[items]",
+                &limit_items,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submissions_get_collection",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `POST` request to `/v1/reviewSubmissions`
+    ///
+    ///Arguments:
+    /// - `body`: ReviewSubmission representation
+    pub async fn review_submissions_create_instance<'a>(
+        &'a self,
+        body: &'a types::ReviewSubmissionCreateRequest,
+    ) -> Result<ResponseValue<types::ReviewSubmissionResponse>, Error<types::ErrorResponse>> {
+        let url = format!("{}/v1/reviewSubmissions", self.baseurl,);
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .post(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submissions_create_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            201u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/reviewSubmissions/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_actors`: the fields to include for returned resources of type
+    ///   actors
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `fields_apps`: the fields to include for returned resources of type
+    ///   apps
+    /// - `fields_review_submission_items`: the fields to include for returned
+    ///   resources of type reviewSubmissionItems
+    /// - `fields_review_submissions`: the fields to include for returned
+    ///   resources of type reviewSubmissions
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit_items`: maximum number of related items returned (when they are
+    ///   included)
+    pub async fn review_submissions_get_instance<'a>(
+        &'a self,
+        id: &'a str,
+        fields_actors: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceFieldsActorsItem>,
+        >,
+        fields_app_store_versions: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceFieldsAppStoreVersionsItem>,
+        >,
+        fields_apps: Option<&'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceFieldsAppsItem>>,
+        fields_review_submission_items: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceFieldsReviewSubmissionItemsItem>,
+        >,
+        fields_review_submissions: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceFieldsReviewSubmissionsItem>,
+        >,
+        include: Option<&'a ::std::vec::Vec<types::ReviewSubmissionsGetInstanceIncludeItem>>,
+        limit_items: Option<i64>,
+    ) -> Result<ResponseValue<types::ReviewSubmissionResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/reviewSubmissions/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[actors]",
+                &fields_actors,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[apps]",
+                &fields_apps,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissionItems]",
+                &fields_review_submission_items,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissions]",
+                &fields_review_submissions,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[items]",
+                &limit_items,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submissions_get_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `PATCH` request to `/v1/reviewSubmissions/{id}`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `body`: ReviewSubmission representation
+    pub async fn review_submissions_update_instance<'a>(
+        &'a self,
+        id: &'a str,
+        body: &'a types::ReviewSubmissionUpdateRequest,
+    ) -> Result<ResponseValue<types::ReviewSubmissionResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/reviewSubmissions/{}",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .patch(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .json(&body)
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submissions_update_instance",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            409u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            422u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
     ///Sends a `GET` request to `/v1/appInfos/{id}/appInfoLocalizations`
     ///
     ///Arguments:
@@ -39354,7 +53036,8 @@ impl Client {
             .headers(header_map)
             .build()?;
         let info = OperationInfo {
-            operation_id: "app_store_review_details_app_store_review_attachments_get_to_many_related",
+            operation_id:
+                "app_store_review_details_app_store_review_attachments_get_to_many_related",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;
@@ -40208,6 +53891,316 @@ impl Client {
             .build()?;
         let info = OperationInfo {
             operation_id: "apps_app_store_versions_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/apps/{id}/reviewSubmissions`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_actors`: the fields to include for returned resources of type
+    ///   actors
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `fields_apps`: the fields to include for returned resources of type
+    ///   apps
+    /// - `fields_review_submission_items`: the fields to include for returned
+    ///   resources of type reviewSubmissionItems
+    /// - `fields_review_submissions`: the fields to include for returned
+    ///   resources of type reviewSubmissions
+    /// - `filter_platform`: filter by attribute 'platform'
+    /// - `filter_state`: filter by attribute 'state'
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    /// - `limit_items`: maximum number of related items returned (when they are
+    ///   included)
+    pub async fn apps_review_submissions_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_actors: Option<
+            &'a ::std::vec::Vec<types::AppsReviewSubmissionsGetToManyRelatedFieldsActorsItem>,
+        >,
+        fields_app_store_versions: Option<
+            &'a ::std::vec::Vec<
+                types::AppsReviewSubmissionsGetToManyRelatedFieldsAppStoreVersionsItem,
+            >,
+        >,
+        fields_apps: Option<
+            &'a ::std::vec::Vec<types::AppsReviewSubmissionsGetToManyRelatedFieldsAppsItem>,
+        >,
+        fields_review_submission_items: Option<
+            &'a ::std::vec::Vec<
+                types::AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionItemsItem,
+            >,
+        >,
+        fields_review_submissions: Option<
+            &'a ::std::vec::Vec<
+                types::AppsReviewSubmissionsGetToManyRelatedFieldsReviewSubmissionsItem,
+            >,
+        >,
+        filter_platform: Option<
+            &'a ::std::vec::Vec<types::AppsReviewSubmissionsGetToManyRelatedFilterPlatformItem>,
+        >,
+        filter_state: Option<
+            &'a ::std::vec::Vec<types::AppsReviewSubmissionsGetToManyRelatedFilterStateItem>,
+        >,
+        include: Option<
+            &'a ::std::vec::Vec<types::AppsReviewSubmissionsGetToManyRelatedIncludeItem>,
+        >,
+        limit: Option<i64>,
+        limit_items: Option<i64>,
+    ) -> Result<ResponseValue<types::ReviewSubmissionsResponse>, Error<types::ErrorResponse>> {
+        let url = format!(
+            "{}/v1/apps/{}/reviewSubmissions",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[actors]",
+                &fields_actors,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[apps]",
+                &fields_apps,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissionItems]",
+                &fields_review_submission_items,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissions]",
+                &fields_review_submissions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[platform]",
+                &filter_platform,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "filter[state]",
+                &filter_state,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .query(&progenitor_client::QueryParam::new(
+                "limit[items]",
+                &limit_items,
+            ))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "apps_review_submissions_get_to_many_related",
+        };
+        self.pre(&mut request, &info).await?;
+        let result = self.exec(request, &info).await;
+        self.post(&result, &info).await?;
+        let response = result?;
+        match response.status().as_u16() {
+            200u16 => ResponseValue::from_response(response).await,
+            400u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            401u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            403u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            404u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            429u16 => Err(Error::ErrorResponse(
+                ResponseValue::from_response(response).await?,
+            )),
+            _ => Err(Error::UnexpectedResponse(response)),
+        }
+    }
+
+    ///Sends a `GET` request to `/v1/reviewSubmissions/{id}/items`
+    ///
+    ///Arguments:
+    /// - `id`: the id of the requested resource
+    /// - `fields_app_custom_product_page_versions`: the fields to include for
+    ///   returned resources of type appCustomProductPageVersions
+    /// - `fields_app_events`: the fields to include for returned resources of
+    ///   type appEvents
+    /// - `fields_app_store_version_experiments`: the fields to include for
+    ///   returned resources of type appStoreVersionExperiments
+    /// - `fields_app_store_versions`: the fields to include for returned
+    ///   resources of type appStoreVersions
+    /// - `fields_background_asset_versions`: the fields to include for returned
+    ///   resources of type backgroundAssetVersions
+    /// - `fields_game_center_achievement_versions`: the fields to include for
+    ///   returned resources of type gameCenterAchievementVersions
+    /// - `fields_game_center_activity_versions`: the fields to include for
+    ///   returned resources of type gameCenterActivityVersions
+    /// - `fields_game_center_challenge_versions`: the fields to include for
+    ///   returned resources of type gameCenterChallengeVersions
+    /// - `fields_game_center_leaderboard_set_versions`: the fields to include
+    ///   for returned resources of type gameCenterLeaderboardSetVersions
+    /// - `fields_game_center_leaderboard_versions`: the fields to include for
+    ///   returned resources of type gameCenterLeaderboardVersions
+    /// - `fields_review_submission_items`: the fields to include for returned
+    ///   resources of type reviewSubmissionItems
+    /// - `include`: comma-separated list of relationships to include
+    /// - `limit`: maximum resources per page
+    pub async fn review_submissions_items_get_to_many_related<'a>(
+        &'a self,
+        id: &'a str,
+        fields_app_custom_product_page_versions: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsAppCustomProductPageVersionsItem,
+            >,
+        >,
+        fields_app_events: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsItemsGetToManyRelatedFieldsAppEventsItem>,
+        >,
+        fields_app_store_version_experiments: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionExperimentsItem,
+            >,
+        >,
+        fields_app_store_versions: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsAppStoreVersionsItem,
+            >,
+        >,
+        fields_background_asset_versions: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsBackgroundAssetVersionsItem,
+            >,
+        >,
+        fields_game_center_achievement_versions : Option < & 'a :: std :: vec :: Vec < types :: ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterAchievementVersionsItem > >,
+        fields_game_center_activity_versions: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterActivityVersionsItem,
+            >,
+        >,
+        fields_game_center_challenge_versions: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterChallengeVersionsItem,
+            >,
+        >,
+        fields_game_center_leaderboard_set_versions : Option < & 'a :: std :: vec :: Vec < types :: ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardSetVersionsItem > >,
+        fields_game_center_leaderboard_versions : Option < & 'a :: std :: vec :: Vec < types :: ReviewSubmissionsItemsGetToManyRelatedFieldsGameCenterLeaderboardVersionsItem > >,
+        fields_review_submission_items: Option<
+            &'a ::std::vec::Vec<
+                types::ReviewSubmissionsItemsGetToManyRelatedFieldsReviewSubmissionItemsItem,
+            >,
+        >,
+        include: Option<
+            &'a ::std::vec::Vec<types::ReviewSubmissionsItemsGetToManyRelatedIncludeItem>,
+        >,
+        limit: Option<i64>,
+    ) -> Result<ResponseValue<types::ReviewSubmissionItemsResponse>, Error<types::ErrorResponse>>
+    {
+        let url = format!(
+            "{}/v1/reviewSubmissions/{}/items",
+            self.baseurl,
+            encode_path(&id.to_string()),
+        );
+        let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+        header_map.append(
+            ::reqwest::header::HeaderName::from_static("api-version"),
+            ::reqwest::header::HeaderValue::from_static(Self::api_version()),
+        );
+        #[allow(unused_mut)]
+        let mut request = self
+            .client
+            .get(url)
+            .header(
+                ::reqwest::header::ACCEPT,
+                ::reqwest::header::HeaderValue::from_static("application/json"),
+            )
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appCustomProductPageVersions]",
+                &fields_app_custom_product_page_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appEvents]",
+                &fields_app_events,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersionExperiments]",
+                &fields_app_store_version_experiments,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[appStoreVersions]",
+                &fields_app_store_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[backgroundAssetVersions]",
+                &fields_background_asset_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[gameCenterAchievementVersions]",
+                &fields_game_center_achievement_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[gameCenterActivityVersions]",
+                &fields_game_center_activity_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[gameCenterChallengeVersions]",
+                &fields_game_center_challenge_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[gameCenterLeaderboardSetVersions]",
+                &fields_game_center_leaderboard_set_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[gameCenterLeaderboardVersions]",
+                &fields_game_center_leaderboard_versions,
+            ))
+            .query(&progenitor_client::QueryParam::new(
+                "fields[reviewSubmissionItems]",
+                &fields_review_submission_items,
+            ))
+            .query(&progenitor_client::QueryParam::new("include", &include))
+            .query(&progenitor_client::QueryParam::new("limit", &limit))
+            .headers(header_map)
+            .build()?;
+        let info = OperationInfo {
+            operation_id: "review_submissions_items_get_to_many_related",
         };
         self.pre(&mut request, &info).await?;
         let result = self.exec(request, &info).await;

@@ -68,6 +68,36 @@ fastforge publish --path hello_world-1.0.0+1-android.apk --targets fir,pgyer
 fastforge release --name dev
 ```
 
+### App Store 审核提交
+
+`appstore submission` 命令用于管理 App Store Connect 当前的审核提交流程。
+认证使用 `APP_STORE_CONNECT_KEY_ID`、`APP_STORE_CONNECT_ISSUER_ID` 和
+`APP_STORE_CONNECT_KEY_PATH`。
+
+```shell
+# 查看 submission 及其 item
+fastforge appstore submission list --app com.example.myapp
+fastforge appstore submission view <submission-id>
+fastforge appstore submission items <submission-id>
+
+# 创建草稿、添加 App Store 版本并提交审核
+fastforge appstore submission create --app com.example.myapp --platform IOS
+fastforge appstore submission add-item <submission-id> \
+  --item-type appStoreVersions --item-id <version-id>
+fastforge appstore submission submit <submission-id> --wait
+
+# 删除草稿 item，或取消已经提交的审核
+fastforge appstore submission remove-item <submission-item-id>
+fastforge appstore submission cancel <submission-id>
+```
+
+`list` 支持可选的 `--platform` 与 `--state` 筛选。`add-item` 还支持自定义产品页版本、
+版本实验、App 内活动、后台资源及 Game Center 版本等 App Store Connect 可审核资源类型。
+读取和修改命令均可配合 `--json` 输出结构化数据。
+
+`fastforge appstore version submit <version> --app <app> --build <build>` 也会自动使用
+这套审核提交流程：关联构建、创建 submission、添加 App Store 版本 item，最后提交审核。
+
 ### Store catalog
 
 通过 `.fastforge/config.yaml` 配置需要同步的 App Store 和 Google Play 应用：
@@ -101,14 +131,30 @@ Catalog 文件仍使用 `.fastforge/stores/appstore/` 和
 `.fastforge/stores/googleplay/` 下的默认目录。命令会按配置顺序处理全部应用；
 单个应用失败不会中断后续应用，最终会打印汇总并以错误状态退出。
 
-对于 App Store 版本，`pull` 会把 `copyright` 等版本级元数据写入
-`versions/<platform>/<version>/version.yaml`。修改该值后运行 `push`，即可更新
-App Store Connect 中对应版本的版权信息。
+对于 App Store 版本，`pull` 会把 `copyright` 等版本级属性写入
+`versions/<platform>/<version>/version.yaml`，并把本地化属性写入
+`versions/<platform>/<version>/<locale>/localization.yaml`。修改这些文件后运行
+`push`，即可更新 App Store Connect 中对应的资源。同一平台的连续版本若
+copyright 未变化，则不会重复创建 `version.yaml`。`push` 仍兼容语言目录下旧的
+`version.yaml`；若同一语言目录同时存在两个文件名，则会报错以避免歧义。
 
-对于 App Store 截图，`pull` 会在每个显示类型目录中写入隐藏 manifest。
+App Store 的应用级分类会写入 `<bundle-id>/app_info.yaml`，字段名和分类 ID
+与 App Store Connect 的 relationship 保持一致：
+
+```yaml
+primaryCategory: GAMES
+primarySubcategoryOne: GAMES_ACTION
+secondaryCategory: ENTERTAINMENT
+```
+
+该文件支持主分类、次分类及各自两个可选子分类。`push` 时，文件中省略的字段会保持
+远端原值不变。
+
+对于 App Store 截图，`pull` 会把同步状态集中写入
+`<bundle-id>/.manifest.yaml`，下载的图片则按顺序命名，例如 `001.png`。
 `push` 会根据远端 ID 和校验值复用未变化的截图，替换内容已修改或处理失败的截图，
 删除非空本地显示类型目录中已经不存在的远端截图，并按照本地文件名重新排序。
-同步前可以使用独立命令
+push 成功后，最终的远端 ID 和本地校验值会写回应用级 manifest。同步前可以使用独立命令
 `fastforge appstore catalog push --app <bundle-id> --dry-run` 检查本地截图集。
 
 ---

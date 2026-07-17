@@ -2,15 +2,15 @@ use crate::AppStoreConnectContext;
 use anyhow::{Context, Result, anyhow};
 use md5::{Digest, Md5};
 use reqwest::{Method, Response};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::{Value, json};
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant};
 
 const PROCESSING_TIMEOUT: Duration = Duration::from_secs(120);
 const PROCESSING_POLL_INTERVAL: Duration = Duration::from_secs(2);
-const MANIFEST_FILE: &str = ".fastforge.yaml";
+const MANIFEST_FILE: &str = ".manifest.yaml";
 
 #[derive(Debug)]
 struct LocalScreenshot {
@@ -22,13 +22,34 @@ struct LocalScreenshot {
     remote_id_hint: Option<String>,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 struct ScreenshotManifest {
     #[serde(default)]
     screenshots: Vec<ScreenshotManifestEntry>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
+struct StoreManifest {
+    #[serde(default = "manifest_schema_version")]
+    schema_version: u32,
+    #[serde(default)]
+    screenshot_sets: BTreeMap<String, ScreenshotManifest>,
+}
+
+impl Default for StoreManifest {
+    fn default() -> Self {
+        Self {
+            schema_version: manifest_schema_version(),
+            screenshot_sets: BTreeMap::new(),
+        }
+    }
+}
+
+fn manifest_schema_version() -> u32 {
+    1
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(super) struct ScreenshotManifestEntry {
     pub file_name: String,
     pub remote_id: String,
@@ -46,7 +67,7 @@ struct ScreenshotResource {
 #[serde(rename_all = "camelCase")]
 struct ScreenshotAttributes {
     source_file_checksum: Option<String>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_null_default")]
     upload_operations: Vec<UploadOperation>,
     asset_delivery_state: Option<AssetDeliveryState>,
 }
@@ -54,7 +75,7 @@ struct ScreenshotAttributes {
 #[derive(Clone, Debug, Default, Deserialize)]
 struct AssetDeliveryState {
     state: Option<String>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_null_default")]
     errors: Vec<Value>,
 }
 
@@ -64,7 +85,7 @@ struct UploadOperation {
     length: Option<i64>,
     method: Option<String>,
     offset: Option<i64>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "deserialize_null_default")]
     request_headers: Vec<UploadHeader>,
     url: Option<String>,
 }
@@ -78,6 +99,14 @@ struct UploadHeader {
 #[derive(Debug, Deserialize)]
 struct ResourceResponse<T> {
     data: T,
+}
+
+fn deserialize_null_default<'de, D, T>(deserializer: D) -> std::result::Result<T, D::Error>
+where
+    D: Deserializer<'de>,
+    T: Deserialize<'de> + Default,
+{
+    Option::<T>::deserialize(deserializer).map(Option::unwrap_or_default)
 }
 
 #[derive(Debug, Deserialize)]
@@ -146,20 +175,27 @@ pub(super) fn discover_screenshot_sets(localization_dir: &Path) -> Result<Vec<(S
 }
 
 pub(super) fn write_screenshot_manifest(
+    app_dir: &Path,
     display_dir: &Path,
     entries: &[ScreenshotManifestEntry],
 ) -> Result<()> {
-    let manifest = ScreenshotManifest {
-        screenshots: entries.to_vec(),
-    };
+    let mut manifest = read_store_manifest(app_dir)?;
+    let key = screenshot_set_manifest_key(app_dir, display_dir)?;
+    manifest.screenshot_sets.insert(
+        key,
+        ScreenshotManifest {
+            screenshots: entries.to_vec(),
+        },
+    );
     let content =
         serde_yaml::to_string(&manifest).context("failed to serialize screenshot manifest")?;
-    std::fs::write(display_dir.join(MANIFEST_FILE), content).with_context(|| {
+    std::fs::write(app_dir.join(MANIFEST_FILE), content).with_context(|| {
         format!(
-            "failed to write screenshot manifest in {}",
-            display_dir.display()
+            "failed to write screenshot manifest {}",
+            app_dir.join(MANIFEST_FILE).display()
         )
-    })
+    })?;
+    Ok(())
 }
 
 pub(super) fn prepare_screenshot_directory(display_dir: &Path) -> Result<()> {
@@ -169,12 +205,11 @@ pub(super) fn prepare_screenshot_directory(display_dir: &Path) -> Result<()> {
         std::fs::remove_file(&path)
             .with_context(|| format!("failed to remove stale screenshot {}", path.display()))?;
     }
-    let manifest = display_dir.join(MANIFEST_FILE);
-    if manifest.exists() {
-        std::fs::remove_file(&manifest)
-            .with_context(|| format!("failed to remove {}", manifest.display()))?;
-    }
     Ok(())
+}
+
+pub(super) fn pulled_screenshot_file_name(sequence: usize, extension: &str) -> String {
+    format!("{sequence:03}.{extension}")
 }
 
 pub(super) fn screenshot_checksum(path: &Path) -> Result<String> {
@@ -185,6 +220,7 @@ pub(super) fn screenshot_checksum(path: &Path) -> Result<String> {
 
 pub(super) async fn sync_localization_screenshots(
     ctx: &AppStoreConnectContext,
+    app_dir: &Path,
     localization_id: &str,
     localization_dir: &Path,
 ) -> Result<ScreenshotSyncSummary> {
@@ -192,7 +228,7 @@ pub(super) async fn sync_localization_screenshots(
 
     for (display_type, _) in discover_screenshot_sets(localization_dir)? {
         let display_dir = localization_dir.join("screenshots").join(&display_type);
-        let local = load_local_screenshots(&display_dir).await?;
+        let local = load_local_screenshots(app_dir, &display_dir).await?;
         if local.is_empty() {
             continue;
         }
@@ -239,9 +275,34 @@ pub(super) async fn sync_localization_screenshots(
 
         wait_for_processing(ctx, &verify_ids).await?;
         replace_screenshot_order(ctx, &set_id, &desired_ids).await?;
+        let manifest_entries = screenshot_manifest_entries(&local, &desired_ids)?;
+        write_screenshot_manifest(app_dir, &display_dir, &manifest_entries)?;
     }
 
     Ok(summary)
+}
+
+fn screenshot_manifest_entries(
+    local: &[LocalScreenshot],
+    remote_ids: &[String],
+) -> Result<Vec<ScreenshotManifestEntry>> {
+    if local.len() != remote_ids.len() {
+        return Err(anyhow!(
+            "cannot update screenshot manifest: {} local files but {} remote IDs",
+            local.len(),
+            remote_ids.len()
+        ));
+    }
+
+    Ok(local
+        .iter()
+        .zip(remote_ids)
+        .map(|(screenshot, remote_id)| ScreenshotManifestEntry {
+            file_name: screenshot.file_name.clone(),
+            remote_id: remote_id.clone(),
+            checksum: screenshot.checksum.clone(),
+        })
+        .collect())
 }
 
 fn screenshot_paths(dir: &Path) -> Result<Vec<PathBuf>> {
@@ -277,8 +338,8 @@ fn screenshot_paths(dir: &Path) -> Result<Vec<PathBuf>> {
     Ok(files)
 }
 
-async fn load_local_screenshots(dir: &Path) -> Result<Vec<LocalScreenshot>> {
-    let manifest = read_screenshot_manifest(dir)?;
+async fn load_local_screenshots(app_dir: &Path, dir: &Path) -> Result<Vec<LocalScreenshot>> {
+    let manifest = read_screenshot_manifest(app_dir, dir)?;
     let manifest_by_file: HashMap<_, _> = manifest
         .screenshots
         .into_iter()
@@ -313,15 +374,46 @@ async fn load_local_screenshots(dir: &Path) -> Result<Vec<LocalScreenshot>> {
     Ok(screenshots)
 }
 
-fn read_screenshot_manifest(dir: &Path) -> Result<ScreenshotManifest> {
-    let path = dir.join(MANIFEST_FILE);
+fn read_screenshot_manifest(app_dir: &Path, display_dir: &Path) -> Result<ScreenshotManifest> {
+    let manifest = read_store_manifest(app_dir)?;
+    let key = screenshot_set_manifest_key(app_dir, display_dir)?;
+    Ok(manifest
+        .screenshot_sets
+        .get(&key)
+        .cloned()
+        .unwrap_or_default())
+}
+
+fn read_store_manifest(app_dir: &Path) -> Result<StoreManifest> {
+    let path = app_dir.join(MANIFEST_FILE);
     if !path.exists() {
-        return Ok(ScreenshotManifest::default());
+        return Ok(StoreManifest::default());
     }
     let content = std::fs::read_to_string(&path)
-        .with_context(|| format!("failed to read screenshot manifest {}", path.display()))?;
+        .with_context(|| format!("failed to read store manifest {}", path.display()))?;
     serde_yaml::from_str(&content)
-        .with_context(|| format!("failed to parse screenshot manifest {}", path.display()))
+        .with_context(|| format!("failed to parse store manifest {}", path.display()))
+}
+
+fn screenshot_set_manifest_key(app_dir: &Path, display_dir: &Path) -> Result<String> {
+    let relative = display_dir.strip_prefix(app_dir).with_context(|| {
+        format!(
+            "screenshot directory {} is outside app directory {}",
+            display_dir.display(),
+            app_dir.display()
+        )
+    })?;
+    relative
+        .components()
+        .map(|component| {
+            component
+                .as_os_str()
+                .to_str()
+                .map(str::to_owned)
+                .ok_or_else(|| anyhow!("screenshot manifest path is not valid UTF-8"))
+        })
+        .collect::<Result<Vec<_>>>()
+        .map(|components| components.join("/"))
 }
 
 fn remote_id_from_filename(file_name: &str) -> Option<String> {
@@ -484,7 +576,7 @@ async fn fetch_screenshots(
         .query(&[
             (
                 "fields[appScreenshots]",
-                "sourceFileChecksum,uploadOperations,assetDeliveryState",
+                "sourceFileChecksum,assetDeliveryState",
             ),
             ("limit", "200"),
         ])
@@ -746,6 +838,13 @@ async fn checked(response: Response, operation: &str) -> Result<Response> {
 mod tests {
     use super::*;
 
+    fn temp_app_dir() -> PathBuf {
+        std::env::temp_dir().join(format!(
+            "fastforge-appstore-manifest-{}",
+            uuid::Uuid::new_v4()
+        ))
+    }
+
     fn local(name: &str, checksum: &str) -> LocalScreenshot {
         LocalScreenshot {
             path: PathBuf::from(name),
@@ -778,6 +877,99 @@ mod tests {
             Some("abc-123")
         );
         assert_eq!(remote_id_from_filename("screenshot.png"), None);
+    }
+
+    #[test]
+    fn pulled_screenshots_use_sequence_only_file_names() {
+        assert_eq!(pulled_screenshot_file_name(1, "png"), "001.png");
+        assert_eq!(pulled_screenshot_file_name(12, "jpg"), "012.jpg");
+    }
+
+    #[test]
+    fn decodes_null_arrays_in_screenshot_responses() {
+        let response: ResourceResponse<Vec<ScreenshotResource>> = serde_json::from_value(json!({
+            "data": [{
+                "id": "screenshot-id",
+                "attributes": {
+                    "uploadOperations": null,
+                    "assetDeliveryState": {
+                        "state": "COMPLETE",
+                        "errors": null
+                    }
+                }
+            }]
+        }))
+        .unwrap();
+
+        let attributes = &response.data[0].attributes;
+        assert!(attributes.upload_operations.is_empty());
+        assert!(
+            attributes
+                .asset_delivery_state
+                .as_ref()
+                .unwrap()
+                .errors
+                .is_empty()
+        );
+
+        let operation: UploadOperation = serde_json::from_value(json!({
+            "requestHeaders": null
+        }))
+        .unwrap();
+        assert!(operation.request_headers.is_empty());
+    }
+
+    #[test]
+    fn stores_screenshot_manifests_at_the_app_root() {
+        let app_dir = temp_app_dir();
+        let display_dir = app_dir.join("versions/IOS/1.0.0/en-US/screenshots/APP_IPHONE_67");
+        std::fs::create_dir_all(&display_dir).unwrap();
+        let entries = vec![ScreenshotManifestEntry {
+            file_name: "001.png".to_string(),
+            remote_id: "remote-id".to_string(),
+            checksum: "checksum".to_string(),
+        }];
+
+        write_screenshot_manifest(&app_dir, &display_dir, &entries).unwrap();
+
+        assert!(app_dir.join(MANIFEST_FILE).exists());
+        let content = std::fs::read_to_string(app_dir.join(MANIFEST_FILE)).unwrap();
+        assert!(content.contains("schema_version: 1"));
+        assert!(content.contains("versions/IOS/1.0.0/en-US/screenshots/APP_IPHONE_67"));
+        assert_eq!(
+            read_screenshot_manifest(&app_dir, &display_dir)
+                .unwrap()
+                .screenshots,
+            entries
+        );
+        std::fs::remove_dir_all(&app_dir).unwrap();
+    }
+
+    #[test]
+    fn builds_manifest_entries_from_final_remote_order() {
+        let screenshots = vec![
+            local("001.png", "checksum-1"),
+            local("002.png", "checksum-2"),
+        ];
+        let remote_ids = vec!["reused-id".to_string(), "uploaded-id".to_string()];
+
+        let entries = screenshot_manifest_entries(&screenshots, &remote_ids).unwrap();
+
+        assert_eq!(
+            entries,
+            vec![
+                ScreenshotManifestEntry {
+                    file_name: "001.png".to_string(),
+                    remote_id: "reused-id".to_string(),
+                    checksum: "checksum-1".to_string(),
+                },
+                ScreenshotManifestEntry {
+                    file_name: "002.png".to_string(),
+                    remote_id: "uploaded-id".to_string(),
+                    checksum: "checksum-2".to_string(),
+                },
+            ]
+        );
     }
 
     #[test]

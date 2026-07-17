@@ -10,6 +10,7 @@ Steps:
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import urllib.request
@@ -22,6 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = ROOT / "crates/stores/app_store_connect"
 CACHE_DIR = ROOT / ".cache/app_store_connect"
+GENERATED_OUTPUT = CACHE_DIR / "generated"
 
 
 # ── Cache ────────────────────────────────────────────────────────────────
@@ -109,6 +111,13 @@ KEEP_PATHS = {
     '/v1/appStoreReviewDetails/{id}/appStoreReviewAttachments',  # GET - list attachments
     '/v1/appStoreReviewAttachments',  # POST - create attachment
     '/v1/appStoreReviewAttachments/{id}',  # GET - get single attachment
+    # App Store Review Submissions
+    '/v1/apps/{id}/reviewSubmissions',  # GET - list submissions for an app
+    '/v1/reviewSubmissions',  # GET/POST - list/create submissions
+    '/v1/reviewSubmissions/{id}',  # GET/PATCH - get/submit/cancel submission
+    '/v1/reviewSubmissions/{id}/items',  # GET - list submission items
+    '/v1/reviewSubmissionItems',  # POST - add submission item
+    '/v1/reviewSubmissionItems/{id}',  # PATCH/DELETE - update/remove item
 }
 
 # Resource schemas whose `relationships` field can be stripped
@@ -173,9 +182,13 @@ def prune(spec_path: Path) -> Path:
     strip_included(schemas, 'AppsResponse')
     strip_included(schemas, 'AppResponse')
     strip_included(schemas, 'AppStoreVersionsResponse')
+    strip_included(schemas, 'ReviewSubmissionResponse')
+    strip_included(schemas, 'ReviewSubmissionsResponse')
+    strip_included(schemas, 'ReviewSubmissionItemResponse')
+    strip_included(schemas, 'ReviewSubmissionItemsResponse')
 
     # Strip relationships from resource schemas, except those needed by catalog
-    RELATIONSHIPS_KEEP = {'AppInfo', 'AppStoreReviewDetail'}
+    RELATIONSHIPS_KEEP = {'AppInfo', 'AppStoreReviewDetail', 'ReviewSubmission'}
     for name in RESOURCE_SCHEMAS:
         if name in RELATIONSHIPS_KEEP:
             continue
@@ -229,7 +242,7 @@ def prune(spec_path: Path) -> Path:
             for method, operation in methods.items():
                 if method == 'parameters':
                     new_spec['paths'][path][method] = operation
-                elif method.upper() in {'GET', 'PATCH', 'POST'}:
+                elif method.upper() in {'GET', 'PATCH', 'POST', 'DELETE'}:
                     new_spec['paths'][path][method] = operation
                     collect_refs(operation, refs, spec)
 
@@ -278,15 +291,14 @@ def prune(spec_path: Path) -> Path:
 
 def generate(pruned_path: Path):
     print(f"[3/4] Generating Rust client via cargo progenitor...")
-    if OUTPUT.exists():
-        import shutil
-        shutil.rmtree(OUTPUT)
+    if GENERATED_OUTPUT.exists():
+        shutil.rmtree(GENERATED_OUTPUT)
 
     result = subprocess.run(
         [
             "cargo", "progenitor",
             "-i", str(pruned_path),
-            "-o", str(OUTPUT),
+            "-o", str(GENERATED_OUTPUT),
             "--name", "fastforge_app_store_connect",
             "--version", "0.1.0",
         ],
@@ -299,25 +311,14 @@ def generate(pruned_path: Path):
         print(f"       Error: {result.stderr}")
         sys.exit(1)
 
-    lib = OUTPUT / "src" / "lib.rs"
+    lib = GENERATED_OUTPUT / "src" / "lib.rs"
     client = OUTPUT / "src" / "client.rs"
     if lib.exists():
-        lib.replace(client)
-        lib.write_text("pub mod client;\n\npub use client::*;\n")
+        shutil.copyfile(lib, client)
         lines = sum(1 for _ in client.open())
         size = client.stat().st_size
         print(f"       Generated {client.relative_to(ROOT)} ({lines} lines, {size / 1024:.0f} KB)")
-        print(f"       Wrote {lib.relative_to(ROOT)}")
-
-    # Fix up Cargo.toml metadata (progenitor overwrites it)
-    cargo_toml = OUTPUT / "Cargo.toml"
-    content = cargo_toml.read_text()
-    content = content.replace(
-        'version = "0.1.0"\nedition = "2024"\nlicense = "SPECIFY A LICENSE BEFORE PUBLISHING"',
-        'version.workspace = true\nedition.workspace = true\nauthors.workspace = true\ndescription = "App Store Connect API client"\nlicense.workspace = true',
-    )
-    cargo_toml.write_text(content)
-    print(f"       Fixed up {cargo_toml.relative_to(ROOT)}")
+    shutil.rmtree(GENERATED_OUTPUT)
 
 
 # ── Main ─────────────────────────────────────────────────────────────────

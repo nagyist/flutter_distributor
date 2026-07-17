@@ -13,7 +13,7 @@ use clap::Args;
 use serde_json::{Value, json};
 use std::path::Path;
 
-use super::{VersionMetadata, screenshots};
+use super::{APP_INFO_CATEGORY_FIELDS, AppInfoCategories, VersionMetadata, screenshots};
 
 #[derive(Args, Debug)]
 pub struct PushArgs {
@@ -56,6 +56,20 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
     eprintln!("📂 Reading sync directory: {}", base_dir.display());
 
     // Scan phase
+    let app_info_path = base_dir.join("app_info.yaml");
+    if app_info_path.exists() {
+        let categories: AppInfoCategories = read_yaml(&app_info_path)?;
+        if !categories.is_empty() {
+            actions.push(PushAction {
+                resource_type: "appInfos".into(),
+                resource_id: None,
+                locale: None,
+                action: "update",
+                details: "app_info.yaml".into(),
+            });
+        }
+    }
+
     let loc_dir = base_dir.join("info");
     if loc_dir.exists() {
         for entry in std::fs::read_dir(&loc_dir).context("reading info localizations")? {
@@ -98,14 +112,18 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
                 .and_then(|n| n.to_str())
                 .unwrap_or("")
                 .to_string();
-            if let Some(vloc_yaml_path) = version_localization_file(&vloc_path) {
+            if let Some(vloc_yaml_path) = version_localization_file(&vloc_path)? {
                 let _v: AppStoreVersionLocalizationAttributes = read_yaml(&vloc_yaml_path)?;
+                let file_name = vloc_yaml_path
+                    .file_name()
+                    .and_then(|name| name.to_str())
+                    .unwrap_or("localization.yaml");
                 actions.push(PushAction {
                     resource_type: "appStoreVersionLocalizations".into(),
                     resource_id: None,
                     locale: Some(locale.clone()),
                     action: "create",
-                    details: format!("versions/{platform_dir}/{version_dir}/{locale}/version.yaml"),
+                    details: format!("versions/{platform_dir}/{version_dir}/{locale}/{file_name}"),
                 });
             }
 
@@ -142,6 +160,9 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
 
     // Execute: app info localizations
     let current_app_info = fetch_current_app_info(ctx, &app_id).await?;
+    if app_info_path.exists() {
+        push_app_info_categories(ctx, &current_app_info, &app_info_path).await?;
+    }
     let existing_locales = fetch_current_app_info_localizations(ctx, &current_app_info.id).await?;
     if loc_dir.exists() {
         for entry in std::fs::read_dir(&loc_dir).context("reading info localizations")? {
@@ -168,16 +189,23 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
             resolve_version_identity(&version_path, &platform_dir, &version_dir)?;
         let existing_versions =
             fetch_all_versions_simple(ctx, &app_id, &platform, &version_str).await?;
-        let version_id = if let Some(v) = existing_versions.first() {
-            v.id.clone()
+        let existing_version = if let Some(v) = existing_versions.first() {
+            v
         } else {
             eprintln!("  ⚠ Skipping versions/{platform_dir}/{version_dir}: version not found");
             continue;
         };
+        let version_id = existing_version.id.clone();
 
         let version_yaml_path = version_path.join("version.yaml");
         if version_yaml_path.exists() {
-            push_version_metadata(ctx, &version_id, &version_yaml_path).await?;
+            push_version_metadata(
+                ctx,
+                &version_id,
+                existing_version.copyright.as_deref(),
+                &version_yaml_path,
+            )
+            .await?;
         }
 
         let existing_vlocs = fetch_version_localizations_simple(ctx, &version_id).await?;
@@ -187,7 +215,7 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
                 .and_then(|n| n.to_str())
                 .unwrap_or("")
                 .to_string();
-            let Some(vloc_yaml_path) = version_localization_file(&vloc_path) else {
+            let Some(vloc_yaml_path) = version_localization_file(&vloc_path)? else {
                 continue;
             };
 
@@ -219,9 +247,13 @@ pub async fn execute_with_context(args: &PushArgs, ctx: &AppStoreConnectContext)
                         "cannot push screenshots for locale {locale}: App Store version localization not found"
                     )
                 })?;
-            let summary =
-                screenshots::sync_localization_screenshots(ctx, &localization.id, &vloc_path)
-                    .await?;
+            let summary = screenshots::sync_localization_screenshots(
+                ctx,
+                &base_dir,
+                &localization.id,
+                &vloc_path,
+            )
+            .await?;
             eprintln!(
                 "  ✓ screenshots/{locale}: {} reused, {} uploaded, {} deleted",
                 summary.reused, summary.uploaded, summary.deleted
@@ -261,12 +293,17 @@ fn read_yaml<T: serde::de::DeserializeOwned>(path: &Path) -> Result<T> {
 async fn push_version_metadata(
     ctx: &AppStoreConnectContext,
     version_id: &str,
+    remote_copyright: Option<&str>,
     yaml_path: &Path,
 ) -> Result<()> {
     let metadata: VersionMetadata = read_yaml(yaml_path)?;
     let Some(copyright) = metadata.copyright else {
         return Ok(());
     };
+    if !copyright_needs_update(&copyright, remote_copyright) {
+        eprintln!("  - version.yaml (unchanged, id: {version_id})");
+        return Ok(());
+    }
 
     ctx.http
         .patch(ctx.url(&format!("/v1/appStoreVersions/{version_id}")))
@@ -277,6 +314,10 @@ async fn push_version_metadata(
         .with_context(|| format!("failed to update copyright for version {version_id}"))?;
     eprintln!("  ✓ version.yaml (id: {version_id})");
     Ok(())
+}
+
+fn copyright_needs_update(local: &str, remote: Option<&str>) -> bool {
+    remote != Some(local)
 }
 
 fn version_update_body(version_id: &str, copyright: String) -> Value {
@@ -376,22 +417,32 @@ fn version_localization_dirs(version_path: &Path) -> Result<Vec<std::path::PathB
     Ok(dirs)
 }
 
-fn version_localization_file(localization_dir: &Path) -> Option<std::path::PathBuf> {
-    let version_yaml = localization_dir.join("version.yaml");
-    if version_yaml.exists() {
-        return Some(version_yaml);
+fn version_localization_file(localization_dir: &Path) -> Result<Option<std::path::PathBuf>> {
+    let localization_yaml = localization_dir.join("localization.yaml");
+    let legacy_version_yaml = localization_dir.join("version.yaml");
+
+    if localization_yaml.exists() && legacy_version_yaml.exists() {
+        return Err(anyhow!(
+            "both {} and {} exist; keep only localization.yaml",
+            localization_yaml.display(),
+            legacy_version_yaml.display()
+        ));
     }
 
-    let legacy_yaml = localization_dir.join("localization.yaml");
-    if legacy_yaml.exists() {
-        return Some(legacy_yaml);
+    if localization_yaml.exists() {
+        return Ok(Some(localization_yaml));
     }
 
-    None
+    if legacy_version_yaml.exists() {
+        return Ok(Some(legacy_version_yaml));
+    }
+
+    Ok(None)
 }
 
 struct CurrentAppInfo {
     id: String,
+    categories: AppInfoCategories,
 }
 
 async fn fetch_current_app_info(
@@ -401,7 +452,11 @@ async fn fetch_current_app_info(
     let resp: Value = ctx
         .http
         .get(ctx.url(&format!("/v1/apps/{app_id}/appInfos")))
-        .query(&[("limit", 1)])
+        .query(&[
+            ("fields[appInfos]", APP_INFO_CATEGORY_FIELDS),
+            ("include", APP_INFO_CATEGORY_FIELDS),
+            ("limit", "1"),
+        ])
         .send()
         .await?
         .error_for_status()?
@@ -411,7 +466,122 @@ async fn fetch_current_app_info(
         .as_str()
         .ok_or_else(|| anyhow!("no appInfo found for app {app_id}"))?
         .to_string();
-    Ok(CurrentAppInfo { id: info_id })
+    let categories = AppInfoCategories::from_relationships(&resp["data"][0]["relationships"]);
+    Ok(CurrentAppInfo {
+        id: info_id,
+        categories,
+    })
+}
+
+async fn push_app_info_categories(
+    ctx: &AppStoreConnectContext,
+    current: &CurrentAppInfo,
+    yaml_path: &Path,
+) -> Result<()> {
+    let categories: AppInfoCategories = read_yaml(yaml_path)?;
+    if categories.is_empty() {
+        return Err(anyhow!("app_info.yaml does not contain any category IDs"));
+    }
+    if !app_info_categories_have_changes(&categories, &current.categories) {
+        eprintln!("  - app_info.yaml (unchanged, id: {})", current.id);
+        return Ok(());
+    }
+
+    let body = app_info_category_update_body(&current.id, &categories);
+    ctx.http
+        .patch(ctx.url(&format!("/v1/appInfos/{}", current.id)))
+        .json(&body)
+        .send()
+        .await?
+        .error_for_status()
+        .with_context(|| format!("failed to update categories for app info {}", current.id))?;
+    eprintln!("  ✓ app_info.yaml (id: {})", current.id);
+    Ok(())
+}
+
+fn app_info_categories_have_changes(
+    desired: &AppInfoCategories,
+    current: &AppInfoCategories,
+) -> bool {
+    category_changed(&desired.primary_category, &current.primary_category)
+        || category_changed(
+            &desired.primary_subcategory_one,
+            &current.primary_subcategory_one,
+        )
+        || category_changed(
+            &desired.primary_subcategory_two,
+            &current.primary_subcategory_two,
+        )
+        || category_changed(&desired.secondary_category, &current.secondary_category)
+        || category_changed(
+            &desired.secondary_subcategory_one,
+            &current.secondary_subcategory_one,
+        )
+        || category_changed(
+            &desired.secondary_subcategory_two,
+            &current.secondary_subcategory_two,
+        )
+}
+
+fn category_changed(desired: &Option<String>, current: &Option<String>) -> bool {
+    desired
+        .as_ref()
+        .is_some_and(|desired| current.as_ref() != Some(desired))
+}
+
+fn app_info_category_update_body(app_info_id: &str, categories: &AppInfoCategories) -> Value {
+    let mut relationships = serde_json::Map::new();
+    insert_category_relationship(
+        &mut relationships,
+        "primaryCategory",
+        categories.primary_category.as_deref(),
+    );
+    insert_category_relationship(
+        &mut relationships,
+        "primarySubcategoryOne",
+        categories.primary_subcategory_one.as_deref(),
+    );
+    insert_category_relationship(
+        &mut relationships,
+        "primarySubcategoryTwo",
+        categories.primary_subcategory_two.as_deref(),
+    );
+    insert_category_relationship(
+        &mut relationships,
+        "secondaryCategory",
+        categories.secondary_category.as_deref(),
+    );
+    insert_category_relationship(
+        &mut relationships,
+        "secondarySubcategoryOne",
+        categories.secondary_subcategory_one.as_deref(),
+    );
+    insert_category_relationship(
+        &mut relationships,
+        "secondarySubcategoryTwo",
+        categories.secondary_subcategory_two.as_deref(),
+    );
+
+    json!({
+        "data": {
+            "type": "appInfos",
+            "id": app_info_id,
+            "relationships": relationships,
+        }
+    })
+}
+
+fn insert_category_relationship(
+    relationships: &mut serde_json::Map<String, Value>,
+    name: &str,
+    category_id: Option<&str>,
+) {
+    if let Some(category_id) = category_id {
+        relationships.insert(
+            name.to_string(),
+            json!({ "data": { "type": "appCategories", "id": category_id } }),
+        );
+    }
 }
 
 struct CurrentAppInfoLocalization {
@@ -565,6 +735,7 @@ async fn push_create_version_localization(
 
 struct CurrentAppVersion {
     id: String,
+    copyright: Option<String>,
 }
 
 async fn fetch_all_versions_simple(
@@ -613,7 +784,10 @@ async fn fetch_all_versions_simple(
         .into_inner()
         .data
         .into_iter()
-        .map(|v| CurrentAppVersion { id: v.id })
+        .map(|v| CurrentAppVersion {
+            id: v.id,
+            copyright: v.attributes.and_then(|attrs| attrs.copyright),
+        })
         .collect())
 }
 struct CurrentAppVersionLocalization {
@@ -899,5 +1073,88 @@ mod tests {
         .unwrap();
 
         assert_eq!(metadata.copyright.as_deref(), Some("2026 Example Inc."));
+    }
+
+    #[test]
+    fn copyright_is_only_updated_when_remote_differs() {
+        assert!(!copyright_needs_update(
+            "2026 Example Inc.",
+            Some("2026 Example Inc.")
+        ));
+        assert!(copyright_needs_update(
+            "2026 Example Inc.",
+            Some("2025 Example Inc.")
+        ));
+        assert!(copyright_needs_update("2026 Example Inc.", None));
+    }
+
+    #[test]
+    fn app_info_category_update_uses_relationship_ids() {
+        let categories = AppInfoCategories {
+            primary_category: Some("GAMES".into()),
+            primary_subcategory_one: Some("GAMES_ACTION".into()),
+            secondary_category: Some("ENTERTAINMENT".into()),
+            ..Default::default()
+        };
+
+        assert_eq!(
+            app_info_category_update_body("app-info-id", &categories),
+            json!({
+                "data": {
+                    "type": "appInfos",
+                    "id": "app-info-id",
+                    "relationships": {
+                        "primaryCategory": {
+                            "data": { "type": "appCategories", "id": "GAMES" }
+                        },
+                        "primarySubcategoryOne": {
+                            "data": { "type": "appCategories", "id": "GAMES_ACTION" }
+                        },
+                        "secondaryCategory": {
+                            "data": { "type": "appCategories", "id": "ENTERTAINMENT" }
+                        }
+                    }
+                }
+            })
+        );
+    }
+
+    #[test]
+    fn category_changes_only_consider_configured_fields() {
+        let current = AppInfoCategories {
+            primary_category: Some("GAMES".into()),
+            secondary_category: Some("BUSINESS".into()),
+            ..Default::default()
+        };
+        let unchanged_partial = AppInfoCategories {
+            primary_category: Some("GAMES".into()),
+            ..Default::default()
+        };
+        let changed_partial = AppInfoCategories {
+            primary_category: Some("UTILITIES".into()),
+            ..Default::default()
+        };
+
+        assert!(!app_info_categories_have_changes(
+            &unchanged_partial,
+            &current
+        ));
+        assert!(app_info_categories_have_changes(&changed_partial, &current));
+    }
+
+    #[test]
+    fn rejects_ambiguous_localization_files() {
+        let dir = std::env::temp_dir().join(format!(
+            "fastforge-appstore-localization-{}",
+            uuid::Uuid::new_v4()
+        ));
+        std::fs::create_dir_all(&dir).unwrap();
+        std::fs::write(dir.join("localization.yaml"), "description: current\n").unwrap();
+        std::fs::write(dir.join("version.yaml"), "description: legacy\n").unwrap();
+
+        let error = version_localization_file(&dir).unwrap_err();
+        std::fs::remove_dir_all(&dir).unwrap();
+
+        assert!(error.to_string().contains("keep only localization.yaml"));
     }
 }

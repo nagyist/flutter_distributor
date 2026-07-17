@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 use fastforge_app_store_connect::cli::{
-    self, ApiArgs, AppArgs, BuildArgs, GlobalArgs, VersionArgs,
+    self, ApiArgs, AppArgs, BuildArgs, GlobalArgs, SubmissionArgs, VersionArgs,
 };
 
 #[derive(Parser)]
@@ -24,6 +24,8 @@ enum Commands {
     Build(BuildArgs),
     #[command(about = "Query and submit App Store versions")]
     Version(VersionArgs),
+    #[command(about = "Manage App Store review submissions")]
+    Submission(SubmissionArgs),
     #[command(about = "Call raw App Store Connect API endpoints")]
     Api(ApiArgs),
 }
@@ -36,6 +38,7 @@ async fn main() -> Result<()> {
         Commands::App(args) => cli::commands::app::execute(args, &cli.global).await?,
         Commands::Build(args) => cli::commands::build::execute(args, &cli.global).await?,
         Commands::Version(args) => cli::commands::version::execute(args, &cli.global).await?,
+        Commands::Submission(args) => cli::commands::submission::execute(args, &cli.global).await?,
         Commands::Api(args) => cli::commands::api::execute(args, &cli.global).await?,
     }
 

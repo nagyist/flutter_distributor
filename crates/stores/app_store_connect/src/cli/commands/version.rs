@@ -1,12 +1,15 @@
 use crate::cli::GlobalArgs;
 use crate::cli::commands::app::resolve_app;
 use crate::cli::commands::build::{get_build, latest_build};
+use crate::cli::commands::submission::{
+    add_submission_item, create_submission, submit_submission, wait_for_submission,
+};
 use crate::{AppStoreConnectContext, print_json, print_table};
 use anyhow::{Result, anyhow};
 use clap::{Args, Subcommand};
 use serde::Serialize;
 use serde_json::{Value, json};
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 #[derive(Args, Debug)]
 pub struct VersionArgs {
@@ -107,20 +110,22 @@ async fn submit(
     };
 
     set_version_build(ctx, &version.id, &build.id).await?;
-    let submission = create_submission(ctx, &version.id).await?;
-    let state = submission_state(&submission);
+    let platform = (!version.platform.is_empty()).then_some(version.platform.as_str());
+    let submission = create_submission(ctx, &app.id, platform).await?;
+    add_submission_item(ctx, &submission.id, "appStoreVersions", &version.id).await?;
+    let submitted = submit_submission(ctx, &submission.id).await?;
 
     let mut row = SubmissionRow {
         app: app.bundle_id,
         version: version.version,
         build_id: build.id,
-        state,
+        state: submitted.state,
     };
 
     if args.wait {
-        row.state =
-            wait_for_submission(ctx, submission_id(&submission)?, Duration::from_secs(1800))
-                .await?;
+        row.state = wait_for_submission(ctx, &submission.id, Duration::from_secs(1800))
+            .await?
+            .state;
     }
 
     if global.json.is_some() {
@@ -211,65 +216,6 @@ async fn set_version_build(
     Ok(())
 }
 
-async fn create_submission(ctx: &AppStoreConnectContext, version_id: &str) -> Result<Value> {
-    let body = json!({
-        "data": {
-            "type": "appStoreVersionSubmissions",
-            "relationships": {
-                "appStoreVersion": {
-                    "data": {
-                        "type": "appStoreVersions",
-                        "id": version_id
-                    }
-                }
-            }
-        }
-    });
-    Ok(ctx
-        .http
-        .post(ctx.url("/v1/appStoreVersionSubmissions"))
-        .json(&body)
-        .send()
-        .await?
-        .error_for_status()?
-        .json()
-        .await?)
-}
-
-async fn wait_for_submission(
-    ctx: &AppStoreConnectContext,
-    submission_id: &str,
-    timeout: Duration,
-) -> Result<String> {
-    let start = Instant::now();
-    loop {
-        let response: Value = ctx
-            .http
-            .get(ctx.url(&format!("/v1/appStoreVersionSubmissions/{submission_id}")))
-            .send()
-            .await?
-            .error_for_status()?
-            .json()
-            .await?;
-        let state = submission_state(&response);
-        match state.as_str() {
-            "COMPLETE" | "ACCEPTED" | "SUBMITTED" => return Ok(state),
-            "FAILED" | "REJECTED" => {
-                return Err(anyhow!(
-                    "submission {submission_id} failed with state {state}"
-                ));
-            }
-            _ if start.elapsed() >= timeout => {
-                return Err(anyhow!(
-                    "submission {submission_id} timed out after {:?}",
-                    timeout
-                ));
-            }
-            _ => tokio::time::sleep(Duration::from_secs(30)).await,
-        }
-    }
-}
-
 fn print_versions(versions: Vec<VersionRow>, global: &GlobalArgs) -> Result<()> {
     if global.json.is_some() {
         return print_json(&versions, global.json.as_deref());
@@ -297,24 +243,6 @@ fn version_row(value: &Value) -> Result<VersionRow> {
         platform: attr_string(attrs, "platform"),
         state: attr_string(attrs, "appVersionState"),
     })
-}
-
-fn submission_id(value: &Value) -> Result<&str> {
-    value
-        .get("data")
-        .and_then(|data| data.get("id"))
-        .and_then(Value::as_str)
-        .ok_or_else(|| anyhow!("missing submission id"))
-}
-
-fn submission_state(value: &Value) -> String {
-    value
-        .get("data")
-        .and_then(|data| data.get("attributes"))
-        .and_then(|attrs| attrs.get("state"))
-        .and_then(Value::as_str)
-        .unwrap_or("SUBMITTED")
-        .to_string()
 }
 
 fn attr_string(attrs: &serde_json::Map<String, Value>, key: &str) -> String {

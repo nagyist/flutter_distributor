@@ -68,6 +68,40 @@ Example:
 fastforge release --name dev
 ```
 
+### App Store review submissions
+
+The `appstore submission` commands manage the current App Store Connect review
+submission workflow. They use `APP_STORE_CONNECT_KEY_ID`,
+`APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_KEY_PATH` for
+authentication.
+
+```shell
+# Inspect submissions and their items
+fastforge appstore submission list --app com.example.myapp
+fastforge appstore submission view <submission-id>
+fastforge appstore submission items <submission-id>
+
+# Create a draft, add an App Store version, and submit it
+fastforge appstore submission create --app com.example.myapp --platform IOS
+fastforge appstore submission add-item <submission-id> \
+  --item-type appStoreVersions --item-id <version-id>
+fastforge appstore submission submit <submission-id> --wait
+
+# Remove a draft item or cancel a submitted review
+fastforge appstore submission remove-item <submission-item-id>
+fastforge appstore submission cancel <submission-id>
+```
+
+`list` accepts optional `--platform` and `--state` filters. `add-item` also
+supports App Store Connect reviewable resource types for custom product page
+versions, version experiments, app events, background assets, and Game Center
+versions. Use `--json` with any read or mutation command to produce structured
+output.
+
+`fastforge appstore version submit <version> --app <app> --build <build>` uses
+this review-submission workflow automatically: it attaches the build, creates a
+submission, adds the App Store version as an item, and submits it for review.
+
 ### Store catalog
 
 Pull or push catalog data for every App Store and Google Play app configured in
@@ -102,15 +136,35 @@ Catalog files use the existing default directories under
 apps are processed in order. If one app fails, the remaining apps continue and
 the command exits with an error after printing a summary.
 
-For App Store versions, `pull` writes version-level metadata such as `copyright`
-to `versions/<platform>/<version>/version.yaml`. Editing that value and running
-`push` updates the corresponding App Store Connect version.
+For App Store versions, `pull` writes version-level attributes such as
+`copyright` to `versions/<platform>/<version>/version.yaml`. Localized attributes
+are written to
+`versions/<platform>/<version>/<locale>/localization.yaml`. Editing these files
+and running `push` updates the corresponding App Store Connect resources.
+Unchanged copyright values are omitted from consecutive versions of the same
+platform. Push still accepts the legacy locale-level `version.yaml`, but reports
+an error when both localization filenames exist in the same locale directory.
 
-For App Store screenshots, `pull` writes a hidden manifest beside each display
-type directory. During `push`, unchanged screenshots are reused by remote ID and
+App-level App Store categories are stored in `<bundle-id>/app_info.yaml` using
+App Store Connect relationship names and category IDs:
+
+```yaml
+primaryCategory: GAMES
+primarySubcategoryOne: GAMES_ACTION
+secondaryCategory: ENTERTAINMENT
+```
+
+The file supports both primary and secondary categories and their two optional
+subcategories. Fields omitted from the file are left unchanged during `push`.
+
+For App Store screenshots, `pull` writes synchronization state to
+`<bundle-id>/.manifest.yaml` and names downloaded images by sequence, such as
+`001.png`. During `push`, unchanged screenshots are reused by remote ID and
 checksum, changed or failed uploads are replaced, remote screenshots missing
 from a non-empty local display type directory are deleted, and the remaining
-screenshots are reordered by local filename. Use `--dry-run` with the standalone
+screenshots are reordered by local filename. After a successful push, the final
+remote IDs and local checksums are written back to the app-level manifest. Use
+`--dry-run` with the standalone
 `fastforge appstore catalog push --app <bundle-id> --dry-run` command to review
 local screenshot sets before syncing.
 

@@ -7,6 +7,7 @@ pub use commands::api::ApiArgs;
 pub use commands::app::AppArgs;
 pub use commands::build::BuildArgs;
 pub use commands::catalog::CatalogArgs;
+pub use commands::submission::SubmissionArgs;
 pub use commands::version::VersionArgs;
 
 #[derive(Args, Debug)]
@@ -26,6 +27,8 @@ pub enum AppStoreConnectCommand {
     Build(BuildArgs),
     #[command(about = "Query and submit App Store versions")]
     Version(VersionArgs),
+    #[command(about = "Manage App Store review submissions")]
+    Submission(SubmissionArgs),
     #[command(about = "Call raw App Store Connect API endpoints")]
     Api(ApiArgs),
     #[command(about = "Manage your app's store data (metadata, screenshots, previews)")]
@@ -38,6 +41,9 @@ pub async fn execute(root: &AppStoreConnectArgs) -> Result<()> {
         AppStoreConnectCommand::Build(args) => commands::build::execute(args, &root.global).await,
         AppStoreConnectCommand::Version(args) => {
             commands::version::execute(args, &root.global).await
+        }
+        AppStoreConnectCommand::Submission(args) => {
+            commands::submission::execute(args, &root.global).await
         }
         AppStoreConnectCommand::Api(args) => commands::api::execute(args, &root.global).await,
         AppStoreConnectCommand::Catalog(args) => {

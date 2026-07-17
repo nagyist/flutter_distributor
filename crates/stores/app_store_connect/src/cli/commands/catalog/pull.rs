@@ -9,6 +9,7 @@ use std::path::Path;
 
 use super::VersionMetadata;
 use super::screenshots::{self, ScreenshotManifestEntry};
+use super::{APP_INFO_CATEGORY_FIELDS, AppInfoCategories};
 use crate::types as asc_types;
 
 /// Helper: fetch first page via typed client then follow `links.next` via raw HTTP.
@@ -162,6 +163,30 @@ async fn fetch_app_infos(ctx: &AppStoreConnectContext, app_id: &str) -> Result<V
         .await
         .map_err(|e| anyhow::anyhow!("failed to fetch app infos: {e}"))?;
     collect_pages(ctx, resp).await
+}
+
+async fn fetch_app_info_categories(
+    ctx: &AppStoreConnectContext,
+    app_info_id: &str,
+) -> Result<AppInfoCategories> {
+    let response: Value = ctx
+        .http
+        .get(ctx.url(&format!("/v1/appInfos/{app_info_id}")))
+        .query(&[
+            ("fields[appInfos]", APP_INFO_CATEGORY_FIELDS),
+            ("include", APP_INFO_CATEGORY_FIELDS),
+        ])
+        .send()
+        .await
+        .context("failed to fetch App Store app info categories")?
+        .error_for_status()
+        .context("failed to fetch App Store app info categories")?
+        .json()
+        .await
+        .context("failed to decode App Store app info categories")?;
+    Ok(AppInfoCategories::from_relationships(
+        &response["data"]["relationships"],
+    ))
 }
 
 /// Fetch all app info localizations via the generated typed client.
@@ -406,6 +431,18 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
     eprintln!("📦 Fetching app info...");
     let app_infos = fetch_app_infos(ctx, app_id).await?;
 
+    if let Some(app_info) = app_infos.first() {
+        let info_id = app_info["id"]
+            .as_str()
+            .ok_or_else(|| anyhow::anyhow!("App Store app info is missing its id"))?;
+        let categories = fetch_app_info_categories(ctx, info_id).await?;
+        if !categories.is_empty() {
+            write_yaml(&output_root.join("app_info.yaml"), &categories)?;
+            eprintln!("  ✓ app_info.yaml");
+            pulled_count += 1;
+        }
+    }
+
     for app_info in &app_infos {
         let info_id = app_info["id"].as_str().unwrap_or_default().to_string();
 
@@ -447,6 +484,7 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
         (String, String),
         asc_types::AppStoreVersionLocalizationAttributes,
     > = HashMap::new();
+    let mut version_copyrights: HashMap<String, String> = HashMap::new();
     let mut review_detail_attrs: HashMap<String, asc_types::AppStoreReviewDetailAttributes> =
         HashMap::new();
 
@@ -467,14 +505,13 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
         ensure_dir(&version_dir)?;
 
         if let Some(copyright) = version["attributes"]["copyright"].as_str() {
-            write_yaml(
-                &version_dir.join("version.yaml"),
-                &VersionMetadata {
-                    copyright: Some(copyright.to_string()),
-                },
-            )?;
-            eprintln!("  ✓ versions/{platform}/{version_string}/version.yaml");
-            pulled_count += 1;
+            if sync_copyright_file(&version_dir, copyright, version_copyrights.get(&platform))? {
+                eprintln!("  ✓ versions/{platform}/{version_string}/version.yaml");
+                pulled_count += 1;
+            } else {
+                eprintln!("  • skipped unchanged copyright");
+            }
+            version_copyrights.insert(platform.clone(), copyright.to_string());
         }
 
         // 5. Fetch version localizations
@@ -490,7 +527,8 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
             let vloc_attrs: asc_types::AppStoreVersionLocalizationAttributes =
                 serde_json::from_value(vloc["attributes"].clone())
                     .context("failed to parse version localization attributes")?;
-            let vloc_path = vloc_dir.join("version.yaml");
+            let vloc_path = vloc_dir.join("localization.yaml");
+            let legacy_vloc_path = vloc_dir.join("version.yaml");
             let previous_attrs = version_localization_attrs
                 .get(&(platform.clone(), locale.clone()))
                 .cloned();
@@ -500,8 +538,16 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
             if has_version_localization_changes(&writable_attrs) {
                 ensure_dir(&vloc_dir)?;
                 write_yaml(&vloc_path, &writable_attrs)?;
-                eprintln!("  ✓ versions/{platform}/{version_string}/{locale}/version.yaml");
+                eprintln!("  ✓ versions/{platform}/{version_string}/{locale}/localization.yaml");
                 pulled_count += 1;
+            }
+            if legacy_vloc_path.exists() {
+                std::fs::remove_file(&legacy_vloc_path).with_context(|| {
+                    format!(
+                        "failed to remove legacy file {}",
+                        legacy_vloc_path.display()
+                    )
+                })?;
             }
 
             // 6. Fetch screenshot sets
@@ -548,8 +594,10 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
                     let extension = Path::new(file_name)
                         .extension()
                         .and_then(|e| e.to_str())
-                        .unwrap_or("png");
-                    let screenshot_filename = format!("{:03}_{}.{}", seq, ss_id, extension);
+                        .unwrap_or("png")
+                        .to_ascii_lowercase();
+                    let screenshot_filename =
+                        screenshots::pulled_screenshot_file_name(seq, &extension);
                     let screenshot_path = screenshots_dir.join(&screenshot_filename);
 
                     if let Some(image_url) = resolve_image_url(&ss_attrs) {
@@ -574,7 +622,11 @@ pub async fn execute_with_context(args: &PullArgs, ctx: &AppStoreConnectContext)
                         std::fs::write(&screenshot_path, "")?;
                     }
                 }
-                screenshots::write_screenshot_manifest(&screenshots_dir, &manifest_entries)?;
+                screenshots::write_screenshot_manifest(
+                    &output_root,
+                    &screenshots_dir,
+                    &manifest_entries,
+                )?;
             }
 
             // 8. Fetch preview sets
@@ -962,6 +1014,33 @@ fn changed(current: &Option<String>, previous: Option<&String>) -> bool {
     current.as_ref() != previous
 }
 
+fn has_copyright_changed(current: &str, previous: Option<&String>) -> bool {
+    previous.map(String::as_str) != Some(current)
+}
+
+fn sync_copyright_file(
+    version_dir: &Path,
+    current: &str,
+    previous: Option<&String>,
+) -> Result<bool> {
+    let path = version_dir.join("version.yaml");
+    if has_copyright_changed(current, previous) {
+        write_yaml(
+            &path,
+            &VersionMetadata {
+                copyright: Some(current.to_string()),
+            },
+        )?;
+        return Ok(true);
+    }
+
+    if path.exists() {
+        std::fs::remove_file(&path)
+            .with_context(|| format!("failed to remove unchanged {}", path.display()))?;
+    }
+    Ok(false)
+}
+
 fn has_version_localization_changes(
     attrs: &asc_types::AppStoreVersionLocalizationAttributes,
 ) -> bool {
@@ -1025,17 +1104,44 @@ mod tests {
 
     #[test]
     fn app_store_version_attributes_preserve_copyright() {
-        let attrs: asc_types::AppStoreVersionAttributes = serde_json::from_value(serde_json::json!({
-            "platform": "IOS",
-            "versionString": "1.2.3",
-            "copyright": "2026 Example Inc."
-        }))
-        .unwrap();
+        let attrs: asc_types::AppStoreVersionAttributes =
+            serde_json::from_value(serde_json::json!({
+                "platform": "IOS",
+                "versionString": "1.2.3",
+                "copyright": "2026 Example Inc."
+            }))
+            .unwrap();
 
         assert_eq!(attrs.copyright.as_deref(), Some("2026 Example Inc."));
         assert_eq!(
             serde_json::to_value(attrs).unwrap()["copyright"],
             "2026 Example Inc."
         );
+    }
+
+    #[test]
+    fn copyright_changes_are_tracked_per_platform() {
+        let previous = "2026 Example Inc.".to_string();
+
+        assert!(has_copyright_changed("2026 Example Inc.", None));
+        assert!(!has_copyright_changed("2026 Example Inc.", Some(&previous)));
+        assert!(has_copyright_changed("2027 Example Inc.", Some(&previous)));
+    }
+
+    #[test]
+    fn unchanged_copyright_does_not_leave_a_version_file() {
+        let version_dir = std::env::temp_dir().join(format!(
+            "fastforge-appstore-copyright-{}",
+            uuid::Uuid::new_v4()
+        ));
+        std::fs::create_dir_all(&version_dir).unwrap();
+        let copyright = "2026 Example Inc.".to_string();
+
+        assert!(sync_copyright_file(&version_dir, &copyright, None).unwrap());
+        assert!(version_dir.join("version.yaml").exists());
+        assert!(!sync_copyright_file(&version_dir, &copyright, Some(&copyright)).unwrap());
+        assert!(!version_dir.join("version.yaml").exists());
+
+        std::fs::remove_dir_all(&version_dir).unwrap();
     }
 }

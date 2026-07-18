@@ -13,19 +13,19 @@ fastforge <COMMAND>
 
 顶层命令：
 
-| 命令            | 说明                       |
-| --------------- | -------------------------- |
-| `analyze`       | 分析应用包或 bundle        |
-| `build`         | 使用当前构建适配器构建项目 |
-| `package`       | 构建并打包项目             |
-| `publish`       | 发布现有产物               |
-| `release`       | 兼容旧版发布流程           |
-| `store`         | 管理聚合商店配置与 catalog |
-| `workflow`      | 运行本地工作流             |
-| `appstore`      | 操作 App Store Connect     |
-| `googleplay`    | 操作 Google Play Console   |
-| `upgrade`       | 预留的升级命令             |
-| `version-check` | 输出当前版本               |
+| 命令            | 说明                          |
+| --------------- | ----------------------------- |
+| `analyze`       | 分析应用包或 bundle           |
+| `build`         | 使用 Flutter Builder 构建项目 |
+| `package`       | 构建并打包项目                |
+| `publish`       | 发布现有产物                  |
+| `release`       | 兼容旧版发布流程              |
+| `store`         | 管理聚合商店配置与 catalog    |
+| `workflow`      | 运行本地工作流                |
+| `appstore`      | 操作 App Store Connect        |
+| `googleplay`    | 操作 Google Play Console      |
+| `upgrade`       | 预留的升级命令                |
+| `version-check` | 输出当前版本                  |
 
 ## `analyze`
 
@@ -51,22 +51,24 @@ fastforge analyze dist/app.ipa --output app-info.json
 fastforge build [OPTIONS]
 ```
 
-| 参数                                  | 说明                     |
-| ------------------------------------- | ------------------------ |
-| `-p, --platform <PLATFORM>`           | 目标平台；执行时必填     |
-| `-t, --target <TARGET>`               | 构建 target              |
-| `--clean`                             | 构建前执行清理           |
-| `--flutter-build-args <ARGS>`         | 兼容适配器的额外构建参数 |
-| `--build-target <PATH>`               | 兼容适配器的入口文件     |
-| `--build-flavor <FLAVOR>`             | 构建 flavor              |
-| `--build-target-platform <PLATFORM>`  | 构建目标架构             |
-| `--build-export-options-plist <PATH>` | iOS ExportOptions plist  |
-| `--build-export-method <METHOD>`      | iOS export method        |
-| `--build-dart-define <KEY=VALUE>`     | 编译变量；可重复         |
-| `--build-obfuscate`                   | 开启 obfuscate           |
-| `--build-split-debug-info <PATH>`     | 调试符号输出目录         |
-| `--build-tree-shake-icons`            | 开启 icon tree shaking   |
-| `--build-profile`                     | 使用 profile 模式        |
+| 参数                                  | 说明                       |
+| ------------------------------------- | -------------------------- |
+| `-p, --platform <PLATFORM>`           | 目标平台；执行时必填       |
+| `-t, --target <TARGET>`               | 构建 target                |
+| `--clean`                             | 构建前执行清理             |
+| `--flutter-build-args <ARGS>`         | Flutter Builder 的额外参数 |
+| `--build-target <PATH>`               | Flutter 入口文件           |
+| `--build-flavor <FLAVOR>`             | 构建 flavor                |
+| `--build-target-platform <PLATFORM>`  | 构建目标架构               |
+| `--build-export-options-plist <PATH>` | iOS ExportOptions plist    |
+| `--build-export-method <METHOD>`      | iOS export method          |
+| `--build-dart-define <KEY=VALUE>`     | 编译变量；可重复           |
+| `--build-obfuscate`                   | 开启 obfuscate             |
+| `--build-split-debug-info <PATH>`     | 调试符号输出目录           |
+| `--build-tree-shake-icons`            | 开启 icon tree shaking     |
+| `--build-profile`                     | 使用 profile 模式          |
+
+当前 `build` 命令的适用范围和构建器状态见[构建](building.md)。
 
 ## `package`
 
@@ -79,7 +81,7 @@ fastforge package [OPTIONS]
 | `-p, --platform <PLATFORM>` | 目标平台；执行时必填        |
 | `-t, --target <TARGET>`     | 单个打包 target；执行时必填 |
 | `--skip-clean`              | 跳过构建前清理              |
-| `--build-target <PATH>`     | 兼容适配器的入口文件        |
+| `--build-target <PATH>`     | Flutter Builder 的入口文件  |
 | `--hook-pre <COMMAND>`      | 打包前 shell 命令           |
 | `--hook-post <COMMAND>`     | 打包后 shell 命令           |
 

@@ -3,10 +3,10 @@
 `fastforge package` 负责准备项目、执行构建并把产物整理为可分发格式。
 
 ```bash
-fastforge package --platform macos --target zip
+fastforge package --platform android --target apk
 ```
 
-`--platform` 和 `--target` 均为必填参数，一次处理一个 target。各平台的格式和环境要求见[打包器总览](packagers/README.md)。
+`--platform` 和 `--target` 均为必填参数，一次处理一个 target。上例适用于原生 Gradle Android 项目；Flutter 项目当前只接通了 macOS 格式（如 `--platform macos --target zip`）。各平台的格式和环境要求见[打包器总览](packagers/README.md)。
 
 ## 打包流程
 
@@ -18,79 +18,31 @@ fastforge package --platform macos --target zip
 4. 生成最终分发产物。
 5. 运行 post-package hook。
 
-Android 项目当前接入 Gradle，iOS 和 macOS 项目当前接入 Xcode。部分兼容项目会根据自身的清单文件选择对应构建适配器。
+不含 `pubspec.yaml` 的原生项目按平台接入 Gradle（Android）或 Xcode（iOS、macOS）；含 `pubspec.yaml` 的 Flutter 项目一律使用 Flutter Builder 。
 
 ## 当前支持范围
 
-| 构建系统       | 平台    | 格式                |
-| -------------- | ------- | ------------------- |
-| Gradle         | Android | `apk`、`aab`        |
-| Xcode          | iOS     | `ipa`               |
-| Xcode          | macOS   | `dmg`、`pkg`、`zip` |
-| 兼容构建适配器 | macOS   | `dmg`、`pkg`、`zip` |
+| 构建系统        | 适用项目          | 平台    | 格式                | 当前入口            |
+| --------------- | ----------------- | ------- | ------------------- | ------------------- |
+| Gradle          | 原生 Android      | Android | `apk`、`aab`        | CLI、package action |
+| Xcode           | 原生 iOS          | iOS     | `ipa`               | package action      |
+| Xcode           | 原生 macOS        | macOS   | `dmg`、`pkg`、`zip` | package action      |
+| Flutter Builder | 含 `pubspec.yaml` | macOS   | `dmg`、`pkg`、`zip` | CLI、package action |
 
 > [!NOTE]
-> 当前 `fastforge package` 对不同构建系统的覆盖范围并不一致。底层模块存在不代表 CLI 已经完整接通，执行前请查看对应平台页面。
+> 当前 `fastforge package` 对不同构建系统的覆盖范围并不一致。Flutter 项目当前只能打包 macOS 格式，对 `android`、`ios` 执行 `package` 会在构建完成后因 packager 未接通而失败。路由规则见[构建器总览](builders/README.md)。
 
 ## 构建阶段
 
-打包命令会自动执行所需构建。需要单独检查构建结果或调试构建参数时，可以直接运行：
+打包命令会根据项目类型调用 Gradle、Xcode 或 Flutter Builder，再把识别到的产物交给 packager。构建器的选择方式和接入状态见[构建器总览](builders/README.md)。
+
+需要单独检查 Flutter Builder 的结果时，可以运行：
 
 ```bash
 fastforge build --platform <platform> [--target <target>]
 ```
 
-### 平台与 target
-
-| 平台      | target       | 宿主限制                |
-| --------- | ------------ | ----------------------- |
-| `android` | `apk`、`aab` | 需要 Android 工具链     |
-| `ios`     | `ipa` 或省略 | 仅 macOS                |
-| `macos`   | 可省略       | 仅 macOS                |
-| `windows` | 可省略       | 仅 Windows              |
-| `linux`   | 可省略       | 仅 Linux                |
-| `web`     | 可省略       | 无固定宿主限制          |
-| `ohos`    | `hap`、`app` | 需要 OpenHarmony 工具链 |
-
-### 兼容构建参数
-
-以下参数只作用于当前用于 Flutter 项目的兼容构建适配器，并不是所有项目打包都需要配置：
-
-```bash
-fastforge build \
-  --platform android \
-  --target apk \
-  --clean \
-  --build-target lib/main_dev.dart \
-  --build-flavor dev \
-  --build-target-platform android-arm64 \
-  --build-dart-define APP_ENV=dev \
-  --build-obfuscate \
-  --build-split-debug-info build/debug-info \
-  --build-tree-shake-icons
-```
-
-| Fastforge 参数                  | 对应构建参数             |
-| ------------------------------- | ------------------------ |
-| `--build-target`                | `--target`               |
-| `--build-flavor`                | `--flavor`               |
-| `--build-target-platform`       | `--target-platform`      |
-| `--build-export-options-plist`  | `--export-options-plist` |
-| `--build-export-method`         | `--export-method`        |
-| `--build-dart-define KEY=VALUE` | 可重复的 `--dart-define` |
-| `--build-obfuscate`             | `--obfuscate`            |
-| `--build-split-debug-info`      | `--split-debug-info`     |
-| `--build-tree-shake-icons`      | `--tree-shake-icons`     |
-| `--build-profile`               | `--profile`              |
-
-还可以通过逗号分隔的 `--flutter-build-args` 传递该适配器支持的额外参数：
-
-```bash
-fastforge build --platform web \
-  --flutter-build-args source-maps,base-href=/console/
-```
-
-无等号的条目按布尔开关处理，`key=value` 按键值参数处理。值本身包含逗号时，不应使用此入口。
+平台、target、参数和输出说明见[构建](building.md)。
 
 ## 打包参数
 
@@ -102,7 +54,7 @@ fastforge build --platform web \
 fastforge package --platform macos --target zip --skip-clean
 ```
 
-### 自定义兼容项目入口
+### 自定义 Flutter 入口
 
 ```bash
 fastforge package --platform macos --target dmg \

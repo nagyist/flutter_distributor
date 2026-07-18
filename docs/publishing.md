@@ -21,25 +21,12 @@ fastforge publish \
   --publish-arg release-tag=v1.0.0
 ```
 
-## 发布目标
+可用 target、各自的参数和凭证要求见[发布器总览](publishers/README.md)，也可以通过 `fastforge publish` 的命令提示确认当前定义。
 
-当前已接通 S3 兼容存储、应用分发、应用商店、Web 托管和自定义命令等 target：
+## 凭证
 
-- [S3 / MinIO、七牛、OSS、COS](publishers/s3.md)
-- [fir.im](publishers/fir.md)与 [Firebase](publishers/firebase.md)
-- [GitHub Releases](publishers/github.md)
-- [App Store](publishers/appstore.md)与 [AppGallery](publishers/appgallery.md)
-- [Vercel](publishers/vercel.md)与 [Custom](publishers/custom.md)
-
-完整列表见[发布器总览](publishers/README.md)。
+发布凭证通过运行进程的环境变量传入，不要写入命令行参数或版本库。各 target 需要的环境变量见对应发布器页面。
 
 ## 多步骤自动化
 
-需要组合构建、打包、发布和 shell 命令时，使用[本地工作流](workflows.md)。发布凭证通过进程环境变量传入，非敏感参数写入 action 的 `with` 字段。
-
-## 当前未接通
-
-- `pgyer` 当前不是有效 target。
-- `playstore` 当前不是通用 target；Google Play 操作请使用 `fastforge googleplay`。
-
-可用 target 以 `fastforge publish` 的命令提示为准。
+需要组合构建、打包、发布和 shell 命令时，使用[本地工作流](workflows.md)。非敏感参数写入 action 的 `with` 字段，凭证仍通过环境变量传入。

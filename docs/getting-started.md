@@ -13,26 +13,22 @@ fastforge --help
 
 ## 2. 选择平台和格式
 
-`package` 会执行平台构建并整理出可分发产物。例如打包 Android APK：
+`package` 会执行平台构建并整理出可分发产物，可用范围取决于项目类型。
+
+原生 Gradle Android 项目可以直接打包 APK 或 AAB：
 
 ```bash
 fastforge package --platform android --target apk
+fastforge package --platform android --target aab
 ```
 
-其他常见格式：
+Flutter 项目当前只接通了 macOS 格式：
 
 ```bash
-# Android App Bundle
-fastforge package --platform android --target aab
-
-# iOS IPA
-fastforge package --platform ios --target ipa
-
-# macOS
 fastforge package --platform macos --target dmg
 ```
 
-具体可用范围取决于项目使用的构建系统。执行前先查看[打包器总览](packagers/README.md)和对应平台页面。
+Flutter 项目的 Android、iOS 等其他平台产物，先用 `fastforge build` 单独生成，见[构建](building.md)。iOS 和 macOS Xcode 项目需要通过工作流传入工程参数，示例见 [Xcode Builder](builders/xcode.md)。执行前可先查看[构建器总览](builders/README.md)和[打包器总览](packagers/README.md)确认覆盖范围。
 
 ## 3. 发布已有产物
 
@@ -63,6 +59,7 @@ fastforge analyze dist/app.apk \
 
 ## 下一步
 
+- 单独执行构建：[构建](building.md)
 - 制作安装包：[打包](packaging.md)
 - 上传现有产物：[发布](publishing.md)
 - 运行自动化任务：[本地工作流](workflows.md)

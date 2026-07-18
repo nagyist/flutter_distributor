@@ -16,7 +16,7 @@ your-project/
 ## 最小工作流
 
 ```yaml
-name: macOS package
+name: Android package
 
 on:
   workflow_dispatch:
@@ -27,13 +27,13 @@ on:
 
 jobs:
   package:
-    name: Package macOS app
+    name: Package Android app
     steps:
-      - name: Create ZIP
+      - name: Create APK
         uses: fastforge/package
         with:
-          platform: macos
-          target: zip
+          platform: android
+          target: apk
           output: dist/
           build-args: '{"flavor":"${{ inputs.flavor }}"}'
 ```
@@ -102,10 +102,12 @@ fastforge workflow run \
 | `output`        | 输出目录，默认 `dist/`         |
 | `artifact-name` | 产物名称模板                   |
 | `skip-clean`    | 字符串 `true` 时跳过构建前清理 |
-| `build-target`  | 兼容构建适配器的入口文件       |
+| `build-target`  | Flutter Builder 的入口文件     |
 | `build-args`    | JSON object 字符串             |
 | `hook-pre`      | 打包前 shell 命令              |
 | `hook-post`     | 打包后 shell 命令              |
+
+`build-args` 的字段由实际构建器决定，分别见 [Gradle Builder](builders/gradle.md)、[Xcode Builder](builders/xcode.md)和 [Flutter Builder](builders/flutter.md)。
 
 示例：
 
@@ -113,12 +115,12 @@ fastforge workflow run \
 - name: Package
   uses: fastforge/package
   with:
-    platform: macos
-    target: dmg
+    platform: android
+    target: aab
     output: artifacts/
     artifact-name: "my-app-{{build_name}}.{{ext}}"
-    build-args: '{"flavor":"production"}'
-    hook-post: ./scripts/notarize.sh
+    build-args: '{"flavor":"production","module":"app"}'
+    hook-post: ./scripts/verify-artifact.sh
 ```
 
 Action 输出：

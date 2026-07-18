@@ -13,17 +13,24 @@
 
 - [安装](installation.md)：安装原生二进制、从源码安装和环境要求
 - [快速开始](getting-started.md)：验证安装、打包项目和分析产物
+- [构建](building.md)：构建命令、构建结果和构建器边界
 - [打包](packaging.md)：打包流程、构建阶段和生命周期钩子
 - [发布](publishing.md)：发布目标、参数和凭证
 - [本地工作流](workflows.md)：发现、校验和运行 `.fastforge/workflows`
 - [CLI 参考](cli.md)：顶层命令及参数速查
 
+### 构建器
+
+- [构建器总览](builders/README.md)
+- [Gradle](builders/gradle.md) · [Xcode](builders/xcode.md)
+- [Flutter Builder](builders/flutter.md) · [Custom Builder](builders/custom.md)
+
 ### 打包器
 
 - [打包器总览](packagers/README.md)
-- [Android](packagers/android/README.md)：[APK](packagers/android/apk.md) · [AAB](packagers/android/aab.md)
-- [iOS](packagers/ios/README.md)：[IPA](packagers/ios/ipa.md)
-- [macOS](packagers/macos/README.md)：[DMG](packagers/macos/dmg.md) · [PKG](packagers/macos/pkg.md) · [ZIP](packagers/macos/zip.md)
+- [Android](packagers/android.md)：[APK](packagers/android.md#apk) · [AAB](packagers/android.md#aab)
+- [iOS](packagers/ios.md)：[IPA](packagers/ios.md#ipa)
+- [macOS](packagers/macos.md)：[DMG](packagers/macos.md#dmg) · [PKG](packagers/macos.md#pkg) · [ZIP](packagers/macos.md#zip)
 
 ### 发布目标
 
@@ -43,10 +50,9 @@
 | ------------------------ | -------------- | ----------------------------------- |
 | 应用包分析               | 已实现         | [Analyze](tools/analyze.md)         |
 | Android、iOS、macOS 打包 | 部分实现       | [打包器总览](packagers/README.md)   |
-| 构建适配器               | 部分实现       | [打包](packaging.md#构建阶段)       |
+| 构建器                   | 部分实现       | [构建器总览](builders/README.md)    |
 | 产物发布                 | 已实现多个目标 | [发布器总览](publishers/README.md)  |
-| 多步骤自动化             | 已实现         | `fastforge workflow`                |
-| 本地工作流               | 已实现         | `fastforge workflow`                |
+| 本地工作流               | 已实现         | [本地工作流](workflows.md)          |
 | App Store Connect        | 已实现         | [App Store](stores/appstore.md)     |
 | Google Play Console      | 已实现         | [Google Play](stores/googleplay.md) |
 | 多商店 catalog 同步      | 已实现         | [Catalog](stores/catalog.md)        |

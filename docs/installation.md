@@ -72,15 +72,15 @@ fastforge --help
 
 根据实际操作准备依赖：
 
-| 场景                   | 额外依赖                                                    |
-| ---------------------- | ----------------------------------------------------------- |
-| Android 构建或分析     | Android SDK；APK 分析需要 `ANDROID_HOME` 下可用的 `aapt2`   |
-| AAB 分析               | Android SDK 的 `aapt2`，或通过 `BUNDLETOOL` 指定 bundletool |
-| iOS / macOS 构建       | macOS、Xcode 和命令行工具                                   |
-| 其他项目类型的兼容构建 | 项目自身使用的 SDK 和构建工具，且相关命令位于 `PATH`        |
-| App Store 上传         | macOS、`xcrun` 和有效的 App Store Connect 凭证              |
-| Firebase 发布          | Firebase CLI                                                |
-| Vercel 发布            | Vercel CLI                                                  |
+| 场景               | 额外依赖                                                    |
+| ------------------ | ----------------------------------------------------------- |
+| Android 构建或分析 | Android SDK；APK 分析需要 `ANDROID_HOME` 下可用的 `aapt2`   |
+| AAB 分析           | Android SDK 的 `aapt2`，或通过 `BUNDLETOOL` 指定 bundletool |
+| iOS / macOS 构建   | macOS、Xcode 和命令行工具                                   |
+| Flutter 构建       | Flutter SDK 和目标平台工具链，且 `flutter` 位于 `PATH`      |
+| App Store 上传     | macOS、`xcrun` 和有效的 App Store Connect 凭证              |
+| Firebase 发布      | Firebase CLI                                                |
+| Vercel 发布        | Vercel CLI                                                  |
 
 ## 卸载
 

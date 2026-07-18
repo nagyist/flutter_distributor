@@ -29,7 +29,8 @@
 
 ## 文档
 
-完整文档请访问 [fastforge.dev](https://fastforge.dev/zh)。
+- [Fastforge 原生 CLI 文档](docs/zh-Hans/README.md)
+- [旧版 Dart CLI 文档](https://fastforge.dev/zh)
 
 ## 主要特性
 

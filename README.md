@@ -35,7 +35,8 @@ English | [简体中文](./README-ZH.md)
 
 ## Documentation
 
-Complete documentation is available at [fastforge.dev](https://fastforge.dev/).
+- [Native Fastforge CLI documentation](docs/en/README.md)
+- [Legacy Dart CLI documentation](https://fastforge.dev/)
 
 ## Key Features
 

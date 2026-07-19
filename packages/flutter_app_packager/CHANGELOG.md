@@ -1,3 +1,8 @@
+## 0.6.10
+
+* fix(rpm): enforce usage of `appBinaryName` for assets and fix symlink logic (#313)
+* fix(rpm): rename `packagerEmail` to `packager_email` in JSON config deserialization (#352)
+
 ## 0.6.9
 
 * fix(msix): auto-detect architecture from build output directory (#349)

@@ -1,3 +1,8 @@
+## 0.2.10
+
+* bump `flutter_app_packager` to ^0.6.10
+* bump `flutter_app_publisher` to ^0.6.9
+
 ## 0.2.9
 
 * bump `flutter_app_packager` to ^0.6.9

@@ -1,3 +1,7 @@
+## 0.6.9
+
+* refactor: remove appcenter publisher
+
 ## 0.6.8
 
 * chore: update pgyer publisher configuration and tests

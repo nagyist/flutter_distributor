@@ -139,7 +139,6 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
             'cp -r $appBinaryName.desktop %{buildroot}%{_datadir}/applications/%{name}.desktop',
             'cp -r $appBinaryName.png %{buildroot}%{_datadir}/pixmaps/%{name}.png',
             'cp -r $appBinaryName*.xml %{buildroot}%{_datadir}/metainfo/%{name}.appdata.xml || :',
-            'update-mime-database %{_datadir}/mime &> /dev/null || :',
           ].join('\n'),
           '%postun': ['update-mime-database %{_datadir}/mime &> /dev/null || :']
               .join('\n'),

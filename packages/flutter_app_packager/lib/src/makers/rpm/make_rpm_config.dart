@@ -6,6 +6,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
   MakeRPMConfig({
     // Desktop file
     required this.displayName,
+    this.packageName,
     this.startupNotify = true,
     this.actions,
     this.categories,
@@ -44,6 +45,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
   factory MakeRPMConfig.fromJson(Map<String, dynamic> json) {
     return MakeRPMConfig(
       displayName: json['display_name'] as String,
+      packageName: json['package_name'] as String?,
       icon: json['icon'] as String?,
       metainfo: json['metainfo'] as String?,
       genericName: json['generic_name'] as String?,
@@ -83,6 +85,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
   }
 
   String displayName;
+  String? packageName;
   String? icon;
   String? metainfo;
   String? genericName;
@@ -133,7 +136,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
     return {
       'SPEC': {
         'preamble': {
-          'Name': appName,
+          'Name': packageName ?? appName,
           'Version': appVersion.toString(),
           'Release':
               "${appVersion.build.isNotEmpty ? appVersion.build.first : "1"}%{?dist}",
@@ -156,7 +159,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
             'mkdir -p %{buildroot}%{_datadir}/applications',
             'mkdir -p %{buildroot}%{_datadir}/metainfo',
             'mkdir -p %{buildroot}%{_datadir}/pixmaps',
-            'cp -r %{name}/* %{buildroot}%{_datadir}/%{name}',
+            'cp -r $appName/* %{buildroot}%{_datadir}/%{name}',
             'ln -s %{_datadir}/%{name}/$appBinaryName %{buildroot}%{_bindir}/%{name}',
             'cp -r $appBinaryName.desktop %{buildroot}%{_datadir}/applications/%{name}.desktop',
             'cp -r $appBinaryName.png %{buildroot}%{_datadir}/pixmaps/%{name}.png',
@@ -180,8 +183,8 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
         'Type': 'Application',
         'Name': displayName,
         'GenericName': genericName,
-        'Icon': appName,
-        'Exec': '$appName %U',
+        'Icon': packageName ?? appName,
+        'Exec': '${packageName ?? appName} %U',
         'Actions': actions != null && actions!.isNotEmpty
             ? '${actions!.join(';')};'
             : null,

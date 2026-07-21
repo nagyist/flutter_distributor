@@ -49,6 +49,34 @@ void main() {
 
       expect(files['SPEC'], contains('Version: 1.2.3+4'));
       expect(files['DESKTOP'], isNot(contains('\nVersion=')));
+      expect(files['DESKTOP'], contains('Icon=test_app'));
+      expect(files['DESKTOP'], contains('Exec=test_app %U'));
+    });
+
+    test('rpm keeps package, project, and binary names independent', () {
+      File('${tempDir.path}/linux/CMakeLists.txt')
+          .writeAsStringSync('set(BINARY_NAME "test_binary")\n');
+      final config = MakeRPMConfig(
+        displayName: 'Test App',
+        packageName: 'test-package',
+      )..pubspec = _pubspec();
+
+      final files = config.toFilesString();
+
+      expect(files['SPEC'], contains('Name: test-package'));
+      expect(
+        files['SPEC'],
+        contains('cp -r test_app/* %{buildroot}%{_datadir}/%{name}'),
+      );
+      expect(
+        files['SPEC'],
+        contains(
+          'ln -s %{_datadir}/%{name}/test_binary '
+          '%{buildroot}%{_bindir}/%{name}',
+        ),
+      );
+      expect(files['DESKTOP'], contains('Icon=test-package'));
+      expect(files['DESKTOP'], contains('Exec=test-package %U'));
     });
 
     test('rpm places lifecycle scripts outside the install section', () {

@@ -623,6 +623,12 @@ impl GradleAppBuilder {
     /// Match a Gradle builder using string-based platform names
     /// (e.g. "gradle-android", "gradle-kmp") since these are not standard
     /// Platform variants. Each builder's `name()` returns the platform prefix.
+    ///
+    /// Several builders share the same `name()` (e.g. `GradleAndroidApkBuilder`
+    /// and `GradleAndroidAabBuilder` are both `"gradle-android"`), so the exact
+    /// target must also be checked — delegate to each builder's own `matches`,
+    /// called with its own declared `platform()` so only the target actually
+    /// disambiguates.
     fn find_builder(
         &self,
         platform: &str,
@@ -630,27 +636,7 @@ impl GradleAppBuilder {
     ) -> Option<&(dyn AppBuilder + Send + Sync)> {
         self.builders
             .iter()
-            .find(|b| {
-                // The builder's `name()` matches the platform prefix, e.g.
-                //   GradleAndroidApkBuilder.name() == "gradle-android"
-                //   GradleKmpAndroidApkBuilder.name() == "gradle-kmp"
-                b.name() == platform
-                    && match target {
-                        Some(t) => {
-                            // Match by target—each builder stores its accepted target
-                            // in the `build_result`s target field.
-                            match b.name() {
-                                "gradle-android" => matches!(t, "apk" | "aab"),
-                                "gradle-kmp" => matches!(
-                                    t,
-                                    "android-apk" | "android-aab" | "desktop" | "ios-framework"
-                                ),
-                                _ => false,
-                            }
-                        }
-                        None => false,
-                    }
-            })
+            .find(|b| b.name() == platform && b.matches(&b.platform(), target))
             .map(|b| &**b)
     }
 

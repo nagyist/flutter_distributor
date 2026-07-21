@@ -12,16 +12,15 @@ pub use crate::flutter::{FlutterVersion, PubspecInfo};
 pub use fastforge_core::AppBuilder;
 pub use fastforge_core::{BuildConfig, BuildError, BuildMode, BuildRequest, BuildResult, Platform};
 use serde_json::{Map, Value};
-use std::path::Path;
 use std::time::Instant;
 
 pub use crate::custom::{CustomAppBuilder, CustomBuilder};
-pub use crate::xcode::ios::{IOSXcodeAppBuilder, IOSXcodeBuilder};
-pub use crate::xcode::{MacOSXcodeAppBuilder, MacOSXcodeBuilder};
 pub use crate::gradle::{
     GradleAndroidAabBuilder, GradleAndroidApkBuilder, GradleAppBuilder, GradleKmpAndroidAabBuilder,
     GradleKmpAndroidApkBuilder, GradleKmpDesktopBuilder, GradleKmpIosFrameworkBuilder,
 };
+pub use crate::xcode::ios::{IOSXcodeAppBuilder, IOSXcodeBuilder};
+pub use crate::xcode::{MacOSXcodeAppBuilder, MacOSXcodeBuilder};
 
 pub struct FlutterAppBuilder {
     builders: Vec<Box<dyn AppBuilder + Send + Sync>>,
@@ -82,12 +81,7 @@ impl FlutterAppBuilder {
         let config = BuildConfig::new(arguments);
         builder.validate_arguments(&config)?;
 
-        let pubspec = read_pubspec(Path::new("pubspec.yaml"))?;
-        let mut build_arguments = encode_build_arguments(&config.arguments);
-        build_arguments.push("--dart-define".to_string());
-        build_arguments.push(format!("FLUTTER_BUILD_NAME={}", pubspec.build_name));
-        build_arguments.push("--dart-define".to_string());
-        build_arguments.push(format!("FLUTTER_BUILD_NUMBER={}", pubspec.build_number));
+        let build_arguments = encode_build_arguments(&config.arguments);
 
         let start = Instant::now();
         let flutter = FlutterCommand::new(environment.as_ref());
@@ -125,28 +119,6 @@ pub fn build(request: BuildRequest) -> Result<BuildResult, BuildError> {
         request.arguments,
         request.environment,
     )
-}
-
-fn read_pubspec(path: &Path) -> Result<PubspecInfo, BuildError> {
-    let content = std::fs::read_to_string(path)
-        .map_err(|e| BuildError::Io(format!("Failed to read {}: {}", path.display(), e)))?;
-    let yaml: serde_yaml::Value = serde_yaml::from_str(&content)
-        .map_err(|e| BuildError::Parse(format!("Failed to parse pubspec.yaml: {}", e)))?;
-
-    let version = yaml
-        .get("version")
-        .and_then(serde_yaml::Value::as_str)
-        .unwrap_or("0.1.0+1")
-        .to_string();
-
-    let mut split = version.split('+');
-    let build_name = split.next().unwrap_or("0.1.0").to_string();
-    let build_number = split.next_back().unwrap_or(&version).to_string();
-
-    Ok(PubspecInfo {
-        build_name,
-        build_number,
-    })
 }
 
 fn encode_build_arguments(arguments: &Map<String, Value>) -> Vec<String> {

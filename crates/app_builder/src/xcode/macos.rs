@@ -69,9 +69,15 @@ impl AppBuilder for MacOSXcodeBuilder {
         let product_name = extract_optional_str(config, "product-name");
         let derived_data_path = extract_optional_str(config, "derived-data-path");
 
-        // Determine the build products directory.
+        // Determine the build products directory. When `-derivedDataPath` is
+        // passed to `xcodebuild`, it places build products under
+        // `<derivedDataPath>/Build/Products/<configuration>/`, not directly
+        // under `<derivedDataPath>/<configuration>/`.
         let products_dir: PathBuf = if let Some(ddp) = derived_data_path {
-            PathBuf::from(ddp).join(configuration)
+            PathBuf::from(ddp)
+                .join("Build")
+                .join("Products")
+                .join(configuration)
         } else {
             let project_dir = std::path::Path::new(project)
                 .parent()
@@ -193,7 +199,11 @@ impl MacOSXcodeAppBuilder {
             cmd.args(["-xcconfig", xc]);
         }
 
-        if let Some(flags) = config.arguments.get("extra-flags").and_then(|v| v.as_array()) {
+        if let Some(flags) = config
+            .arguments
+            .get("extra-flags")
+            .and_then(|v| v.as_array())
+        {
             for flag in flags {
                 if let Some(f) = flag.as_str() {
                     cmd.arg(f);
@@ -231,12 +241,9 @@ impl MacOSXcodeAppBuilder {
             )));
         }
 
-        Ok(self.builder.build_result(
-            config,
-            output_directory,
-            output_files,
-            duration,
-        ))
+        Ok(self
+            .builder
+            .build_result(config, output_directory, output_files, duration))
     }
 }
 

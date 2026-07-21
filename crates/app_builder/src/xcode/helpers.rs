@@ -26,9 +26,9 @@ pub fn extract_optional_str<'a>(config: &'a BuildConfig, key: &str) -> Option<&'
 /// Unlike the captured-output variant, this inherits stdout/stderr so the
 /// user sees raw progress from long-running tools like `xcodebuild`.
 pub fn run(cmd: &mut Command) -> Result<(), BuildError> {
-    let status = cmd.status().map_err(|e| {
-        BuildError::Io(format!("{}: {}", cmd.get_program().to_string_lossy(), e))
-    })?;
+    let status = cmd
+        .status()
+        .map_err(|e| BuildError::Io(format!("{}: {}", cmd.get_program().to_string_lossy(), e)))?;
     if !status.success() {
         return Err(BuildError::CommandFailed(format!(
             "'{}' failed with exit code {}",

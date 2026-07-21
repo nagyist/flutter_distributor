@@ -201,7 +201,11 @@ impl IOSXcodeAppBuilder {
         }
 
         // Extra flags
-        if let Some(flags) = config.arguments.get("extra-flags").and_then(|v| v.as_array()) {
+        if let Some(flags) = config
+            .arguments
+            .get("extra-flags")
+            .and_then(|v| v.as_array())
+        {
             for flag in flags {
                 if let Some(f) = flag.as_str() {
                     archive_cmd.arg(f);
@@ -283,12 +287,9 @@ impl IOSXcodeAppBuilder {
             )));
         }
 
-        Ok(self.builder.build_result(
-            config,
-            output_directory,
-            output_files,
-            duration,
-        ))
+        Ok(self
+            .builder
+            .build_result(config, output_directory, output_files, duration))
     }
 }
 
@@ -312,7 +313,10 @@ mod tests {
         let mut args = serde_json::Map::new();
         args.insert("project".to_string(), json!("ios/Runner.xcodeproj"));
         args.insert("scheme".to_string(), json!("Runner"));
-        args.insert("export-options-plist".to_string(), json!("ios/export.plist"));
+        args.insert(
+            "export-options-plist".to_string(),
+            json!("ios/export.plist"),
+        );
         let config = BuildConfig::new(args);
         assert!(IOSXcodeBuilder.validate_arguments(&config).is_ok());
     }

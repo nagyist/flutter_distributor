@@ -6,6 +6,17 @@ import 'package:flutter_app_packager/src/makers/rpm/rpmbuild.dart';
 import 'package:path/path.dart' as path;
 import 'package:shell_executor/shell_executor.dart';
 
+String sanitizeRpmRpath(String rpath) {
+  final sanitizedEntries = <String>[];
+  for (final entry in rpath.split(':')) {
+    final sanitizedEntry = path.posix.isAbsolute(entry) ? r'$ORIGIN' : entry;
+    if (!sanitizedEntries.contains(sanitizedEntry)) {
+      sanitizedEntries.add(sanitizedEntry);
+    }
+  }
+  return sanitizedEntries.join(':');
+}
+
 class AppPackageMakerRPM extends AppPackageMaker {
   @override
   List<Command> get requirements => [rpmbuild];
@@ -107,13 +118,13 @@ class AppPackageMakerRPM extends AppPackageMaker {
         ],
       );
       final rpath = processResult.stdout.toString().trim();
-      // Fix RPATH if it is an absolute path (starts with /) and not yet fixed ($ORIGIN)
-      if (rpath.startsWith('/') && !rpath.contains('\$ORIGIN')) {
+      final sanitizedRpath = sanitizeRpmRpath(rpath);
+      if (sanitizedRpath != rpath) {
         await $(
           'patchelf',
           [
             '--set-rpath',
-            '\$ORIGIN',
+            sanitizedRpath,
             file.path,
           ],
         );

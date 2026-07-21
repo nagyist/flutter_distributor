@@ -51,6 +51,50 @@ void main() {
       expect(files['DESKTOP'], isNot(contains('\nVersion=')));
     });
 
+    test('rpm places lifecycle scripts outside the install section', () {
+      final config = MakeRPMConfig.fromJson({
+        'display_name': 'Test App',
+        'postinstall_scripts': ['echo postinstall'],
+        'postuninstall_scripts': ['echo postuninstall'],
+      })..pubspec = _pubspec();
+
+      final spec = config.toFilesString()['SPEC']!;
+      final installSection = spec.substring(
+        spec.indexOf('%install'),
+        spec.indexOf('\n%post\n'),
+      );
+
+      expect(installSection, isNot(contains('update-mime-database')));
+      expect(
+        spec,
+        contains(
+          '%post\n'
+          'update-mime-database %{_datadir}/mime &> /dev/null || :\n'
+          'echo postinstall',
+        ),
+      );
+      expect(
+        spec,
+        contains(
+          '%postun\n'
+          'update-mime-database %{_datadir}/mime &> /dev/null || :\n'
+          'echo postuninstall',
+        ),
+      );
+    });
+
+    test('rpm retains the legacy postun constructor parameter', () {
+      final config = MakeRPMConfig(
+        displayName: 'Test App',
+        postun: 'echo legacy-postun',
+      )..pubspec = _pubspec();
+
+      expect(
+        config.toFilesString()['SPEC'],
+        contains('echo legacy-postun'),
+      );
+    });
+
     test('pacman keeps package version out of the desktop entry', () {
       final config = MakePacmanConfig(
         displayName: 'Test App',

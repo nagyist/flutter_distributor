@@ -30,6 +30,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
     this.prep,
     this.build,
     this.install,
+    this.postun,
     List<String>? postinstallScripts,
     List<String>? postuninstallScripts,
     this.files,
@@ -71,7 +72,8 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
           : null,
       postuninstallScripts: json['postuninstall_scripts'] != null
           ? List.castFrom<dynamic, String>(json['postuninstall_scripts'])
-          : (json['postun'] != null ? [json['postun'] as String] : null),
+          : null,
+      postun: json['postun'] as String?,
       files: json['files'] as String?,
       defattr: json['defattr'] as String?,
       attr: json['attr'] as String?,
@@ -108,6 +110,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
   String? prep;
   String? build;
   String? install;
+  String? postun;
   String? files;
   String? defattr;
   String? attr;
@@ -121,6 +124,7 @@ class MakeRPMConfig extends MakeLinuxPackageConfig {
 
   List<String> get postunScripts => [
     'update-mime-database %{_datadir}/mime &> /dev/null || :',
+    if (postun != null) postun!,
     ..._postuninstallScripts,
   ];
 
